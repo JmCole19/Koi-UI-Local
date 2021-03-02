@@ -11,6 +11,7 @@ import Leaderboard from 'containers/Leaderboard';
 import RegisterContent from 'containers/RegisterContent';
 import UploadSteps from 'containers/UploadSteps';
 import Checkout from 'containers/Checkout';
+import Faucet from 'containers/Faucet';
 
 function App() {
 
@@ -25,6 +26,7 @@ function App() {
             <MyRoute exact path="/register-content" component={RegisterContent} />
             <MyRoute exact path="/check-out" component={Checkout} />
             <MyRoute path="/upload/:type" component={UploadSteps} />
+            <MyRoute path="/faucet" component={Faucet} />
           </Switch>
         </Router>
       </Scrollbars>
