@@ -29,13 +29,13 @@ function Faucet() {
     const data = JSON.stringify(key);
     fileDownload(data, "filename.json");
     // setState({activeButton: true});
-    setState({ downloadButton: false });
-    setState({ tweetButton: true });
+    setState({ ...state, downloadButton: false });
+    setState({ ...state, tweetButton: true });
     keyAddress = await arweave.wallets.jwkToAddress(key);
   };
 
   const tweetButtonHandler = async () => {
-    setState({ activeButton: true });
+    setState({ ...state, activeButton: true });
     // const keyAddress = await arweave.wallets.jwkToAddress(key);
     const href =
       "https://twitter.com/intent/tweet?text=I%27m%20verifying%20my%20Koi%20address%20" +
@@ -43,7 +43,7 @@ function Faucet() {
       "&via=open_koi";
     const addressNew = [...state.address];
     addressNew.push(href);
-    setState({ address: addressNew });
+    setState({ ...state, address: addressNew });
   };
 
   const registerClickHandler = () => {
@@ -56,7 +56,7 @@ function Faucet() {
       console.log(address);
       const addressNew = [...state.address];
       addressNew.pop();
-      setState({ address: addressNew });
+      setState({ ...state, address: addressNew });
       const submission = {
         targetAddress: address,
         qty: 50,
@@ -83,7 +83,7 @@ function Faucet() {
     //   .then((res) => {
     //     console.log(`statusCode: ${res.statusCode}`);
     //     console.log(res);
-    //     setState({ showModal: true });
+    //     setState({ ...state, showModal: true });
     //   })
     //   .catch((error) => {
     //     //   console.error(error)
