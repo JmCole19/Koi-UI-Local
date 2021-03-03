@@ -3,16 +3,27 @@ import React, { useEffect, useState } from "react";
 import Arweave from "arweave";
 import fileDownload from "js-file-download";
 import { Container, Modal } from "react-bootstrap";
+import {
+  // TwitterShareButton,
+  // TwitterTimelineEmbed,
+  // TwitterFollowButton,
+  // TwitterHashtagButton,
+  // TwitterMentionButton,
+  // TwitterTweetEmbed,
+  // TwitterMomentShare,
+  // TwitterDMButton,
+  // TwitterVideoEmbed,
+  // TwitterOnAirButton,
+} from "react-twitter-embed";
 import { FaucetContainer } from "./style";
 import { Button, Input } from "antd";
 import { useHistory } from "react-router-dom";
 
 function Faucet() {
-
   const history = useHistory();
   const [showModalKey, setShowModalKey] = useState(false);
   const [myKey, setMyKey] = useState();
-  const [address, setAddress] = useState('');
+  const [address, setAddress] = useState(null);
 
   const handleClose = () => setShowModalKey(false);
 
@@ -23,16 +34,16 @@ function Faucet() {
       protocol: "https",
     });
     let keyData = await arweave.wallets.generate();
-    console.log({keyData})
-    setMyKey(keyData)
+    console.log({ keyData });
+    setMyKey(keyData);
     const data = JSON.stringify(keyData);
     fileDownload(data, "filename.json");
     // setState({activeButton: true});
     // setState({ ...state, downloadButton: false });
     // setState({ ...state, tweetButton: true });
     let addressResult = await arweave.wallets.jwkToAddress(keyData);
-    console.log({addressResult})
-    setAddress(addressResult)
+    console.log({ addressResult });
+    setAddress(addressResult);
   };
 
   const tweetButtonHandler = async () => {
@@ -86,12 +97,12 @@ function Faucet() {
     //     //   console.error(error)
     //   });
   };
-
+console.log({address})
   useEffect(() => {
-    if (!myKey) {
-      setShowModalKey(true)
+    if (!address) {
+      setShowModalKey(true);
     }
-  }, [history.location.pathname])
+  }, [history.location.pathname]);
 
   return (
     <FaucetContainer>
@@ -101,16 +112,20 @@ function Faucet() {
           <Button
             onClick={tweetButtonHandler}
             variant="contained"
-            disabled={false}
+            disabled={!address}
           >
             <a
-              href={`https://twitter.com/intent/tweet?text=I%27m%20verifying%20my%20Koi%20address%20${address}&via=open_koi`}
+              href={address ? `https://twitter.com/intent/tweet?text=I%27m%20verifying%20my%20Koi%20address%20${address}&via=open_koi` : '#/'}
               target="_blank"
               rel="noopener noreferrer"
             >
               Open Tweet Pop-up
             </a>
           </Button>
+          {/* <TwitterShareButton
+            url={null}
+            options={{ text: `I am verifying my KOI address ${address}`, via: "open_koi" }}
+          /> */}
           <Button
             color="primary"
             variant="contained"
@@ -136,7 +151,7 @@ function Faucet() {
           <p>If you have a wallet address</p>
           <Input
             type="text"
-            onChange={e => setAddress(e.target.value)}
+            onChange={(e) => setAddress(e.target.value)}
             placeholder="input your adress"
           />
           <p>or don't have a wallet? Please download your key file.</p>

@@ -31,6 +31,7 @@
     "react-scripts": "3.4.3",
     "react-slider": "^1.1.4",
     "react-spinners": "^0.9.0",
+    "react-twitter-embed": "^3.0.3",
     "react-typist": "^2.0.5",
     "styled-components": "^5.2.0",
     "use-mediaquery": "^1.0.1",
