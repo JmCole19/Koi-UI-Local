@@ -7,51 +7,44 @@ import { FaucetContainer } from "./style";
 import { Button, Input } from "antd";
 import { useHistory } from "react-router-dom";
 
-let address = "";
-let keyAddress = "";
-
 function Faucet() {
 
   const history = useHistory();
   const [showModalKey, setShowModalKey] = useState(false);
   const [myKey, setMyKey] = useState();
+  const [address, setAddress] = useState('');
 
   const handleClose = () => setShowModalKey(false);
-  
-  const [state, setState] = useState({
-    activeButton: false,
-    downloadButton: true,
-    tweetButton: false,
-    address: [],
-    showModal: false,
-  });
 
-  const downloadClickHandler = async () => {
+  const onDownloadFile = async () => {
     const arweave = Arweave.init({
       host: "arweave.net",
       port: 443,
       protocol: "https",
     });
     let keyData = await arweave.wallets.generate();
+    console.log({keyData})
     setMyKey(keyData)
     const data = JSON.stringify(keyData);
     fileDownload(data, "filename.json");
     // setState({activeButton: true});
-    setState({ ...state, downloadButton: false });
-    setState({ ...state, tweetButton: true });
-    keyAddress = await arweave.wallets.jwkToAddress(keyData);
+    // setState({ ...state, downloadButton: false });
+    // setState({ ...state, tweetButton: true });
+    let addressResult = await arweave.wallets.jwkToAddress(keyData);
+    console.log({addressResult})
+    setAddress(addressResult)
   };
 
   const tweetButtonHandler = async () => {
-    setState({ ...state, activeButton: true });
+    // setState({ ...state, activeButton: true });
     // const keyAddress = await arweave.wallets.jwkToAddress(key);
-    const href =
-      "https://twitter.com/intent/tweet?text=I%27m%20verifying%20my%20Koi%20address%20" +
-      keyAddress +
-      "&via=open_koi";
-    const addressNew = [...state.address];
-    addressNew.push(href);
-    setState({ ...state, address: addressNew });
+    // const href =
+    //   "https://twitter.com/intent/tweet?text=I%27m%20verifying%20my%20Koi%20address%20" +
+    //   address +
+    //   "&via=open_koi";
+    // const addressNew = [...state.address];
+    // addressNew.push(href);
+    // setState({ ...state, address: addressNew });
   };
 
   const registerClickHandler = () => {
@@ -62,19 +55,15 @@ function Faucet() {
     });
     arweave.wallets.jwkToAddress(myKey).then((address) => {
       console.log(address);
-      const addressNew = [...state.address];
-      addressNew.pop();
-      setState({ ...state, address: addressNew });
+      // const addressNew = [...state.address];
+      // addressNew.pop();
+      // setState({ ...state, address: addressNew });
       const submission = {
         targetAddress: address,
         qty: 50,
       };
       _api(submission);
     });
-  };
-
-  const inputHandler = async (event) => {
-    address = event.target.value;
   };
 
   const enterButtonHandler = () => {
@@ -103,26 +92,19 @@ function Faucet() {
       setShowModalKey(true)
     }
   }, [history.location.pathname])
-  
+
   return (
     <FaucetContainer>
       <Container>
         <div>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={downloadClickHandler}
-            disabled={!state.downloadButton}
-          >
-            DOWNLOAD ARWEAVE WALLET
-          </Button>
+          <h2>Your Key: </h2>
           <Button
             onClick={tweetButtonHandler}
             variant="contained"
-            disabled={!state.tweetButton}
+            disabled={false}
           >
             <a
-              href={state.address[0]}
+              href={`https://twitter.com/intent/tweet?text=I%27m%20verifying%20my%20Koi%20address%20${address}&via=open_koi`}
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -133,17 +115,10 @@ function Faucet() {
             color="primary"
             variant="contained"
             onClick={registerClickHandler}
-            disabled={!state.activeButton}
+            disabled={false}
           >
             Get Koi
           </Button>
-        </div>
-        <div>
-          <Input
-            type="text"
-            onChange={inputHandler}
-            placeholder="input your adress"
-          />
           <Button
             variant="contained"
             color="primary"
@@ -158,7 +133,21 @@ function Faucet() {
           <Modal.Title>Set your key</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          
+          <p>If you have a wallet address</p>
+          <Input
+            type="text"
+            onChange={e => setAddress(e.target.value)}
+            placeholder="input your adress"
+          />
+          <p>or don't have a wallet? Please download your key file.</p>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={onDownloadFile}
+            disabled={false}
+          >
+            DOWNLOAD ARWEAVE WALLET
+          </Button>
         </Modal.Body>
       </Modal>
     </FaucetContainer>
