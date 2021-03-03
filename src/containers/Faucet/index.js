@@ -1,15 +1,23 @@
-import React, { useState } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useEffect, useState } from "react";
 import Arweave from "arweave";
 import fileDownload from "js-file-download";
-import { Container } from "react-bootstrap";
+import { Container, Modal } from "react-bootstrap";
 import { FaucetContainer } from "./style";
 import { Button, Input } from "antd";
+import { useHistory } from "react-router-dom";
 
-let key = {};
 let address = "";
 let keyAddress = "";
 
 function Faucet() {
+
+  const history = useHistory();
+  const [showModalKey, setShowModalKey] = useState(false);
+  const [myKey, setMyKey] = useState();
+
+  const handleClose = () => setShowModalKey(false);
+  
   const [state, setState] = useState({
     activeButton: false,
     downloadButton: true,
@@ -24,13 +32,14 @@ function Faucet() {
       port: 443,
       protocol: "https",
     });
-    key = await arweave.wallets.generate();
-    const data = JSON.stringify(key);
+    let keyData = await arweave.wallets.generate();
+    setMyKey(keyData)
+    const data = JSON.stringify(keyData);
     fileDownload(data, "filename.json");
     // setState({activeButton: true});
     setState({ ...state, downloadButton: false });
     setState({ ...state, tweetButton: true });
-    keyAddress = await arweave.wallets.jwkToAddress(key);
+    keyAddress = await arweave.wallets.jwkToAddress(keyData);
   };
 
   const tweetButtonHandler = async () => {
@@ -51,7 +60,7 @@ function Faucet() {
       port: 443,
       protocol: "https",
     });
-    arweave.wallets.jwkToAddress(key).then((address) => {
+    arweave.wallets.jwkToAddress(myKey).then((address) => {
       console.log(address);
       const addressNew = [...state.address];
       addressNew.pop();
@@ -88,6 +97,13 @@ function Faucet() {
     //     //   console.error(error)
     //   });
   };
+
+  useEffect(() => {
+    if (!myKey) {
+      setShowModalKey(true)
+    }
+  }, [history.location.pathname])
+  
   return (
     <FaucetContainer>
       <Container>
@@ -137,6 +153,14 @@ function Faucet() {
           </Button>
         </div>
       </Container>
+      <Modal show={showModalKey} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Set your key</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          
+        </Modal.Body>
+      </Modal>
     </FaucetContainer>
   );
 }
