@@ -1,31 +1,28 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Arweave from "arweave";
 import fileDownload from "js-file-download";
-import { Container, Modal } from "react-bootstrap";
-import {
-  // TwitterShareButton,
-  // TwitterTimelineEmbed,
-  // TwitterFollowButton,
-  // TwitterHashtagButton,
-  // TwitterMentionButton,
-  // TwitterTweetEmbed,
-  // TwitterMomentShare,
-  // TwitterDMButton,
-  // TwitterVideoEmbed,
-  // TwitterOnAirButton,
-} from "react-twitter-embed";
+import { Container } from "react-bootstrap";
+import // TwitterShareButton,
+// TwitterTimelineEmbed,
+// TwitterFollowButton,
+// TwitterHashtagButton,
+// TwitterMentionButton,
+// TwitterTweetEmbed,
+// TwitterMomentShare,
+// TwitterDMButton,
+// TwitterVideoEmbed,
+// TwitterOnAirButton,
+"react-twitter-embed";
 import { FaucetContainer } from "./style";
 import { Button, Input } from "antd";
 import { useHistory } from "react-router-dom";
 
 function Faucet() {
   const history = useHistory();
-  const [showModalKey, setShowModalKey] = useState(false);
-  const [myKey, setMyKey] = useState();
+  console.log({ history });
+  // const [myKey, setMyKey] = useState();
   const [address, setAddress] = useState(null);
-
-  const handleClose = () => setShowModalKey(false);
 
   const onDownloadFile = async () => {
     const arweave = Arweave.init({
@@ -35,7 +32,7 @@ function Faucet() {
     });
     let keyData = await arweave.wallets.generate();
     console.log({ keyData });
-    setMyKey(keyData);
+    // setMyKey(keyData);
     const data = JSON.stringify(keyData);
     fileDownload(data, "filename.json");
     // setState({activeButton: true});
@@ -58,24 +55,24 @@ function Faucet() {
     // setState({ ...state, address: addressNew });
   };
 
-  const registerClickHandler = () => {
-    const arweave = Arweave.init({
-      host: "arweave.net",
-      port: 443,
-      protocol: "https",
-    });
-    arweave.wallets.jwkToAddress(myKey).then((address) => {
-      console.log(address);
-      // const addressNew = [...state.address];
-      // addressNew.pop();
-      // setState({ ...state, address: addressNew });
-      const submission = {
-        targetAddress: address,
-        qty: 50,
-      };
-      _api(submission);
-    });
-  };
+  // const registerClickHandler = () => {
+  //   const arweave = Arweave.init({
+  //     host: "arweave.net",
+  //     port: 443,
+  //     protocol: "https",
+  //   });
+  //   arweave.wallets.jwkToAddress(myKey).then((address) => {
+  //     console.log(address);
+  //     // const addressNew = [...state.address];
+  //     // addressNew.pop();
+  //     // setState({ ...state, address: addressNew });
+  //     const submission = {
+  //       targetAddress: address,
+  //       qty: 50,
+  //     };
+  //     _api(submission);
+  //   });
+  // };
 
   const enterButtonHandler = () => {
     const submission = {
@@ -84,7 +81,7 @@ function Faucet() {
     };
     _api(submission);
   };
-  const _api = (submission) => {
+  const _api = () => {
     // const url = process.env.REACT_APP_API_URL;
     // axios
     //   .post(url, submission)
@@ -97,57 +94,12 @@ function Faucet() {
     //     //   console.error(error)
     //   });
   };
-console.log({address})
-  useEffect(() => {
-    if (!address) {
-      setShowModalKey(true);
-    }
-  }, [history.location.pathname]);
-
+  console.log({ address });
   return (
     <FaucetContainer>
       <Container>
-        <div>
-          <h2>Your Key: </h2>
-          <Button
-            onClick={tweetButtonHandler}
-            variant="contained"
-            disabled={!address}
-          >
-            <a
-              href={address ? `https://twitter.com/intent/tweet?text=I%27m%20verifying%20my%20Koi%20address%20${address}&via=open_koi` : '#/'}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Open Tweet Pop-up
-            </a>
-          </Button>
-          {/* <TwitterShareButton
-            url={null}
-            options={{ text: `I am verifying my KOI address ${address}`, via: "open_koi" }}
-          /> */}
-          <Button
-            color="primary"
-            variant="contained"
-            onClick={registerClickHandler}
-            disabled={false}
-          >
-            Get Koi
-          </Button>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={enterButtonHandler}
-          >
-            Get Koi
-          </Button>
-        </div>
-      </Container>
-      <Modal show={showModalKey} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Set your key</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
+        <div className="section-get-koi">
+          <h2>Set your key</h2>
           <p>If you have a wallet address</p>
           <Input
             type="text"
@@ -163,8 +115,47 @@ console.log({address})
           >
             DOWNLOAD ARWEAVE WALLET
           </Button>
-        </Modal.Body>
-      </Modal>
+        </div>
+        <div className="section-set-key">
+          <h2>Your Key: {address}</h2>
+          <Button
+            onClick={tweetButtonHandler}
+            variant="contained"
+            disabled={!address}
+          >
+            <a
+              href={
+                address
+                  ? `https://twitter.com/intent/tweet?text=I%27m%20verifying%20my%20Koi%20address%20${address}&via=open_koi`
+                  : "#/"
+              }
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Open Tweet Pop-up
+            </a>
+          </Button>
+          {/* <TwitterShareButton
+            url={null}
+            options={{ text: `I am verifying my KOI address ${address}`, via: "open_koi" }}
+          /> */}
+          {/* <Button
+            color="primary"
+            variant="contained"
+            onClick={registerClickHandler}
+            disabled={false}
+          >
+            Get Koi
+          </Button> */}
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={enterButtonHandler}
+          >
+            Get Koi
+          </Button>
+        </div>
+      </Container>
     </FaucetContainer>
   );
 }
