@@ -9,4 +9,20 @@ export const FaucetContainer = styled.div`
   display: flex;
   justify-content: center;
   padding-top: 80px;
+  padding-bottom: 50px;
+  .section {
+    background: ${colors.white};
+    box-shadow: 0px 4px 12px rgb(0 0 0 / 25%);
+    border-radius: 4px;
+    padding: 30px 20px;
+    &.section-set-key {
+      margin-bottom: 30px;
+      .set-koi-card {
+        padding: 20px;
+        &.set-koi-left {
+          border-right: solid 1px ${colors.blueDark};
+        }
+      }
+    }
+  }
 `;
