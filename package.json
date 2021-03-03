@@ -34,6 +34,9 @@
     "react-twitter-embed": "^3.0.3",
     "react-typist": "^2.0.5",
     "styled-components": "^5.2.0",
+    "twitter": "^1.7.1",
+    "twitter-api-client": "^1.3.2",
+    "twitter-v2": "^1.0.6",
     "use-mediaquery": "^1.0.1",
     "web-vitals": "^1.1.0"
   },
