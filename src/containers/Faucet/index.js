@@ -3,8 +3,7 @@ import Arweave from "arweave";
 import fileDownload from "js-file-download";
 import { Container } from "react-bootstrap";
 import { FaucetContainer } from "./style";
-import CardOne from "./CardOne/CardOne";
-import CardTwo from "./CardTwo/CardTwo";
+import { Button, Input } from "antd";
 
 let key = {};
 let address = "";
@@ -92,16 +91,51 @@ function Faucet() {
   return (
     <FaucetContainer>
       <Container>
-        <CardOne
-          clickedDownLoad={downloadClickHandler}
-          clickRegister={registerClickHandler}
-          disable={state.activeButton}
-          disabled={state.downloadButton}
-          disableTweet={state.tweetButton}
-          tweetButton={tweetButtonHandler}
-          address={state.address[0]}
-        />
-        <CardTwo change={inputHandler} clickedEnter={enterButtonHandler} />
+        <div>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={downloadClickHandler}
+            disabled={!state.downloadButton}
+          >
+            DOWNLOAD ARWEAVE WALLET
+          </Button>
+          <Button
+            onClick={tweetButtonHandler}
+            variant="contained"
+            disabled={!state.tweetButton}
+          >
+            <a
+              href={state.address[0]}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Open Tweet Pop-up
+            </a>
+          </Button>
+          <Button
+            color="primary"
+            variant="contained"
+            onClick={registerClickHandler}
+            disabled={!state.activeButton}
+          >
+            Get Koi
+          </Button>
+        </div>
+        <div>
+          <Input
+            type="text"
+            onChange={inputHandler}
+            placeholder="input your adress"
+          />
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={enterButtonHandler}
+          >
+            Get Koi
+          </Button>
+        </div>
       </Container>
     </FaucetContainer>
   );
