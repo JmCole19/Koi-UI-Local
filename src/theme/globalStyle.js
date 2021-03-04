@@ -56,6 +56,9 @@ a {
     letter-spacing: 0.03em;
 }
 
+.f-32 {
+    font-size: 32px !important;
+}
 .btn {
     display: flex;
     justify-content: center;

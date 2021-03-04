@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import Arweave from "arweave";
 import fileDownload from "js-file-download";
-import { Col, Container, Row } from "react-bootstrap";
+import { Carousel, Col, Container, Row } from "react-bootstrap";
 import { FaucetContainer } from "./style";
 import { Button, Input } from "antd";
 import { useHistory } from "react-router-dom";
@@ -11,6 +11,7 @@ function Faucet() {
   const history = useHistory();
   console.log({ history });
   const [address, setAddress] = useState(null);
+  const [step, setStep] = useState(0);
 
   const onDownloadFile = async () => {
     const arweave = Arweave.init({
@@ -31,13 +32,46 @@ function Faucet() {
     console.log("set your key first");
   };
 
-  const enterButtonHandler = async () => {
-    
-  };
-  
+  const enterButtonHandler = async () => {};
+
   return (
     <FaucetContainer>
       <Container>
+        <h1 className="f-32 text-blue">Want to earn attention rewards?</h1>
+        <h6 className="text-blue">
+          Get free KOI here so you can upload to the network. Just follow the
+          steps below.
+        </h6>
+        <Carousel
+          className="faucet-cards-wrapper"
+          interval={4500}
+          pause="hover"
+          nextIcon={null}
+          prevIcon={null}
+          indicators={null}
+          activeIndex={step}
+        >
+          <Carousel.Item>
+            <div className="faucet-step-card">
+              <h1 className="f-32 text-blue">1</h1>
+              <div className="step-content">
+                <h6 className="step-title">Get an Arweave wallet.</h6>
+                <h6>Already have an Arweave wallet? Skip ahead.</h6>
+                <button onClick={() => setStep(step + 1)}>Next</button>
+                <p>
+                  This button downloads a .JSON wallet file. You don’t need to
+                  do anything with it yet.
+                </p>
+              </div>
+            </div>
+          </Carousel.Item>
+          <Carousel.Item className="faucet-step-card">
+            <button onClick={() => setStep(step + 1)}>Next</button>
+          </Carousel.Item>
+          <Carousel.Item className="faucet-step-card">
+            <button onClick={() => setStep(step + 1)}>Next</button>
+          </Carousel.Item>
+        </Carousel>
         <div className="section section-set-key">
           <h2>Set your key</h2>
           <Row className="set-key-wrapper">
@@ -72,7 +106,7 @@ function Faucet() {
           <h2>Your Key: {address}</h2>
           <Button
             onClick={tweetButtonHandler}
-            className='btn-blueDark'
+            className="btn-blueDark"
             disabled={!address}
           >
             <a
@@ -83,10 +117,7 @@ function Faucet() {
               Open Tweet Pop-up
             </a>
           </Button>
-          <Button
-            className='btn-blueDark'
-            onClick={enterButtonHandler}
-          >
+          <Button className="btn-blueDark" onClick={enterButtonHandler}>
             Get Koi
           </Button>
         </div>
