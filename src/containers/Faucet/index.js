@@ -35,9 +35,9 @@ function Faucet() {
   const enterButtonHandler = async () => {};
 
   const onClickNext = () => {
-    console.log("here")
-    setStep(step + 1)
-  }
+    console.log("here");
+    setStep(step + 1);
+  };
   return (
     <FaucetContainer>
       <Container>
@@ -59,8 +59,15 @@ function Faucet() {
               <h1 className="f-32 text-blue">1</h1>
               <div className="step-content">
                 <h6 className="step-title text-blue">Get an Arweave wallet.</h6>
-                <h6 className="text-blue">Already have an Arweave wallet? Skip ahead.</h6>
-                <Button className='btn-step-card mt-auto mx-auto' onClick={onClickNext}>dd</Button>
+                <h6 className="text-blue">
+                  Already have an Arweave wallet? Skip ahead.
+                </h6>
+                <Button
+                  className="btn-step-card mt-auto mx-auto"
+                  onClick={onClickNext}
+                >
+                  Get a Wallet
+                </Button>
                 <p className="text-blue">
                   This button downloads a .JSON wallet file. You don’t need to
                   do anything with it yet.
@@ -72,12 +79,21 @@ function Faucet() {
             <div className="faucet-step-card">
               <h1 className="f-32 text-blue">2</h1>
               <div className="step-content">
-                <h6 className="step-title text-blue">Get an Arweave wallet.</h6>
-                <h6 className="text-blue">Already have an Arweave wallet? Skip ahead.</h6>
-                <Button className='btn-step-card mt-auto mx-auto' onClick={onClickNext}>Next</Button>
+                <h6 className="step-title text-blue">Verify with a Tweet.</h6>
+                <h6 className="text-blue">
+                  We need to make sure you’re a real person and not a bot.
+                  Posting on Twitter with an active account is the easiest way
+                  to do that.
+                </h6>
+                <Button
+                  className="btn-step-card mt-auto mx-auto"
+                  onClick={onClickNext}
+                >
+                  Tweet to Verify
+                </Button>
                 <p className="text-blue">
-                  This button downloads a .JSON wallet file. You don’t need to
-                  do anything with it yet.
+                  We will generate the tweet for you. All you need to do is log
+                  in and click “Tweet.”
                 </p>
               </div>
             </div>
@@ -86,12 +102,19 @@ function Faucet() {
             <div className="faucet-step-card">
               <h1 className="f-32 text-blue">3</h1>
               <div className="step-content">
-                <h6 className="step-title text-blue">Get an Arweave wallet.</h6>
-                <h6 className="text-blue">Already have an Arweave wallet? Skip ahead.</h6>
-                <Button className='btn-step-card mt-auto mx-auto' onClick={onClickNext}>Next</Button>
+                <h6 className="step-title text-blue">Get KOI</h6>
+                <h6 className="text-blue">
+                  After you’ve tweeted, click here to claim your free KOI!
+                </h6>
+                <Button
+                  className="btn-step-card mt-auto mx-auto"
+                  onClick={onClickNext}
+                >
+                  Get KOI
+                </Button>
                 <p className="text-blue">
-                  This button downloads a .JSON wallet file. You don’t need to
-                  do anything with it yet.
+                  We will generate the tweet for you. All you need to do is log
+                  in and click “Tweet.”
                 </p>
               </div>
             </div>
@@ -100,12 +123,44 @@ function Faucet() {
             <div className="faucet-step-card">
               <h1 className="f-32 text-blue">4</h1>
               <div className="step-content">
-                <h6 className="step-title text-blue">Get an Arweave wallet.</h6>
-                <h6 className="text-blue">Already have an Arweave wallet? Skip ahead.</h6>
-                <Button className='btn-step-card mt-auto mx-auto' onClick={onClickNext}>Next</Button>
+                <h6 className="step-title text-blue">
+                  You just earned 5 KOI!{" "}
+                </h6>
+                <h6 className="text-blue">
+                  In 3 minutes, you’ll be able to upload content, earn rewards,
+                  and much more.
+                </h6>
+                <Button
+                  className="btn-step-card mt-auto mx-auto"
+                  onClick={onClickNext}
+                >
+                  Upload Content
+                </Button>
                 <p className="text-blue">
-                  This button downloads a .JSON wallet file. You don’t need to
-                  do anything with it yet.
+                  Head back to uploading your content and start earning.
+                </p>
+              </div>
+            </div>
+          </Carousel.Item>
+          <Carousel.Item>
+            <div className="faucet-step-card">
+              <h1 className="f-32 text-blue">1</h1>
+              <div className="step-content">
+                <h6 className="step-title text-blue">Connect a wallet</h6>
+                <h6 className="text-blue">
+                  Paste your Arweave wallet address here.
+                </h6>
+                <div className="submit-wrapper">
+                  <Input />
+                  <Button
+                    className="btn-step-card mt-auto mx-auto"
+                    onClick={onClickNext}
+                  >
+                    Submit Address
+                  </Button>
+                </div>
+                <p className="text-blue">
+                  Head back to uploading your content and start earning.
                 </p>
               </div>
             </div>

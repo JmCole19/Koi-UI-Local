@@ -9,8 +9,9 @@ export const FaucetContainer = styled.div`
   display: flex;
   justify-content: center;
   padding-top: 80px;
-  padding-bottom: 50px;
+  padding-bottom: 196px;
   .faucet-cards-wrapper {
+    margin-top: 65px;
     .carousel-control-prev,
     .carousel-control-next {
       width: 50px;
