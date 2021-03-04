@@ -15,7 +15,7 @@ function Topbar() {
       </Navbar.Toggle>
       <Navbar.Collapse id="responsive-navbar-nav">
         <Nav className="ml-auto">
-          <Link to="/faucet">Faucet</Link>
+          <Link to="/faucet?step=0">Faucet</Link>
           <Link to="#" className='btn-openkoi'>OpenKoi</Link>
         </Nav>
       </Navbar.Collapse>

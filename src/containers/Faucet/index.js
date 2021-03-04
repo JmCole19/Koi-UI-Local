@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Arweave from "arweave";
+import queryString from "query-string";
 import fileDownload from "js-file-download";
 import { Carousel, Container } from "react-bootstrap";
 import { FaucetContainer } from "./style";
@@ -10,14 +11,17 @@ import { useHistory } from "react-router-dom";
 function Faucet() {
   const history = useHistory();
   const [address, setAddress] = useState(null);
-  const [step, setStep] = useState(0);
+  const { step } = queryString.parse(history.location.search);
+  const [curStep, setCurStep] = useState(0);
 
   const onSkipGetWallet = () => {
-    setStep(1);
+    setCurStep(1);
+    history.push(`/faucet?step=1`);
   };
 
   const onClickSubmitAddress = () => {
-    setStep(2);
+    setCurStep(2);
+    history.push(`/faucet?step=2`);
   };
 
   const onClickGetWallet = async () => {
@@ -27,13 +31,12 @@ function Faucet() {
       protocol: "https",
     });
     let keyData = await arweave.wallets.generate();
-    console.log({ keyData });
     const data = JSON.stringify(keyData);
     fileDownload(data, "filename.json");
     let addressResult = await arweave.wallets.jwkToAddress(keyData);
-    console.log({ addressResult });
     setAddress(addressResult);
-    setStep(2);
+    setCurStep(2);
+    history.push(`/faucet?step=2`);
   };
 
   const onClickTweet = async () => {
@@ -45,17 +48,27 @@ function Faucet() {
         window.screenY + 100
       }, width=500, height=448, toolbar=no`
     );
-    setStep(3);
+    setCurStep(3);
+    history.push(`/faucet?step=3`);
   };
 
   const onClickGetKoi = async () => {
-    console.log("This checkes if it is posted in twitter correctly");
-    setStep(4);
+    setCurStep(4);
+    history.push(`/faucet?step=4`);
   };
 
   const onClickUpload = () => {
     history.push("/register-content");
   };
+
+  const onClickBackTo = (step) => {
+    setCurStep(step);
+    history.goBack();
+  };
+
+  useEffect(() => {
+    step && setCurStep(parseInt(step));
+  }, [step]);
 
   return (
     <FaucetContainer>
@@ -71,7 +84,7 @@ function Faucet() {
           nextIcon={null}
           prevIcon={null}
           indicators={null}
-          activeIndex={step}
+          activeIndex={curStep}
         >
           <Carousel.Item>
             <div className="faucet-step-card">
@@ -80,7 +93,7 @@ function Faucet() {
                 <h6 className="step-title text-blue">Get an Arweave wallet.</h6>
                 <h6 className="text-blue">
                   Already have an Arweave wallet?{" "}
-                  <b onClick={onSkipGetWallet}>Skip ahead</b>.
+                  <b className='cursor' onClick={onSkipGetWallet}>Skip ahead</b>.
                 </h6>
                 <Button
                   className="btn-step-card mt-auto mx-auto"
@@ -97,7 +110,7 @@ function Faucet() {
           </Carousel.Item>
           <Carousel.Item>
             <div className="faucet-step-card">
-              <div className="icon-back">
+              <div className="icon-back" onClick={() => onClickBackTo(0)}>
                 <i className="fal fa-arrow-circle-left"></i>
               </div>
               <h1 className="f-32 text-blue">1</h1>
@@ -123,7 +136,7 @@ function Faucet() {
           </Carousel.Item>
           <Carousel.Item>
             <div className="faucet-step-card">
-              <div className="icon-back">
+              <div className="icon-back" onClick={() => onClickBackTo(0)}>
                 <i className="fal fa-arrow-circle-left"></i>
               </div>
               <h1 className="f-32 text-blue">2</h1>
@@ -150,7 +163,7 @@ function Faucet() {
           </Carousel.Item>
           <Carousel.Item>
             <div className="faucet-step-card">
-              <div className="icon-back">
+              <div className="icon-back" onClick={() => onClickBackTo(1)}>
                 <i className="fal fa-arrow-circle-left"></i>
               </div>
               <h1 className="f-32 text-blue">3</h1>
@@ -174,7 +187,7 @@ function Faucet() {
           </Carousel.Item>
           <Carousel.Item>
             <div className="faucet-step-card">
-              <div className="icon-back">
+              <div className="icon-back" onClick={() => onClickBackTo(2)}>
                 <i className="fal fa-arrow-circle-left"></i>
               </div>
               <h1 className="f-32 text-blue">4</h1>
