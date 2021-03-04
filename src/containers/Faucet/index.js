@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import Arweave from "arweave";
 import fileDownload from "js-file-download";
-import { Carousel, Col, Container, Row } from "react-bootstrap";
+import { Carousel, Container } from "react-bootstrap";
 import { FaucetContainer } from "./style";
 import { Button, Input } from "antd";
 import { useHistory } from "react-router-dom";
@@ -13,7 +13,7 @@ function Faucet() {
   const [address, setAddress] = useState(null);
   const [step, setStep] = useState(0);
 
-  const onDownloadFile = async () => {
+  const onClickGetWallet = async () => {
     const arweave = Arweave.init({
       host: "arweave.net",
       port: 443,
@@ -26,18 +26,31 @@ function Faucet() {
     let addressResult = await arweave.wallets.jwkToAddress(keyData);
     console.log({ addressResult });
     setAddress(addressResult);
+    setStep(1);
   };
 
-  const tweetButtonHandler = async () => {
-    console.log("set your key first");
+  const onClickTweet = async () => {
+    const text = encodeURI("I'm verifying my Arweave address ");
+    window.open(
+      `https://twitter.com/intent/tweet?text=${text}${address}`,
+      "twitpostpopup",
+      `left=${window.screenX + 100}, top=${window.screenY + 100}, width=500, height=448, toolbar=no`
+    )
+    setStep(2)
   };
 
-  const enterButtonHandler = async () => {};
-
-  const onClickNext = () => {
-    console.log("here");
-    setStep(step + 1);
+  const onClickGetKoi = async () => {
+    console.log("This checkes if it is posted in twitter correctly")
+    setStep(3)
   };
+
+  const onClickUpload = () => {
+    history.push('/register-content')
+  }
+
+  const onClickSubmitAddress = () => {
+
+  }
   return (
     <FaucetContainer>
       <Container>
@@ -64,7 +77,7 @@ function Faucet() {
                 </h6>
                 <Button
                   className="btn-step-card mt-auto mx-auto"
-                  onClick={onClickNext}
+                  onClick={onClickGetWallet}
                 >
                   Get a Wallet
                 </Button>
@@ -87,9 +100,10 @@ function Faucet() {
                 </h6>
                 <Button
                   className="btn-step-card mt-auto mx-auto"
-                  onClick={onClickNext}
+                  onClick={onClickTweet}
+                  disabled={!address}
                 >
-                  Tweet to Verify
+                    Tweet to Verify
                 </Button>
                 <p className="text-blue">
                   We will generate the tweet for you. All you need to do is log
@@ -108,7 +122,7 @@ function Faucet() {
                 </h6>
                 <Button
                   className="btn-step-card mt-auto mx-auto"
-                  onClick={onClickNext}
+                  onClick={onClickGetKoi}
                 >
                   Get KOI
                 </Button>
@@ -132,7 +146,7 @@ function Faucet() {
                 </h6>
                 <Button
                   className="btn-step-card mt-auto mx-auto"
-                  onClick={onClickNext}
+                  onClick={onClickUpload}
                 >
                   Upload Content
                 </Button>
@@ -154,7 +168,7 @@ function Faucet() {
                   <Input />
                   <Button
                     className="btn-step-card mt-auto mx-auto"
-                    onClick={onClickNext}
+                    onClick={onClickSubmitAddress}
                   >
                     Submit Address
                   </Button>
