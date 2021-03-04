@@ -24,6 +24,9 @@ export const FaucetContainer = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
+    max-width: 896px;
+    margin-left: auto;
+    margin-right: auto;
     &.carousel {
       .carousel-control-prev,
       .carousel-control-next {
@@ -67,6 +70,9 @@ export const FaucetContainer = styled.div`
                   text-decoration: underline;
                 }
               }
+              p {
+                font-size: 15px !important;
+              }
               .btn-step-card {
                 width: 166px;
                 height: 32px;
@@ -82,6 +88,31 @@ export const FaucetContainer = styled.div`
                 letter-spacing: 0.03em;
                 color: ${colors.blueDark};
                 margin-bottom: 14px;
+              }
+              &.has-wallet {
+                justify-content: flex-start;
+                .submit-wrapper {
+                  width: 100%;
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center;
+                  margin-top: 50px;
+                  .input-address {
+                    flex: 1;
+                    border: 2px solid ${colors.blueDark};
+                    box-sizing: border-box;
+                    border-radius: 4px;
+                  }
+                  .btn-step-card {
+                    margin-bottom: 0;
+                    margin-left: 28px;
+                    background: ${colors.blueDark};
+                    color: ${colors.white};
+                  }
+                }
+              }
+              &.congratulation {
+                align-items: center;
               }
             }
           }

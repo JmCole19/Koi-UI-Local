@@ -93,7 +93,10 @@ function Faucet() {
                 <h6 className="step-title text-blue">Get an Arweave wallet.</h6>
                 <h6 className="text-blue">
                   Already have an Arweave wallet?{" "}
-                  <b className='cursor' onClick={onSkipGetWallet}>Skip ahead</b>.
+                  <b className="cursor" onClick={onSkipGetWallet}>
+                    Skip ahead
+                  </b>
+                  .
                 </h6>
                 <Button
                   className="btn-step-card mt-auto mx-auto"
@@ -114,23 +117,24 @@ function Faucet() {
                 <i className="fal fa-arrow-circle-left"></i>
               </div>
               <h1 className="f-32 text-blue">1</h1>
-              <div className="step-content">
-                <h6 className="step-title text-blue">Connect a wallet</h6>
+              <div className="step-content has-wallet">
+                <h6 className="step-title text-blue mb-4">Connect a wallet</h6>
                 <h6 className="text-blue">
                   Paste your Arweave wallet address here.
                 </h6>
                 <div className="submit-wrapper">
-                  <Input onChange={(e) => setAddress(e.target.value)} />
+                  <Input
+                    className="input-address"
+                    placeholder="1234567890123456789012345678901234567890123"
+                    onChange={(e) => setAddress(e.target.value)}
+                  />
                   <Button
-                    className="btn-step-card mt-auto mx-auto"
+                    className="btn-step-card"
                     onClick={onClickSubmitAddress}
                   >
                     Submit Address
                   </Button>
                 </div>
-                <p className="text-blue">
-                  Head back to uploading your content and start earning.
-                </p>
               </div>
             </div>
           </Carousel.Item>
@@ -190,12 +194,12 @@ function Faucet() {
               <div className="icon-back" onClick={() => onClickBackTo(2)}>
                 <i className="fal fa-arrow-circle-left"></i>
               </div>
-              <h1 className="f-32 text-blue">4</h1>
-              <div className="step-content">
+              {/* <h1 className="f-32 text-blue">4</h1> */}
+              <div className="step-content congratulation">
                 <h6 className="step-title text-blue">
                   You just earned 5 KOI!{" "}
                 </h6>
-                <h6 className="text-blue">
+                <h6 className="text-blue text-center">
                   In 3 minutes, you’ll be able to upload content, earn rewards,
                   and much more.
                 </h6>
