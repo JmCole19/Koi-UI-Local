@@ -2,10 +2,11 @@
 import React, { useEffect, useState } from "react";
 import Arweave from "arweave";
 import queryString from "query-string";
+import customAxios from "service/customAxios";
 import fileDownload from "js-file-download";
 import { Carousel, Container } from "react-bootstrap";
 import { FaucetContainer } from "./style";
-import { Button, Input } from "antd";
+import { Button, Input, message } from "antd";
 import { useHistory } from "react-router-dom";
 
 function Faucet() {
@@ -53,10 +54,22 @@ function Faucet() {
   };
 
   const onClickGetKoi = async () => {
-    setCurStep(4);
-    history.push(`/faucet?step=4`);
+    console.log("here")
+    if (address) {
+      const { ok } = await customAxios.post(`/searchTweet`, {
+        address: address,
+      });
+      if (ok) {
+        setCurStep(4);
+        history.push(`/faucet?step=4`);
+      } else {
+        message.success("Not posted on twitter!");
+      }
+    } else {
+      message.warn("You don't have an address yet!");
+    }
   };
-
+  console.log({ address });
   const onClickUpload = () => {
     history.push("/register-content");
   };
