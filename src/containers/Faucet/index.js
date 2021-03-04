@@ -34,6 +34,10 @@ function Faucet() {
 
   const enterButtonHandler = async () => {};
 
+  const onClickNext = () => {
+    console.log("here")
+    setStep(step + 1)
+  }
   return (
     <FaucetContainer>
       <Container>
@@ -44,7 +48,6 @@ function Faucet() {
         </h6>
         <Carousel
           className="faucet-cards-wrapper"
-          interval={4500}
           pause="hover"
           nextIcon={null}
           prevIcon={null}
@@ -55,24 +58,60 @@ function Faucet() {
             <div className="faucet-step-card">
               <h1 className="f-32 text-blue">1</h1>
               <div className="step-content">
-                <h6 className="step-title">Get an Arweave wallet.</h6>
-                <h6>Already have an Arweave wallet? Skip ahead.</h6>
-                <button onClick={() => setStep(step + 1)}>Next</button>
-                <p>
+                <h6 className="step-title text-blue">Get an Arweave wallet.</h6>
+                <h6 className="text-blue">Already have an Arweave wallet? Skip ahead.</h6>
+                <Button className='btn-step-card mt-auto mx-auto' onClick={onClickNext}>dd</Button>
+                <p className="text-blue">
                   This button downloads a .JSON wallet file. You don’t need to
                   do anything with it yet.
                 </p>
               </div>
             </div>
           </Carousel.Item>
-          <Carousel.Item className="faucet-step-card">
-            <button onClick={() => setStep(step + 1)}>Next</button>
+          <Carousel.Item>
+            <div className="faucet-step-card">
+              <h1 className="f-32 text-blue">2</h1>
+              <div className="step-content">
+                <h6 className="step-title text-blue">Get an Arweave wallet.</h6>
+                <h6 className="text-blue">Already have an Arweave wallet? Skip ahead.</h6>
+                <Button className='btn-step-card mt-auto mx-auto' onClick={onClickNext}>Next</Button>
+                <p className="text-blue">
+                  This button downloads a .JSON wallet file. You don’t need to
+                  do anything with it yet.
+                </p>
+              </div>
+            </div>
           </Carousel.Item>
-          <Carousel.Item className="faucet-step-card">
-            <button onClick={() => setStep(step + 1)}>Next</button>
+          <Carousel.Item>
+            <div className="faucet-step-card">
+              <h1 className="f-32 text-blue">3</h1>
+              <div className="step-content">
+                <h6 className="step-title text-blue">Get an Arweave wallet.</h6>
+                <h6 className="text-blue">Already have an Arweave wallet? Skip ahead.</h6>
+                <Button className='btn-step-card mt-auto mx-auto' onClick={onClickNext}>Next</Button>
+                <p className="text-blue">
+                  This button downloads a .JSON wallet file. You don’t need to
+                  do anything with it yet.
+                </p>
+              </div>
+            </div>
+          </Carousel.Item>
+          <Carousel.Item>
+            <div className="faucet-step-card">
+              <h1 className="f-32 text-blue">4</h1>
+              <div className="step-content">
+                <h6 className="step-title text-blue">Get an Arweave wallet.</h6>
+                <h6 className="text-blue">Already have an Arweave wallet? Skip ahead.</h6>
+                <Button className='btn-step-card mt-auto mx-auto' onClick={onClickNext}>Next</Button>
+                <p className="text-blue">
+                  This button downloads a .JSON wallet file. You don’t need to
+                  do anything with it yet.
+                </p>
+              </div>
+            </div>
           </Carousel.Item>
         </Carousel>
-        <div className="section section-set-key">
+        {/* <div className="section section-set-key">
           <h2>Set your key</h2>
           <Row className="set-key-wrapper">
             <Col>
@@ -120,7 +159,7 @@ function Faucet() {
           <Button className="btn-blueDark" onClick={enterButtonHandler}>
             Get Koi
           </Button>
-        </div>
+        </div> */}
       </Container>
     </FaucetContainer>
   );

@@ -38,6 +38,7 @@ h5 {
 h6 {
     font-size: 18px !important;
     letter-spacing: 0.03em;
+    font-weight: 400;
 }
 p {
     font-size: 16px !important;

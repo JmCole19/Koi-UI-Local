@@ -11,6 +11,10 @@ export const FaucetContainer = styled.div`
   padding-top: 80px;
   padding-bottom: 50px;
   .faucet-cards-wrapper {
+    .carousel-control-prev,
+    .carousel-control-next {
+      width: 50px;
+    }
     background: ${colors.orangeLight};
     box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.25);
     border-radius: 4px;
@@ -20,25 +24,48 @@ export const FaucetContainer = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
-    padding: 32px 55px 24px 55px;
+    padding: 43px 152px;
     &.carousel {
       .carousel-control-prev,
       .carousel-control-next {
         width: 50px;
       }
       .carousel-inner {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
         .carousel-item {
-          flex: 1;
           .faucet-step-card {
             display: flex;
             min-height: 180px;
+            height: 180px;
             align-items: flex-start;
+            h1 {
+              line-height: 20px;
+            }
             .step-content {
+              height: 100%;
+              flex: 1;
+              display: flex;
+              flex-direction: column;
+              align-items: flex-start;
+              justify-content: space-between;
+              margin-left: 12px;
               .step-title {
                 font-weight: 600;
+              }
+              .btn-step-card {
+                width: 166px;
+                height: 32px;
+                background: ${colors.white};
+                border: 2px solid ${colors.blueDark};
+                box-sizing: border-box;
+                border-radius: 4px;
+                font-style: normal;
+                font-weight: 600;
+                font-size: 16px;
+                line-height: 15px;
+                text-align: center;
+                letter-spacing: 0.03em;
+                color: ${colors.blueDark};
+                margin-bottom: 14px;
               }
             }
           }
