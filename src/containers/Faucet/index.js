@@ -8,7 +8,6 @@ import { Button, Input } from "antd";
 import { useHistory } from "react-router-dom";
 
 function Faucet() {
-
   const history = useHistory();
   const [address, setAddress] = useState(null);
   const [step, setStep] = useState(0);
@@ -98,6 +97,9 @@ function Faucet() {
           </Carousel.Item>
           <Carousel.Item>
             <div className="faucet-step-card">
+              <div className="icon-back">
+                <i className="fal fa-arrow-circle-left"></i>
+              </div>
               <h1 className="f-32 text-blue">1</h1>
               <div className="step-content">
                 <h6 className="step-title text-blue">Connect a wallet</h6>
@@ -121,6 +123,9 @@ function Faucet() {
           </Carousel.Item>
           <Carousel.Item>
             <div className="faucet-step-card">
+              <div className="icon-back">
+                <i className="fal fa-arrow-circle-left"></i>
+              </div>
               <h1 className="f-32 text-blue">2</h1>
               <div className="step-content">
                 <h6 className="step-title text-blue">Verify with a Tweet.</h6>
@@ -145,6 +150,9 @@ function Faucet() {
           </Carousel.Item>
           <Carousel.Item>
             <div className="faucet-step-card">
+              <div className="icon-back">
+                <i className="fal fa-arrow-circle-left"></i>
+              </div>
               <h1 className="f-32 text-blue">3</h1>
               <div className="step-content">
                 <h6 className="step-title text-blue">Get KOI</h6>
@@ -166,6 +174,9 @@ function Faucet() {
           </Carousel.Item>
           <Carousel.Item>
             <div className="faucet-step-card">
+              <div className="icon-back">
+                <i className="fal fa-arrow-circle-left"></i>
+              </div>
               <h1 className="f-32 text-blue">4</h1>
               <div className="step-content">
                 <h6 className="step-title text-blue">

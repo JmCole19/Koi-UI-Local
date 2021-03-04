@@ -19,25 +19,34 @@ export const FaucetContainer = styled.div`
     background: ${colors.orangeLight};
     box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.25);
     border-radius: 4px;
-    padding: 32px 24px;
     /* margin-bottom: 16px; */
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
-    padding: 43px 152px;
     &.carousel {
       .carousel-control-prev,
       .carousel-control-next {
-        width: 50px;
+        display: none;
       }
       .carousel-inner {
         .carousel-item {
           .faucet-step-card {
+            position: relative;
             display: flex;
-            min-height: 180px;
-            height: 180px;
+            min-height: 300px;
+            height: 300px;
             align-items: flex-start;
+            padding: 43px 152px;
+            .icon-back {
+              position: absolute;
+              left: 10px;
+              top: 10px;
+              cursor: pointer;
+              i {
+                font-size: 24px;
+              }
+            }
             h1 {
               line-height: 20px;
             }
