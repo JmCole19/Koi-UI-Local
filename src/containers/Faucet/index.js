@@ -12,6 +12,15 @@ function Faucet() {
   console.log({ history });
   const [address, setAddress] = useState(null);
   const [step, setStep] = useState(0);
+  // const [hasAddress, setHasAddress] = useState(false);
+
+  const onSkipGetWallet = () => {
+    setStep(1);
+  };
+
+  const onClickSubmitAddress = () => {
+    setStep(2);
+  };
 
   const onClickGetWallet = async () => {
     const arweave = Arweave.init({
@@ -26,7 +35,7 @@ function Faucet() {
     let addressResult = await arweave.wallets.jwkToAddress(keyData);
     console.log({ addressResult });
     setAddress(addressResult);
-    setStep(1);
+    setStep(2);
   };
 
   const onClickTweet = async () => {
@@ -34,23 +43,22 @@ function Faucet() {
     window.open(
       `https://twitter.com/intent/tweet?text=${text}${address}`,
       "twitpostpopup",
-      `left=${window.screenX + 100}, top=${window.screenY + 100}, width=500, height=448, toolbar=no`
-    )
-    setStep(2)
+      `left=${window.screenX + 100}, top=${
+        window.screenY + 100
+      }, width=500, height=448, toolbar=no`
+    );
+    setStep(3);
   };
 
   const onClickGetKoi = async () => {
-    console.log("This checkes if it is posted in twitter correctly")
-    setStep(3)
+    console.log("This checkes if it is posted in twitter correctly");
+    setStep(4);
   };
 
   const onClickUpload = () => {
-    history.push('/register-content')
-  }
+    history.push("/register-content");
+  };
 
-  const onClickSubmitAddress = () => {
-
-  }
   return (
     <FaucetContainer>
       <Container>
@@ -73,7 +81,8 @@ function Faucet() {
               <div className="step-content">
                 <h6 className="step-title text-blue">Get an Arweave wallet.</h6>
                 <h6 className="text-blue">
-                  Already have an Arweave wallet? Skip ahead.
+                  Already have an Arweave wallet?{" "}
+                  <b onClick={onSkipGetWallet}>Skip ahead</b>.
                 </h6>
                 <Button
                   className="btn-step-card mt-auto mx-auto"
@@ -84,6 +93,29 @@ function Faucet() {
                 <p className="text-blue">
                   This button downloads a .JSON wallet file. You don’t need to
                   do anything with it yet.
+                </p>
+              </div>
+            </div>
+          </Carousel.Item>
+          <Carousel.Item>
+            <div className="faucet-step-card">
+              <h1 className="f-32 text-blue">1</h1>
+              <div className="step-content">
+                <h6 className="step-title text-blue">Connect a wallet</h6>
+                <h6 className="text-blue">
+                  Paste your Arweave wallet address here.
+                </h6>
+                <div className="submit-wrapper">
+                  <Input onChange={(e) => setAddress(e.target.value)} />
+                  <Button
+                    className="btn-step-card mt-auto mx-auto"
+                    onClick={onClickSubmitAddress}
+                  >
+                    Submit Address
+                  </Button>
+                </div>
+                <p className="text-blue">
+                  Head back to uploading your content and start earning.
                 </p>
               </div>
             </div>
@@ -103,7 +135,7 @@ function Faucet() {
                   onClick={onClickTweet}
                   disabled={!address}
                 >
-                    Tweet to Verify
+                  Tweet to Verify
                 </Button>
                 <p className="text-blue">
                   We will generate the tweet for you. All you need to do is log
@@ -150,29 +182,6 @@ function Faucet() {
                 >
                   Upload Content
                 </Button>
-                <p className="text-blue">
-                  Head back to uploading your content and start earning.
-                </p>
-              </div>
-            </div>
-          </Carousel.Item>
-          <Carousel.Item>
-            <div className="faucet-step-card">
-              <h1 className="f-32 text-blue">1</h1>
-              <div className="step-content">
-                <h6 className="step-title text-blue">Connect a wallet</h6>
-                <h6 className="text-blue">
-                  Paste your Arweave wallet address here.
-                </h6>
-                <div className="submit-wrapper">
-                  <Input />
-                  <Button
-                    className="btn-step-card mt-auto mx-auto"
-                    onClick={onClickSubmitAddress}
-                  >
-                    Submit Address
-                  </Button>
-                </div>
                 <p className="text-blue">
                   Head back to uploading your content and start earning.
                 </p>

@@ -52,6 +52,12 @@ export const FaucetContainer = styled.div`
               .step-title {
                 font-weight: 600;
               }
+              h6 {
+                b {
+                  font-weight: 600;
+                  text-decoration: underline;
+                }
+              }
               .btn-step-card {
                 width: 166px;
                 height: 32px;
