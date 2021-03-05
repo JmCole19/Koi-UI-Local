@@ -12,9 +12,11 @@ import { useHistory } from "react-router-dom";
 function Faucet() {
   const history = useHistory();
   const [address, setAddress] = useState(null);
+  const [koiBalance, setKoiBalance] = useState(0);
   const [showToast, setShowToast] = useState(false);
-  const [errMessage, setErrMessage] = useState('');
+  const [errMessage, setErrMessage] = useState("");
   const { step } = queryString.parse(history.location.search);
+  const queryAddress = queryString.parse(history.location.search).address || '';
   const [curStep, setCurStep] = useState(0);
 
   const onSkipGetWallet = () => {
@@ -24,7 +26,7 @@ function Faucet() {
 
   const onClickSubmitAddress = () => {
     setCurStep(2);
-    history.push(`/faucet?step=2`);
+    history.push(`/faucet?step=2&address=${address}`);
   };
 
   const onClickGetWallet = async () => {
@@ -39,7 +41,7 @@ function Faucet() {
     let addressResult = await arweave.wallets.jwkToAddress(keyData);
     setAddress(addressResult);
     setCurStep(2);
-    history.push(`/faucet?step=2`);
+    history.push(`/faucet?step=2&address=${addressResult}`);
   };
 
   const onClickTweet = async () => {
@@ -52,7 +54,7 @@ function Faucet() {
       }, width=500, height=448, toolbar=no`
     );
     setCurStep(3);
-    history.push(`/faucet?step=3`);
+    history.push(`/faucet?step=3&address=${address}`);
   };
 
   const onClickGetKoi = async () => {
@@ -62,8 +64,16 @@ function Faucet() {
         address: address,
       });
       if (ok) {
-        setCurStep(4);
-        history.push(`/faucet?step=4`);
+        const { ok, data: {data} } = await customAxios.post(`/getKoi`, {
+          address: address,
+        });
+        if (ok) {
+          setKoiBalance(data.koiBalance);
+          setCurStep(4);
+          history.push(`/faucet?step=4&address=${address}`);
+        } else {
+          console.log("get koi error");
+        }
       } else {
         setErrMessage("Not posted on twitter!");
         setShowToast(true);
@@ -80,12 +90,17 @@ function Faucet() {
 
   const onClickBackTo = (step) => {
     setCurStep(step);
-    history.goBack();
+    if (step < 2) {
+      history.push(`/faucet?step=${step}`);
+    } else {
+      history.push(`/faucet?step=${step}&address=${address}`);
+    }
   };
 
   useEffect(() => {
     step && setCurStep(parseInt(step));
-  }, [step]);
+    queryAddress && setAddress(queryAddress)
+  }, [step, queryAddress]);
 
   return (
     <FaucetContainer>
@@ -98,6 +113,7 @@ function Faucet() {
         <Toast
           onClose={() => setShowToast(false)}
           show={showToast}
+          autohide
           delay={3000}
         >
           <Toast.Header>
@@ -195,7 +211,7 @@ function Faucet() {
           </Carousel.Item>
           <Carousel.Item>
             <div className="faucet-step-card">
-              <div className="icon-back" onClick={() => onClickBackTo(1)}>
+              <div className="icon-back" onClick={() => onClickBackTo(2)}>
                 <i className="fal fa-arrow-circle-left"></i>
               </div>
               <h1 className="f-32 text-blue">3</h1>
@@ -219,13 +235,16 @@ function Faucet() {
           </Carousel.Item>
           <Carousel.Item>
             <div className="faucet-step-card">
-              <div className="icon-back" onClick={() => onClickBackTo(2)}>
+              <div className="icon-back" onClick={() => onClickBackTo(3)}>
                 <i className="fal fa-arrow-circle-left"></i>
               </div>
               {/* <h1 className="f-32 text-blue">4</h1> */}
               <div className="step-content congratulation">
                 <h6 className="step-title text-blue">
                   You just earned 5 KOI!{" "}
+                </h6>
+                <h6 className="step-title text-blue">
+                  Your KOI balance: {koiBalance}
                 </h6>
                 <h6 className="text-blue text-center">
                   In 3 minutes, you’ll be able to upload content, earn rewards,
