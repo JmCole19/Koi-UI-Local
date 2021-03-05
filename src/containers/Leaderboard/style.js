@@ -10,16 +10,16 @@ export const HomeContainer = styled.div`
   justify-content: center;
   padding-top: 80px;
   .leaderboard {
+    width: 100%;
     background: white;
     box-shadow: 0px 4px 12px rgb(0 0 0 / 25%);
     border-radius: 4px;
     .leaderboard-header {
-      background: ${colors.blueDark};
+      background: ${colors.gray};
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding: 9px 13px;
-      border-radius: 4px 4px 0 0;
       .filter-options {
         margin-left: 95px;
         .filter-option {

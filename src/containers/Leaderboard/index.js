@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState } from "react";
-import { Button, Container, Image, Modal } from "react-bootstrap";
+import { Button, Image, Modal } from "react-bootstrap";
 import {
   Crown,
   DefaultUser,
@@ -94,42 +94,41 @@ function Leaderboard() {
   };
   return (
     <HomeContainer>
-      <Container fluid className="py-5">
-        <div className="leaderboard">
-          <div className="leaderboard-header">
-            <h2 className="text-white mb-0">Top Content</h2>
-            <ReactSlider
-              className="filter-options-desktop mr-auto d-none d-md-flex"
-              marks
-              markClassName="example-mark"
-              min={0}
-              max={4}
-              // thumbClassName="example-thumb"
-              trackClassName="example-track"
-              renderMark={(props) => (
-                <span key={props.key} className="example-mark">
-                  {options[props.key]}
-                </span>
-              )}
-              renderThumb={(props, state) => (
-                <StyledThumb {...props} value={state.valueNow}>
-                  {options[state.valueNow]}
-                </StyledThumb>
-              )}
-            />
-            <ReactSlider
-              className="filter-options-mobile d-md-none"
-              marks
-              markClassName="example-mark"
-              min={0}
-              max={4}
-              thumbClassName="example-thumb"
-              trackClassName="example-track"
-              renderThumb={(props, state) => (
-                <div {...props}>{options[state.valueNow]}</div>
-              )}
-            />
-            {/* <InputGroup className="leader-board-search-input ml-4" wi>
+      <div className="leaderboard">
+        <div className="leaderboard-header">
+          <h2 className="text-blue mb-0">Top Content</h2>
+          <ReactSlider
+            className="filter-options-desktop mr-auto d-none d-md-flex"
+            marks
+            markClassName="example-mark"
+            min={0}
+            max={4}
+            // thumbClassName="example-thumb"
+            trackClassName="example-track"
+            renderMark={(props) => (
+              <span key={props.key} className="example-mark">
+                {options[props.key]}
+              </span>
+            )}
+            renderThumb={(props, state) => (
+              <StyledThumb {...props} value={state.valueNow}>
+                {options[state.valueNow]}
+              </StyledThumb>
+            )}
+          />
+          <ReactSlider
+            className="filter-options-mobile d-md-none"
+            marks
+            markClassName="example-mark"
+            min={0}
+            max={4}
+            thumbClassName="example-thumb"
+            trackClassName="example-track"
+            renderThumb={(props, state) => (
+              <div {...props}>{options[state.valueNow]}</div>
+            )}
+          />
+          {/* <InputGroup className="leader-board-search-input ml-4" wi>
               <FormControl aria-label="Amount (to the nearest dollar)" />
               <InputGroup.Append>
                 <InputGroup.Text>
@@ -137,18 +136,20 @@ function Leaderboard() {
                 </InputGroup.Text>
               </InputGroup.Append>
             </InputGroup> */}
-            <Image src={Crown} className="icon-crown d-none d-md-flex cursor" />
-            <Image
-              src={DefaultUser}
-              className="icon-user d-none d-md-flex cursor"
-              onClick={() => history.push("/check-out")}
-            />
-            <Button className="btn-leaderbard-plus" onClick={onClickPlus}>
-              <i className="fas fa-plus"></i>
-            </Button>
-          </div>
-          <div className="leaderboard-items">
-            {items.filter((_item, _i) => _i < 5).map((_item, _i) => (
+          <Image src={Crown} className="icon-crown d-none d-md-flex cursor" />
+          <Image
+            src={DefaultUser}
+            className="icon-user d-none d-md-flex cursor"
+            onClick={() => history.push("/check-out")}
+          />
+          <Button className="btn-leaderbard-plus" onClick={onClickPlus}>
+            <i className="fas fa-plus"></i>
+          </Button>
+        </div>
+        <div className="leaderboard-items">
+          {items
+            .filter((_item, _i) => _i < 5)
+            .map((_item, _i) => (
               <LeaderboardItem
                 key={_i}
                 item={_item}
@@ -156,13 +157,15 @@ function Leaderboard() {
                 onClickItem={() => onClickItem(_item)}
               />
             ))}
-            <Collapse
-              activeKey={isExpanded ? ["1"] : null}
-              bordered={false}
-              expandIcon={() => <div />}
-            >
-              <Panel header={null} key="1">
-                {items.filter((_item, _i) => _i >= 5).map((_item, _i) => (
+          <Collapse
+            activeKey={isExpanded ? ["1"] : null}
+            bordered={false}
+            expandIcon={() => <div />}
+          >
+            <Panel header={null} key="1">
+              {items
+                .filter((_item, _i) => _i >= 5)
+                .map((_item, _i) => (
                   <LeaderboardItem
                     key={_i}
                     item={_item}
@@ -170,16 +173,15 @@ function Leaderboard() {
                     onClickItem={() => onClickItem(_item)}
                   />
                 ))}
-              </Panel>
-            </Collapse>
-            <div className="btn-show-more-wrapper">
-              <Button className="btn-show-more" onClick={onClickShowMore}>
-                {isExpanded ? "Show Less" : "Show More"}
-              </Button>
-            </div>
+            </Panel>
+          </Collapse>
+          <div className="btn-show-more-wrapper">
+            <Button className="btn-show-more" onClick={onClickShowMore}>
+              {isExpanded ? "Show Less" : "Show More"}
+            </Button>
           </div>
         </div>
-      </Container>
+      </div>
       <Modal
         show={showModalItem}
         onHide={handleClose}
