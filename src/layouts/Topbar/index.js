@@ -1,4 +1,4 @@
-import { Logo } from "assets/images";
+import { DefaultUser, Logo } from "assets/images";
 import React from "react";
 import { Navbar, Nav, Image } from "react-bootstrap";
 import { Link } from "react-router-dom";
@@ -15,8 +15,12 @@ function Topbar() {
       </Navbar.Toggle>
       <Navbar.Collapse id="responsive-navbar-nav">
         <Nav className="ml-auto">
-          <Link to="/faucet?step=0">Faucet</Link>
-          <Link to="#" className='btn-openkoi'>OpenKoi</Link>
+          <Link to="/faucet?step=0" className='btn-nav'>Faucet</Link>
+          <Link to="#" className='btn-nav'>OpenKoi</Link>
+          <Image
+            src={DefaultUser}
+            className="icon-user d-none d-md-flex cursor"
+          />
         </Nav>
       </Navbar.Collapse>
     </TopbarContainer>

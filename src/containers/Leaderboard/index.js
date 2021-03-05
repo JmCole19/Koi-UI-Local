@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import { Button, Image, Modal } from "react-bootstrap";
 import {
   Crown,
-  DefaultUser,
   Logo,
   IconLeft,
   ItemTempModal,
@@ -137,11 +136,6 @@ function Leaderboard() {
               </InputGroup.Append>
             </InputGroup> */}
           <Image src={Crown} className="icon-crown d-none d-md-flex cursor" />
-          <Image
-            src={DefaultUser}
-            className="icon-user d-none d-md-flex cursor"
-            onClick={() => history.push("/check-out")}
-          />
           <Button className="btn-leaderbard-plus" onClick={onClickPlus}>
             <i className="fas fa-plus"></i>
           </Button>

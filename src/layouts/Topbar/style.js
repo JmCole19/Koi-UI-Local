@@ -23,8 +23,8 @@ export const TopbarContainer = styled(Navbar)`
         font-weight: 700;
         font-size: 16px;
         align-self: center;
-        margin-left: 48px;
-        &.btn-openkoi {
+        margin-right: 48px;
+        &.btn-nav {
           background: transparent;
           border-radius: 4px;
           padding: 2px 25px;
