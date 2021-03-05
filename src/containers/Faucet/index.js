@@ -4,14 +4,16 @@ import Arweave from "arweave";
 import queryString from "query-string";
 import customAxios from "service/customAxios";
 import fileDownload from "js-file-download";
-import { Carousel, Container } from "react-bootstrap";
+import { Carousel, Container, Toast } from "react-bootstrap";
 import { FaucetContainer } from "./style";
-import { Button, Input, message } from "antd";
+import { Button, Input } from "antd";
 import { useHistory } from "react-router-dom";
 
 function Faucet() {
   const history = useHistory();
   const [address, setAddress] = useState(null);
+  const [showToast, setShowToast] = useState(false);
+  const [errMessage, setErrMessage] = useState('');
   const { step } = queryString.parse(history.location.search);
   const [curStep, setCurStep] = useState(0);
 
@@ -54,7 +56,7 @@ function Faucet() {
   };
 
   const onClickGetKoi = async () => {
-    console.log("here")
+    console.log("here");
     if (address) {
       const { ok } = await customAxios.post(`/searchTweet`, {
         address: address,
@@ -63,10 +65,12 @@ function Faucet() {
         setCurStep(4);
         history.push(`/faucet?step=4`);
       } else {
-        message.success("Not posted on twitter!");
+        setErrMessage("Not posted on twitter!");
+        setShowToast(true);
       }
     } else {
-      message.warn("You don't have an address yet!");
+      setErrMessage("You don't have an address yet!");
+      setShowToast(true);
     }
   };
   console.log({ address });
@@ -87,10 +91,21 @@ function Faucet() {
     <FaucetContainer>
       <Container>
         <h1 className="f-32 text-blue">Want to earn attention rewards?</h1>
-        <h6 className="text-blue">
+        <h6 className="faucet-description text-blue">
           Get free KOI here so you can upload to the network. Just follow the
           steps below.
         </h6>
+        <Toast
+          onClose={() => setShowToast(false)}
+          show={showToast}
+          delay={3000}
+        >
+          <Toast.Header>
+            <i className="fal fa-info-circle text-warning"></i>
+            <strong className="mr-auto ml-2 text-warning">Warning!</strong>
+          </Toast.Header>
+          <Toast.Body>{errMessage}</Toast.Body>
+        </Toast>
         <Carousel
           className="faucet-cards-wrapper"
           pause="hover"

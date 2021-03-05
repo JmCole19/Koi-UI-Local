@@ -10,8 +10,25 @@ export const FaucetContainer = styled.div`
   justify-content: center;
   padding-top: 80px;
   padding-bottom: 196px;
+  .toast {
+    max-width: 100%;
+    background-color: ${colors.orangeLight};
+    .toast-header {
+      background-color: ${colors.blueDark};
+      color: ${colors.white};
+      strong {
+        line-height: normal;
+
+      }
+    }
+    .toast-body {
+      color: ${colors.blueDark};
+    }
+  }
+  .faucet-description {
+    margin-bottom: 65px;
+  }
   .faucet-cards-wrapper {
-    margin-top: 65px;
     .carousel-control-prev,
     .carousel-control-next {
       width: 50px;
@@ -19,7 +36,6 @@ export const FaucetContainer = styled.div`
     background: ${colors.orangeLight};
     box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.25);
     border-radius: 4px;
-    /* margin-bottom: 16px; */
     display: flex;
     flex-direction: column;
     align-items: center;
