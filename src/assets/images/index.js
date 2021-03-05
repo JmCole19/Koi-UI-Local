@@ -7,3 +7,5 @@ export { default as IconArweave } from "./IconArweave.png";
 export { default as IconEthereum } from "./IconEthereum.png";
 export { default as IconUpload } from "./IconUpload.png";
 export { default as IconLeft } from "./IconLeft.png";
+export { default as IconEyes } from "./IconEyes.png";
+export { default as IconFish } from "./IconFish.png";
