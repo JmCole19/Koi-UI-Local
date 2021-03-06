@@ -10,20 +10,21 @@ export const OpenSeaContainer = styled.div`
   justify-content: center;
   padding-top: 80px;
   .container {
-    .register-content-wrapper {
+    .opensea-content-wrapper {
       padding: 30px 0 100px;
-      .register-content {
-        .register-description {
+      .opensea-content {
+        .opensea-description {
           color: ${colors.blueDark};
           margin-bottom: 34px;
         }
-        .register-cards {
-          display: flex;
+        .opensea-cards {
+          /* display: flex;
           justify-content: space-between;
           flex-wrap: wrap;
-          margin-bottom: 15px;
-          .register-card {
-            width: 232px;
+          margin-bottom: 15px; */
+          .opensea-card {
+            position: relative;
+            /* width: 232px; */
             height: 232px;
             background: ${colors.orangeLight};
             box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.25);
@@ -32,8 +33,18 @@ export const OpenSeaContainer = styled.div`
             flex-direction: column;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 15px;
+            /* margin-bottom: 15px; */
             cursor: pointer;
+            &:hover {
+              animation: pulse;
+              animation-duration: 0.5s;
+            }
+            .icon-plus {
+
+            }
+            .icon-checked {
+              
+            }
             .card-img {
               flex: 4;
               display: flex;
@@ -82,16 +93,16 @@ export const OpenSeaContainer = styled.div`
   }
   @media (max-width: ${mixins.sm}px) {
     .container {
-      .register-content-wrapper {
-        .register-content {
-          .register-title {
+      .opensea-content-wrapper {
+        .opensea-content {
+          .opensea-title {
             font-size: 32px !important;
           }
-          .register-description {
+          .opensea-description {
             font-size: 20px !important;
           }
-          .register-cards {
-            .register-card {
+          .opensea-cards {
+            .opensea-card {
               width: 100%;
             }
           }

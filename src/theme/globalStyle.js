@@ -16,7 +16,7 @@ const GlobalStyle = createGlobalStyle`
     overflow-x: hidden !important;
 }
 h1 {
-    font-size: 40px !important;
+    font-size: 32px !important;
     font-weight: 600;
 }
 h2 {
