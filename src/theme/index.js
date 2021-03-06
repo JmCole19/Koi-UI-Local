@@ -10,9 +10,11 @@ export const colors = {
   orange: '#FFC78F',
   orangeLight: '#FFDFBA',
   gray: '#D6D6D6',
+  grayLight: '#F2F2F2',
+  grayDark: '#555876',
   grayGreen: '#BDD7D6',
-  green: '#49CE8B',
-  greenDark: '#237B75',
+  green: '#9BE7C4',
+  greenDark: '#49CE8B',
 }
 
 export const mixins = {

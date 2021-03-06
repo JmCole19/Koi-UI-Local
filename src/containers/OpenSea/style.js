@@ -5,7 +5,7 @@ export const OpenSeaContainer = styled.div`
   flex: 1;
   width: 100%;
   height: 100%;
-  background-color: ${colors.white};
+  background-color: ${colors.grayLight};
   display: flex;
   justify-content: center;
   padding-top: 80px;
@@ -16,6 +16,43 @@ export const OpenSeaContainer = styled.div`
         .opensea-description {
           color: ${colors.blueDark};
           margin-bottom: 34px;
+          max-width: 560px;
+          line-height: 32px;
+        }
+        .counts-wrapper {
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+          margin-bottom: 34px;
+          .selected-counts {
+            width: 40px;
+            height: 40px;
+            background: ${colors.greenDark};
+            border: 2px solid ${colors.blueDark};
+            box-sizing: border-box;
+            font-size: 22px;
+            line-height: 22px;
+            letter-spacing: 0.03em;
+            color: ${colors.blueDark};
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: 600;
+          }
+          .btn-all {
+            background: ${colors.white};
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.25);
+            border-radius: 4px;
+            width: 155px;
+            height: 40px;
+            font-weight: 600;
+            font-size: 18px;
+            line-height: 22px;
+            letter-spacing: 0.03em;
+            color: ${colors.blueDark};
+            margin-left: 38px;
+          }
         }
         .opensea-cards {
           /* display: flex;
@@ -26,38 +63,74 @@ export const OpenSeaContainer = styled.div`
             position: relative;
             /* width: 232px; */
             height: 232px;
-            background: ${colors.orangeLight};
+            background: ${colors.white};
             box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.25);
             border-radius: 4px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             align-items: center;
-            /* margin-bottom: 15px; */
             cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.5s ease;
             &:hover {
-              animation: pulse;
-              animation-duration: 0.5s;
+              /* animation: pulse;
+              animation-duration: 0.5s; */
+              border: 2px solid ${colors.blueDark};
+            }
+            &.selected {
+              background: ${colors.green};
+              border: 2px solid ${colors.blueDark};
+              box-sizing: border-box;
             }
             .icon-plus {
-
+              position: absolute;
+              right: 5px;
+              top: 5px;
+              width: 26px;
+              height: 26px;
+              background: ${colors.gray};
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              border-radius: 50%;
+              color: ${colors.grayDark};
             }
             .icon-checked {
-              
+              position: absolute;
+              right: -10px;
+              top: -10px;
+              width: 38px;
+              height: 38px;
+              background: ${colors.greenDark};
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              border-radius: 50%;
+              color: ${colors.blueDark};
+              border: 2px solid ${colors.blueDark};
+              box-sizing: border-box;
+              font-size: 18px;
             }
             .card-img {
-              flex: 4;
+              min-height: 176px;
               display: flex;
               justify-content: center;
               align-items: center;
+              img {
+                filter: drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.16));
+                border-radius: 4px;
+              }
             }
             .card-content {
-              flex: 3;
+              flex: 1;
               text-align: center;
-              h5 {
+              padding: 0 20px;
+              h6 {
                 margin-bottom: 3px;
                 font-weight: 600;
                 color: ${colors.blueDark};
+                line-height: 22px;
               }
               p {
                 line-height: 24px;
