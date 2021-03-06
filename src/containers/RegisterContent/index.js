@@ -1,5 +1,4 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Col, Row } from "antd";
 import {
   IconArweave,
   IconEthereum,
@@ -8,7 +7,7 @@ import {
 } from "assets/images";
 import React from "react";
 import { Button, Container, Image } from "react-bootstrap";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { RegisterContentContainer } from "./style";
 
 const cards = [
@@ -52,33 +51,25 @@ function RegisterContent() {
               There are 3 ways to register on the Koi Network. Earn rewards
               today.
             </h4>
-            <Row align="middle">
+            <div className="register-cards">
               {cards.map((_card, _i) => (
-                <Col
-                  key={_i}
-                  className="register-card-wrapper"
-                  xs={{ span: 24 }}
-                  md={{ span: 12 }}
-                  lg={{ span: 6 }}
+                <div
+                  className="register-card"
+                  onClick={() => history.push(`/upload/${_card.type}?step=1`)}
                 >
-                  <div
-                    className="register-card"
-                    onClick={() => history.push(`/upload/${_card.type}?step=1`)}
-                  >
-                    <div className="card-img">
-                      <Image src={_card.img} />
-                    </div>
-                    <div className="card-content">
-                      <h5>{_card.title}</h5>
-                      <p className="mb-1">{_card.subtitle1}</p>
-                      {_card.subtitle2 && (
-                        <p className="mb-0">{_card.subtitle2}</p>
-                      )}
-                    </div>
+                  <div className="card-img">
+                    <Image src={_card.img} />
                   </div>
-                </Col>
+                  <div className="card-content">
+                    <h5>{_card.title}</h5>
+                    <p className="mb-1">{_card.subtitle1}</p>
+                    {_card.subtitle2 && (
+                      <p className="mb-0">{_card.subtitle2}</p>
+                    )}
+                  </div>
+                </div>
               ))}
-            </Row>
+            </div>
             <div className="btn-back-wrapper">
               <Button
                 className="btn-back btn-blueDark"
@@ -87,6 +78,7 @@ function RegisterContent() {
                 Back to Leaderboard
               </Button>
             </div>
+            <p className='bottom-description text-blue text-center'>Got a voucher? <Link to='#/'>Redeem an NFT voucher</Link> from Ethereum to claim your Atomic NFT.</p>
           </div>
         </div>
       </Container>

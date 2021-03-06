@@ -17,9 +17,10 @@ export const RegisterContentContainer = styled.div`
           color: ${colors.blueDark};
           margin-bottom: 34px;
         }
-        .register-card-wrapper {
+        .register-cards {
           display: flex;
-          justify-content: center;
+          justify-content: space-between;
+          flex-wrap: wrap;
           margin-bottom: 15px;
           .register-card {
             width: 232px;
@@ -31,6 +32,7 @@ export const RegisterContentContainer = styled.div`
             flex-direction: column;
             justify-content: space-between;
             align-items: center;
+            margin-bottom: 15px;
             cursor: pointer;
             .card-img {
               flex: 4;
@@ -40,12 +42,16 @@ export const RegisterContentContainer = styled.div`
             }
             .card-content {
               flex: 3;
+              text-align: center;
               h5 {
                 margin-bottom: 3px;
+                font-weight: 600;
+                color: ${colors.blueDark};
               }
               p {
                 line-height: 24px;
                 letter-spacing: 0.02em;
+                color: ${colors.blueDark};
               }
             }
           }
@@ -59,6 +65,14 @@ export const RegisterContentContainer = styled.div`
             height: 40px;
             width: 200px;
             border-radius: 4px;
+          }
+        }
+        .bottom-description {
+          margin-top: 16px;
+          a {
+            color: ${colors.blueDark};
+            font-weight: 600;
+            text-decoration: underline;
           }
         }
       }
@@ -76,7 +90,7 @@ export const RegisterContentContainer = styled.div`
           .register-description {
             font-size: 20px !important;
           }
-          .register-card-wrapper {
+          .register-cards {
             .register-card {
               width: 100%;
             }
