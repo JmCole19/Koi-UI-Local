@@ -29,18 +29,24 @@ export const RegisterContentContainer = styled.div`
             border-radius: 4px;
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
             cursor: pointer;
-            img {
-              margin-bottom: 31px;
+            .card-img {
+              flex: 4;
+              display: flex;
+              justify-content: center;
+              align-items: center;
             }
-            h5 {
-              margin-bottom: 3px;
-            }
-            p {
-              line-height: 24px;
-              letter-spacing: 0.02em;
+            .card-content {
+              flex: 3;
+              h5 {
+                margin-bottom: 3px;
+              }
+              p {
+                line-height: 24px;
+                letter-spacing: 0.02em;
+              }
             }
           }
         }

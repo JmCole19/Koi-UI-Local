@@ -4,6 +4,7 @@ export { default as ItemTempModal } from "./ItemTemp.svg";
 export { default as Crown } from "./Crown.svg";
 export { default as DefaultUser } from "./DefaultUser.svg";
 export { default as IconArweave } from "./IconArweave.png";
+export { default as IconOpenSea } from "./IconOpenSea.png";
 export { default as IconEthereum } from "./IconEthereum.png";
 export { default as IconUpload } from "./IconUpload.png";
 export { default as IconLeft } from "./IconLeft.png";

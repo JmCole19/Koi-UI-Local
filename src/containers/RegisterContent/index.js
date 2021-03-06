@@ -1,6 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Col, Row } from "antd";
-import { IconArweave, IconEthereum, IconUpload } from "assets/images";
+import {
+  IconArweave,
+  IconEthereum,
+  IconUpload,
+  IconOpenSea,
+} from "assets/images";
 import React from "react";
 import { Button, Container, Image } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
@@ -8,27 +13,33 @@ import { RegisterContentContainer } from "./style";
 
 const cards = [
   {
-    img: IconArweave,
-    title: "Arweave Content",
-    subtitle: "Enter an Arweave ID",
-    type: 'arweave'
+    img: IconOpenSea,
+    title: "OpenSea",
+    subtitle1: "Import OpenSea portfolio",
+    type: "opensea",
   },
   {
     img: IconEthereum,
     title: "Ethereum NFT ",
-    subtitle: "Enter a Token ID",
-    type: 'ethereum'
+    subtitle1: "Enter a Token ID",
+    type: "ethereum",
+  },
+  {
+    img: IconArweave,
+    title: "Arweave Content",
+    subtitle1: "Enter an Arweave ID",
+    type: "arweave",
   },
   {
     img: IconUpload,
     title: "Upload Manually",
-    subtitle: "Drag & Drop or Click to Browse",
-    type: 'manual'
+    subtitle1: "Drag & Drop or",
+    subtitle2: "Browse Computer",
+    type: "manual",
   },
 ];
 
 function RegisterContent() {
-
   const history = useHistory();
 
   return (
@@ -48,18 +59,31 @@ function RegisterContent() {
                   className="register-card-wrapper"
                   xs={{ span: 24 }}
                   md={{ span: 12 }}
-                  lg={{ span: 8 }}
+                  lg={{ span: 6 }}
                 >
-                  <div className="register-card" onClick={() => history.push(`/upload/${_card.type}?step=1`)}>
-                    <Image src={_card.img} />
-                    <h5>{_card.title}</h5>
-                    <p className="mb-0">{_card.subtitle}</p>
+                  <div
+                    className="register-card"
+                    onClick={() => history.push(`/upload/${_card.type}?step=1`)}
+                  >
+                    <div className="card-img">
+                      <Image src={_card.img} />
+                    </div>
+                    <div className="card-content">
+                      <h5>{_card.title}</h5>
+                      <p className="mb-1">{_card.subtitle1}</p>
+                      {_card.subtitle2 && (
+                        <p className="mb-0">{_card.subtitle2}</p>
+                      )}
+                    </div>
                   </div>
                 </Col>
               ))}
             </Row>
             <div className="btn-back-wrapper">
-              <Button className="btn-back btn-blueDark" onClick={() => history.push('/leaderboard')}>
+              <Button
+                className="btn-back btn-blueDark"
+                onClick={() => history.push("/leaderboard")}
+              >
                 Back to Leaderboard
               </Button>
             </div>
