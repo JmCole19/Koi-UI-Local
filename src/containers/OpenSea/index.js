@@ -8,41 +8,41 @@ import {
 import React from "react";
 import { Button, Container, Image } from "react-bootstrap";
 import { Link, useHistory } from "react-router-dom";
-import { RegisterContentContainer } from "./style";
+import { OpenSeaContainer } from "./style";
 
 const cards = [
   {
     img: IconOpenSea,
     title: "OpenSea",
     subtitle1: "Import OpenSea portfolio",
-    link: "/opensea",
+    type: "opensea",
   },
   {
     img: IconEthereum,
     title: "Ethereum NFT ",
     subtitle1: "Enter a Token ID",
-    link: "/upload/ethereum?step=1",
+    type: "ethereum",
   },
   {
     img: IconArweave,
     title: "Arweave Content",
     subtitle1: "Enter an Arweave ID",
-    link: "/upload/arweave?step=1",
+    type: "arweave",
   },
   {
     img: IconUpload,
     title: "Upload Manually",
     subtitle1: "Drag & Drop or",
     subtitle2: "Browse Computer",
-    link: "/upload/manual?step=1",
+    type: "manual",
   },
 ];
 
-function RegisterContent() {
+function OpenSea() {
   const history = useHistory();
 
   return (
-    <RegisterContentContainer>
+    <OpenSeaContainer>
       <Container>
         <div className="register-content-wrapper">
           <div className="register-content">
@@ -55,7 +55,7 @@ function RegisterContent() {
               {cards.map((_card, _i) => (
                 <div
                   className="register-card"
-                  onClick={() => history.push(_card.link)}
+                  onClick={() => history.push(`/upload/${_card.type}?step=1`)}
                 >
                   <div className="card-img">
                     <Image src={_card.img} />
@@ -82,8 +82,8 @@ function RegisterContent() {
           </div>
         </div>
       </Container>
-    </RegisterContentContainer>
+    </OpenSeaContainer>
   );
 }
 
-export default RegisterContent;
+export default OpenSea;
