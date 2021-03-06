@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Col, Row } from "antd";
 import { ItemTemp } from "assets/images";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Container, Image } from "react-bootstrap";
 import { FaCheck, FaPlus } from "react-icons/fa";
 import { OpenSeaContainer } from "./style";
@@ -51,6 +51,7 @@ const cards = [
 
 function OpenSea() {
   const [selectedIds, setSelectedIds] = useState(["1", "4"]);
+  const [isAllSelected, setIsAllSelected] = useState(false);
 
   const onClickCard = (cardId) => {
     let tempSelectedCards = [...selectedIds];
@@ -62,8 +63,17 @@ function OpenSea() {
   };
 
   const onSelectAll = () => {
-    setSelectedIds(cards.map((_card) => _card.id));
+    setIsAllSelected(!isAllSelected);
   };
+
+  useEffect(() => {
+    if (isAllSelected) {
+      setSelectedIds(cards.map((_card) => _card.id));
+    } else {
+      setSelectedIds([])
+    }
+  }, [isAllSelected]);
+
   return (
     <OpenSeaContainer>
       <Container>
@@ -75,8 +85,8 @@ function OpenSea() {
               rewards every time someone views them!
             </h4>
             <div className="counts-wrapper">
-              <div className="selected-counts">{selectedIds.length}</div>
-              <Button className="btn-all" onClick={onSelectAll}>
+              <div className={`selected-counts ${selectedIds.length > 0 && 'isSet'}`}>{selectedIds.length}</div>
+              <Button className={`btn-all ${isAllSelected && 'selected-all'}`} onClick={onSelectAll}>
                 Select all NFTs
               </Button>
             </div>

@@ -27,18 +27,23 @@ export const OpenSeaContainer = styled.div`
           .selected-counts {
             width: 40px;
             height: 40px;
-            background: ${colors.greenDark};
-            border: 2px solid ${colors.blueDark};
+            background: ${colors.gray};
+            border: 2px solid transparent;
             box-sizing: border-box;
             font-size: 22px;
             line-height: 22px;
             letter-spacing: 0.03em;
-            color: ${colors.blueDark};
+            color: ${colors.grayDark};
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
             font-weight: 600;
+            &.isSet {
+              color: ${colors.blueDark};
+              background: ${colors.greenDark};
+              border: 2px solid ${colors.blueDark};
+            }
           }
           .btn-all {
             background: ${colors.white};
@@ -52,6 +57,13 @@ export const OpenSeaContainer = styled.div`
             letter-spacing: 0.03em;
             color: ${colors.blueDark};
             margin-left: 38px;
+            &.selected-all {
+              background: ${colors.green};
+              border: 2px solid ${colors.blueDark};
+              box-sizing: border-box;
+              box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.25);
+              border-radius: 4px;
+            }
           }
         }
         .opensea-cards {
