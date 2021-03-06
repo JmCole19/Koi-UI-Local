@@ -1,11 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Image, Modal } from "react-bootstrap";
-import {
-  Logo,
-  IconLeft,
-  ItemTempModal,
-} from "assets/images";
+import { Logo, IconLeft, ItemTempModal } from "assets/images";
 import { HomeContainer, StyledThumb } from "./style";
 import { Collapse } from "antd";
 import ReactSlider from "react-slider";
@@ -14,7 +10,7 @@ import LeaderboardItem from "./LeaderboardItem";
 
 const { Panel } = Collapse;
 
-const items = [
+const itemsTemp = [
   {
     title: "Batman",
     username: "Maxstealth",
@@ -52,14 +48,14 @@ const items = [
   },
   {
     title: "Batman",
-    username: "Maxstealth",
+    username: "alexmorris",
     created_at: "Jan, 01, 2021",
     total_reviews: 795,
     rewards: 10658,
   },
   {
     title: "Batman",
-    username: "Maxstealth",
+    username: "alexmorris",
     created_at: "Jan, 01, 2021",
     total_reviews: 795,
     rewards: 10658,
@@ -73,6 +69,8 @@ function Leaderboard() {
   // const [activeOption, setActiveOption] = useState("24h");
   const [isExpanded, setIsExpanded] = useState(false);
   const [selectedItem, setSelectedItem] = useState({});
+  const [isFiltered, setIsFiltered] = useState(false);
+  const [items, setItems] = useState(itemsTemp);
 
   const [showModalItem, setShowModalItem] = useState(false);
 
@@ -90,18 +88,31 @@ function Leaderboard() {
   const onClickPlus = () => {
     history.push("/register-content");
   };
+
+  const onClickMyContent = () => {
+    setIsFiltered(!isFiltered);
+  };
+
+  useEffect(() => {
+    if (isFiltered) {
+      setItems(items.filter((_item) => _item.username === "alexmorris"));
+    } else {
+      setItems(itemsTemp);
+    }
+  }, [isFiltered]);
   return (
     <HomeContainer>
       <div className="leaderboard">
         <div className="leaderboard-header">
-          <h2 className="text-blue mb-0">Top Content</h2>
+          <h2 className="text-blue mb-0">
+            {isFiltered ? "My Content" : "Top Content"}
+          </h2>
           <ReactSlider
             className="filter-options-desktop mr-auto d-none d-md-flex"
             marks
             markClassName="example-mark"
             min={0}
             max={4}
-            // thumbClassName="example-thumb"
             trackClassName="example-track"
             renderMark={(props) => (
               <span key={props.key} className="example-mark">
@@ -126,17 +137,8 @@ function Leaderboard() {
               <div {...props}>{options[state.valueNow]}</div>
             )}
           />
-          {/* <InputGroup className="leader-board-search-input ml-4" wi>
-              <FormControl aria-label="Amount (to the nearest dollar)" />
-              <InputGroup.Append>
-                <InputGroup.Text>
-                  <i className="fas fa-search"></i>
-                </InputGroup.Text>
-              </InputGroup.Append>
-            </InputGroup> */}
-          {/* <Image src={Crown} className="icon-crown d-none d-md-flex cursor" /> */}
-          <Button className="btn-my-content">
-            My Content
+          <Button className="btn-my-content" onClick={onClickMyContent}>
+            {!isFiltered ? "My Content" : "Top Content"}
           </Button>
           <Button className="btn-leaderbard-plus" onClick={onClickPlus}>
             <i className="fas fa-plus"></i>
