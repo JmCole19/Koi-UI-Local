@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 import { Button, Image, Modal } from "react-bootstrap";
 import {
-  Crown,
   Logo,
   IconLeft,
   ItemTempModal,
@@ -135,7 +134,10 @@ function Leaderboard() {
                 </InputGroup.Text>
               </InputGroup.Append>
             </InputGroup> */}
-          <Image src={Crown} className="icon-crown d-none d-md-flex cursor" />
+          {/* <Image src={Crown} className="icon-crown d-none d-md-flex cursor" /> */}
+          <Button className="btn-my-content">
+            My Content
+          </Button>
           <Button className="btn-leaderbard-plus" onClick={onClickPlus}>
             <i className="fas fa-plus"></i>
           </Button>

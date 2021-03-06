@@ -132,6 +132,18 @@ export const HomeContainer = styled.div`
         font-size: 18px;
         border-radius: 4px;
       }
+      .btn-my-content {
+        background: transparent;
+        border: 2.5px solid ${colors.blueDark};
+        box-sizing: border-box;
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.16);
+        border-radius: 4px;
+        font-weight: 600;
+        font-size: 16px;
+        line-height: 18px;
+        color: ${colors.blueDark};
+        margin-right: 36px;
+      }
     }
   }
   .leaderboard-items {
@@ -179,7 +191,12 @@ export const StyledThumb = styled.div`
   border-radius: 2px;
   color: ${colors.blueDark};
   cursor: pointer;
-  left: ${props => props.value === 0 ? '5px !important' : props.value === 4 ? '172px !important' : ''};
+  left: ${(props) =>
+    props.value === 0
+      ? "5px !important"
+      : props.value === 4
+      ? "172px !important"
+      : ""};
   &:focus {
     outline: none;
   }

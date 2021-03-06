@@ -1,11 +1,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React from "react";
-import { Image } from "react-bootstrap";
-import { ItemTemp, Logo } from "assets/images";
+import { Button, Image } from "react-bootstrap";
+import { IconEyes, IconFish, IconHtml, ItemTemp } from "assets/images";
+import { FiTwitter, FiFacebook, FiMessageCircle } from "react-icons/fi";
+import { FaInstagram } from "react-icons/fa";
+import { HiOutlineMail } from "react-icons/hi";
 import { LeaderboardItemContainer } from "./style";
+import { colors } from "theme";
 
 function LeaderboardItem({ item = {}, order, onClickItem = () => {} }) {
-
   return (
     <LeaderboardItemContainer>
       <div className="part-left">
@@ -24,15 +27,30 @@ function LeaderboardItem({ item = {}, order, onClickItem = () => {} }) {
       <div className="part-right">
         <div className="item-reviews-wrapper item-col">
           <h5 className="item-total_reviews mb-0">
-            {item.total_reviews} total views
+            {item.total_reviews}
+            <span className='ml-2'>
+              <Image src={IconEyes} />
+            </span>
           </h5>
           <h5 className="item-rewards mb-0">
             {item.rewards}{" "}
-            <span>
-              <Image src={Logo} width={30} />
-            </span>{" "}
-            rewards
+            <span className='ml-1'>
+              <Image src={IconFish} />
+            </span>
           </h5>
+        </div>
+        <div className="btns-wrapper">
+          <Button className="btn-share btn-blue">Share</Button>
+          <Button className="btn-html">
+            <Image src={IconHtml} />
+          </Button>
+        </div>
+        <div className="social-wrapper">
+          <FiTwitter size={24} color={colors.greenDark} />
+          <FaInstagram size={24} color={colors.greenDark} />
+          <FiFacebook size={24} color={colors.greenDark} />
+          <FiMessageCircle size={24} color={colors.greenDark} />
+          <HiOutlineMail size={24} color={colors.greenDark} />
         </div>
       </div>
     </LeaderboardItemContainer>

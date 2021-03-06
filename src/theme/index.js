@@ -4,6 +4,7 @@ export const fonts = {
 
 export const colors = {
   white: '#fff',
+  blueGradient: 'linear-gradient(90deg, #030332 0%, #171753 100%)',
   blueDark: '#171753',
   blueLight: '#BCF3EF',
   orange: '#FFC78F',
