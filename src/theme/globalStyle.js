@@ -89,7 +89,6 @@ a {
         background-color: ${colors.blueDark};
     }
     font-weight: 600;
-    font-size: 16px;
 }
 .btn-orange {
     background: ${colors.orange};

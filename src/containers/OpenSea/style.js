@@ -58,7 +58,7 @@ export const OpenSeaContainer = styled.div`
             color: ${colors.blueDark};
             margin-left: 38px;
             &.selected-all {
-              background: ${colors.green};
+              background: ${colors.greenLight};
               border: 2px solid ${colors.blueDark};
               box-sizing: border-box;
               box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.25);
@@ -91,7 +91,7 @@ export const OpenSeaContainer = styled.div`
               border: 2px solid ${colors.blueDark};
             }
             &.selected {
-              background: ${colors.green};
+              background: ${colors.greenLight};
               border: 2px solid ${colors.blueDark};
               box-sizing: border-box;
             }

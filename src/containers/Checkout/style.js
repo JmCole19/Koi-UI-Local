@@ -82,7 +82,7 @@ export const CheckoutContainer = styled.div`
                 border: 2px dashed ${colors.greenDark};
                 border-radius: 4px;
                 &:hover {
-                  border: 2px dashed ${colors.green};
+                  border: 2px dashed ${colors.greenLight};
                 }
               }
               .ant-upload-btn {
