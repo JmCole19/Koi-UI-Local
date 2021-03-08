@@ -4,7 +4,7 @@ import { ItemTemp } from "assets/images";
 import React, { useEffect, useState } from "react";
 import { Button, Container, Image } from "react-bootstrap";
 import { FaCheck, FaPlus } from "react-icons/fa";
-import { OpenSeaContainer } from "./style";
+import { UploadOpenSeaContainer } from "./style";
 
 const cards = [
   {
@@ -49,8 +49,8 @@ const cards = [
   },
 ];
 
-function OpenSea() {
-  const [selectedIds, setSelectedIds] = useState(["1", "4"]);
+function UploadOpenSea() {
+  const [selectedIds, setSelectedIds] = useState([]);
   const [isAllSelected, setIsAllSelected] = useState(false);
 
   const onClickCard = (cardId) => {
@@ -75,7 +75,7 @@ function OpenSea() {
   }, [isAllSelected]);
 
   return (
-    <OpenSeaContainer>
+    <UploadOpenSeaContainer>
       <Container>
         <div className="opensea-content-wrapper">
           <div className="opensea-content">
@@ -139,8 +139,8 @@ function OpenSea() {
           </div>
         </div>
       </Container>
-    </OpenSeaContainer>
+    </UploadOpenSeaContainer>
   );
 }
 
-export default OpenSea;
+export default UploadOpenSea;

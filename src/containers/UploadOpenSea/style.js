@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { colors, mixins } from "theme";
 
-export const OpenSeaContainer = styled.div`
+export const UploadOpenSeaContainer = styled.div`
   flex: 1;
   width: 100%;
   height: 100%;
@@ -41,7 +41,7 @@ export const OpenSeaContainer = styled.div`
             font-weight: 600;
             &.isSet {
               color: ${colors.blueDark};
-              background: ${colors.greenDark};
+              background: ${colors.green};
               border: 2px solid ${colors.blueDark};
             }
           }
@@ -114,7 +114,7 @@ export const OpenSeaContainer = styled.div`
               top: -10px;
               width: 38px;
               height: 38px;
-              background: ${colors.greenDark};
+              background: ${colors.green};
               display: flex;
               align-items: center;
               justify-content: center;
