@@ -11,3 +11,4 @@ export { default as IconLeft } from "./IconLeft.png";
 export { default as IconEyes } from "./IconEyes.png";
 export { default as IconFish } from "./IconFish.png";
 export { default as IconHtml } from "./IconHtml.png";
+export { default as IconShare } from "./IconShare.png";

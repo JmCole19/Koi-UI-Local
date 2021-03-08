@@ -64,7 +64,8 @@ a {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 24px;
+    font-size: 18px;
+    max-height: 40px !important;
     border-radius: 2px;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.16);
     font-weight: 600 !important;
@@ -97,6 +98,7 @@ a {
 .btn-white {
     background: ${colors.white};
     color: ${colors.blueDark};
+    border: 2.5px solid ${colors.blueDark};
 }
 .btn-green {
     background: ${colors.green};

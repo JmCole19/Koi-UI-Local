@@ -15,7 +15,7 @@ export const colors = {
   grayDark: '#555876',
   grayGreen: '#BDD7D6',
   green: '#9BE7C4',
-  greenDark: '#49CE8B',
+  greenDark: '#237B75',
 }
 
 export const mixins = {
