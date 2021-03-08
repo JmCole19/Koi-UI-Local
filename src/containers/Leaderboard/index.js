@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { Button, Image, Modal } from "react-bootstrap";
 import { Logo, IconLeft, ItemTempModal } from "assets/images";
-import { HomeContainer, StyledThumb } from "./style";
+import { LeaderboardContainer, StyledThumb } from "./style";
 import { Collapse } from "antd";
 import ReactSlider from "react-slider";
 import { useHistory } from "react-router-dom";
@@ -12,6 +12,7 @@ const { Panel } = Collapse;
 
 const itemsTemp = [
   {
+    id: '1',
     title: "Batman",
     username: "Maxstealth",
     created_at: "Jan, 01, 2021",
@@ -19,6 +20,7 @@ const itemsTemp = [
     rewards: 10658,
   },
   {
+    id: '2',
     title: "Mercury (The Planets #1)",
     username: "alexmorris",
     created_at: "Jan, 01, 2021",
@@ -26,6 +28,7 @@ const itemsTemp = [
     rewards: 10658,
   },
   {
+    id: '3',
     title: "Vitalik Buterin Gold Edition 1/100",
     username: "vitalikbuterin",
     created_at: "Jan, 01, 2021",
@@ -33,6 +36,7 @@ const itemsTemp = [
     rewards: 10658,
   },
   {
+    id: '4',
     title: "Astrid’s cute little face",
     username: "kaylakroot",
     created_at: "Jan, 01, 2021",
@@ -40,6 +44,7 @@ const itemsTemp = [
     rewards: 10658,
   },
   {
+    id: '5',
     title: "Mercury (The Planets #1)",
     username: "alexmorris",
     created_at: "Jan, 01, 2021",
@@ -47,6 +52,7 @@ const itemsTemp = [
     rewards: 10658,
   },
   {
+    id: '6',
     title: "Batman",
     username: "alexmorris",
     created_at: "Jan, 01, 2021",
@@ -54,6 +60,7 @@ const itemsTemp = [
     rewards: 10658,
   },
   {
+    id: '7',
     title: "Batman",
     username: "alexmorris",
     created_at: "Jan, 01, 2021",
@@ -78,7 +85,8 @@ function Leaderboard() {
 
   const onClickItem = (item) => {
     setSelectedItem(item);
-    setShowModalItem(true);
+    history.push(`/content-detail/${item.id}`)
+    // setShowModalItem(true);
   };
 
   const onClickShowMore = () => {
@@ -101,7 +109,7 @@ function Leaderboard() {
     }
   }, [isFiltered]);
   return (
-    <HomeContainer>
+    <LeaderboardContainer>
       <div className="leaderboard">
         <div className="leaderboard-header">
           <h2 className="text-blue mb-0">
@@ -225,7 +233,7 @@ function Leaderboard() {
           </div>
         </Modal.Body>
       </Modal>
-    </HomeContainer>
+    </LeaderboardContainer>
   );
 }
 

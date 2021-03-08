@@ -1,11 +1,11 @@
 import styled from "styled-components";
 import { colors, mixins } from "theme";
 
-export const HomeContainer = styled.div`
+export const LeaderboardContainer = styled.div`
   flex: 1;
   width: 100%;
   height: 100%;
-  background-color: ${colors.white};
+  background-color: ${colors.grayLight};
   display: flex;
   justify-content: center;
   padding-top: 80px;

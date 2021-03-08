@@ -73,7 +73,7 @@ function RegisterContent() {
             <div className="btn-back-wrapper">
               <Button
                 className="btn-back btn-blueDark"
-                onClick={() => history.push("/leaderboard")}
+                onClick={() => history.push("/contents")}
               >
                 Back to Leaderboard
               </Button>

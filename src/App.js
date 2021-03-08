@@ -13,6 +13,7 @@ import UploadSteps from 'containers/UploadSteps';
 import Checkout from 'containers/Checkout';
 import Faucet from 'containers/Faucet';
 import OpenSea from 'containers/OpenSea';
+import ContentDetail from 'containers/ContentDetail';
 
 function App() {
 
@@ -22,8 +23,9 @@ function App() {
         <GlobalStyle />
         <Router>
           <Switch>
-            <Route exact path="/" render={() => <Redirect to="/leaderboard" />} />
-            <MyRoute exact path="/leaderboard" component={Leaderboard} />
+            <Route exact path="/" render={() => <Redirect to="/contents" />} />
+            <MyRoute exact path="/contents" component={Leaderboard} />
+            <MyRoute path="/content-detail/:id" component={ContentDetail} />
             <MyRoute exact path="/register-content" component={RegisterContent} />
             <MyRoute exact path="/opensea" component={OpenSea} />
             <MyRoute exact path="/check-out" component={Checkout} />

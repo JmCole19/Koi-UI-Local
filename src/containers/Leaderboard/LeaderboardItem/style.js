@@ -4,7 +4,7 @@ import { colors, mixins } from "theme";
 export const LeaderboardItemContainer = styled.div`
   display: flex;
   align-items: center;
-  background: white;
+  background: ${colors.grayLight};
   border-bottom: 2px solid ${colors.grayGreen};
   min-height: 192px;
   padding: 0px 56px;
