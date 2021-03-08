@@ -28,7 +28,7 @@ function ContentDetail() {
       <div className="content-detail-wrapper">
         <div className="content-detail">
           <div className="detail-header">
-            <div className="icon-back">
+            <div className="icon-back cursor" onClick={() => history.goBack()}>
               <i className="fal fa-arrow-circle-left"></i>
             </div>
             <h2 className="text-blue mb-0">Genesis</h2>

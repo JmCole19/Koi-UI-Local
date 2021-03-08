@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { colors, mixins } from "theme";
 
-export const UploadStepsContainer = styled.div`
+export const UploadArweaveContainer = styled.div`
   flex: 1;
   width: 100%;
   height: 100%;

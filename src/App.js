@@ -9,11 +9,12 @@ import GlobalStyle from 'theme/globalStyle';
 import MyRoute from 'service/MyRoute';
 import Leaderboard from 'containers/Leaderboard';
 import RegisterContent from 'containers/RegisterContent';
-import UploadSteps from 'containers/UploadSteps';
+import UploadArweave from 'containers/UploadArweave';
 import Checkout from 'containers/Checkout';
 import Faucet from 'containers/Faucet';
 import OpenSea from 'containers/OpenSea';
 import ContentDetail from 'containers/ContentDetail';
+import UploadEthereum from 'containers/UploadEthereum';
 
 function App() {
 
@@ -29,7 +30,8 @@ function App() {
             <MyRoute exact path="/register-content" component={RegisterContent} />
             <MyRoute exact path="/opensea" component={OpenSea} />
             <MyRoute exact path="/check-out" component={Checkout} />
-            <MyRoute path="/upload/:type" component={UploadSteps} />
+            <MyRoute exact path="/upload/ethereum" component={UploadEthereum} />
+            <MyRoute exact path="/upload/arweave" component={UploadArweave} />
             <MyRoute path="/faucet" component={Faucet} />
           </Switch>
         </Router>

@@ -2,11 +2,11 @@
 import React, { useState } from "react";
 import { Container, Image, Button } from "react-bootstrap";
 import queryString from "query-string";
-import { IconArweave, IconEthereum, IconUpload } from "assets/images";
-import { UploadStepsContainer } from "./style";
+import { IconEthereum, IconUpload } from "assets/images";
+import { UploadEthereumContainer } from "./style";
 import { Col, Form, Input, Row, Upload, Spin } from "antd";
 import { useForm } from "antd/lib/form/Form";
-import { useHistory, useLocation, useParams } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import MyProgress from "components/Elements/MyProgress";
 
 const { TextArea } = Input;
@@ -21,20 +21,19 @@ const formItemLayout = {
   // },
 };
 
-function UploadSteps() {
+function UploadEthereum() {
   const history = useHistory();
   const [form] = useForm();
-  const { type } = useParams();
   const location = useLocation();
   const { step } = queryString.parse(location.search);
   const [uploading] = useState(false);
 
   const onCompleteStep1 = () => {
-    history.push(`/upload/${type}?step=2`);
+    history.push(`/upload/arweave?step=2`);
   };
 
   const onCompleteStep2 = () => {
-    history.push(`/upload/${type}?step=3`);
+    history.push(`/upload/arweave?step=3`);
   };
 
   const onCompleteStep3 = () => {
@@ -42,7 +41,7 @@ function UploadSteps() {
   };
 
   return (
-    <UploadStepsContainer>
+    <UploadEthereumContainer>
       <Container>
         <div className="upload-content-wrapper">
           <div className="upload-content">
@@ -59,7 +58,7 @@ function UploadSteps() {
                     <Col flex="100px">
                       <div className="type-img-wrapper">
                         <Image
-                          src={type === "ethereum" ? IconEthereum : IconArweave}
+                          src={IconEthereum}
                         />
                       </div>
                     </Col>
@@ -106,7 +105,7 @@ function UploadSteps() {
                     <Col flex="100px">
                       <div className="type-img-wrapper">
                         <Image
-                          src={type === "ethereum" ? IconEthereum : IconArweave}
+                          src={IconEthereum}
                         />
                       </div>
                     </Col>
@@ -166,7 +165,7 @@ function UploadSteps() {
                     <Col flex="100px">
                       <div className="type-img-wrapper">
                         <Image
-                          src={type === "ethereum" ? IconEthereum : IconArweave}
+                          src={IconEthereum}
                         />
                       </div>
                     </Col>
@@ -225,8 +224,8 @@ function UploadSteps() {
           </div>
         </div>
       </Container>
-    </UploadStepsContainer>
+    </UploadEthereumContainer>
   );
 }
 
-export default UploadSteps;
+export default UploadEthereum;
