@@ -84,9 +84,10 @@ a {
 .btn-blueDark {
     background: ${colors.blueDark};
     color: ${colors.white};
-    &:hover, &:focus {
+    &:hover, &:focus, &:disabled {
         color: ${colors.white};
         background-color: ${colors.blueDark};
+        border-color: transparent;
     }
     font-weight: 600;
 }

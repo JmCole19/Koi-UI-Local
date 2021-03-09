@@ -29,6 +29,10 @@ function UploadOpenSea() {
     setIsAllSelected(!isAllSelected);
   };
 
+  const onClickVerify = () => {
+    history.push(`/confirm-opensea?address=${address}&step=1&selected=${selectedIds.join('_')}`)
+  }
+
   useEffect(() => {
     if (isAllSelected) {
       setSelectedIds(cards.map((_card) => _card.id));
@@ -141,7 +145,7 @@ function UploadOpenSea() {
               </Row>
             )}
             <div className="btn-back-wrapper">
-              <Button className="btn-back btn-blueDark">Verify Details</Button>
+              <Button className="btn-back btn-blueDark" disabled={selectedIds.length === 0} onClick={onClickVerify}>Verify Details</Button>
             </div>
           </div>
         </div>

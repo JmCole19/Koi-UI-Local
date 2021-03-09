@@ -52,7 +52,7 @@ function RegisterContent() {
   const onClickCard = (card) => {
     if (card.id === "opensea") {
       openMetaMask();
-    } else {
+    } else if (card.id === 'arweave') {
       history.push(card.link);
     }
   };

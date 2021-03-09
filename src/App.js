@@ -21,6 +21,7 @@ import UploadOpenSea from "containers/UploadOpenSea";
 import ContentDetail from "containers/ContentDetail";
 import UploadEthereum from "containers/UploadEthereum";
 import DataContextContainer from "contexts/DataContextContainer";
+import ConfirmOpenseas from "containers/ConfirmOpenseas";
 
 function App() {
   return (
@@ -51,6 +52,7 @@ function App() {
               />
               <MyRoute exact path="/upload/arweave" component={UploadArweave} />
               <MyRoute path="/faucet" component={Faucet} />
+              <MyRoute path="/confirm-opensea" component={ConfirmOpenseas} />
             </DataContextContainer>
           </Switch>
         </Router>
