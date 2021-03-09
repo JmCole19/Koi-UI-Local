@@ -5,7 +5,7 @@ import {
   IconUpload,
   IconOpenSea,
 } from "assets/images";
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import Web3 from "web3";
 import Arweave from 'arweave';
 import { Button, Container, Image } from "react-bootstrap";
@@ -14,6 +14,7 @@ import { RegisterContentContainer } from "./style";
 import { abi } from "./abi";
 import { DataContext } from "contexts/DataContextContainer";
 
+const arweave = Arweave.init();
 const cards = [
   {
     id: "opensea",
@@ -62,24 +63,31 @@ function RegisterContent() {
     }
   };
 
+  useEffect(() => {
+    console.log("here1")
+    const arweave = Arweave.init();
+    window.addEventListener("arweaveWalletLoaded", detectArweaveWallet);
+    window.addEventListener("walletSwitch", detectSwitchArweaveWallet);
+    return () => {
+      window.removeEventListener('arweaveWalletLoaded', detectArweaveWallet);
+      window.removeEventListener('walletSwitch', detectSwitchArweaveWallet);
+    }
+  }, []);
+
+  const detectArweaveWallet = async () => {
+    let addr = await arweave.wallets.getAddress();
+    console.log("detected arweave wallet address : ", addr)
+  }
+  const detectSwitchArweaveWallet = async (e) => {
+    let addr = e.detail.address;
+    console.log("detected switch arweave wallet address : ", addr)
+  }
+
   const openArConnect = () => {
     console.log("ehre")
-    // const arweave = Arweave.init();
-    const arweave = Arweave.init({
-      host: '127.0.0.1',
-      port: 1984,
-      protocol: 'http'
-    });
-    window.addEventListener("arweaveWalletLoaded", async () => {
-      // get the currently used wallet's address. "arweave-js" will handle everything under the hood (permissions, etc.)
-      // important: this funciton returns a promise and it will not be resolved until the user logs in
-      let addr = await arweave.wallets.getAddress();
-      console.log({addr})
-    });
-    window.addEventListener("walletSwitch", (e) => {
-      let newAddr = e.detail.address;
-      console.log({newAddr})
-    });
+    window.addEventListener("arweaveWalletLoaded", detectArweaveWallet);
+    window.addEventListener("walletSwitch", detectSwitchArweaveWallet);
+    
   };
   const openMetaMask = () => {
     const web3 = new Web3(Web3.givenProvider || "http://localhost:8545");
