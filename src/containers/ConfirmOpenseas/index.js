@@ -35,14 +35,14 @@ function ConfirmOpenseas() {
   console.log({ selectedIds });
 
   const onClickConfirm = () => {
-    if (parseInt(step) > selectedIds.length) {
-    } else {
-      history.push(
-        `/confirm-opensea?address=${address}&step=${
-          parseInt(step) + 1
-        }&selected=${selected}`
-      );
-    }
+    // if (parseInt(step) > selectedIds.length) {
+    // } else {
+    history.push(
+      `/confirm-opensea?address=${address}&step=${
+        parseInt(step) + 1
+      }&selected=${selected}`
+    );
+    // }
   };
 
   const onCompleteStep3 = () => {
@@ -95,78 +95,7 @@ function ConfirmOpenseas() {
               >
                 <i className="fal fa-arrow-circle-left"></i>
               </div>
-              {parseInt(step) > selectedIds.length ? (
-                <Form
-                  layout="horizontal"
-                  form={form}
-                  {...formItemLayout}
-                  onFinish={onCompleteStep3}
-                >
-                  <Row>
-                    <Col flex="100px">
-                      <div className="type-img-wrapper">
-                        <Image src={IconOpenSea} />
-                      </div>
-                    </Col>
-                    <Col flex={1}>
-                      <div className="upload-header">
-                        <div className="upload-header-title">
-                          <div className="header-description w-100">
-                            <h6 className="mb-0 text-blue ml-2">
-                              Confirm your upload.
-                            </h6>
-                            <p className="mb-0 text-blue ml-2">
-                              Drag & Drop your Arweave keyfile or connect using
-                              an{" "}
-                              <a href="#/" className="text-bold">
-                                Arweave browser extension
-                              </a>
-                              .
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="upload-content-form d-flex justify-content-center"></div>
-                    </Col>
-                  </Row>
-                  <div className="upload-cards-wrapper">
-                    <div className="single-ant-file-upload">
-                      <Dragger
-                        name="file"
-                        multiple={false}
-                        listType="picture"
-                        // beforeUpload={beforeUpload}
-                        fileList={false}
-                      >
-                        <div className="uploader-container">
-                          {uploading ? (
-                            <Spin size="large" />
-                          ) : (
-                            <>
-                              <div className="uploader-icon d-flex justify-content-center align-items-center">
-                                <Image src={IconUpload} />
-                              </div>
-                              <p className="text-blue mb-0">
-                                Drag & Drop your Ethereum keyfile here.
-                              </p>
-                            </>
-                          )}
-                        </div>
-                      </Dragger>
-                      {/* {src.length > 0 && <p>{src[0].originalname.split('.')[1]}</p>} */}
-                      {/* <p className="text-secondary">dddddd</p> */}
-                    </div>
-                    <div className="arConnect-card">
-                      <div className="card-icon">
-                        <Image src={IconArConnect} />
-                      </div>
-                      <p className="text-blue text-center mb-0">
-                        Click here to open ArConnect browser extension.{" "}
-                      </p>
-                    </div>
-                  </div>
-                </Form>
-              ) : (
+              {parseInt(step) <= selectedIds.length ? (
                 <Form
                   layout="horizontal"
                   form={form}
@@ -239,6 +168,121 @@ function ConfirmOpenseas() {
                       </div>
                     </Col>
                   </Row>
+                </Form>
+              ) : parseInt(step) == selectedIds.length + 1 ? (
+                <Form
+                  layout="horizontal"
+                  form={form}
+                  {...formItemLayout}
+                  onFinish={onCompleteStep3}
+                >
+                  <Row>
+                    <Col flex="100px">
+                      <div className="type-img-wrapper">
+                        <Image src={IconOpenSea} />
+                      </div>
+                    </Col>
+                    <Col flex={1}>
+                      <div className="upload-header">
+                        <div className="upload-header-title">
+                          <div className="header-description w-100">
+                            <h6 className="mb-0 text-blue ml-2">
+                              Confirm your upload.
+                            </h6>
+                            <p className="mb-0 text-blue ml-2">
+                              Drag & Drop your Arweave keyfile or connect using
+                              an{" "}
+                              <a href="#/" className="text-bold">
+                                Arweave browser extension
+                              </a>
+                              .
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="upload-content-form d-flex justify-content-center"></div>
+                    </Col>
+                  </Row>
+                  <div className="upload-cards-wrapper">
+                    <div className="single-ant-file-upload">
+                      <Dragger
+                        name="file"
+                        multiple={false}
+                        listType="picture"
+                        // beforeUpload={beforeUpload}
+                        fileList={false}
+                      >
+                        <div className="uploader-container">
+                          {uploading ? (
+                            <Spin size="large" />
+                          ) : (
+                            <>
+                              <div className="uploader-icon d-flex justify-content-center align-items-center">
+                                <Image src={IconUpload} />
+                              </div>
+                              <p className="text-blue mb-0">
+                                Drag & Drop your Ethereum keyfile here.
+                              </p>
+                            </>
+                          )}
+                        </div>
+                      </Dragger>
+                      {/* {src.length > 0 && <p>{src[0].originalname.split('.')[1]}</p>} */}
+                      {/* <p className="text-secondary">dddddd</p> */}
+                    </div>
+                    <div className="arConnect-card" onClick={onClickConfirm}>
+                      <div className="card-icon">
+                        <Image src={IconArConnect} />
+                      </div>
+                      <p className="text-blue text-center mb-0">
+                        Click here to open ArConnect browser extension.{" "}
+                      </p>
+                    </div>
+                  </div>
+                </Form>
+              ) : (
+                <Form
+                  layout="horizontal"
+                  form={form}
+                  {...formItemLayout}
+                  onFinish={onCompleteStep3}
+                >
+                  <Row>
+                    <Col flex="100px">
+                      <div className="type-img-wrapper">
+                        <Image src={IconOpenSea} />
+                      </div>
+                    </Col>
+                    <Col flex={1}>
+                      <div className="upload-header">
+                        <div className="upload-header-title">
+                          <div className="header-description w-100">
+                            <h6 className="mb-0 text-blue ml-2">
+                              Congratulations!
+                            </h6>
+                            <p className="mb-0 text-blue ml-2">
+                              You’ll start earning KOI as soon as someone views
+                              your content.
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="upload-content-form d-flex justify-content-center"></div>
+                    </Col>
+                  </Row>
+                  <div className="upload-cards-wrapper">
+                    {openSeas.length > 0 &&
+                      openSeas
+                        .filter((_openSea) =>
+                          selectedIds.includes(_openSea.id.toString())
+                        )
+                        .map((_selected, _i) => (
+                          <div key={_i}>
+                            <Image src={_selected.image_thumbnail_url} />
+                            <p className="text-blue">{_selected.name}</p>
+                          </div>
+                        ))}
+                  </div>
                 </Form>
               )}
               {parseInt(step) <= selectedIds.length && (
