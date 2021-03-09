@@ -47,13 +47,17 @@ const cards = [
 
 function RegisterContent() {
   const history = useHistory();
-  const { address, setAddress } = useContext(DataContext);
+  const { address, addressArweave, setAddress } = useContext(DataContext);
 
   const onClickCard = (card) => {
     if (card.id === "opensea") {
       openMetaMask();
     } else if (card.id === 'arweave') {
-      history.push(card.link);
+      if(addressArweave) {
+        history.push(card.link);
+      }else{
+        openArConnect();
+      }
     }
   };
 
