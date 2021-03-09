@@ -65,28 +65,31 @@ function RegisterContent() {
 
   useEffect(() => {
     console.log("here1")
-    const arweave = Arweave.init();
-    window.addEventListener("arweaveWalletLoaded", detectArweaveWallet);
-    window.addEventListener("walletSwitch", detectSwitchArweaveWallet);
+    // const arweave = Arweave.init();
+    window.addEventListener("arweaveWalletLoaded", detectArweaveWallet(arweave));
+    // window.addEventListener("walletSwitch", (e) => detectSwitchArweaveWallet(e));
     return () => {
-      window.removeEventListener('arweaveWalletLoaded', detectArweaveWallet);
-      window.removeEventListener('walletSwitch', detectSwitchArweaveWallet);
+      window.removeEventListener('arweaveWalletLoaded', detectArweaveWallet(arweave));
+      // window.removeEventListener('walletSwitch',(e) => detectSwitchArweaveWallet(e));
     }
   }, []);
 
   const detectArweaveWallet = async () => {
+    console.log(arweave)
+    console.log(arweave.wallets)
     let addr = await arweave.wallets.getAddress();
     console.log("detected arweave wallet address : ", addr)
   }
   const detectSwitchArweaveWallet = async (e) => {
-    let addr = e.detail.address;
+    console.log(e)
+    let addr = "e.detail.address";
     console.log("detected switch arweave wallet address : ", addr)
   }
 
   const openArConnect = () => {
     console.log("ehre")
-    window.addEventListener("arweaveWalletLoaded", detectArweaveWallet);
-    window.addEventListener("walletSwitch", detectSwitchArweaveWallet);
+    // window.addEventListener("arweaveWalletLoaded", detectArweaveWallet);
+    // window.addEventListener("walletSwitch", detectSwitchArweaveWallet);
     
   };
   const openMetaMask = () => {
