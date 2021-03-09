@@ -20,7 +20,7 @@ export const ConfirmOpenseasContainer = styled.div`
           margin-bottom: 80px;
           width: 100%;
         }
-        .upload-body {
+        .upload-wrapper {
           position: relative;
           width: 100%;
           background: ${colors.orangeLight};
@@ -46,6 +46,9 @@ export const ConfirmOpenseasContainer = styled.div`
               justify-content: flex-start;
               align-items: center;
               min-height: 64px;
+              h6 {
+                font-weight: 600;
+              }
               .upload-step {
                 width: 32px;
                 height: 32px;
@@ -170,6 +173,45 @@ export const ConfirmOpenseasContainer = styled.div`
                 margin-top: 12px;
               }
             }
+          }
+          .uploaded-cards-wrapper {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin-top: 30px;
+            .uploaded-card {
+              max-width: 183px;
+              display: flex;
+              flex-direction: column;
+              justify-content: space-between;
+              align-items: center;
+              p {
+                text-align: center;
+                margin-top: 20px;
+                font-weight: 600;
+              }
+              .uploaded-card-btns {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin-top: auto;
+                .btn {
+                  width: 32px;
+                  height: 32px;
+                  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.16);
+                  border-radius: 3px;
+                  &.btn-html {
+                    margin-left: 24px;
+                  }
+                }
+              }
+            }
+          }
+          .btn-see-contents {
+            width: 200px;
+            height: 40px;
+            margin-bottom: 25px;
+            margin-top: 40px;
           }
           .footer-description {
             text-align: center;

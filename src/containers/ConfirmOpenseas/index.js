@@ -3,7 +3,13 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Container, Image, Button } from "react-bootstrap";
 import queryString from "query-string";
-import { IconArConnect, IconOpenSea, IconUpload } from "assets/images";
+import {
+  IconArConnect,
+  IconHtml,
+  IconOpenSea,
+  IconShare,
+  IconUpload,
+} from "assets/images";
 import { ConfirmOpenseasContainer } from "./style";
 import { Col, Form, Input, Row, Upload, Spin, Progress } from "antd";
 import { useForm } from "antd/lib/form/Form";
@@ -68,8 +74,8 @@ function ConfirmOpenseas() {
       };
 
       fetch(
-        `https://api.opensea.io/api/v1/assets?owner=0xd703accc62251189a67106f22d54cd470494de40&order_direction=desc&offset=0&limit=20`,
-        // `https://api.opensea.io/api/v1/assets?owner=${address}&order_direction=desc&offset=0&limit=20`,
+        // `https://api.opensea.io/api/v1/assets?owner=0xd703accc62251189a67106f22d54cd470494de40&order_direction=desc&offset=0&limit=20`,
+        `https://api.opensea.io/api/v1/assets?owner=${address}&order_direction=desc&offset=0&limit=20`,
         options
       )
         .then((response) => {
@@ -88,7 +94,7 @@ function ConfirmOpenseas() {
         <div className="upload-content-wrapper">
           <div className="upload-content">
             <h1 className="upload-title text-blue">Register your content.</h1>
-            <div className="upload-body">
+            <div className="upload-wrapper">
               <div
                 className="icon-back cursor"
                 onClick={() => history.goBack()}
@@ -270,19 +276,33 @@ function ConfirmOpenseas() {
                       <div className="upload-content-form d-flex justify-content-center"></div>
                     </Col>
                   </Row>
-                  <div className="upload-cards-wrapper">
+                  <div className="uploaded-cards-wrapper">
                     {openSeas.length > 0 &&
                       openSeas
                         .filter((_openSea) =>
                           selectedIds.includes(_openSea.id.toString())
                         )
                         .map((_selected, _i) => (
-                          <div key={_i}>
+                          <div key={_i} className="uploaded-card">
                             <Image src={_selected.image_thumbnail_url} />
                             <p className="text-blue">{_selected.name}</p>
+                            <div className="uploaded-card-btns">
+                              <Button className="btn-blueDark">
+                                <Image src={IconShare} width={17} />
+                              </Button>
+                              <Button className="btn-white btn-html">
+                                <Image src={IconHtml} width={17} />
+                              </Button>
+                            </div>
                           </div>
                         ))}
                   </div>
+                  <Button
+                    className="btn-blueDark btn-see-contents mx-auto"
+                    onClick={() => history.replace("/contents")}
+                  >
+                    See My Content
+                  </Button>
                 </Form>
               )}
               {parseInt(step) <= selectedIds.length && (

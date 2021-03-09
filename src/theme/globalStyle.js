@@ -99,6 +99,10 @@ a {
     background: ${colors.white};
     color: ${colors.blueDark};
     border: 2.5px solid ${colors.blueDark};
+    &:hover, &:focus {
+        background-color: ${colors.white};
+        border: 2.5px solid ${colors.blueDark};
+    }
 }
 .btn-green {
     background: ${colors.green};
