@@ -1,5 +1,6 @@
+/* eslint-disable eqeqeq */
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Container, Image, Button } from "react-bootstrap";
 import queryString from "query-string";
 import { IconArConnect, IconOpenSea, IconUpload } from "assets/images";
@@ -8,6 +9,7 @@ import { Col, Form, Input, Row, Upload, Spin, Progress } from "antd";
 import { useForm } from "antd/lib/form/Form";
 import { useHistory, useLocation } from "react-router-dom";
 import { colors } from "theme";
+import { DataContext } from "contexts/DataContextContainer";
 
 const { TextArea } = Input;
 const { Dragger } = Upload;
@@ -23,20 +25,62 @@ const formItemLayout = {
 
 function ConfirmOpenseas() {
   const history = useHistory();
+  const { openSeas, setOpenSeas } = useContext(DataContext);
   const [form] = useForm();
   const location = useLocation();
-  const { step = '1', selected } = queryString.parse(location.search);
+  const { step = "1", selected, address } = queryString.parse(location.search);
   const [uploading] = useState(false);
-  const selectedIds = selected.split('_');
-  console.log({selectedIds})
+  const [activeOpenSea, setActiveOpenSea] = useState({});
+  const selectedIds = selected.split("_");
+  console.log({ selectedIds });
 
-  const onCompleteStep2 = () => {
-    history.push(`/upload/arweave?step=3`);
+  const onClickConfirm = () => {
+    if (parseInt(step) > selectedIds.length) {
+    } else {
+      history.push(
+        `/confirm-opensea?address=${address}&step=${
+          parseInt(step) + 1
+        }&selected=${selected}`
+      );
+    }
   };
 
   const onCompleteStep3 = () => {
     console.log("Completed");
   };
+
+  console.log({ activeOpenSea });
+  useEffect(() => {
+    setActiveOpenSea(
+      openSeas.find(
+        (_openSea) => selectedIds[parseInt(step) - 1] == _openSea.id
+      )
+    );
+  }, [step, openSeas]);
+
+  useEffect(() => {
+    if (address) {
+      const options = {
+        method: "GET",
+        // params: {
+        //   owner: "0x3a3d6f2b81187Bd4c365b6dAfB260b59f5783854",
+        // },
+      };
+
+      fetch(
+        `https://api.opensea.io/api/v1/assets?owner=0xd703accc62251189a67106f22d54cd470494de40&order_direction=desc&offset=0&limit=20`,
+        // `https://api.opensea.io/api/v1/assets?owner=${address}&order_direction=desc&offset=0&limit=20`,
+        options
+      )
+        .then((response) => {
+          return response.json();
+        })
+        .then(async (data) => {
+          console.log({ data });
+          setOpenSeas(data.assets);
+        });
+    }
+  }, [history.location.pathname]);
 
   return (
     <ConfirmOpenseasContainer>
@@ -45,82 +89,13 @@ function ConfirmOpenseas() {
           <div className="upload-content">
             <h1 className="upload-title text-blue">Register your content.</h1>
             <div className="upload-body">
-              <Form
-                layout="horizontal"
-                form={form}
-                {...formItemLayout}
-                onFinish={onCompleteStep2}
+              <div
+                className="icon-back cursor"
+                onClick={() => history.goBack()}
               >
-                <Row>
-                  <Col flex="100px">
-                    <div className="type-img-wrapper">
-                      <Image src={IconOpenSea} />
-                    </div>
-                  </Col>
-                  <Col flex={1}>
-                    <div className="upload-header">
-                      <div className="upload-header-title">
-                        <h6 className="mb-0 text-blue ml-2">
-                          Confirm the information for your upload.
-                        </h6>
-                      </div>
-                    </div>
-                    <div className="upload-content-form">
-                      <div className="upload-content-row">
-                        <Form.Item>
-                          <div className="left">
-                            <p className="mb-0">Title</p>
-                          </div>
-                          <Input
-                            placeholder="input placeholder"
-                            className="ethereum-value-input"
-                          />
-                        </Form.Item>
-                        <Form.Item>
-                          <div className="left">
-                            <p className="mb-0">Owner</p>
-                          </div>
-                          <Input
-                            placeholder="input placeholder"
-                            className="ethereum-value-input"
-                          />
-                        </Form.Item>
-                        <Form.Item>
-                          <div className="left">
-                            <p className="mb-0">Description</p>
-                          </div>
-                          <TextArea
-                            placeholder="input placeholder"
-                            className="ethereum-value-input"
-                            rows={5}
-                          />
-                        </Form.Item>
-                        <Form.Item>
-                          <div className="left" />
-                          <Button
-                            type="submit"
-                            className="btn-blueDark btn-confirm"
-                          >
-                            Confirm NFT Details
-                          </Button>
-                          <Button className="btn-white btn-edit ml-3">
-                            Edit Later
-                          </Button>
-                        </Form.Item>
-                      </div>
-                    </div>
-                  </Col>
-                </Row>
-              </Form>
-              <Progress
-                strokeColor={colors.blueDark}
-                trailColor={colors.blueLight}
-                percent={parseInt(step) * 100 / selectedIds.length}
-                status="active"
-              />
-            </div>
-            {step === "3" && (
-              <div className="upload-body">
+                <i className="fal fa-arrow-circle-left"></i>
+              </div>
+              {parseInt(step) > selectedIds.length ? (
                 <Form
                   layout="horizontal"
                   form={form}
@@ -191,12 +166,91 @@ function ConfirmOpenseas() {
                     </div>
                   </div>
                 </Form>
-                <p className="footer-description text-blue">
-                  Don’t have any Arweave (AR) tokens? Visit the{" "}
-                  <a href="#/">Arweave Faucet</a> to get started.
-                </p>
-              </div>
-            )}
+              ) : (
+                <Form
+                  layout="horizontal"
+                  form={form}
+                  {...formItemLayout}
+                  onFinish={onClickConfirm}
+                >
+                  <Row>
+                    <Col flex="100px">
+                      <div className="type-img-wrapper">
+                        <Image src={IconOpenSea} />
+                      </div>
+                    </Col>
+                    <Col flex={1}>
+                      <div className="upload-header">
+                        <div className="upload-header-title">
+                          <h6 className="mb-0 text-blue ml-2">
+                            Confirm the information for your upload.
+                          </h6>
+                        </div>
+                      </div>
+                      <div className="upload-content-form">
+                        <div className="content-img-wrapper">
+                          <Image src={activeOpenSea?.image_thumbnail_url} />
+                        </div>
+                        <div className="upload-content-row">
+                          <Form.Item>
+                            <div className="left">
+                              <p className="mb-0">Title</p>
+                            </div>
+                            <Input
+                              value={activeOpenSea?.name}
+                              placeholder="input placeholder"
+                              className="ethereum-value-input"
+                            />
+                          </Form.Item>
+                          <Form.Item>
+                            <div className="left">
+                              <p className="mb-0">Owner</p>
+                            </div>
+                            <Input
+                              placeholder="input placeholder"
+                              className="ethereum-value-input"
+                              value={activeOpenSea?.owner?.user?.username}
+                            />
+                          </Form.Item>
+                          <Form.Item>
+                            <div className="left">
+                              <p className="mb-0">Description</p>
+                            </div>
+                            <TextArea
+                              placeholder="input placeholder"
+                              value={activeOpenSea?.description}
+                              className="ethereum-value-input"
+                              rows={5}
+                            />
+                          </Form.Item>
+                          <Form.Item>
+                            <div className="left" />
+                            <Button
+                              type="submit"
+                              className="btn-blueDark btn-confirm"
+                            >
+                              Confirm NFT Details
+                            </Button>
+                            <Button className="btn-white btn-edit ml-3">
+                              Edit Later
+                            </Button>
+                          </Form.Item>
+                        </div>
+                      </div>
+                    </Col>
+                  </Row>
+                </Form>
+              )}
+              {parseInt(step) <= selectedIds.length && (
+                <Progress
+                  strokeColor={colors.blueDark}
+                  trailColor={colors.blueLight}
+                  percent={(parseInt(step) * 100) / selectedIds.length}
+                  status="active"
+                  showInfo={false}
+                />
+              )}
+            </div>
           </div>
         </div>
       </Container>

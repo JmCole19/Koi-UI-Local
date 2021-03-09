@@ -21,12 +21,24 @@ export const ConfirmOpenseasContainer = styled.div`
           width: 100%;
         }
         .upload-body {
+          position: relative;
           width: 100%;
           background: ${colors.orangeLight};
           box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.25);
           border-radius: 4px;
           padding: 16px;
           max-width: 896px;
+          .icon-back {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            cursor: pointer;
+            z-index: 1;
+            i {
+              font-size: 24px;
+              color: ${colors.blueDark};
+            }
+          }
           .upload-header {
             margin-bottom: 18px;
             .upload-header-title {
@@ -51,7 +63,15 @@ export const ConfirmOpenseasContainer = styled.div`
             }
           }
           .upload-content-form {
+            display: flex;
+            align-items: flex-start;
+            .content-img-wrapper {
+              width: 130px;
+              display: flex;
+              justify-content: flex-start;
+            }
             .upload-content-row {
+              margin-left: 34px;
               .ant-form-item-control-input-content {
                 display: flex;
                 .left {

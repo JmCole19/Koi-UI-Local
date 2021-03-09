@@ -1,20 +1,21 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Col, Row } from "antd";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import queryString from "query-string";
 import { Button, Container, Image } from "react-bootstrap";
 import { ScaleLoader } from "react-spinners";
 import { FaCheck, FaPlus } from "react-icons/fa";
 import { UploadOpenSeaContainer } from "./style";
 import { useHistory } from "react-router-dom";
+import { DataContext } from "contexts/DataContextContainer";
 
 function UploadOpenSea() {
   const history = useHistory();
+  const {openSeas, setOpenSeas} = useContext(DataContext);
   const { address } = queryString.parse(history.location.search);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedIds, setSelectedIds] = useState([]);
   const [isAllSelected, setIsAllSelected] = useState(false);
-  const [cards, setCards] = useState([]);
 
   const onClickCard = (cardId) => {
     let tempSelectedCards = [...selectedIds];
@@ -35,7 +36,7 @@ function UploadOpenSea() {
 
   useEffect(() => {
     if (isAllSelected) {
-      setSelectedIds(cards.map((_card) => _card.id));
+      setSelectedIds(openSeas.map((_card) => _card.id));
     } else {
       setSelectedIds([]);
     }
@@ -61,7 +62,7 @@ function UploadOpenSea() {
         })
         .then(async (data) => {
           console.log({ data });
-          setCards(data.assets);
+          setOpenSeas(data.assets);
           setIsLoading(false);
         });
     }
@@ -105,8 +106,8 @@ function UploadOpenSea() {
                 ]}
                 className="opensea-cards"
               >
-                {cards.length > 0 &&
-                  cards.map((_card, _i) => {
+                {openSeas.length > 0 &&
+                  openSeas.map((_card, _i) => {
                     let selected = selectedIds.includes(_card.id);
                     return (
                       <Col

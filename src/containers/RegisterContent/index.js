@@ -87,7 +87,7 @@ function RegisterContent() {
               {cards.map((_card, _i) => (
                 <div
                   key={_i}
-                  className="register-card"
+                  className="register-card cursor"
                   onClick={() => onClickCard(_card)}
                 >
                   <div className="card-img">
