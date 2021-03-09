@@ -1,25 +1,25 @@
 import styled from "styled-components";
 import { colors, mixins } from "theme";
 
-export const HomeContainer = styled.div`
+export const LeaderboardContainer = styled.div`
   flex: 1;
   width: 100%;
   height: 100%;
-  background-color: ${colors.blueLight};
+  background-color: ${colors.grayLight};
   display: flex;
   justify-content: center;
   padding-top: 80px;
   .leaderboard {
+    width: 100%;
     background: white;
     box-shadow: 0px 4px 12px rgb(0 0 0 / 25%);
     border-radius: 4px;
     .leaderboard-header {
-      background: ${colors.blueDark};
+      background: ${colors.gray};
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 9px 13px;
-      border-radius: 4px 4px 0 0;
+      padding: 13px 13px;
       .filter-options {
         margin-left: 95px;
         .filter-option {
@@ -127,10 +127,22 @@ export const HomeContainer = styled.div`
       .btn-leaderbard-plus {
         height: 30px;
         width: 30px;
-        background: ${colors.green};
+        background: ${colors.greenLight};
         color: ${colors.blueDark};
         font-size: 18px;
         border-radius: 4px;
+      }
+      .btn-my-content {
+        background: transparent;
+        border: 2.5px solid ${colors.blueDark};
+        box-sizing: border-box;
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.16);
+        border-radius: 4px;
+        font-weight: 600;
+        font-size: 16px;
+        line-height: 18px;
+        color: ${colors.blueDark};
+        margin-right: 36px;
       }
     }
   }
@@ -179,7 +191,12 @@ export const StyledThumb = styled.div`
   border-radius: 2px;
   color: ${colors.blueDark};
   cursor: pointer;
-  left: ${props => props.value === 0 ? '5px !important' : props.value === 4 ? '172px !important' : ''};
+  left: ${(props) =>
+    props.value === 0
+      ? "5px !important"
+      : props.value === 4
+      ? "172px !important"
+      : ""};
   &:focus {
     outline: none;
   }

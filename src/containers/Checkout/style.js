@@ -5,7 +5,7 @@ export const CheckoutContainer = styled.div`
   flex: 1;
   width: 100%;
   height: 100%;
-  background-color: ${colors.blueLight};
+  background-color: ${colors.white};
   display: flex;
   justify-content: center;
   padding-top: 80px;
@@ -82,7 +82,7 @@ export const CheckoutContainer = styled.div`
                 border: 2px dashed ${colors.greenDark};
                 border-radius: 4px;
                 &:hover {
-                  border: 2px dashed ${colors.green};
+                  border: 2px dashed ${colors.greenLight};
                 }
               }
               .ant-upload-btn {

@@ -16,7 +16,7 @@ const GlobalStyle = createGlobalStyle`
     overflow-x: hidden !important;
 }
 h1 {
-    font-size: 40px !important;
+    font-size: 32px !important;
     font-weight: 600;
 }
 h2 {
@@ -64,7 +64,8 @@ a {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 24px;
+    font-size: 18px;
+    max-height: 40px !important;
     border-radius: 2px;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.16);
     font-weight: 600 !important;
@@ -83,12 +84,12 @@ a {
 .btn-blueDark {
     background: ${colors.blueDark};
     color: ${colors.white};
-    &:hover, &:focus {
+    &:hover, &:focus, &:disabled {
         color: ${colors.white};
         background-color: ${colors.blueDark};
+        border-color: transparent;
     }
     font-weight: 600;
-    font-size: 16px;
 }
 .btn-orange {
     background: ${colors.orange};
@@ -97,6 +98,11 @@ a {
 .btn-white {
     background: ${colors.white};
     color: ${colors.blueDark};
+    border: 2.5px solid ${colors.blueDark};
+    &:hover, &:focus {
+        background-color: ${colors.white};
+        border: 2.5px solid ${colors.blueDark};
+    }
 }
 .btn-green {
     background: ${colors.green};
@@ -108,6 +114,9 @@ a {
 }
 .text-greenDark {
     color: ${colors.greenDark};
+}
+.text-bold {
+    font-weight: 700;
 }
 .cursor {
     cursor: pointer;
@@ -183,6 +192,40 @@ a {
             }
         }
   }
+}
+#overlay-nav {
+    padding: 24px 0 0;
+    opacity: 1;
+    .tooltip-inner {
+        padding: 0;
+        background-color: ${colors.blueDark};
+        min-width: 230px;
+        max-width: 300px;
+        border-radius: 0px 0px 6px 6px;
+        p {
+            margin-bottom: 0;
+        }
+        .overlay-header {
+            border-bottom: 1px solid ${colors.blueLight};
+            padding: 5px 13px;
+        }
+        .overlay-body {
+            padding: 5px 0;
+            .overlay-body-row {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 5px 13px;
+                p.overlay-value {
+                    font-weight: 600;
+                    margin-left: auto;
+                }
+                img {
+                    max-width: 20px;
+                }
+            }
+        }
+    }
 }
 `;
 

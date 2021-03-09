@@ -4,30 +4,32 @@ import { colors } from "theme";
 
 export const TopbarContainer = styled(Navbar)`
   width: 100%;
-  background: ${colors.blueLight};
+  background: ${colors.blueDark};
   padding: 0rem 40px;
   min-height: 80px;
-  /* box-shadow: 0px 3px 6px #00000029; */
+  filter: drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.16));
+  box-shadow: 0px 3px 6px #00000029;
   .navbar-brand {
-    color: ${colors.blue};
+    color: ${colors.white};
   }
   .navbar-toggler {
     border-color: transparent;
-    color: ${colors.dark} !important;
+    color: ${colors.white} !important;
   }
   .navbar-collapse {
     .navbar-nav {
       a {
-        color: ${colors.blueDark};
+        color: ${colors.white};
         font-weight: 700;
         font-size: 16px;
         align-self: center;
-        margin-left: 48px;
-        &.btn-openkoi {
-          background: ${colors.blueDark};
+        margin-right: 48px;
+        &.btn-nav {
+          background: transparent;
           border-radius: 4px;
           padding: 2px 25px;
           color: ${colors.white};
+          border: 1.5px solid ${colors.white};
         }
       }
     }

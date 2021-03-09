@@ -1,14 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState } from "react";
-import { Button, Container, Image, Modal } from "react-bootstrap";
-import {
-  Crown,
-  DefaultUser,
-  Logo,
-  IconLeft,
-  ItemTempModal,
-} from "assets/images";
-import { HomeContainer, StyledThumb } from "./style";
+import React, { useEffect, useState } from "react";
+import { Button, Image, Modal } from "react-bootstrap";
+import { Logo, IconLeft, ItemTempModal } from "assets/images";
+import { LeaderboardContainer, StyledThumb } from "./style";
 import { Collapse } from "antd";
 import ReactSlider from "react-slider";
 import { useHistory } from "react-router-dom";
@@ -16,8 +10,9 @@ import LeaderboardItem from "./LeaderboardItem";
 
 const { Panel } = Collapse;
 
-const items = [
+const itemsTemp = [
   {
+    id: '1',
     title: "Batman",
     username: "Maxstealth",
     created_at: "Jan, 01, 2021",
@@ -25,6 +20,7 @@ const items = [
     rewards: 10658,
   },
   {
+    id: '2',
     title: "Mercury (The Planets #1)",
     username: "alexmorris",
     created_at: "Jan, 01, 2021",
@@ -32,6 +28,7 @@ const items = [
     rewards: 10658,
   },
   {
+    id: '3',
     title: "Vitalik Buterin Gold Edition 1/100",
     username: "vitalikbuterin",
     created_at: "Jan, 01, 2021",
@@ -39,6 +36,7 @@ const items = [
     rewards: 10658,
   },
   {
+    id: '4',
     title: "Astrid’s cute little face",
     username: "kaylakroot",
     created_at: "Jan, 01, 2021",
@@ -46,6 +44,7 @@ const items = [
     rewards: 10658,
   },
   {
+    id: '5',
     title: "Mercury (The Planets #1)",
     username: "alexmorris",
     created_at: "Jan, 01, 2021",
@@ -53,15 +52,17 @@ const items = [
     rewards: 10658,
   },
   {
+    id: '6',
     title: "Batman",
-    username: "Maxstealth",
+    username: "alexmorris",
     created_at: "Jan, 01, 2021",
     total_reviews: 795,
     rewards: 10658,
   },
   {
+    id: '7',
     title: "Batman",
-    username: "Maxstealth",
+    username: "alexmorris",
     created_at: "Jan, 01, 2021",
     total_reviews: 795,
     rewards: 10658,
@@ -75,6 +76,8 @@ function Leaderboard() {
   // const [activeOption, setActiveOption] = useState("24h");
   const [isExpanded, setIsExpanded] = useState(false);
   const [selectedItem, setSelectedItem] = useState({});
+  const [isFiltered, setIsFiltered] = useState(false);
+  const [items, setItems] = useState(itemsTemp);
 
   const [showModalItem, setShowModalItem] = useState(false);
 
@@ -82,7 +85,8 @@ function Leaderboard() {
 
   const onClickItem = (item) => {
     setSelectedItem(item);
-    setShowModalItem(true);
+    history.push(`/content-detail/${item.id}`)
+    // setShowModalItem(true);
   };
 
   const onClickShowMore = () => {
@@ -92,63 +96,66 @@ function Leaderboard() {
   const onClickPlus = () => {
     history.push("/register-content");
   };
+
+  const onClickMyContent = () => {
+    setIsFiltered(!isFiltered);
+  };
+
+  useEffect(() => {
+    if (isFiltered) {
+      setItems(items.filter((_item) => _item.username === "alexmorris"));
+    } else {
+      setItems(itemsTemp);
+    }
+  }, [isFiltered]);
   return (
-    <HomeContainer>
-      <Container fluid className="py-5">
-        <div className="leaderboard">
-          <div className="leaderboard-header">
-            <h2 className="text-white mb-0">Top Content</h2>
-            <ReactSlider
-              className="filter-options-desktop mr-auto d-none d-md-flex"
-              marks
-              markClassName="example-mark"
-              min={0}
-              max={4}
-              // thumbClassName="example-thumb"
-              trackClassName="example-track"
-              renderMark={(props) => (
-                <span key={props.key} className="example-mark">
-                  {options[props.key]}
-                </span>
-              )}
-              renderThumb={(props, state) => (
-                <StyledThumb {...props} value={state.valueNow}>
-                  {options[state.valueNow]}
-                </StyledThumb>
-              )}
-            />
-            <ReactSlider
-              className="filter-options-mobile d-md-none"
-              marks
-              markClassName="example-mark"
-              min={0}
-              max={4}
-              thumbClassName="example-thumb"
-              trackClassName="example-track"
-              renderThumb={(props, state) => (
-                <div {...props}>{options[state.valueNow]}</div>
-              )}
-            />
-            {/* <InputGroup className="leader-board-search-input ml-4" wi>
-              <FormControl aria-label="Amount (to the nearest dollar)" />
-              <InputGroup.Append>
-                <InputGroup.Text>
-                  <i className="fas fa-search"></i>
-                </InputGroup.Text>
-              </InputGroup.Append>
-            </InputGroup> */}
-            <Image src={Crown} className="icon-crown d-none d-md-flex cursor" />
-            <Image
-              src={DefaultUser}
-              className="icon-user d-none d-md-flex cursor"
-              onClick={() => history.push("/check-out")}
-            />
-            <Button className="btn-leaderbard-plus" onClick={onClickPlus}>
-              <i className="fas fa-plus"></i>
-            </Button>
-          </div>
-          <div className="leaderboard-items">
-            {items.filter((_item, _i) => _i < 5).map((_item, _i) => (
+    <LeaderboardContainer>
+      <div className="leaderboard">
+        <div className="leaderboard-header">
+          <h2 className="text-blue mb-0">
+            {isFiltered ? "My Content" : "Top Content"}
+          </h2>
+          <ReactSlider
+            className="filter-options-desktop mr-auto d-none d-md-flex"
+            marks
+            markClassName="example-mark"
+            min={0}
+            max={4}
+            trackClassName="example-track"
+            renderMark={(props) => (
+              <span key={props.key} className="example-mark">
+                {options[props.key]}
+              </span>
+            )}
+            renderThumb={(props, state) => (
+              <StyledThumb {...props} value={state.valueNow}>
+                {options[state.valueNow]}
+              </StyledThumb>
+            )}
+          />
+          <ReactSlider
+            className="filter-options-mobile d-md-none"
+            marks
+            markClassName="example-mark"
+            min={0}
+            max={4}
+            thumbClassName="example-thumb"
+            trackClassName="example-track"
+            renderThumb={(props, state) => (
+              <div {...props}>{options[state.valueNow]}</div>
+            )}
+          />
+          <Button className="btn-my-content" onClick={onClickMyContent}>
+            {!isFiltered ? "My Content" : "Top Content"}
+          </Button>
+          <Button className="btn-leaderbard-plus" onClick={onClickPlus}>
+            <i className="fas fa-plus"></i>
+          </Button>
+        </div>
+        <div className="leaderboard-items">
+          {items
+            .filter((_item, _i) => _i < 5)
+            .map((_item, _i) => (
               <LeaderboardItem
                 key={_i}
                 item={_item}
@@ -156,13 +163,15 @@ function Leaderboard() {
                 onClickItem={() => onClickItem(_item)}
               />
             ))}
-            <Collapse
-              activeKey={isExpanded ? ["1"] : null}
-              bordered={false}
-              expandIcon={() => <div />}
-            >
-              <Panel header={null} key="1">
-                {items.filter((_item, _i) => _i >= 5).map((_item, _i) => (
+          <Collapse
+            activeKey={isExpanded ? ["1"] : null}
+            bordered={false}
+            expandIcon={() => <div />}
+          >
+            <Panel header={null} key="1">
+              {items
+                .filter((_item, _i) => _i >= 5)
+                .map((_item, _i) => (
                   <LeaderboardItem
                     key={_i}
                     item={_item}
@@ -170,16 +179,15 @@ function Leaderboard() {
                     onClickItem={() => onClickItem(_item)}
                   />
                 ))}
-              </Panel>
-            </Collapse>
-            <div className="btn-show-more-wrapper">
-              <Button className="btn-show-more" onClick={onClickShowMore}>
-                {isExpanded ? "Show Less" : "Show More"}
-              </Button>
-            </div>
+            </Panel>
+          </Collapse>
+          <div className="btn-show-more-wrapper">
+            <Button className="btn-show-more" onClick={onClickShowMore}>
+              {isExpanded ? "Show Less" : "Show More"}
+            </Button>
           </div>
         </div>
-      </Container>
+      </div>
       <Modal
         show={showModalItem}
         onHide={handleClose}
@@ -225,7 +233,7 @@ function Leaderboard() {
           </div>
         </Modal.Body>
       </Modal>
-    </HomeContainer>
+    </LeaderboardContainer>
   );
 }
 

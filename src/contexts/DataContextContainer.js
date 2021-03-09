@@ -7,12 +7,16 @@ export { DataContext };
 
 const DataContextContainer = (props) => {
 
-  const [authUser, setAuthUser] = useState(false);
+  const [authUser, setAuthUser] = useState(false); 
+  const [address, setAddress] = useState(null); 
+  const [openSeas, setOpenSeas] = useState([]);
 
   return(
     <DataContext.Provider
       value={{ 
-        authUser, setAuthUser
+        authUser, setAuthUser,
+        address, setAddress,
+        openSeas, setOpenSeas
       }}
     >
       { props.children }

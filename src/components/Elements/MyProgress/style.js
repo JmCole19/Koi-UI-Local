@@ -127,7 +127,7 @@ export const MyProgressContainer = styled.div`
       .btn-leaderbard-plus {
         height: 30px;
         width: 30px;
-        background: ${colors.green};
+        background: ${colors.greenLight};
         color: ${colors.blueDark};
         font-size: 18px;
         border-radius: 4px;

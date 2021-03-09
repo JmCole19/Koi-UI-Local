@@ -4,10 +4,10 @@ import { colors, mixins } from "theme";
 export const LeaderboardItemContainer = styled.div`
   display: flex;
   align-items: center;
-  background: white;
+  background: ${colors.grayLight};
   border-bottom: 2px solid ${colors.grayGreen};
   min-height: 192px;
-  padding: 43px 11px;
+  padding: 0px 56px;
   display: flex;
   align-items: center;
   .part-left {
@@ -40,16 +40,52 @@ export const LeaderboardItemContainer = styled.div`
     }
   }
   .part-right {
+    min-width: 216px;
     .item-col {
       padding: 0 10px;
       &.item-reviews-wrapper {
         display: flex;
         flex-direction: column;
         align-items: flex-end;
+        background: #ecfffe;
+        box-shadow: 0px 2px 4px rgb(0 0 0 / 16%);
+        border-radius: 2px;
+        margin-bottom: 10px;
+        padding: 10px;
         h5 {
           color: ${colors.greenDark};
         }
       }
+    }
+    .btns-wrapper {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 14px;
+      .btn {
+        height: 40px;
+        &.btn-html {
+          margin-left: 28px;
+          width: 40px;
+          height: 40px;
+          background: ${colors.white};
+          box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.16);
+          border-radius: 3px;
+          color: ${colors.blueDark};
+          border: 2.5px solid ${colors.blueDark};
+        }
+        &.btn-share {
+          flex: 1;
+          background: ${colors.blueGradient};
+          box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.16);
+          border-radius: 3px;
+          font-size: 18px;
+        }
+      }
+    }
+    .social-wrapper {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
   }
   @media (max-width: ${mixins.md}px) {
