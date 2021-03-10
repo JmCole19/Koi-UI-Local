@@ -5,7 +5,7 @@ import {
   IconUpload,
   IconOpenSea,
 } from "assets/images";
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import Web3 from "web3";
 import Arweave from 'arweave';
 import { Button, Container, Image } from "react-bootstrap";
@@ -49,16 +49,18 @@ const cards = [
 
 function RegisterContent() {
   const history = useHistory();
-  const { address, addressArweave, setAddress } = useContext(DataContext);
+  const { address, setAddress, addressArweave, setAddressArweave } = useContext(DataContext);
+  const [ detectorAr, setDetectorAr ] = useState(false)
 
   const onClickCard = (card) => {
     if (card.id === "opensea") {
       openMetaMask();
     } else if (card.id === 'arweave') {
       if(addressArweave) {
-        history.push(card.link);
+        // history.push(card.link);
+        history.push(`/upload/arweave?step=3`);
       }else{
-        openArConnect();
+        setDetectorAr(true)
       }
     }
   };
@@ -66,32 +68,34 @@ function RegisterContent() {
   useEffect(() => {
     console.log("here1")
     // const arweave = Arweave.init();
-    window.addEventListener("arweaveWalletLoaded", detectArweaveWallet(arweave));
-    // window.addEventListener("walletSwitch", (e) => detectSwitchArweaveWallet(e));
-    return () => {
-      window.removeEventListener('arweaveWalletLoaded', detectArweaveWallet(arweave));
-      // window.removeEventListener('walletSwitch',(e) => detectSwitchArweaveWallet(e));
+    if(detectorAr) {
+      console.log("here2 ", detectorAr)
+      window.addEventListener("arweaveWalletLoaded", detectArweaveWallet(arweave));
+      window.addEventListener("walletSwitch", (e) => detectSwitchArweaveWallet(e));
+      return () => {
+        window.removeEventListener('arweaveWalletLoaded', detectArweaveWallet(arweave));
+        window.removeEventListener('walletSwitch',(e) => detectSwitchArweaveWallet(e));
+      }
     }
-  }, []);
+  }, [detectorAr]);
 
   const detectArweaveWallet = async () => {
-    console.log(arweave)
-    console.log(arweave.wallets)
     let addr = await arweave.wallets.getAddress();
     console.log("detected arweave wallet address : ", addr)
-  }
-  const detectSwitchArweaveWallet = async (e) => {
-    console.log(e)
-    let addr = "e.detail.address";
-    console.log("detected switch arweave wallet address : ", addr)
+    if(addr) {
+      setAddressArweave(addr)
+      history.push(`/upload/arweave?step=3`);
+    }else{
+      history.push(`/upload/arweave?step=1`);
+    }
   }
 
-  const openArConnect = () => {
-    console.log("ehre")
-    // window.addEventListener("arweaveWalletLoaded", detectArweaveWallet);
-    // window.addEventListener("walletSwitch", detectSwitchArweaveWallet);
-    
-  };
+  const detectSwitchArweaveWallet = async (e) => {
+    console.log(e)
+    // let addr = "e.detail.address";
+    // console.log("detected switch arweave wallet address : ", addr)
+  }
+
   const openMetaMask = () => {
     const web3 = new Web3(Web3.givenProvider || "http://localhost:8545");
     window.ethereum.enable().then(function (accounts) {
