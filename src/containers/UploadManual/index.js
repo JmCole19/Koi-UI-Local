@@ -8,7 +8,7 @@ import { Col, Form, Input, Row, Upload, Spin } from "antd";
 import { useForm } from "antd/lib/form/Form";
 import { useHistory, useLocation } from "react-router-dom";
 import MyProgress from "components/Elements/MyProgress";
-import { show_notification, getBase64 } from 'service/utils'
+import { show_notification } from 'service/utils'
 
 const { TextArea } = Input;
 const { Dragger } = Upload;
@@ -28,8 +28,7 @@ function UploadManual() {
   const location = useLocation();
   const { step } = queryString.parse(location.search);
   const [uploading] = useState(false);
-  const [imageUrl, setImageUrl] = useState('');
-  const [isImageUploaded, setIsImageUploaded] = useState(false);
+  const [imageUrl, setImageUrl] = useState(null);
 
   const onCompleteStep1 = () => {
     history.push(`/upload/ethereum?step=2`);
@@ -57,12 +56,14 @@ function UploadManual() {
     }
     if(isJpgOrPng && isLt2M) {
       console.log("here1")
-      getBase64(file.originFileObj, imgUrl => {
-        console.log("here2", imgUrl)
-        setImageUrl(imgUrl)
-        setIsImageUploaded(true)
-      });
-
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        console.log(e.target.result)
+        setImageUrl(e.target.result)
+      }
+      reader.readAsDataURL(file);
+      // Prevent upload
+      return false;
     }
     return isJpgOrPng && isLt2M;
     // if ( ['png', 'jpeg', 'jpg', 'gif', 'mp4'].includes(fileExt.toLowerCase()) ) {
@@ -110,6 +111,7 @@ function UploadManual() {
                           <div className="single-ant-file-upload">
                             <Dragger
                               name="file"
+                              accept="video/*, image/*"
                               multiple={false}
                               listType="picture"
                               beforeUpload={beforeUpload}
@@ -136,7 +138,7 @@ function UploadManual() {
                     </Col>
                   </Row>
                   <Form.Item>
-                    <Button type="submit" disabled={!isImageUploaded} className="btn-blueDark mx-auto px-5">
+                    <Button type="submit" disabled={!imageUrl} className="btn-blueDark mx-auto px-5">
                       Register your NFT
                     </Button>
                   </Form.Item>
