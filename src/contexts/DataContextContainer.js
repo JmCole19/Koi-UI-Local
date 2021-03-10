@@ -1,34 +1,36 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types'
+import React, { useState } from "react";
+import PropTypes from "prop-types";
 
 const DataContext = React.createContext(null);
 
 export { DataContext };
 
 const DataContextContainer = (props) => {
-
-  const [authUser, setAuthUser] = useState(false); 
-  const [address, setAddress] = useState(null); 
+  const [authUser, setAuthUser] = useState(false);
+  const [addressEth, setAddressEth] = useState(null);
   const [openSeas, setOpenSeas] = useState([]);
-  const [addressArweave, setAddressArweave] = useState('');
+  const [addressArweave, setAddressArweave] = useState("");
 
-  return(
+  return (
     <DataContext.Provider
-      value={{ 
-        authUser, setAuthUser,
-        address, setAddress,
-        openSeas, setOpenSeas,
-        addressArweave, setAddressArweave,
+      value={{
+        authUser,
+        setAuthUser,
+        addressEth,
+        setAddressEth,
+        openSeas,
+        setOpenSeas,
+        addressArweave,
+        setAddressArweave,
       }}
     >
-      { props.children }
+      {props.children}
     </DataContext.Provider>
-  )
-}
+  );
+};
 
 DataContextContainer.propTypes = {
   children: PropTypes.node.isRequired,
 };
-
 
 export default DataContextContainer;
