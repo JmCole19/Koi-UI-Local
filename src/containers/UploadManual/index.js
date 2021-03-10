@@ -73,12 +73,30 @@ function UploadManual() {
                       </div>
                       <div className="upload-content-form">
                         <div className="upload-content-row">
-                          <Form.Item label="Token ID:">
-                            <Input
-                              placeholder="input placeholder"
-                              className="ethereum-value-input"
-                            />
-                          </Form.Item>
+                          <div className="single-ant-file-upload">
+                            <Dragger
+                              name="file"
+                              multiple={false}
+                              listType="picture"
+                              // beforeUpload={beforeUpload}
+                              fileList={false}
+                            >
+                              <div className="uploader-container">
+                                {uploading ? (
+                                  <Spin size="large" />
+                                ) : (
+                                  <>
+                                    <div className="uploader-icon d-flex justify-content-center align-items-center">
+                                      <Image src={IconUpload} />
+                                    </div>
+                                    <p className="text-blue mb-0">
+                                      Drag & Drop or click to browse your computer.
+                                    </p>
+                                  </>
+                                )}
+                              </div>
+                            </Dragger>
+                          </div>
                         </div>
                       </div>
                     </Col>
