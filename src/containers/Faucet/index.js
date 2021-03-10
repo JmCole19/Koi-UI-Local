@@ -85,7 +85,7 @@ function Faucet() {
   };
   console.log({ address });
   const onClickUpload = () => {
-    history.push("/register-content");
+    history.push("/contents");
   };
 
   const onClickBackTo = (step) => {
