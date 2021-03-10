@@ -131,7 +131,7 @@ function RegisterContent() {
         notification.success({
           message: "Success",
           description: "Set Ethereum address successfully!",
-          placement: "bottomRight",
+          placement: "topRight",
           onClick: () => {
             console.log("Notification Clicked!");
           },

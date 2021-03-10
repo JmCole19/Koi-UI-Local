@@ -8,6 +8,7 @@ import { Col, Form, Input, Row, Upload, Spin } from "antd";
 import { useForm } from "antd/lib/form/Form";
 import { useHistory, useLocation } from "react-router-dom";
 import MyProgress from "components/Elements/MyProgress";
+import { show_message } from 'service/utils'
 
 const { TextArea } = Input;
 const { Dragger } = Upload;
@@ -39,6 +40,28 @@ function UploadManual() {
   const onCompleteStep3 = () => {
     console.log("Completed");
   };
+
+  const beforeUpload = (file) => {
+    // let fileExt = file.name.split('.')
+    // fileExt = fileExt[fileExt.length - 1]
+    console.log('file type : ', file.type)
+    const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+    if (!isJpgOrPng) {
+      show_message('You can only upload JPG/PNG file!');
+    }
+    const isLt2M = file.size / 1024 / 1024 < 10;
+    if (!isLt2M) {
+      show_message('Image must smaller than 10MB!');
+    }
+    return isJpgOrPng && isLt2M;
+    // if ( ['png', 'jpeg', 'jpg', 'gif', 'mp4'].includes(fileExt.toLowerCase()) ) {
+    //   let fileList = [file]
+    //   // set fileList
+    //   return false
+    // } else {
+    //   // show_notification('Please input only image and video.')
+    // }
+  }
 
   return (
     <UploadUploadContainer>
@@ -78,7 +101,7 @@ function UploadManual() {
                               name="file"
                               multiple={false}
                               listType="picture"
-                              // beforeUpload={beforeUpload}
+                              beforeUpload={beforeUpload}
                               fileList={false}
                             >
                               <div className="uploader-container">
