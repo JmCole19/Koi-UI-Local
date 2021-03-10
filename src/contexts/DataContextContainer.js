@@ -10,13 +10,15 @@ const DataContextContainer = (props) => {
   const [authUser, setAuthUser] = useState(false); 
   const [address, setAddress] = useState(null); 
   const [openSeas, setOpenSeas] = useState([]);
+  const [addressArweave, setAddressArweave] = useState('');
 
   return(
     <DataContext.Provider
       value={{ 
         authUser, setAuthUser,
         address, setAddress,
-        openSeas, setOpenSeas
+        openSeas, setOpenSeas,
+        addressArweave, setAddressArweave,
       }}
     >
       { props.children }
