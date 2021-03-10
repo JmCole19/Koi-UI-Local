@@ -59,15 +59,17 @@ function RegisterContent() {
   // const [detectorAr, setDetectorAr] = useState(false);
 
   const onClickCard = (card) => {
-    if (card.id === "opensea" || card.id === "ethereum") {
+    if (card.id === "opensea") {
       openMetaMask(card.id);
     } else if (card.id === "arweave") {
-      history.push(`/upload/arweave?step=3`);
+      history.push(card.link);
       // if (addressArweave) {
       //   history.push(card.link);
       // } else {
       //   setDetectorAr(true);
       // }
+    } else {
+      history.push(card.link);
     }
   };
 
@@ -96,7 +98,7 @@ function RegisterContent() {
   //     console.log("detected arweave wallet address : ", addr);
   //     if (addr) {
   //       setAddressArweave(addr);
-  //       history.push(`/upload/arweave?step=3`);
+  //       history.push(`/upload/arweave?step=1`);
   //     } else {
   //       history.push(`/upload/arweave?step=1`);
   //     }
