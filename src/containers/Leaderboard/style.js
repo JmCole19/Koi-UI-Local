@@ -19,7 +19,7 @@ export const LeaderboardContainer = styled.div`
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 13px 13px;
+      padding: 13px 55px;
       .filter-options {
         margin-left: 95px;
         .filter-option {
