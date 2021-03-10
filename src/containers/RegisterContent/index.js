@@ -66,26 +66,31 @@ function RegisterContent() {
   };
 
   useEffect(() => {
-    console.log("here1")
+    // console.log("here1")
     // const arweave = Arweave.init();
     if(detectorAr) {
-      console.log("here2 ", detectorAr)
-      window.addEventListener("arweaveWalletLoaded", detectArweaveWallet(arweave));
+      // console.log("here2 ", detectorAr)
+      window.addEventListener("arweaveWalletLoaded", detectArweaveWallet());
       window.addEventListener("walletSwitch", (e) => detectSwitchArweaveWallet(e));
       return () => {
-        window.removeEventListener('arweaveWalletLoaded', detectArweaveWallet(arweave));
+        window.removeEventListener('arweaveWalletLoaded', detectArweaveWallet());
         window.removeEventListener('walletSwitch',(e) => detectSwitchArweaveWallet(e));
       }
     }
   }, [detectorAr]);
 
   const detectArweaveWallet = async () => {
-    let addr = await arweave.wallets.getAddress();
-    console.log("detected arweave wallet address : ", addr)
-    if(addr) {
-      setAddressArweave(addr)
-      history.push(`/upload/arweave?step=3`);
-    }else{
+    try {
+      let addr = await arweave.wallets.getAddress();
+      console.log("detected arweave wallet address : ", addr)
+      if(addr) {
+        setAddressArweave(addr)
+        history.push(`/upload/arweave?step=3`);
+      }else{
+        history.push(`/upload/arweave?step=1`);
+      }
+    }catch(err) {
+      console.log(err)
       history.push(`/upload/arweave?step=1`);
     }
   }
