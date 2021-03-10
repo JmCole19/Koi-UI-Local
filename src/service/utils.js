@@ -1,6 +1,6 @@
-import { notification, message as antd_message } from "antd";
+import { notification, message } from "antd";
 
-const show_notification = (message, title = 'KOI', type = 'error', actionClose = () => {}) => {
+const show_notification = (msg, title = 'KOI', type = 'error', actionClose = () => {}) => {
   // type : success || error || info || warning
   let custom_class = 'custom-notification-' + type
   notification.open({
@@ -9,7 +9,7 @@ const show_notification = (message, title = 'KOI', type = 'error', actionClose =
     duration: 4,
     message: title,
     className: custom_class,
-    description: message,
+    description: msg,
     onClick: () => {
       console.log("Notification Clicked!");
     },
@@ -17,18 +17,25 @@ const show_notification = (message, title = 'KOI', type = 'error', actionClose =
   });
 }
 
-const show_message = (message, type = 'error', actionClose = () => {}) => {
+const show_message = (msg, type = 'error', actionClose = () => {}) => {
   // type : success || error || info || warning
   let custom_class = 'custom-message-' + type
-  antd_message.error({
+  message.error({
     top: 90,
     duration: 3,
-    content: message,
+    content: msg,
     className: custom_class,
     onClose: actionClose
   });
 }
+
+const getBase64 = (img, callback) => {
+  const reader = new FileReader();
+  reader.addEventListener('load', () => callback(reader.result));
+  reader.readAsDataURL(img);
+}
 export {
   show_notification,
-  show_message
+  show_message,
+  getBase64
 }

@@ -8,7 +8,7 @@ import { Col, Form, Input, Row, Upload, Spin } from "antd";
 import { useForm } from "antd/lib/form/Form";
 import { useHistory, useLocation } from "react-router-dom";
 import MyProgress from "components/Elements/MyProgress";
-import { show_message } from 'service/utils'
+import { show_notification, getBase64 } from 'service/utils'
 
 const { TextArea } = Input;
 const { Dragger } = Upload;
@@ -28,6 +28,8 @@ function UploadManual() {
   const location = useLocation();
   const { step } = queryString.parse(location.search);
   const [uploading] = useState(false);
+  const [imageUrl, setImageUrl] = useState('');
+  const [isImageUploaded, setIsImageUploaded] = useState(false);
 
   const onCompleteStep1 = () => {
     history.push(`/upload/ethereum?step=2`);
@@ -44,14 +46,23 @@ function UploadManual() {
   const beforeUpload = (file) => {
     // let fileExt = file.name.split('.')
     // fileExt = fileExt[fileExt.length - 1]
-    console.log('file type : ', file.type)
+    console.log('file type : ', file)
     const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
     if (!isJpgOrPng) {
-      show_message('You can only upload JPG/PNG file!');
+      show_notification('You can only upload JPG/PNG file!');
     }
     const isLt2M = file.size / 1024 / 1024 < 10;
     if (!isLt2M) {
-      show_message('Image must smaller than 10MB!');
+      show_notification('Image must smaller than 10MB!');
+    }
+    if(isJpgOrPng && isLt2M) {
+      console.log("here1")
+      getBase64(file.originFileObj, imgUrl => {
+        console.log("here2", imgUrl)
+        setImageUrl(imgUrl)
+        setIsImageUploaded(true)
+      });
+
     }
     return isJpgOrPng && isLt2M;
     // if ( ['png', 'jpeg', 'jpg', 'gif', 'mp4'].includes(fileExt.toLowerCase()) ) {
@@ -103,21 +114,21 @@ function UploadManual() {
                               listType="picture"
                               beforeUpload={beforeUpload}
                               fileList={false}
+                              showUploadList={false}
                             >
-                              <div className="uploader-container">
-                                {uploading ? (
-                                  <Spin size="large" />
-                                ) : (
-                                  <>
+                              {uploading ? (
+                                <Spin size="large" />
+                              ) : (
+                                <>
+                                  <div className="uploader-container">
                                     <div className="uploader-icon d-flex justify-content-center align-items-center">
                                       <Image src={IconUpload} />
                                     </div>
                                     <p className="text-blue mb-0">
                                       Drag & Drop or click to browse your computer.
                                     </p>
-                                  </>
-                                )}
-                              </div>
+                                  </div>
+                                </>)}
                             </Dragger>
                           </div>
                         </div>
@@ -125,7 +136,7 @@ function UploadManual() {
                     </Col>
                   </Row>
                   <Form.Item>
-                    <Button type="submit" className="btn-blueDark mx-auto px-5">
+                    <Button type="submit" disabled={!isImageUploaded} className="btn-blueDark mx-auto px-5">
                       Register your NFT
                     </Button>
                   </Form.Item>
@@ -252,6 +263,7 @@ function UploadManual() {
                         listType="picture"
                         // beforeUpload={beforeUpload}
                         fileList={false}
+                        showUploadList={false}
                       >
                         <div className="uploader-container">
                           {uploading ? (
