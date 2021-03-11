@@ -1,13 +1,7 @@
-import {
-    createGlobalStyle
-} from "styled-components";
-import {
-    colors,
-    fonts,
-    mixins
-} from "theme";
+import { createGlobalStyle } from "styled-components";
+import { colors, fonts, mixins } from "theme";
 
-const GlobalStyle = createGlobalStyle `
+const GlobalStyle = createGlobalStyle`
   body {
     font-family: ${fonts.main};
     margin: 0;
@@ -16,6 +10,7 @@ const GlobalStyle = createGlobalStyle `
   .App {
     height: 100vh;
   }
+  .w100 {width: 100%;}
   nav {
     width: 100vw !important;
     max-width: 100vw !important;
@@ -81,19 +76,37 @@ const GlobalStyle = createGlobalStyle `
         box-shadow: unset;
         }
     }
-    font-weight: 600;
-}
-.btn-orange {
-    background: ${colors.orange};
-    color: ${colors.blueDark};
-}
-.btn-white {
-    background: ${colors.white};
-    color: ${colors.blueDark};
-    border: 2.5px solid ${colors.blueDark};
-    &:hover, &:focus, &:active {
-        background-color: ${colors.white};
+    .form-control:focus {
+        color: #495057;
+        background-color: #fff;
+        border-color: #ced4da;
+        box-shadow: unset;
+    }
+    .btn-blueDark {
+        background: ${colors.blueDark};
+        color: ${colors.white};
+        &:hover, &:focus, &:disabled {
+            color: ${colors.white};
+            background-color: ${colors.blueDark};
+            border-color: transparent;
+        }
+        font-weight: 600;
+    }
+    .btn-orange {
+        background: ${colors.orange};
+        color: ${colors.blueDark};
+    }
+    .btn-white {
+        background: ${colors.white};
+        color: ${colors.blueDark};
         border: 2.5px solid ${colors.blueDark};
+        &:hover, &:focus, &:active {
+            background-color: ${colors.white};
+            border: 2.5px solid ${colors.blueDark};
+        }
+    }
+    .btn-green {
+        background: ${colors.green};
         color: ${colors.blueDark};
     }
 
@@ -165,6 +178,56 @@ const GlobalStyle = createGlobalStyle `
         }
         @media (min-width: 576px) {
             max-width: 800px;
+        }
+        @media (max-width: ${mixins.sm}px) {
+            .modal-content {
+                .modal-body {
+                    .item-modal-body {
+                        padding: 16px 13px;
+                        .item-info-wrapper {
+                            h1 {
+                                font-size: 28px !important;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    .modal-confirm-transaction {
+        .modal-content {
+            display: flex;
+            align-items: center;
+            .modal-body {
+                position: unset;
+                min-width: 330px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                padding: 24px 0;
+                .icon-close {
+                    position: absolute;
+                    right: 8px;
+                    top: 8px;
+                }
+                .imgs-wrapper {
+                    margin: 23px 0;
+                }
+                .modal-row {
+                    display: flex;
+                    justify-content: space-between;
+                    width: 100%;
+                }
+                .btn-connect {
+                    width: 186px;
+                    height: 40px;
+                    border-radius: 4px;
+                    margin-top: 32px;
+                }
+            }
+        }
+        @media (min-width: 576px) {
+            max-width: 662px;
         }
         @media (max-width: ${mixins.sm}px) {
             .modal-content {
