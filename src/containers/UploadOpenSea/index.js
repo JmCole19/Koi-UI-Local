@@ -9,6 +9,8 @@ import { UploadOpenSeaContainer } from "./style";
 import { useHistory } from "react-router-dom";
 import { DataContext } from "contexts/DataContextContainer";
 
+const testOpenseaAddress = '0xd703accc62251189a67106f22d54cd470494de40'
+
 function UploadOpenSea() {
   const history = useHistory();
   const {openSeas, setOpenSeas} = useContext(DataContext);
@@ -31,7 +33,8 @@ function UploadOpenSea() {
   };
 
   const onClickVerify = () => {
-    history.push(`/confirm-opensea?address=${address}&step=1&selected=${selectedIds.join('_')}`)
+    history.push(`/confirm-opensea?address=${testOpenseaAddress}&step=1&selected=${selectedIds.join('_')}`)
+    // history.push(`/confirm-opensea?address=${address}&step=1&selected=${selectedIds.join('_')}`)
   }
 
   useEffect(() => {
@@ -53,8 +56,8 @@ function UploadOpenSea() {
       };
 
       fetch(
-        // `https://api.opensea.io/api/v1/assets?owner=0xd703accc62251189a67106f22d54cd470494de40&order_direction=desc&offset=0&limit=20`,
-        `https://api.opensea.io/api/v1/assets?owner=${address}&order_direction=desc&offset=0&limit=20`,
+        `https://api.opensea.io/api/v1/assets?owner=0xd703accc62251189a67106f22d54cd470494de40&order_direction=desc&offset=0&limit=20`,
+        // `https://api.opensea.io/api/v1/assets?owner=${address}&order_direction=desc&offset=0&limit=20`,
         options
       )
         .then((response) => {
