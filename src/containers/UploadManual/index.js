@@ -10,7 +10,7 @@ import cloneDeep from 'clone-deep'
 import { useHistory, useLocation } from "react-router-dom";
 import MyProgress from "components/Elements/MyProgress";
 import ArconnectCard from "components/Elements/ArconnectCard";
-import { show_notification } from 'service/utils'
+import { show_notification, getArWalletAddressFromJson } from 'service/utils'
 
 const { TextArea } = Input;
 const { Dragger } = Upload;
@@ -65,9 +65,11 @@ function UploadManual() {
     if(isJson && isLt1M) {
       console.log("here1")
       const reader = new FileReader();
-      reader.onload = (e) => {
+      reader.onload = async (e) => {
         console.log(e.target.result)
         var arJson = JSON.parse(e.target.result)
+        let addressResult = await getArWalletAddressFromJson(arJson);
+        show_notification(addressResult)
       }
       reader.readAsText(file);
       // Prevent upload
