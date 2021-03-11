@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { colors, mixins } from "theme";
+import { colors } from "theme";
 
 export const PageLayoutContainer = styled.div`
   position: relative;

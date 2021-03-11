@@ -8,7 +8,12 @@ import { HiOutlineMail } from "react-icons/hi";
 import { LeaderboardItemContainer } from "./style";
 import { colors } from "theme";
 
-function LeaderboardItem({ item = {}, order, onClickItem = () => {} }) {
+function LeaderboardItem({
+  item = {},
+  order,
+  onClickItem = () => {},
+  onClickUsername = () => {},
+}) {
   return (
     <LeaderboardItemContainer>
       <div className="part-left">
@@ -20,7 +25,9 @@ function LeaderboardItem({ item = {}, order, onClickItem = () => {} }) {
         </div>
         <div className="item-info-wrapper item-col">
           <h2 className="item-title mb-1">{item.title}</h2>
-          <p className="item-username mb-3">{item.username}</p>
+          <p className="item-username mb-3 cursor" onClick={onClickUsername}>
+            {item.username}
+          </p>
           <p className="item-created_at mb-0">Registered: {item.created_at}</p>
           <a
             href="https://viewblock.io/"
