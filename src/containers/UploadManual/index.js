@@ -32,6 +32,7 @@ function UploadManual() {
   const { step } = queryString.parse(location.search);
   const [uploading] = useState(false);
   const [imageUrl, setImageUrl] = useState(null);
+  const [imageBlob, setImageBlob] = useState(null);
   const [activeContent, setActiveContent] = useState({ title: '', owner: '', description: ''});
 
   const onCompleteStep1 = () => {
@@ -54,7 +55,7 @@ function UploadManual() {
   }
 
   const beforeJsonUpload = (file) => {
-    console.log('file type : ', file)
+    // console.log('file type : ', file)
     const isJson = file.type === 'application/json';
     if (!isJson) {
       show_notification('You can only upload JPG/PNG file!');
@@ -64,17 +65,15 @@ function UploadManual() {
       show_notification('JSON must smaller than 512KB!');
     }
     if(isJson && isLt1M) {
-      console.log("here1")
       const reader = new FileReader();
       reader.onload = async (e) => {
-        console.log(e.target.result)
         var arJson = JSON.parse(e.target.result)
         let addressResult = await getArWalletAddressFromJson(arJson);
         show_notification(addressResult)
-        exportNFT(addressResult)
-        .then(res => console.log(res))
-        .catch(err => console.log(err))
-        .finally( () => show_notification('upload successfully', 'success'))
+        exportNFT(addressResult, 0.0001, '', imageBlob)
+        .then(res => console.log("success", res))
+        .catch(err => console.log("error", err))
+        .finally( () => show_notification('upload successfully', 'KOI', 'success'))
       }
       reader.readAsText(file);
       // Prevent upload
@@ -83,9 +82,6 @@ function UploadManual() {
     return isJson && isLt1M;
   }
   const beforeUpload = (file) => {
-    // let fileExt = file.name.split('.')
-    // fileExt = fileExt[fileExt.length - 1]
-    console.log('file type : ', file)
     const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
     if (!isJpgOrPng) {
       show_notification('You can only upload JPG/PNG file!');
@@ -95,12 +91,11 @@ function UploadManual() {
       show_notification('Image must smaller than 10MB!');
     }
     if(isJpgOrPng && isLt2M) {
-      console.log("here1")
       const reader = new FileReader();
       reader.onload = (e) => {
-        console.log(e.target.result)
         setImageUrl(e.target.result)
       }
+      setImageBlob(file)
       reader.readAsDataURL(file);
       // Prevent upload
       return false;

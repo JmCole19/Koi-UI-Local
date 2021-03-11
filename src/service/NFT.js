@@ -23,13 +23,18 @@ async function getDataBlob(imageUrl) {
   return obj;
 }
 
-const exportNFT = async (ownerAddress) => {
+const exportNFT = async (ownerAddress, wallet = 0.0002, imageUrl = '', imageBlob) => {
   const contractSrc = process.env.REACT_APP_CONTRACT_SRC
-  const nftData = await getDataBlob()
+  let nftData 
+  if (imageUrl){
+    nftData = await getDataBlob(imageUrl)
+  }else{
+    nftData = imageBlob
+  }
 
   const metadata = {
-    // owner: 'l2Fe-SdzRD-fPvlkrxlrnu0IC3uQlVeXIkHWde8Z0Qg', // This is Al's test wallet for Koi server
-    owner: ownerAddress, // my test wallet
+    owner: 'l2Fe-SdzRD-fPvlkrxlrnu0IC3uQlVeXIkHWde8Z0Qg', // This is Al's test wallet for Koi server
+    // owner: ownerAddress, // my test wallet
     name: 'koi nft',
     description: 'first koi nft',
     ticker: 'KOINFT'
@@ -49,7 +54,7 @@ const exportNFT = async (ownerAddress) => {
   const tx = await arweave.createTransaction({
     // eslint-disable-next-line no-undef
     data: nftData.data
-  });
+  }, wallet);
 
   tx.addTag('Content-Type', 'image/png')
   tx.addTag('Network', 'Koi')
@@ -59,9 +64,10 @@ const exportNFT = async (ownerAddress) => {
   tx.addTag('Contract-Src', contractSrc)
   tx.addTag('Init-State', JSON.stringify(initialState))
 
-  await arweave.transactions.sign(tx);
+  await arweave.transactions.sign(tx, wallet);
   console.log(tx);
   console.log(tx.id);
+  console.log(" wallet : ", wallet);
 
   let uploader = await arweave.transactions.getUploader(tx)
 
