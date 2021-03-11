@@ -29,19 +29,24 @@ function UploadManual() {
   const { step } = queryString.parse(location.search);
   const [uploading] = useState(false);
   const [imageUrl, setImageUrl] = useState(null);
-  const [activeContent, setActiveContent] = useState({});
+  const [activeContent, setActiveContent] = useState({ title: '', owner: '', description: ''});
 
   const onCompleteStep1 = () => {
     history.push(`/upload/manual?step=2`);
   };
 
   const onCompleteStep2 = () => {
+    console.log(activeContent)
     history.push(`/upload/manual?step=3`);
   };
 
   const onCompleteStep3 = () => {
     console.log("Completed");
   };
+
+  const updateContent = () {
+    
+  }
 
   const beforeUpload = (file) => {
     // let fileExt = file.name.split('.')
@@ -187,8 +192,9 @@ function UploadManual() {
                               <p className="mb-0">Title</p>
                             </div>
                             <Input
-                              value={activeContent?.name}
-                              placeholder="input placeholder"
+                              value={activeContent?.title}
+                              onChange={(e) => updateContent('title', e.target.value)}
+                              placeholder=""
                               className="ethereum-value-input"
                             />
                           </Form.Item>
@@ -197,9 +203,10 @@ function UploadManual() {
                               <p className="mb-0">Owner</p>
                             </div>
                             <Input
-                              placeholder="input placeholder"
+                              placeholder=""
                               className="ethereum-value-input"
-                              value={activeContent?.owner?.user?.username}
+                              value={activeContent?.owner}
+                              onChange={(e) => updateContent('owner', e.target.value)}
                             />
                           </Form.Item>
                           <Form.Item>
@@ -207,8 +214,9 @@ function UploadManual() {
                               <p className="mb-0">Description</p>
                             </div>
                             <TextArea
-                              placeholder="input placeholder"
+                              placeholder=""
                               value={activeContent?.description}
+                              onChange={(e) => updateContent('description', e.target.value)}
                               className="ethereum-value-input"
                               rows={5}
                             />
@@ -221,7 +229,9 @@ function UploadManual() {
                             >
                               Add Details
                             </Button>
-                            <Button className="btn-white btn-edit ml-3">
+                            <Button 
+                              onClick={onCompleteStep2}
+                              className="btn-white btn-edit ml-3">
                               Add Later
                             </Button>
                           </Form.Item>
