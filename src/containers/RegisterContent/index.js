@@ -155,16 +155,16 @@ function RegisterContent() {
           <div className="register-content">
             <h1 className="text-blue register-title">Register your content.</h1>
             <h4 className="register-description">
-              There are 3 ways to register on the Koi Network. Earn rewards
-              today.
+              There are 3 ways to register on the Koi Network. Earn rewards today.
             </h4>
             <div className="register-cards">
               {cards.map((_card, _i) => (
                 <div
                   key={_i}
-                  className="register-card cursor"
+                  className={`register-card cursor ${_card.comingSoon ? 'disable' : ''}`}
                   onClick={() => onClickCard(_card)}
                 >
+                  {_card.comingSoon && <div className="coming-soon">Coming soon</div>}
                   <div className="card-img">
                     <Image src={_card.img} />
                   </div>
