@@ -10,7 +10,8 @@ import cloneDeep from 'clone-deep'
 import { useHistory, useLocation } from "react-router-dom";
 import MyProgress from "components/Elements/MyProgress";
 import ArconnectCard from "components/Elements/ArconnectCard";
-import { show_notification, getArWalletAddressFromJson } from 'service/utils'
+import { show_notification } from 'service/utils'
+import { getArWalletAddressFromJson } from 'service/NFT'
 
 const { TextArea } = Input;
 const { Dragger } = Upload;

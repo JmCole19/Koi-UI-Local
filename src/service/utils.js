@@ -1,7 +1,4 @@
-import Arweave from "arweave";
 import { notification, message } from "antd";
-
-const arweave = Arweave.init()
 
 const show_notification = (msg, title = 'KOI', type = 'error', actionClose = () => {}) => {
   // type : success || error || info || warning
@@ -38,14 +35,8 @@ const getBase64 = (img, callback) => {
   reader.readAsDataURL(img);
 }
 
-const getArWalletAddressFromJson = async (keyData) => {
-  let addressResult = await arweave.wallets.jwkToAddress(keyData);
-  return addressResult
-}
-
 export {
   show_notification,
   show_message,
   getBase64,
-  getArWalletAddressFromJson
 }
