@@ -23,7 +23,8 @@ async function getDataBlob(imageUrl) {
   return obj;
 }
 
-const exportNFT = async (ownerAddress, wallet = 0.0002, imageUrl = '', imageBlob) => {
+const exportNFT = async (ownerAddress, wallet1 = 0.0002, imageUrl = '', imageBlob) => {
+  var wallet = await window.arweaveWallet.connect()
   const contractSrc = process.env.REACT_APP_CONTRACT_SRC
   let nftData 
   if (imageUrl){
