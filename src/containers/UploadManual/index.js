@@ -85,10 +85,14 @@ function UploadManual() {
     // }
   }
 
+  const onOpenArConnect = () => {
+    show_notification("here is arconnect opening", 'KOI', 'success')
+  }
+
   useEffect(() => {
-    if(step !== '1' && !imageUrl) {
-      history.replace(`/upload/manual?step=1`);
-    }
+    // if(step !== '1' && !imageUrl) {
+    //   history.replace(`/upload/manual?step=1`);
+    // }
   }, [])
 
   return (
@@ -273,7 +277,7 @@ function UploadManual() {
                             <p className="mb-0 text-blue ml-2">
                               Drag & Drop your Arweave keyfile or connect using
                               an{" "}
-                              <a href="#/" className="text-bold">
+                              <a href="https://chrome.google.com/webstore/detail/arconnect/einnioafmpimabjcddiinlhmijaionap" target="_blank" rel="noopener noreferrer" className="text-bold">
                                 Arweave browser extension
                               </a>
                               .
@@ -303,14 +307,14 @@ function UploadManual() {
                                 <Image src={IconUpload} />
                               </div>
                               <p className="text-blue mb-0">
-                                Drag & Drop your Ethereum keyfile here.
+                                Drag & Drop your Arweave keyfile here.
                               </p>
                             </>
                           )}
                         </div>
                       </Dragger>
                     </div>
-                    <ArconnectCard />
+                    <ArconnectCard openArConnect={onOpenArConnect} />
                   </div>
                 </Form>
                 <p className='footer-description text-blue'>Don’t have any Arweave (AR) tokens? Visit the <a href="/faucet" target="_blank">Arweave Faucet</a> to get started.</p>
