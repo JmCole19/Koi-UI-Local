@@ -101,7 +101,7 @@ export const UploadUploadContainer = styled.div`
               }
             }
           }
-          .upload-content-form {
+          .upload-image-form {
             .upload-content-row {
               display: flex;
               align-items: center;
@@ -114,6 +114,38 @@ export const UploadUploadContainer = styled.div`
                 @media screen and (max-width: 517px) {
                   margin-left: 0px;
                   width: 300px;
+                }
+              }
+            }
+          }
+          .upload-content-form {
+            display: flex;
+            align-items: flex-start;
+            .content-img-wrapper {
+              width: 130px;
+              display: flex;
+              justify-content: flex-start;
+            }
+            .upload-content-row {
+              margin-left: 34px;
+              .ant-form-item-control-input-content {
+                display: flex;
+                .left {
+                  min-width: 98px;
+                  color: ${colors.blueDark};
+                }
+                .ethereum-value-input {
+                  max-width: 466px;
+                  border: 1.5px solid ${colors.blueDark};
+                  box-sizing: border-box;
+                  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.16);
+                  border-radius: 4px;
+                }
+                .btn-confirm,
+                .btn-edit {
+                  min-width: 186px;
+                  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.16);
+                  border-radius: 4px;
                 }
               }
             }

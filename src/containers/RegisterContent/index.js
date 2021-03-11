@@ -23,6 +23,7 @@ const cards = [
     title: "OpenSea",
     subtitle1: "Import OpenSea portfolio",
     link: "/opensea",
+    comingSoon: false
   },
   {
     id: "ethereum",
@@ -30,6 +31,7 @@ const cards = [
     title: "Ethereum NFT ",
     subtitle1: "Enter a Token ID",
     link: "/upload/ethereum?step=1",
+    comingSoon: true
   },
   {
     id: "arweave",
@@ -37,6 +39,7 @@ const cards = [
     title: "Arweave Content",
     subtitle1: "Enter an Arweave ID",
     link: "/upload/arweave?step=1",
+    comingSoon: true
   },
   {
     id: "manual",
@@ -45,6 +48,7 @@ const cards = [
     subtitle1: "Drag & Drop or",
     subtitle2: "Browse Computer",
     link: "/upload/manual?step=1",
+    comingSoon: false
   },
 ];
 

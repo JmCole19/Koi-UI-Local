@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Container, Image, Button } from "react-bootstrap";
 import queryString from "query-string";
 import { IconUpload, IconArConnect } from "assets/images";
@@ -29,13 +29,14 @@ function UploadManual() {
   const { step } = queryString.parse(location.search);
   const [uploading] = useState(false);
   const [imageUrl, setImageUrl] = useState(null);
+  const [activeContent, setActiveContent] = useState({});
 
   const onCompleteStep1 = () => {
-    history.push(`/upload/ethereum?step=2`);
+    history.push(`/upload/manual?step=2`);
   };
 
   const onCompleteStep2 = () => {
-    history.push(`/upload/ethereum?step=3`);
+    history.push(`/upload/manual?step=3`);
   };
 
   const onCompleteStep3 = () => {
@@ -75,6 +76,12 @@ function UploadManual() {
     // }
   }
 
+  useEffect(() => {
+    if(step !== '1' && !imageUrl) {
+      history.replace(`/upload/manual?step=1`);
+    }
+  }, [])
+
   return (
     <UploadUploadContainer>
       <Container>
@@ -106,7 +113,7 @@ function UploadManual() {
                           </h6>
                         </div>
                       </div>
-                      <div className="upload-content-form">
+                      <div className="upload-image-form">
                         <div className="upload-content-row">
                           <div className="single-ant-file-upload">
                             <Dragger
@@ -171,12 +178,16 @@ function UploadManual() {
                         </div>
                       </div>
                       <div className="upload-content-form">
+                        <div className="content-img-wrapper">
+                          <Image src={imageUrl} className="w100" />
+                        </div>
                         <div className="upload-content-row">
                           <Form.Item>
                             <div className="left">
                               <p className="mb-0">Title</p>
                             </div>
                             <Input
+                              value={activeContent?.name}
                               placeholder="input placeholder"
                               className="ethereum-value-input"
                             />
@@ -188,6 +199,7 @@ function UploadManual() {
                             <Input
                               placeholder="input placeholder"
                               className="ethereum-value-input"
+                              value={activeContent?.owner?.user?.username}
                             />
                           </Form.Item>
                           <Form.Item>
@@ -196,6 +208,7 @@ function UploadManual() {
                             </div>
                             <TextArea
                               placeholder="input placeholder"
+                              value={activeContent?.description}
                               className="ethereum-value-input"
                               rows={5}
                             />
@@ -206,10 +219,10 @@ function UploadManual() {
                               type="submit"
                               className="btn-blueDark btn-confirm"
                             >
-                              Confirm NFT Details
+                              Add Details
                             </Button>
                             <Button className="btn-white btn-edit ml-3">
-                              Edit Later
+                              Add Later
                             </Button>
                           </Form.Item>
                         </div>
