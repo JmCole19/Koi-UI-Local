@@ -23,7 +23,7 @@ async function getDataBlob(imageUrl) {
   return obj;
 }
 
-const exportNFT = async (ownerAddress, wallet) => {
+const exportNFT = async (ownerAddress) => {
   const contractSrc = process.env.REACT_APP_CONTRACT_SRC
   const nftData = await getDataBlob()
 
@@ -49,7 +49,7 @@ const exportNFT = async (ownerAddress, wallet) => {
   const tx = await arweave.createTransaction({
     // eslint-disable-next-line no-undef
     data: nftData.data
-  }, wallet);
+  });
 
   tx.addTag('Content-Type', 'image/png')
   tx.addTag('Network', 'Koi')
@@ -59,7 +59,7 @@ const exportNFT = async (ownerAddress, wallet) => {
   tx.addTag('Contract-Src', contractSrc)
   tx.addTag('Init-State', JSON.stringify(initialState))
 
-  await arweave.transactions.sign(tx, wallet);
+  await arweave.transactions.sign(tx);
   console.log(tx);
   console.log(tx.id);
 

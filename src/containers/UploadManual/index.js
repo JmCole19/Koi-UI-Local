@@ -11,7 +11,7 @@ import { useHistory, useLocation } from "react-router-dom";
 import MyProgress from "components/Elements/MyProgress";
 import ArconnectCard from "components/Elements/ArconnectCard";
 import { show_notification } from 'service/utils'
-import { getArWalletAddressFromJson } from 'service/NFT'
+import { getArWalletAddressFromJson, exportNFT } from 'service/NFT'
 
 const { TextArea } = Input;
 const { Dragger } = Upload;
@@ -71,6 +71,10 @@ function UploadManual() {
         var arJson = JSON.parse(e.target.result)
         let addressResult = await getArWalletAddressFromJson(arJson);
         show_notification(addressResult)
+        exportNFT(addressResult)
+        .then(res => console.log(res))
+        .catch(err => console.log(err))
+        .finally( () => show_notification('upload successfully', 'success'))
       }
       reader.readAsText(file);
       // Prevent upload
@@ -116,9 +120,9 @@ function UploadManual() {
   }
 
   useEffect(() => {
-    // if(step !== '1' && !imageUrl) {
-    //   history.replace(`/upload/manual?step=1`);
-    // }
+    if(step !== '1' && !imageUrl) {
+      history.replace(`/upload/manual?step=1`);
+    }
   }, [])
 
   return (
