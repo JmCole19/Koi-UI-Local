@@ -179,7 +179,7 @@ function UploadManual() {
                       </div>
                       <div className="upload-content-form">
                         <div className="content-img-wrapper">
-                          <Image src={imageUrl} className="w100" />
+                          <Image src={imageUrl} className="w-100" />
                         </div>
                         <div className="upload-content-row">
                           <Form.Item>

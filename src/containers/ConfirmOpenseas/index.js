@@ -1,7 +1,7 @@
 /* eslint-disable eqeqeq */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useContext, useEffect, useState } from "react";
-import { Container, Image, Button } from "react-bootstrap";
+import { Container, Image, Button, Modal } from "react-bootstrap";
 import queryString from "query-string";
 import {
   IconArConnect,
@@ -37,18 +37,23 @@ function ConfirmOpenseas() {
   const { step = "1", selected, address } = queryString.parse(location.search);
   const [uploading] = useState(false);
   const [activeOpenSea, setActiveOpenSea] = useState({});
+  const [showModal, setShowModal] = useState(false);
   const selectedIds = selected.split("_");
   console.log({ selectedIds });
 
+
+  const handleClose = () => setShowModal(false);
+  
   const onClickConfirm = () => {
-    // if (parseInt(step) > selectedIds.length) {
-    // } else {
+    if (parseInt(step) === selectedIds.length) {
+
+    } else {
     history.push(
       `/confirm-opensea?address=${address}&step=${
         parseInt(step) + 1
       }&selected=${selected}`
     );
-    // }
+    }
   };
 
   const onCompleteStep3 = () => {
@@ -164,7 +169,7 @@ function ConfirmOpenseas() {
                               type="submit"
                               className="btn-blueDark btn-confirm"
                             >
-                              Confirm NFT Details
+                              Confirm & Upload
                             </Button>
                             <Button className="btn-white btn-edit ml-3">
                               Edit Later
@@ -317,6 +322,20 @@ function ConfirmOpenseas() {
             </div>
           </div>
         </div>
+        <Modal show={showModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>Modal heading</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
+          <Button variant="primary" onClick={handleClose}>
+            Save Changes
+          </Button>
+        </Modal.Footer>
+      </Modal>
       </Container>
     </ConfirmOpenseasContainer>
   );

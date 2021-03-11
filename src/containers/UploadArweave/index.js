@@ -1,13 +1,15 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Container, Image, Button } from "react-bootstrap";
 import queryString from "query-string";
+import Arweave from "arweave";
 import { IconArweave, IconUpload } from "assets/images";
 import { UploadArweaveContainer } from "./style";
-import { Col, Form, Input, Row, Upload, Spin } from "antd";
+import { Col, Form, Input, Row, Upload, Spin, notification } from "antd";
 import { useForm } from "antd/lib/form/Form";
 import { useHistory, useLocation } from "react-router-dom";
 import MyProgress from "components/Elements/MyProgress";
+import { DataContext } from "contexts/DataContextContainer";
 
 const { TextArea } = Input;
 const { Dragger } = Upload;
@@ -26,6 +28,7 @@ function UploadArweave() {
   const [form] = useForm();
   const location = useLocation();
   const { step } = queryString.parse(location.search);
+  const {setAddressArweave} = useContext(DataContext);
   const [uploading] = useState(false);
 
   const onCompleteStep1 = () => {
@@ -39,6 +42,37 @@ function UploadArweave() {
   const onCompleteStep3 = () => {
     console.log("Completed");
   };
+
+  const beforeUpload = file => {
+    if (file.type !== 'application/json') {
+      notification.warn({
+        message: "Warning!",
+        description: `${file.name} is not a json file`,
+        placement: "bottomRight",
+      });
+      return false;
+    } else {
+      const reader = new FileReader();
+      // reader.readAsDataURL(file);
+      reader.readAsText(file)
+      reader.onload = async(e) => {
+        const arweave = Arweave.init({
+          host: "arweave.net",
+          port: 443,
+          protocol: "https",
+        });
+        let addressResult = await arweave.wallets.jwkToAddress(JSON.parse(e.target.result));
+        setAddressArweave(addressResult)
+        notification.success({
+          message: "Success!",
+          description: `Set address successfully.`,
+          placement: "bottomRight",
+          onClose: () => history.push(`/contents`)
+        });
+      }
+      return false;
+    }
+  }
 
   return (
     <UploadArweaveContainer>
@@ -196,8 +230,10 @@ function UploadArweave() {
                     <Dragger
                       name="file"
                       multiple={false}
-                      listType="picture"
-                      // beforeUpload={beforeUpload}
+                      listType={false}
+                      // previewFile={false}
+                      showUploadList={false}
+                      beforeUpload={beforeUpload}
                       fileList={false}
                     >
                       <div className="uploader-container">

@@ -16,7 +16,6 @@ const GlobalStyle = createGlobalStyle `
   .App {
     height: 100vh;
   }
-  .w100 {width: 100%;}
   nav {
     width: 100vw !important;
     max-width: 100vw !important;
@@ -82,37 +81,19 @@ const GlobalStyle = createGlobalStyle `
         box-shadow: unset;
         }
     }
-    .form-control:focus {
-        color: #495057;
-        background-color: #fff;
-        border-color: #ced4da;
-        box-shadow: unset;
-    }
-    .btn-blueDark {
-        background: ${colors.blueDark};
-        color: ${colors.white};
-        &:hover, &:focus, &:disabled {
-            color: ${colors.white};
-            background-color: ${colors.blueDark};
-            border-color: transparent;
-        }
-        font-weight: 600;
-    }
-    .btn-orange {
-        background: ${colors.orange};
-        color: ${colors.blueDark};
-    }
-    .btn-white {
-        background: ${colors.white};
-        color: ${colors.blueDark};
+    font-weight: 600;
+}
+.btn-orange {
+    background: ${colors.orange};
+    color: ${colors.blueDark};
+}
+.btn-white {
+    background: ${colors.white};
+    color: ${colors.blueDark};
+    border: 2.5px solid ${colors.blueDark};
+    &:hover, &:focus, &:active {
+        background-color: ${colors.white};
         border: 2.5px solid ${colors.blueDark};
-        &:hover, &:focus {
-            background-color: ${colors.white};
-            border: 2.5px solid ${colors.blueDark};
-        }
-    }
-    .btn-green {
-        background: ${colors.green};
         color: ${colors.blueDark};
     }
 
