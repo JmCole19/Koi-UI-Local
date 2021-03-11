@@ -15,6 +15,7 @@ import MyRoute from "service/MyRoute";
 import Leaderboard from "containers/Leaderboard";
 import RegisterContent from "containers/RegisterContent";
 import UploadArweave from "containers/UploadArweave";
+import UploadManual from "containers/UploadManual";
 import Checkout from "containers/Checkout";
 import Faucet from "containers/Faucet";
 import UploadOpenSea from "containers/UploadOpenSea";
@@ -51,6 +52,7 @@ function App() {
                 component={UploadEthereum}
               />
               <MyRoute exact path="/upload/arweave" component={UploadArweave} />
+              <MyRoute exact path="/upload/manual" component={UploadManual} />
               <MyRoute path="/faucet" component={Faucet} />
               <MyRoute path="/confirm-opensea" component={ConfirmOpenseas} />
             </DataContextContainer>
