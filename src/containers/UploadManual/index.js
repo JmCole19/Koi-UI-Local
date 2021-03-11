@@ -10,7 +10,7 @@ import cloneDeep from 'clone-deep'
 import { useHistory, useLocation } from "react-router-dom";
 import MyProgress from "components/Elements/MyProgress";
 import ArconnectCard from "components/Elements/ArconnectCard";
-import { show_notification } from 'service/utils'
+import { show_notification, getArWalletAddressFromJson } from 'service/utils'
 
 const { TextArea } = Input;
 const { Dragger } = Upload;
@@ -52,6 +52,31 @@ function UploadManual() {
     setActiveContent(tpContent)
   }
 
+  const beforeJsonUpload = (file) => {
+    console.log('file type : ', file)
+    const isJson = file.type === 'application/json';
+    if (!isJson) {
+      show_notification('You can only upload JPG/PNG file!');
+    }
+    const isLt1M = file.size / 1024 < 512;
+    if (!isLt1M) {
+      show_notification('JSON must smaller than 512KB!');
+    }
+    if(isJson && isLt1M) {
+      console.log("here1")
+      const reader = new FileReader();
+      reader.onload = async (e) => {
+        console.log(e.target.result)
+        var arJson = JSON.parse(e.target.result)
+        let addressResult = await getArWalletAddressFromJson(arJson);
+        show_notification(addressResult)
+      }
+      reader.readAsText(file);
+      // Prevent upload
+      return false;
+    }
+    return isJson && isLt1M;
+  }
   const beforeUpload = (file) => {
     // let fileExt = file.name.split('.')
     // fileExt = fileExt[fileExt.length - 1]
@@ -86,7 +111,7 @@ function UploadManual() {
   }
 
   const onOpenArConnect = () => {
-    show_notification("here is arconnect opening", 'KOI', 'success')
+    show_notification("ArConnection will be integrated soon", 'KOI', 'error')
   }
 
   useEffect(() => {
@@ -292,9 +317,10 @@ function UploadManual() {
                     <div className="single-ant-file-upload">
                       <Dragger
                         name="file"
+                        accept="application/JSON"
                         multiple={false}
                         listType="picture"
-                        // beforeUpload={beforeUpload}
+                        beforeUpload={beforeJsonUpload}
                         fileList={false}
                         showUploadList={false}
                       >
