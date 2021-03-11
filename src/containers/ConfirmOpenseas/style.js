@@ -8,7 +8,6 @@ export const ConfirmOpenseasContainer = styled.div`
   background-color: ${colors.white};
   display: flex;
   justify-content: center;
-  padding-top: 80px;
   .container {
     .upload-content-wrapper {
       padding: 30px 0 255px;
