@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Button, Image, Modal } from "react-bootstrap";
 import { Logo, IconLeft, ItemTempModal } from "assets/images";
 import { LeaderboardContainer, StyledThumb } from "./style";
@@ -99,15 +99,18 @@ function Leaderboard() {
 
   const onClickMyContent = () => {
     setIsFiltered(!isFiltered);
+    if (isFiltered) {
+      setItems(itemsTemp);
+    } else {
+      setItems(items.filter((_item) => _item.username === "alexmorris"));
+    }
   };
 
-  useEffect(() => {
-    if (isFiltered) {
-      setItems(items.filter((_item) => _item.username === "alexmorris"));
-    } else {
-      setItems(itemsTemp);
-    }
-  }, [isFiltered]);
+  const onClickUsername = (item) => {
+    setIsFiltered(true);
+    setItems(items.filter((_item) => _item.username === item.username));
+  }
+
   return (
     <LeaderboardContainer>
       <div className="leaderboard">
@@ -161,6 +164,7 @@ function Leaderboard() {
                 item={_item}
                 order={_i}
                 onClickItem={() => onClickItem(_item)}
+                onClickUsername={() => onClickUsername(_item)}
               />
             ))}
           <Collapse
