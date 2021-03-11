@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Container, Image, Button } from "react-bootstrap";
 import queryString from "query-string";
 import { IconUpload, IconArConnect } from "assets/images";
@@ -10,6 +10,7 @@ import cloneDeep from 'clone-deep'
 import { useHistory, useLocation } from "react-router-dom";
 import MyProgress from "components/Elements/MyProgress";
 import { show_notification } from 'service/utils'
+import {AnnounceContext} from "contexts/AnnounceContextContainer";
 
 const { TextArea } = Input;
 const { Dragger } = Upload;
@@ -24,6 +25,7 @@ const formItemLayout = {
 };
 
 function UploadManual() {
+  const {setMessage} = useContext(AnnounceContext)
   const history = useHistory();
   const [form] = useForm();
   const location = useLocation();
@@ -33,6 +35,7 @@ function UploadManual() {
   const [activeContent, setActiveContent] = useState({ title: '', owner: '', description: ''});
 
   const onCompleteStep1 = () => {
+    setMessage('this is test')
     history.push(`/upload/manual?step=2`);
   };
 

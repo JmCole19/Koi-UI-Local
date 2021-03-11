@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 
-const AnnounceContext = React.createContext(null);
+const AnnounceContext = React.createContext({
+  message: '',
+  setMessage: () => {}
+});
 
 export { AnnounceContext };
 
