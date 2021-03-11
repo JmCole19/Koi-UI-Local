@@ -61,11 +61,11 @@ function LeaderboardItem({
           </Button>
         </div>
         <div className="social-wrapper">
-          <FiTwitter size={24} color={colors.greenDark} />
-          <FaInstagram size={24} color={colors.greenDark} />
-          <FiFacebook size={24} color={colors.greenDark} />
-          <FiMessageCircle size={24} color={colors.greenDark} />
-          <HiOutlineMail size={24} color={colors.greenDark} />
+          <a href="https://twitter.com/" target="_blank" rel="noopener noreferrer"><FiTwitter size={24} color={colors.greenDark} /></a>
+          <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer"><FaInstagram size={24} color={colors.greenDark} /></a>
+          <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer"><FiFacebook size={24} color={colors.greenDark} /></a>
+          <a href="sms:"><FiMessageCircle size={24} color={colors.greenDark} /></a>
+          <a href="mailto:itsimpledeveloper@gmail.com"><HiOutlineMail size={24} color={colors.greenDark} /></a>
         </div>
       </div>
     </LeaderboardItemContainer>
