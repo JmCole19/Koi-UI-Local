@@ -13,6 +13,8 @@ function LeaderboardItem({
   order,
   onClickItem = () => {},
   onClickUsername = () => {},
+  onClickShare = () => {},
+  onClickEmbed = () => {},
 }) {
   return (
     <LeaderboardItemContainer>
@@ -55,17 +57,41 @@ function LeaderboardItem({
           </h5>
         </div>
         <div className="btns-wrapper">
-          <Button className="btn-share btn-blue">Share</Button>
-          <Button className="btn-html">
+          <Button className="btn-share btn-blue" onClick={onClickShare}>
+            Share
+          </Button>
+          <Button className="btn-html" onClick={onClickEmbed}>
             <Image src={IconHtml} />
           </Button>
         </div>
         <div className="social-wrapper">
-          <a href="https://twitter.com/" target="_blank" rel="noopener noreferrer"><FiTwitter size={24} color={colors.greenDark} /></a>
-          <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer"><FaInstagram size={24} color={colors.greenDark} /></a>
-          <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer"><FiFacebook size={24} color={colors.greenDark} /></a>
-          <a href="sms:"><FiMessageCircle size={24} color={colors.greenDark} /></a>
-          <a href="mailto:itsimpledeveloper@gmail.com"><HiOutlineMail size={24} color={colors.greenDark} /></a>
+          <a
+            href="https://twitter.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <FiTwitter size={24} color={colors.greenDark} />
+          </a>
+          <a
+            href="https://www.instagram.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <FaInstagram size={24} color={colors.greenDark} />
+          </a>
+          <a
+            href="https://www.facebook.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <FiFacebook size={24} color={colors.greenDark} />
+          </a>
+          <a href="sms:">
+            <FiMessageCircle size={24} color={colors.greenDark} />
+          </a>
+          <a href="mailto:itsimpledeveloper@gmail.com">
+            <HiOutlineMail size={24} color={colors.greenDark} />
+          </a>
         </div>
       </div>
     </LeaderboardItemContainer>

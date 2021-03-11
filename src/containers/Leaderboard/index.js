@@ -85,7 +85,15 @@ function Leaderboard() {
 
   const onClickItem = (item) => {
     setSelectedItem(item);
-    history.push(`/content-detail/${item.id}`)
+    history.push(`/content-detail/${item.id}?type=view`)
+    // setShowModalItem(true);
+  };
+  const onClickShare = (item) => {
+    history.push(`/content-detail/${item.id}?type=share`)
+    // setShowModalItem(true);
+  };
+  const onClickEmbed = (item) => {
+    history.push(`/content-detail/${item.id}?type=embed`)
     // setShowModalItem(true);
   };
 
@@ -165,6 +173,8 @@ function Leaderboard() {
                 order={_i}
                 onClickItem={() => onClickItem(_item)}
                 onClickUsername={() => onClickUsername(_item)}
+                onClickShare={() => onClickShare(_item)}
+                onClickEmbed={() => onClickEmbed(_item)}
               />
             ))}
           <Collapse

@@ -1,22 +1,44 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { ItemTempModal, IconShare, IconHtml } from "assets/images";
 import React, { useEffect, useState } from "react";
-import { Alert, Button, Col, Container, Image, Row } from "react-bootstrap";
+import queryString from "query-string";
+import {
+  Alert,
+  Button,
+  Col,
+  Container,
+  Image,
+  Modal,
+  Row,
+} from "react-bootstrap";
 import { FaInstagram } from "react-icons/fa";
 import { FiFacebook, FiMessageCircle, FiTwitter } from "react-icons/fi";
 import { HiOutlineMail } from "react-icons/hi";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import { colors } from "theme";
 import { ContentDetailContainer } from "./style";
 
 function ContentDetail() {
   const history = useHistory();
-
-  const [show, setShow] = useState(false);
+  const location = useLocation();
+  const { type } = queryString.parse(location.search);
+  const [showMessage, setShowMessage] = useState(false);
+  const [showModalShare, setShowModalShare] = useState(false);
+  const [showModalEmbed, setShowModalEmbed] = useState(false);
 
   useEffect(() => {
-    if (!show) {
-      let timer = setTimeout(() => setShow(true), 1000);
+    showModalShare && setShowModalShare(false);
+    showModalEmbed && setShowModalEmbed(false);
+    if (type === "share") {
+      setShowModalShare(true);
+    } else if (type === "embed") {
+      setShowModalEmbed(true);
+    }
+  }, [type]);
+
+  useEffect(() => {
+    if (!showMessage) {
+      let timer = setTimeout(() => setShowMessage(true), 1000);
       return () => {
         clearTimeout(timer);
       };
@@ -38,7 +60,7 @@ function ContentDetail() {
             </Button>
           </div>
           <div className="detail-body">
-            <Alert show={show} variant="success">
+            <Alert show={showMessage} variant="success">
               <p className="text-blue text-center mb-0">
                 You just voted with your attention! Since you viewed this page,
                 the owner will be rewarded with KOI. <br />
@@ -98,6 +120,20 @@ function ContentDetail() {
           </div>
         </div>
       </div>
+      <Modal
+        show={showModalShare}
+        onHide={() => setShowModalShare(false)}
+        dialogClassName="item-modal"
+      >
+        <Modal.Body>Modal Share</Modal.Body>
+      </Modal>
+      <Modal
+        show={showModalEmbed}
+        onHide={() => setShowModalEmbed(false)}
+        dialogClassName="item-modal"
+      >
+        <Modal.Body>Modal Embed</Modal.Body>
+      </Modal>
     </ContentDetailContainer>
   );
 }
