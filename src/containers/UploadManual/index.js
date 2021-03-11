@@ -10,7 +10,7 @@ import cloneDeep from 'clone-deep'
 import { useHistory, useLocation } from "react-router-dom";
 import MyProgress from "components/Elements/MyProgress";
 import ArconnectCard from "components/Elements/ArconnectCard";
-import { show_notification } from 'service/utils'
+import { show_notification, show_message } from 'service/utils'
 
 const { TextArea } = Input;
 const { Dragger } = Upload;
@@ -83,6 +83,10 @@ function UploadManual() {
     // } else {
     //   // show_notification('Please input only image and video.')
     // }
+  }
+
+  const onOpenArConnect = () => {
+    show_message("here is arconnect opening")
   }
 
   useEffect(() => {
@@ -310,7 +314,7 @@ function UploadManual() {
                         </div>
                       </Dragger>
                     </div>
-                    <ArconnectCard />
+                    <ArconnectCard openArConnect={onOpenArConnect} />
                   </div>
                 </Form>
                 <p className='footer-description text-blue'>Don’t have any Arweave (AR) tokens? Visit the <a href="/faucet" target="_blank">Arweave Faucet</a> to get started.</p>

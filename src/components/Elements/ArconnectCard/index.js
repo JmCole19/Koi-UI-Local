@@ -4,9 +4,11 @@ import { IconArConnect } from "assets/images";
 import { Image } from "react-bootstrap";
 import { ArconnectCardContainer } from "./style";
 
-function ArconnectCard() {
+function ArconnectCard({
+    openArConnect = () => {}
+}) {
   return (
-    <ArconnectCardContainer>
+    <ArconnectCardContainer onClick={openArConnect}>
         <div className='card-icon'>
             <Image src={IconArConnect} />
         </div>

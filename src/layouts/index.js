@@ -8,7 +8,6 @@ import {AnnounceContext} from "contexts/AnnounceContextContainer";
 
 const PageLayout = ({ children }) => {
   const { message } = useContext(AnnounceContext)
-  console.log('announcement message : ', message)
   return (
     <PageLayoutContainer>
       <Topbar />
