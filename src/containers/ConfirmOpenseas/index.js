@@ -9,13 +9,15 @@ import {
   IconOpenSea,
   IconShare,
   IconUpload,
+  ItemTemp,
 } from "assets/images";
 import { ConfirmOpenseasContainer } from "./style";
-import { Col, Form, Input, Row, Upload, Spin, Progress } from "antd";
+import { Col, Form, Input, Row, Upload, Spin, Progress, Space } from "antd";
 import { useForm } from "antd/lib/form/Form";
 import { useHistory, useLocation } from "react-router-dom";
 import { colors } from "theme";
 import { DataContext } from "contexts/DataContextContainer";
+import { FaTimes } from "react-icons/fa";
 
 const { TextArea } = Input;
 const { Dragger } = Upload;
@@ -37,22 +39,18 @@ function ConfirmOpenseas() {
   const { step = "1", selected, address } = queryString.parse(location.search);
   const [uploading] = useState(false);
   const [activeOpenSea, setActiveOpenSea] = useState({});
-  const [showModal, setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState(true);
   const selectedIds = selected.split("_");
-  console.log({ selectedIds });
 
-
-  const handleClose = () => setShowModal(false);
-  
   const onClickConfirm = () => {
     if (parseInt(step) === selectedIds.length) {
-
+      setShowModal(true);
     } else {
-    history.push(
-      `/confirm-opensea?address=${address}&step=${
-        parseInt(step) + 1
-      }&selected=${selected}`
-    );
+      history.push(
+        `/confirm-opensea?address=${address}&step=${
+          parseInt(step) + 1
+        }&selected=${selected}`
+      );
     }
   };
 
@@ -60,7 +58,10 @@ function ConfirmOpenseas() {
     console.log("Completed");
   };
 
-  console.log({ activeOpenSea });
+  const onConnectWallet = () => {
+    console.log("connect wallet")
+  }
+
   useEffect(() => {
     setActiveOpenSea(
       openSeas.find(
@@ -79,8 +80,8 @@ function ConfirmOpenseas() {
       };
 
       fetch(
-        // `https://api.opensea.io/api/v1/assets?owner=0xd703accc62251189a67106f22d54cd470494de40&order_direction=desc&offset=0&limit=20`,
-        `https://api.opensea.io/api/v1/assets?owner=${address}&order_direction=desc&offset=0&limit=20`,
+        `https://api.opensea.io/api/v1/assets?owner=0xd703accc62251189a67106f22d54cd470494de40&order_direction=desc&offset=0&limit=20`,
+        // `https://api.opensea.io/api/v1/assets?owner=${address}&order_direction=desc&offset=0&limit=20`,
         options
       )
         .then((response) => {
@@ -322,20 +323,54 @@ function ConfirmOpenseas() {
             </div>
           </div>
         </div>
-        <Modal show={showModal}>
-        <Modal.Header closeButton>
-          <Modal.Title>Modal heading</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-          <Button variant="primary" onClick={handleClose}>
-            Save Changes
-          </Button>
-        </Modal.Footer>
-      </Modal>
+        <Modal
+          show={showModal}
+          centered
+          dialogClassName="modal-confirm-transaction"
+        >
+          <Modal.Body>
+            <FaTimes
+              className="icon-close"
+              color={colors.blueDark}
+              size={24}
+              onClick={() => setShowModal(false)}
+            />
+            <h2 className="modal-title text-blue">Confirm transaction</h2>
+            <div className="imgs-wrapper">
+              <Space size={28}>
+                <Image src={ItemTemp} width={40} />
+                <Image src={ItemTemp} width={40} />
+                <Image src={ItemTemp} width={40} />
+              </Space>
+            </div>
+            <div className="modal-row mb-2">
+              <div className="modal-row-left">
+                <p className="text-blue mb-0">
+                  AR to upload: <b>0.0002 AR</b> / NFT{" "}
+                </p>
+              </div>
+              <div className="modal-row-right">
+                <p className="text-blue mb-0">x 3 uploads</p>
+              </div>
+            </div>
+            <div className="modal-row mb-4">
+              <div className="modal-row-left">
+                <p className="text-blue mb-0">
+                  KOI to upload: <b>1.0 KOI</b> / NFT{" "}
+                </p>
+              </div>
+              <div className="modal-row-right">
+                <p className="text-blue mb-0">x 3 uploads</p>
+              </div>
+            </div>
+            <h6 className="text-blue">
+              <b>Estimated Total</b>
+            </h6>
+            <h6 className="text-blue">0.006 AR</h6>
+            <h6 className="text-blue">3.0 KOI</h6>
+            <Button className="btn-blueDark btn-connect" onClick={onConnectWallet}>Connect Wallet</Button>
+          </Modal.Body>
+        </Modal>
       </Container>
     </ConfirmOpenseasContainer>
   );
