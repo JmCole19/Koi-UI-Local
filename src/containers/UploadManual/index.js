@@ -41,7 +41,11 @@ function UploadManual() {
 
   const onCompleteStep2 = () => {
     console.log(activeContent)
-    history.push(`/upload/manual?step=3`);
+    if(activeContent.title && activeContent.owner && activeContent.description){
+      history.push(`/upload/manual?step=3`);
+    }else{
+      show_notification('Please fill out all fields.', 'Error')
+    }
   };
 
   const onCompleteStep3 = () => {
@@ -263,7 +267,7 @@ function UploadManual() {
                               Add Details
                             </Button>
                             <Button 
-                              onClick={onCompleteStep2}
+                              onClick={() => history.push(`/upload/manual?step=1`)}
                               className="btn-white btn-edit ml-3">
                               Add Later
                             </Button>

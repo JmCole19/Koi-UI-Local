@@ -55,7 +55,7 @@ const exportNFT = async (ownerAddress, wallet1 = 0.0002, imageUrl = '', imageBlo
   const tx = await arweave.createTransaction({
     // eslint-disable-next-line no-undef
     data: nftData.data
-  }, wallet);
+  });
 
   tx.addTag('Content-Type', 'image/png')
   tx.addTag('Network', 'Koi')
@@ -65,7 +65,7 @@ const exportNFT = async (ownerAddress, wallet1 = 0.0002, imageUrl = '', imageBlo
   tx.addTag('Contract-Src', contractSrc)
   tx.addTag('Init-State', JSON.stringify(initialState))
 
-  await arweave.transactions.sign(tx, wallet);
+  await arweave.transactions.sign(tx);
   console.log(tx);
   console.log(tx.id);
   console.log(" wallet : ", wallet);
