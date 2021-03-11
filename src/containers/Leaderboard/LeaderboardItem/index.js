@@ -21,20 +21,28 @@ function LeaderboardItem({ item = {}, order, onClickItem = () => {} }) {
         <div className="item-info-wrapper item-col">
           <h2 className="item-title mb-1">{item.title}</h2>
           <p className="item-username mb-3">{item.username}</p>
-          <p className="item-created_at mb-0">Created: {item.created_at}</p>
+          <p className="item-created_at mb-0">Registered: {item.created_at}</p>
+          <a
+            href="https://viewblock.io/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="explore-block mb-0"
+          >
+            explore block
+          </a>
         </div>
       </div>
       <div className="part-right">
         <div className="item-reviews-wrapper item-col">
           <h5 className="item-total_reviews mb-0">
             {item.total_reviews}
-            <span className='ml-2'>
+            <span className="ml-2">
               <Image src={IconEyes} />
             </span>
           </h5>
           <h5 className="item-rewards mb-0">
             {item.rewards}{" "}
-            <span className='ml-1'>
+            <span className="ml-1">
               <Image src={IconFish} />
             </span>
           </h5>
