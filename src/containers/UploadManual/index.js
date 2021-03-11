@@ -6,6 +6,7 @@ import { IconUpload, IconArConnect } from "assets/images";
 import { UploadUploadContainer } from "./style";
 import { Col, Form, Input, Row, Upload, Spin } from "antd";
 import { useForm } from "antd/lib/form/Form";
+import cloneDeep from 'clone-deep'
 import { useHistory, useLocation } from "react-router-dom";
 import MyProgress from "components/Elements/MyProgress";
 import { show_notification } from 'service/utils'
@@ -44,8 +45,10 @@ function UploadManual() {
     console.log("Completed");
   };
 
-  const updateContent = () {
-    
+  const updateContent = (key, value) => {
+    let tpContent = cloneDeep(activeContent)
+    tpContent[key] = value
+    setActiveContent(tpContent)
   }
 
   const beforeUpload = (file) => {
@@ -316,7 +319,7 @@ function UploadManual() {
                     </div>
                   </div>
                 </Form>
-                <p className='footer-description text-blue'>Don’t have any Arweave (AR) tokens? Visit the <a href="#/">Arweave Faucet</a> to get started.</p>
+                <p className='footer-description text-blue'>Don’t have any Arweave (AR) tokens? Visit the <a href="/faucet" target="_blank">Arweave Faucet</a> to get started.</p>
               </div>
             )}
           </div>
