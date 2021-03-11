@@ -279,6 +279,12 @@ const GlobalStyle = createGlobalStyle`
             }
         }
     }
+    .custom-notification-error{
+        background-color: ${colors.errorBackground};
+    }
+    .custom-notification-success{
+        background-color: ${colors.successBackground};
+    }
 `;
 
 export default GlobalStyle;

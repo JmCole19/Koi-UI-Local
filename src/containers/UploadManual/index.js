@@ -10,7 +10,7 @@ import cloneDeep from 'clone-deep'
 import { useHistory, useLocation } from "react-router-dom";
 import MyProgress from "components/Elements/MyProgress";
 import ArconnectCard from "components/Elements/ArconnectCard";
-import { show_notification, show_message } from 'service/utils'
+import { show_notification } from 'service/utils'
 
 const { TextArea } = Input;
 const { Dragger } = Upload;
@@ -86,13 +86,13 @@ function UploadManual() {
   }
 
   const onOpenArConnect = () => {
-    show_message("here is arconnect opening")
+    show_notification("here is arconnect opening", 'KOI', 'success')
   }
 
   useEffect(() => {
-    if(step !== '1' && !imageUrl) {
-      history.replace(`/upload/manual?step=1`);
-    }
+    // if(step !== '1' && !imageUrl) {
+    //   history.replace(`/upload/manual?step=1`);
+    // }
   }, [])
 
   return (
@@ -277,7 +277,7 @@ function UploadManual() {
                             <p className="mb-0 text-blue ml-2">
                               Drag & Drop your Arweave keyfile or connect using
                               an{" "}
-                              <a href="#/" className="text-bold">
+                              <a href="https://chrome.google.com/webstore/detail/arconnect/einnioafmpimabjcddiinlhmijaionap" target="_blank" rel="noopener noreferrer" className="text-bold">
                                 Arweave browser extension
                               </a>
                               .
@@ -307,7 +307,7 @@ function UploadManual() {
                                 <Image src={IconUpload} />
                               </div>
                               <p className="text-blue mb-0">
-                                Drag & Drop your Ethereum keyfile here.
+                                Drag & Drop your Arweave keyfile here.
                               </p>
                             </>
                           )}

@@ -18,6 +18,7 @@ export const colors = {
   green: '#49CE8B',
   greenDark: '#237B75',
   errorBackground: '#FFA6A6',
+  successBackground: '#9BE7C4',
 }
 
 export const mixins = {
