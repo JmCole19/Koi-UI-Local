@@ -72,8 +72,8 @@ const GlobalStyle = createGlobalStyle`
         font-weight: 600 !important;
         border-color: transparent;
         &:focus, &:hover {
-        border-color: transparent;
-        box-shadow: unset;
+            border-color: transparent;
+            box-shadow: unset;
         }
     }
     .form-control:focus {
@@ -101,6 +101,7 @@ const GlobalStyle = createGlobalStyle`
         color: ${colors.blueDark};
         border: 2.5px solid ${colors.blueDark};
         &:hover, &:focus, &:active {
+            color: ${colors.blueDark};
             background-color: ${colors.white};
             border: 2.5px solid ${colors.blueDark};
         }

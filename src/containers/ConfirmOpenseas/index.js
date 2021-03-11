@@ -39,7 +39,7 @@ function ConfirmOpenseas() {
   const { step = "1", selected, address } = queryString.parse(location.search);
   const [uploading] = useState(false);
   const [activeOpenSea, setActiveOpenSea] = useState({});
-  const [showModal, setShowModal] = useState(true);
+  const [showModal, setShowModal] = useState(false);
   const selectedIds = selected.split("_");
 
   const onClickConfirm = () => {
@@ -54,6 +54,13 @@ function ConfirmOpenseas() {
     }
   };
 
+  const onClickEditLater = () => {
+    history.push(
+      `/confirm-opensea?address=${address}&step=${
+        parseInt(step) + 1
+      }&selected=${selected}`
+    );
+  }
   const onCompleteStep3 = () => {
     console.log("Completed");
   };
@@ -80,8 +87,8 @@ function ConfirmOpenseas() {
       };
 
       fetch(
-        `https://api.opensea.io/api/v1/assets?owner=0xd703accc62251189a67106f22d54cd470494de40&order_direction=desc&offset=0&limit=20`,
-        // `https://api.opensea.io/api/v1/assets?owner=${address}&order_direction=desc&offset=0&limit=20`,
+        // `https://api.opensea.io/api/v1/assets?owner=0xd703accc62251189a67106f22d54cd470494de40&order_direction=desc&offset=0&limit=20`,
+        `https://api.opensea.io/api/v1/assets?owner=${address}&order_direction=desc&offset=0&limit=20`,
         options
       )
         .then((response) => {
@@ -172,7 +179,7 @@ function ConfirmOpenseas() {
                             >
                               Confirm & Upload
                             </Button>
-                            <Button className="btn-white btn-edit ml-3">
+                            <Button className="btn-white btn-edit ml-3" onClick={onClickEditLater}>
                               Edit Later
                             </Button>
                           </Form.Item>
@@ -330,7 +337,7 @@ function ConfirmOpenseas() {
         >
           <Modal.Body>
             <FaTimes
-              className="icon-close"
+              className="icon-close cursor"
               color={colors.blueDark}
               size={24}
               onClick={() => setShowModal(false)}

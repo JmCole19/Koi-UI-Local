@@ -162,7 +162,7 @@ function RegisterContent() {
                 <div
                   key={_i}
                   className={`register-card cursor ${_card.comingSoon ? 'disable' : ''}`}
-                  onClick={() => onClickCard(_card)}
+                  onClick={() => !_card.comingSoon && onClickCard(_card)}
                 >
                   {_card.comingSoon && <div className="coming-soon">Coming soon</div>}
                   <div className="card-img">

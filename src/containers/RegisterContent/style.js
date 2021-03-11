@@ -8,7 +8,6 @@ export const RegisterContentContainer = styled.div`
   background-color: ${colors.white};
   display: flex;
   justify-content: center;
-  padding-top: 80px;
   .container {
     .register-content-wrapper {
       padding: 30px 0 100px;
@@ -35,7 +34,7 @@ export const RegisterContentContainer = styled.div`
             align-items: center;
             margin-bottom: 15px;
             cursor: pointer;
-            &.cursor.disable{
+            &.disable{
               cursor: not-allowed;
               background: ${colors.white};
             }

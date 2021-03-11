@@ -8,7 +8,6 @@ export const UploadUploadContainer = styled.div`
   background-color: ${colors.white};
   display: flex;
   justify-content: center;
-  padding-top: 80px;
   .single-ant-file-upload {
     width: 270px;
     height: 152px;
