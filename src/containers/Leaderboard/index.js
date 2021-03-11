@@ -1,7 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Image, Modal } from "react-bootstrap";
 import { Logo, IconLeft, ItemTempModal } from "assets/images";
+// import {koiTools} from 'koi_tools';
 import { LeaderboardContainer, StyledThumb } from "./style";
 import { Collapse } from "antd";
 import ReactSlider from "react-slider";
@@ -73,6 +74,7 @@ const options = ["24h", "1w", "1m", "1y", "all"];
 
 function Leaderboard() {
   const history = useHistory();
+  // const ktools = new koiTools();
   // const [activeOption, setActiveOption] = useState("24h");
   const [isExpanded, setIsExpanded] = useState(false);
   const [selectedItem, setSelectedItem] = useState({});
@@ -119,6 +121,9 @@ function Leaderboard() {
     setItems(items.filter((_item) => _item.username === item.username));
   }
 
+  // useEffect(() => {
+  //   ktools.retrieveTopContent().then(res => console.log({res}))
+  // })
   return (
     <LeaderboardContainer>
       <div className="leaderboard">
