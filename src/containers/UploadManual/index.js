@@ -1,16 +1,16 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import { Container, Image, Button } from "react-bootstrap";
 import queryString from "query-string";
-import { IconUpload, IconArConnect } from "assets/images";
+import { IconUpload } from "assets/images";
 import { UploadUploadContainer } from "./style";
 import { Col, Form, Input, Row, Upload, Spin } from "antd";
 import { useForm } from "antd/lib/form/Form";
 import cloneDeep from 'clone-deep'
 import { useHistory, useLocation } from "react-router-dom";
 import MyProgress from "components/Elements/MyProgress";
+import ArconnectCard from "components/Elements/ArconnectCard";
 import { show_notification } from 'service/utils'
-import {AnnounceContext} from "contexts/AnnounceContextContainer";
 
 const { TextArea } = Input;
 const { Dragger } = Upload;
@@ -25,7 +25,6 @@ const formItemLayout = {
 };
 
 function UploadManual() {
-  const {setMessage} = useContext(AnnounceContext)
   const history = useHistory();
   const [form] = useForm();
   const location = useLocation();
@@ -35,7 +34,6 @@ function UploadManual() {
   const [activeContent, setActiveContent] = useState({ title: '', owner: '', description: ''});
 
   const onCompleteStep1 = () => {
-    setMessage('this is test')
     history.push(`/upload/manual?step=2`);
   };
 
@@ -311,15 +309,8 @@ function UploadManual() {
                           )}
                         </div>
                       </Dragger>
-                      {/* {src.length > 0 && <p>{src[0].originalname.split('.')[1]}</p>} */}
-                      {/* <p className="text-secondary">dddddd</p> */}
                     </div>
-                    <div className="arConnect-card">
-                      <div className='card-icon'>
-                        <Image src={IconArConnect} />
-                      </div>
-                      <p className="text-blue text-center mb-0">Click here to open ArConnect browser extension. </p>
-                    </div>
+                    <ArconnectCard />
                   </div>
                 </Form>
                 <p className='footer-description text-blue'>Don’t have any Arweave (AR) tokens? Visit the <a href="/faucet" target="_blank">Arweave Faucet</a> to get started.</p>
