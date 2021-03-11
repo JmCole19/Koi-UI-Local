@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { colors, mixins } from "theme";
 
 export const PageLayoutContainer = styled.div`
   position: relative;
@@ -14,5 +15,19 @@ export const PageLayoutContainer = styled.div`
     width: 100%;
     display: flex;
     flex-direction: column;
+    padding-top: 80px;
+    .announcement-area{
+      padding: 15px 0;
+      background-color: ${colors.errorBackground};
+      .message-area{
+        max-width: 500px;
+        text-align: center;
+        margin: 0 auto;
+        font-size: 16px;
+        line-height: 22px;
+        letter-spacing: 0.03em;
+        color: #171753;
+      }
+    }
   }
 `;

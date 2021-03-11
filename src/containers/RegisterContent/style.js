@@ -23,6 +23,7 @@ export const RegisterContentContainer = styled.div`
           flex-wrap: wrap;
           margin-bottom: 15px;
           .register-card {
+            position: relative;
             width: 232px;
             height: 232px;
             background: ${colors.orangeLight};
@@ -34,6 +35,14 @@ export const RegisterContentContainer = styled.div`
             align-items: center;
             margin-bottom: 15px;
             cursor: pointer;
+            &.cursor.disable{
+              cursor: not-allowed;
+              background: ${colors.white};
+            }
+            .coming-soon{
+              position: absolute;
+              top: 8px;
+            }
             .card-img {
               flex: 4;
               display: flex;
