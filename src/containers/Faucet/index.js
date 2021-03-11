@@ -16,7 +16,7 @@ function Faucet() {
   const [showToast, setShowToast] = useState(false);
   const [errMessage, setErrMessage] = useState("");
   const { step } = queryString.parse(history.location.search);
-  const queryAddress = queryString.parse(history.location.search).address || '';
+  const queryAddress = queryString.parse(history.location.search).address || "";
   const [curStep, setCurStep] = useState(0);
 
   const onSkipGetWallet = () => {
@@ -64,7 +64,10 @@ function Faucet() {
         address: address,
       });
       if (ok) {
-        const { ok, data: {data} } = await customAxios.post(`/getKoi`, {
+        const {
+          ok,
+          data: { data },
+        } = await customAxios.post(`/getKoi`, {
           address: address,
         });
         if (ok) {
@@ -99,170 +102,176 @@ function Faucet() {
 
   useEffect(() => {
     step && setCurStep(parseInt(step));
-    queryAddress && setAddress(queryAddress)
+    queryAddress && setAddress(queryAddress);
   }, [step, queryAddress]);
 
   return (
     <FaucetContainer>
       <Container>
-        <h1 className="f-32 text-blue">Want to earn attention rewards?</h1>
-        <h6 className="faucet-description text-blue">
-          Get free KOI here so you can upload to the network. Just follow the
-          steps below.
-        </h6>
-        <Toast
-          onClose={() => setShowToast(false)}
-          show={showToast}
-          autohide
-          delay={3000}
-        >
-          <Toast.Header>
-            <i className="fal fa-info-circle text-warning"></i>
-            <strong className="mr-auto ml-2 text-warning">Warning!</strong>
-          </Toast.Header>
-          <Toast.Body>{errMessage}</Toast.Body>
-        </Toast>
-        <Carousel
-          className="faucet-cards-wrapper"
-          pause="hover"
-          nextIcon={null}
-          prevIcon={null}
-          indicators={null}
-          activeIndex={curStep}
-        >
-          <Carousel.Item>
-            <div className="faucet-step-card">
-              <h1 className="f-32 text-blue">1</h1>
-              <div className="step-content">
-                <h6 className="step-title text-blue">Get an Arweave wallet.</h6>
-                <h6 className="text-blue">
-                  Already have an Arweave wallet?{" "}
-                  <b className="cursor" onClick={onSkipGetWallet}>
-                    Skip ahead
-                  </b>
-                  .
-                </h6>
-                <Button
-                  className="btn-step-card mt-auto mx-auto"
-                  onClick={onClickGetWallet}
-                >
-                  Get a Wallet
-                </Button>
-                <p className="text-blue">
-                  This button downloads a .JSON wallet file. You don’t need to
-                  do anything with it yet.
-                </p>
-              </div>
-            </div>
-          </Carousel.Item>
-          <Carousel.Item>
-            <div className="faucet-step-card">
-              <div className="icon-back" onClick={() => onClickBackTo(0)}>
-                <i className="fal fa-arrow-circle-left"></i>
-              </div>
-              <h1 className="f-32 text-blue">1</h1>
-              <div className="step-content has-wallet">
-                <h6 className="step-title text-blue mb-4">Connect a wallet</h6>
-                <h6 className="text-blue">
-                  Paste your Arweave wallet address here.
-                </h6>
-                <div className="submit-wrapper">
-                  <Input
-                    className="input-address"
-                    placeholder="1234567890123456789012345678901234567890123"
-                    onChange={(e) => setAddress(e.target.value)}
-                  />
+        <div className="faucet-wrapper">
+          <h1 className="f-32 text-blue">Want to earn attention rewards?</h1>
+          <h6 className="faucet-description text-blue">
+            Get free KOI here so you can upload to the network. Just follow the
+            steps below.
+          </h6>
+          <Toast
+            onClose={() => setShowToast(false)}
+            show={showToast}
+            autohide
+            delay={3000}
+          >
+            <Toast.Header>
+              <i className="fal fa-info-circle text-warning"></i>
+              <strong className="mr-auto ml-2 text-warning">Warning!</strong>
+            </Toast.Header>
+            <Toast.Body>{errMessage}</Toast.Body>
+          </Toast>
+          <Carousel
+            className="faucet-cards-wrapper"
+            pause="hover"
+            nextIcon={null}
+            prevIcon={null}
+            indicators={null}
+            activeIndex={curStep}
+          >
+            <Carousel.Item>
+              <div className="faucet-step-card">
+                <h1 className="f-32 text-blue">1</h1>
+                <div className="step-content">
+                  <h6 className="step-title text-blue">
+                    Get an Arweave wallet.
+                  </h6>
+                  <h6 className="text-blue">
+                    Already have an Arweave wallet?{" "}
+                    <b className="cursor" onClick={onSkipGetWallet}>
+                      Skip ahead
+                    </b>
+                    .
+                  </h6>
                   <Button
-                    className="btn-step-card"
-                    onClick={onClickSubmitAddress}
+                    className="btn-step-card mt-auto mx-auto"
+                    onClick={onClickGetWallet}
                   >
-                    Submit Address
+                    Get a Wallet
                   </Button>
+                  <p className="text-blue">
+                    This button downloads a .JSON wallet file. You don’t need to
+                    do anything with it yet.
+                  </p>
                 </div>
               </div>
-            </div>
-          </Carousel.Item>
-          <Carousel.Item>
-            <div className="faucet-step-card">
-              <div className="icon-back" onClick={() => onClickBackTo(0)}>
-                <i className="fal fa-arrow-circle-left"></i>
+            </Carousel.Item>
+            <Carousel.Item>
+              <div className="faucet-step-card">
+                <div className="icon-back" onClick={() => onClickBackTo(0)}>
+                  <i className="fal fa-arrow-circle-left"></i>
+                </div>
+                <h1 className="f-32 text-blue">1</h1>
+                <div className="step-content has-wallet">
+                  <h6 className="step-title text-blue mb-4">
+                    Connect a wallet
+                  </h6>
+                  <h6 className="text-blue">
+                    Paste your Arweave wallet address here.
+                  </h6>
+                  <div className="submit-wrapper">
+                    <Input
+                      className="input-address"
+                      placeholder="1234567890123456789012345678901234567890123"
+                      onChange={(e) => setAddress(e.target.value)}
+                    />
+                    <Button
+                      className="btn-step-card"
+                      onClick={onClickSubmitAddress}
+                    >
+                      Submit Address
+                    </Button>
+                  </div>
+                </div>
               </div>
-              <h1 className="f-32 text-blue">2</h1>
-              <div className="step-content">
-                <h6 className="step-title text-blue">Verify with a Tweet.</h6>
-                <h6 className="text-blue">
-                  We need to make sure you’re a real person and not a bot.
-                  Posting on Twitter with an active account is the easiest way
-                  to do that.
-                </h6>
-                <Button
-                  className="btn-step-card mt-auto mx-auto"
-                  onClick={onClickTweet}
-                  disabled={!address}
-                >
-                  Tweet to Verify
-                </Button>
-                <p className="text-blue">
-                  We will generate the tweet for you. All you need to do is log
-                  in and click “Tweet.”
-                </p>
+            </Carousel.Item>
+            <Carousel.Item>
+              <div className="faucet-step-card">
+                <div className="icon-back" onClick={() => onClickBackTo(0)}>
+                  <i className="fal fa-arrow-circle-left"></i>
+                </div>
+                <h1 className="f-32 text-blue">2</h1>
+                <div className="step-content">
+                  <h6 className="step-title text-blue">Verify with a Tweet.</h6>
+                  <h6 className="text-blue">
+                    We need to make sure you’re a real person and not a bot.
+                    Posting on Twitter with an active account is the easiest way
+                    to do that.
+                  </h6>
+                  <Button
+                    className="btn-step-card mt-auto mx-auto"
+                    onClick={onClickTweet}
+                    disabled={!address}
+                  >
+                    Tweet to Verify
+                  </Button>
+                  <p className="text-blue">
+                    We will generate the tweet for you. All you need to do is
+                    log in and click “Tweet.”
+                  </p>
+                </div>
               </div>
-            </div>
-          </Carousel.Item>
-          <Carousel.Item>
-            <div className="faucet-step-card">
-              <div className="icon-back" onClick={() => onClickBackTo(2)}>
-                <i className="fal fa-arrow-circle-left"></i>
+            </Carousel.Item>
+            <Carousel.Item>
+              <div className="faucet-step-card">
+                <div className="icon-back" onClick={() => onClickBackTo(2)}>
+                  <i className="fal fa-arrow-circle-left"></i>
+                </div>
+                <h1 className="f-32 text-blue">3</h1>
+                <div className="step-content">
+                  <h6 className="step-title text-blue">Get KOI</h6>
+                  <h6 className="text-blue">
+                    After you’ve tweeted, click here to claim your free KOI!
+                  </h6>
+                  <Button
+                    className="btn-step-card mt-auto mx-auto"
+                    onClick={onClickGetKoi}
+                  >
+                    Get KOI
+                  </Button>
+                  <p className="text-blue">
+                    We will generate the tweet for you. All you need to do is
+                    log in and click “Tweet.”
+                  </p>
+                </div>
               </div>
-              <h1 className="f-32 text-blue">3</h1>
-              <div className="step-content">
-                <h6 className="step-title text-blue">Get KOI</h6>
-                <h6 className="text-blue">
-                  After you’ve tweeted, click here to claim your free KOI!
-                </h6>
-                <Button
-                  className="btn-step-card mt-auto mx-auto"
-                  onClick={onClickGetKoi}
-                >
-                  Get KOI
-                </Button>
-                <p className="text-blue">
-                  We will generate the tweet for you. All you need to do is log
-                  in and click “Tweet.”
-                </p>
+            </Carousel.Item>
+            <Carousel.Item>
+              <div className="faucet-step-card">
+                <div className="icon-back" onClick={() => onClickBackTo(3)}>
+                  <i className="fal fa-arrow-circle-left"></i>
+                </div>
+                {/* <h1 className="f-32 text-blue">4</h1> */}
+                <div className="step-content congratulation">
+                  <h6 className="step-title text-blue">
+                    You just earned 5 KOI!{" "}
+                  </h6>
+                  <h6 className="step-title text-blue">
+                    Your KOI balance: {koiBalance}
+                  </h6>
+                  <h6 className="text-blue text-center">
+                    In 3 minutes, you’ll be able to upload content, earn
+                    rewards, and much more.
+                  </h6>
+                  <Button
+                    className="btn-step-card mt-auto mx-auto"
+                    onClick={onClickUpload}
+                  >
+                    Upload Content
+                  </Button>
+                  <p className="text-blue">
+                    Head back to uploading your content and start earning.
+                  </p>
+                </div>
               </div>
-            </div>
-          </Carousel.Item>
-          <Carousel.Item>
-            <div className="faucet-step-card">
-              <div className="icon-back" onClick={() => onClickBackTo(3)}>
-                <i className="fal fa-arrow-circle-left"></i>
-              </div>
-              {/* <h1 className="f-32 text-blue">4</h1> */}
-              <div className="step-content congratulation">
-                <h6 className="step-title text-blue">
-                  You just earned 5 KOI!{" "}
-                </h6>
-                <h6 className="step-title text-blue">
-                  Your KOI balance: {koiBalance}
-                </h6>
-                <h6 className="text-blue text-center">
-                  In 3 minutes, you’ll be able to upload content, earn rewards,
-                  and much more.
-                </h6>
-                <Button
-                  className="btn-step-card mt-auto mx-auto"
-                  onClick={onClickUpload}
-                >
-                  Upload Content
-                </Button>
-                <p className="text-blue">
-                  Head back to uploading your content and start earning.
-                </p>
-              </div>
-            </div>
-          </Carousel.Item>
-        </Carousel>
+            </Carousel.Item>
+          </Carousel>
+        </div>
       </Container>
     </FaucetContainer>
   );

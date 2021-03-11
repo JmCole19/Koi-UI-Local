@@ -8,7 +8,6 @@ export const LeaderboardContainer = styled.div`
   background-color: ${colors.grayLight};
   display: flex;
   justify-content: center;
-  padding-top: 80px;
   .leaderboard {
     width: 100%;
     background: white;

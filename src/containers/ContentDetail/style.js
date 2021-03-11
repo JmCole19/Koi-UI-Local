@@ -8,7 +8,6 @@ export const ContentDetailContainer = styled.div`
   background-color: ${colors.grayLight};
   display: flex;
   justify-content: center;
-  padding-top: 80px;
   .content-detail-wrapper {
     width: 100%;
     padding: 0px 0 230px;
