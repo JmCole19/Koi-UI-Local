@@ -54,6 +54,10 @@ export const ContentDetailContainer = styled.div`
             }
           }
         }
+        .detail-img {
+          max-width: 480px;
+          max-height: 500px;
+        }
         .detail-body-description {
           h1 {
             font-size: 48px !important;

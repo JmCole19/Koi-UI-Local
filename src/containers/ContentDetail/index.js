@@ -1,7 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { ItemTempModal, IconShare, IconHtml, ItemTemp } from "assets/images";
-import React, { useEffect, useState } from "react";
+import { IconShare, IconHtml } from "assets/images";
+import React, { useContext, useEffect, useState } from "react";
 import queryString from "query-string";
+import { koi_tools } from "koi_tools";
 import {
   Alert,
   Button,
@@ -28,6 +29,10 @@ import { HiOutlineMail } from "react-icons/hi";
 import { useHistory, useLocation, useParams } from "react-router-dom";
 import { colors } from "theme";
 import { ContentDetailContainer } from "./style";
+import { DataContext } from "contexts/DataContextContainer";
+import { ScaleLoader } from "react-spinners";
+
+const preUrl = "https://arweave.net/";
 
 const contents = [
   {
@@ -84,38 +89,52 @@ const shareDirect = [
     title: "telegram",
   },
 ];
+const ktools = new koi_tools();
+
 function ContentDetail() {
   const history = useHistory();
   const location = useLocation();
   const { id } = useParams();
   const { type } = queryString.parse(location.search);
+  const { setContents } = useContext(DataContext);
+  const [isLoading, setIsLoading] = useState(false);
   const [detail, setDetail] = useState({});
   const [showMessage, setShowMessage] = useState(false);
-  const [showModal, setShowModal] = useState(true);
-  // const [showModalEmbed, setShowModalEmbed] = useState(false);
-  // const [currentModal, setCurrentModal] = useState("share");
-
+  const [showModal, setShowModal] = useState(false);
+  
   const onSwitchModal = () => {
     history.push(
       `/content-detail/${id}?type=${type === "share" ? "embed" : "share"}`
     );
   };
 
-  useEffect(() => {
-    // showModalShare && setShowModalShare(false);
-    // showModalEmbed && setShowModalEmbed(false);
-    // if (type === "share") {
-    //   setShowModalShare(true);
-    // } else if (type === "embed") {
-    //   setShowModalEmbed(true);
-    // }
-  }, [type]);
+  const getContents = async () => {
+    if (contents.length === 0) {
+      setIsLoading(true);
+      ktools.retrieveTopContent().then((res) => {
+        setContents(res);
+        setDetail(res.find((_content) => _content.txIdContent === id));
+        setIsLoading(false);
+        console.log({ res });
+      });
+    }
+  };
 
   useEffect(() => {
-    setDetail(contents.find((_content) => _content.txIdContent === id));
+    contents.length > 0 &&
+      setDetail(contents.find((_content) => _content.txIdContent === id));
   }, [id]);
 
   useEffect(() => {
+    if (type !== "view") {
+      setShowModal(true);
+    }
+  }, [type]);
+
+  useEffect(() => {
+    if (contents.length === 0) {
+      getContents();
+    }
     if (!showMessage) {
       let timer = setTimeout(() => setShowMessage(true), 1000);
       return () => {
@@ -124,73 +143,96 @@ function ContentDetail() {
     }
   }, [history.location.pathname]);
 
+  console.log({ detail });
   return (
     <ContentDetailContainer>
       <div className="content-detail-wrapper">
-        <div className="content-detail">
-          <div className="detail-header">
-            <div className="icon-back cursor" onClick={() => history.goBack()}>
-              <i className="fal fa-arrow-circle-left"></i>
+        {isLoading ? (
+          <div className="loading-container">
+            <ScaleLoader size={15} color={"#2a58ad"} />
+          </div>
+        ) : (
+          <div className="content-detail">
+            <div className="detail-header">
+              <div
+                className="icon-back cursor"
+                onClick={() => history.replace("/contents")}
+              >
+                <i className="fal fa-arrow-circle-left"></i>
+              </div>
+              <h2 className="text-blue mb-0">{detail.ticker}</h2>
+              <Button className="btn-orange ml-auto">Buy It</Button>
+              <Button className="btn-green btn-plus">
+                <i className="fas fa-plus"></i>
+              </Button>
             </div>
-            <h2 className="text-blue mb-0">{detail.ticker}</h2>
-            <Button className="btn-orange ml-auto">Buy It</Button>
-            <Button className="btn-green btn-plus">
-              <i className="fas fa-plus"></i>
-            </Button>
-          </div>
-          <div className="detail-body">
-            <Alert show={showMessage} variant="success">
-              <p className="text-blue text-center mb-0">
-                You just voted with your attention! Since you viewed this page,
-                the owner will be rewarded with KOI. <br />
-                <b>Upload something unique to start earning</b>.
-              </p>
-            </Alert>
-            <Container>
-              <Row>
-                <Col className="col-md-6">
-                  <Image src={ItemTempModal} width={480} />
-                </Col>
-                <Col className="col-md-6">
-                  <div className="detail-body-description">
-                    <h1 className="mb-0 text-blue">{detail.ticker}</h1>
-                    <p className="detail-username">{detail.name}</p>
-                    <p>Registered {detail.created_at || "Jan. 01, 2021"}</p>
-                    <p className="mb-0">{detail.description}</p>
-                    <p className="see-more">see more</p>
-                    <div className="views-wrapper">
-                      <div className="view-row">
-                        <h5 className="total-value">{detail.totalViews}</h5>
-                        <h5 className="total-views">total views</h5>
+            <div className="detail-body">
+              <Alert show={showMessage} variant="success">
+                <p className="text-blue text-center mb-0">
+                  You just voted with your attention! Since you viewed this
+                  page, the owner will be rewarded with KOI. <br />
+                  <b>Upload something unique to start earning</b>.
+                </p>
+              </Alert>
+              <Container>
+                <Row>
+                  <Col className="col-md-6">
+                    <Image
+                      src={`${preUrl}${detail.txIdContent}`}
+                      className="detail-img"
+                    />
+                  </Col>
+                  <Col className="col-md-6">
+                    <div className="detail-body-description">
+                      <h1 className="mb-0 text-blue">{detail.ticker}</h1>
+                      <p className="detail-username">{detail.name}</p>
+                      <p>Registered {detail.created_at || "Jan. 01, 2021"}</p>
+                      <p className="mb-0">{detail.description}</p>
+                      <p className="see-more">see more</p>
+                      <div className="views-wrapper">
+                        <div className="view-row">
+                          <h5 className="total-value">{detail.totalViews}</h5>
+                          <h5 className="total-views">total views</h5>
+                        </div>
+                        <div className="view-row">
+                          <h5 className="total-value">{detail.totalReward}</h5>
+                          <h5 className="total-views">total KOI rewards</h5>
+                        </div>
                       </div>
-                      <div className="view-row">
-                        <h5 className="total-value">{detail.totalReward}</h5>
-                        <h5 className="total-views">total KOI rewards</h5>
+                      <div className="btns-wrapper">
+                        <Button
+                          className="btn-share btn-blueDark"
+                          onClick={() =>
+                            history.push(`/content-detail/${id}?type=share`)
+                          }
+                        >
+                          <Image src={IconShare} />
+                          Share NFT
+                        </Button>
+                        <Button
+                          className="btn-html btn-white ml-3"
+                          onClick={() =>
+                            history.push(`/content-detail/${id}?type=embed`)
+                          }
+                        >
+                          <Image src={IconHtml} />
+                          Embed to Earn
+                        </Button>
+                      </div>
+                      <div className="social-wrapper">
+                        <FiTwitter size={24} color={colors.greenDark} />
+                        <FaInstagram size={24} color={colors.greenDark} />
+                        <FiFacebook size={24} color={colors.greenDark} />
+                        <FiMessageCircle size={24} color={colors.greenDark} />
+                        <HiOutlineMail size={24} color={colors.greenDark} />
                       </div>
                     </div>
-                    <div className="btns-wrapper">
-                      <Button className="btn-share btn-blueDark">
-                        <Image src={IconShare} />
-                        Share NFT
-                      </Button>
-                      <Button className="btn-html btn-white ml-3">
-                        <Image src={IconHtml} />
-                        Embed to Earn
-                      </Button>
-                    </div>
-                    <div className="social-wrapper">
-                      <FiTwitter size={24} color={colors.greenDark} />
-                      <FaInstagram size={24} color={colors.greenDark} />
-                      <FiFacebook size={24} color={colors.greenDark} />
-                      <FiMessageCircle size={24} color={colors.greenDark} />
-                      <HiOutlineMail size={24} color={colors.greenDark} />
-                    </div>
-                  </div>
-                </Col>
-              </Row>
-            </Container>
+                  </Col>
+                </Row>
+              </Container>
+            </div>
           </div>
-        </div>
+        )}
       </div>
       <Modal
         show={showModal}
@@ -204,7 +246,11 @@ function ContentDetail() {
             size={24}
             onClick={() => setShowModal(false)}
           />
-          <h2 className="modal-title text-blue">Share to earn more rewards</h2>
+          <h2 className="modal-title text-blue">
+            {type === "share"
+              ? "Share to earn more rewards"
+              : "Embed your NFT to earn more."}
+          </h2>
           {type === "embed" && (
             <h6 className="modal-description text-blue">
               Every time someone visits a site with your embedded NFTs, you’ll
@@ -214,8 +260,8 @@ function ContentDetail() {
           {type === "share" ? (
             <div className="content-wrapper content-share">
               <div className="modal-left">
-                <Image src={ItemTemp} />
-                <h6 className="text-blue mb-0 text-bold">Genesis</h6>
+                <Image src={`${preUrl}${detail.txIdContent}`} />
+                <h6 className="text-blue mb-0 text-bold">{detail.name}</h6>
               </div>
               <div className="modal-right">
                 <div className="part">
@@ -224,6 +270,7 @@ function ContentDetail() {
                     <input
                       type="text"
                       className="form-control"
+                      value={`${window.location.hostname}${location.pathname}`}
                       placeholder="koi.rocks/genesis_1857746"
                     />
                     <span className="input-group-btn">
@@ -260,8 +307,8 @@ function ContentDetail() {
           ) : (
             <div className="content-wrapper content-embed">
               <div className="modal-left">
-                <Image src={ItemTemp} width={136} />
-                <h6 className="text-blue mb-0 text-bold">Genesis</h6>
+                <Image src={`${preUrl}${detail.txIdContent}`} />
+                <h6 className="text-blue mb-0 text-bold">{detail.name}</h6>
               </div>
               <div className="modal-right">
                 <div className="part">
