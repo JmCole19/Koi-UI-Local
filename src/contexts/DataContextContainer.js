@@ -10,6 +10,7 @@ const DataContextContainer = (props) => {
   const [addressEth, setAddressEth] = useState(null);
   const [openSeas, setOpenSeas] = useState([]);
   const [addressArweave, setAddressArweave] = useState("");
+  const [contents, setContents] = useState([]);
 
   return (
     <DataContext.Provider
@@ -22,6 +23,8 @@ const DataContextContainer = (props) => {
         setOpenSeas,
         addressArweave,
         setAddressArweave,
+        contents,
+        setContents,
       }}
     >
       {props.children}

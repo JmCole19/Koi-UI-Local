@@ -123,78 +123,7 @@ const GlobalStyle = createGlobalStyle`
     .cursor {
         cursor: pointer;
     }
-    .item-modal {
-        .modal-content {
-            .modal-body {
-                padding: 0;
-                .item-modal-header {
-                    background: ${colors.blueDark};
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                    height: 48px;
-                    padding: 0 16px;
-                    h2 {
-                        margin-left: 20px;
-                    }
-                    .btn {
-                        height: 30px;
-                        font-size: 16px;
-                        line-height: 18px;
-                        text-align: center;
-                        letter-spacing: 0.03em;
-                    }
-                }
-                .item-modal-body {
-                    padding: 16px 87px;
-                    .img-wrapper {
-                        img {
-                            width: 100%;
-                        }
-                    }
-                    .item-info-wrapper {
-                        display: flex;
-                        justify-content: space-between;
-                        align-items: flex-start;
-                        .item-info-left {
-                            .item-username {
-                                font-weight: 500;
-                                font-size: 16px;
-                                line-height: 24px;
-                                letter-spacing: 0.03em;
-                                background: #FFC78F;
-                                border-radius: 2px;
-                                width: fit-content;
-                                padding: 2px 5px;
-                            }
-                        }
-                        .item-info-right {
-                            display: flex;
-                            flex-direction: column;
-                            align-items: flex-end;
-                        }
-                    }
-                }
-            }
-        }
-        @media (min-width: 576px) {
-            max-width: 800px;
-        }
-        @media (max-width: ${mixins.sm}px) {
-            .modal-content {
-                .modal-body {
-                    .item-modal-body {
-                        padding: 16px 13px;
-                        .item-info-wrapper {
-                            h1 {
-                                font-size: 28px !important;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
+    
     .modal-confirm-transaction {
         .modal-content {
             display: flex;

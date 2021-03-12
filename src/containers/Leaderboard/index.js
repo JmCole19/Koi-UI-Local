@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from "react";
-import { Button, Image, Modal } from "react-bootstrap";
-import { Logo, IconLeft, ItemTempModal } from "assets/images";
+import React, { useContext, useEffect, useState } from "react";
+import { Button } from "react-bootstrap";
 import { koi_tools } from "koi_tools";
 import { ScaleLoader } from "react-spinners";
 import { LeaderboardContainer, StyledThumb } from "./style";
@@ -9,37 +8,28 @@ import { Collapse } from "antd";
 import ReactSlider from "react-slider";
 import { useHistory } from "react-router-dom";
 import LeaderboardItem from "./LeaderboardItem";
+import { DataContext } from "contexts/DataContextContainer";
 
 const { Panel } = Collapse;
-const preUrl = "https://arweave.net/";
 const options = ["24h", "1w", "1m", "1y", "all"];
+
+const ktools = new koi_tools();
 
 function Leaderboard() {
   const history = useHistory();
-  const ktools = new koi_tools();
-  // const [activeOption, setActiveOption] = useState("24h");
+  const { contents, setContents } = useContext(DataContext);
   const [isExpanded, setIsExpanded] = useState(false);
-  const [selectedItem, setSelectedItem] = useState({});
   const [isFiltered, setIsFiltered] = useState(false);
-  const [contents, setContents] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  const [showModalItem, setShowModalItem] = useState(false);
-
-  const handleClose = () => setShowModalItem(false);
-
   const onClickItem = (item) => {
-    setSelectedItem(item);
-    history.push(`/content-detail/${item.id}?type=view`);
-    // setShowModalItem(true);
+    history.push(`/content-detail/${item.txIdContent}?type=view`);
   };
   const onClickShare = (item) => {
-    history.push(`/content-detail/${item.id}?type=share`);
-    // setShowModalItem(true);
+    history.push(`/content-detail/${item.txIdContent}?type=share`);
   };
   const onClickEmbed = (item) => {
-    history.push(`/content-detail/${item.id}?type=embed`);
-    // setShowModalItem(true);
+    history.push(`/content-detail/${item.txIdContent}?type=embed`);
   };
 
   const onClickShowMore = () => {
@@ -71,12 +61,14 @@ function Leaderboard() {
   };
 
   const getContents = async () => {
-    setIsLoading(true);
-    ktools.retrieveTopContent().then((res) => {
-      setContents(res);
-      setIsLoading(false);
-      console.log({ res });
-    });
+    if (contents.length === 0) {
+      setIsLoading(true);
+      ktools.retrieveTopContent().then((res) => {
+        setContents(res);
+        setIsLoading(false);
+        console.log({ res });
+      });
+    }
   };
 
   useEffect(() => {
@@ -177,51 +169,6 @@ function Leaderboard() {
           )}
         </div>
       </div>
-      <Modal
-        show={showModalItem}
-        onHide={handleClose}
-        dialogClassName="item-modal"
-      >
-        <Modal.Body>
-          <div className="item-modal-header">
-            <Image src={IconLeft} className="cursor" onClick={handleClose} />
-            <h2 className="text-white mb-0">Genesis</h2>
-            <Button className="btn-orange ml-auto">Back It</Button>
-            <Button className="btn-green ml-4">Buy It</Button>
-          </div>
-          <div className="item-modal-body">
-            <div className="img-wrapper">
-              <Image src={ItemTempModal} />
-            </div>
-            <div className="item-info-wrapper">
-              <div className="item-info-left item-col">
-                <h1 className="item-title mb-1 text-blue">
-                  {selectedItem.ticker}
-                </h1>
-                <p className="item-username mb-0 text-blue">
-                  {selectedItem.name}
-                </p>
-              </div>
-              <div className="item-info-right">
-                <h5 className="item-total_reviews mb-0 text-blue">
-                  {selectedItem.totalViews}{" "}
-                  <span className="text-greenDark">total views</span>
-                </h5>
-                <h5 className="item-rewards mb-0 text-blue">
-                  {selectedItem.totalReward}{" "}
-                  <span>
-                    <Image src={Logo} width={30} />
-                  </span>{" "}
-                  <span className="text-greenDark">rewards</span>
-                </h5>
-                <p className="mb-0 text-blue">
-                  Since {selectedItem.created_at}
-                </p>
-              </div>
-            </div>
-          </div>
-        </Modal.Body>
-      </Modal>
     </LeaderboardContainer>
   );
 }
