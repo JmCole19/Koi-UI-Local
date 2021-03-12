@@ -32,7 +32,7 @@ function UploadManual() {
   const { step } = queryString.parse(location.search);
   const [uploading] = useState(false);
   const [imageUrl, setImageUrl] = useState(null);
-  const [imageBlob, setImageBlob] = useState(null);
+  const [, setImageBlob] = useState(null);
   const [activeContent, setActiveContent] = useState({ title: '', owner: '', description: ''});
 
   const onCompleteStep1 = () => {
