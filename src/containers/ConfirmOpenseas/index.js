@@ -39,47 +39,19 @@ function ConfirmOpenseas() {
   const location = useLocation();
   const { step = "1", selected, address } = queryString.parse(location.search);
   const [uploading] = useState(false);
-  const { mode, setMode } = useState('change'); // change | confirm | uploading | complete
+  const [ mode, setMode ] = useState('change'); // change | confirm | uploading | complete
   const [activeOpenSea, setActiveOpenSea] = useState({ id: 0, thumb: '', title: '', owner: '', description: ''});
   const [activeStep, setActiveStep] = useState(1);
   const [uploadContens, setUploadContents] = useState([]);
   const [showModal, setShowModal] = useState(false);
   var selectedIds = selected.split("_");
   
-  const onClickConfirm = () => {
-    if (parseInt(step) === selectedIds.length) {
-      setShowModal(true);
-    } else {
-      console.log("here1")
-      console.log(activeOpenSea)
-
-      history.push(
-        `/confirm-opensea?address=${address}&step=${
-          parseInt(step) + 1
-        }&selected=${selected}`
-      );
-    }
-  };
-
-  const onClickEditLater = () => {
-    history.push(
-      `/confirm-opensea?address=${address}&step=${
-        parseInt(step) + 1
-      }&selected=${selected}`
-    );
-  }
-  const onCompleteStep3 = () => {
-    console.log("Completed");
-  };
-
-  const onConnectWallet = () => {
-    console.log("connect wallet")
-  }
-
   const handleBack = () => {
     switch(mode){// change | confirm | uploading | complete
       case 'change':
-        setActiveOpenSea(uploadContens[activeStep-1])  
+        let newStep = activeStep - 1
+        setActiveOpenSea(uploadContens[newStep-1])  
+        setActiveStep(newStep)
         break;
       case 'confirm':
         // setActiveStep(activeStep)
@@ -92,7 +64,59 @@ function ConfirmOpenseas() {
         setMode('change')
         break;
     }
+  }
 
+  const onClickConfirm = () => {
+    switch(mode){// change | confirm | uploading | complete
+      case 'change':
+        if(activeStep === uploadContens.length) {
+          setMode('confirm')
+        }else{
+          setActiveStep(activeStep + 1)
+          setActiveOpenSea(uploadContens[activeStep])  
+        }
+        break;
+      case 'confirm':
+        setMode('uploading')
+        break;
+      case 'uploading':
+        setMode('complete')
+        break;
+      case 'complete':
+        // go to myContent page
+        history.push('/contents')
+        break;
+    }
+  };
+
+  const onClickEditLater = () => {
+    let tpContents = cloneDeep(uploadContens)
+    console.log({tpContents})
+    tpContents = tpContents.splice(activeStep-1, 1)
+    console.log({tpContents})
+    /*
+    if(activeStep === uploadContens.length) {
+      if(activeStep === 1) {
+        // back to select page
+        history.goBack()
+      }else{
+        setActiveOpenSea(tpContents[activeStep - 1])
+        setUploadContents(tpContents)
+        setActiveStep(activeStep - 1)
+      }
+    }else{
+      setActiveOpenSea(tpContents[activeStep - 1])
+      setUploadContents(tpContents)
+    }
+    */
+  }
+
+  const onCompleteStep3 = () => {
+    console.log("Completed");
+  };
+
+  const onConnectWallet = () => {
+    console.log("connect wallet")
   }
 
   const updateContent = (key, value) => {
@@ -100,6 +124,10 @@ function ConfirmOpenseas() {
     tpContent[key] = value
     setActiveOpenSea(tpContent)
   }
+
+  console.log({mode})
+  console.log({activeStep})
+  console.log({activeOpenSea})
 
   useEffect(() => {
     let contentsOS = []
@@ -153,12 +181,12 @@ function ConfirmOpenseas() {
           <div className="upload-content">
             <h1 className="upload-title text-blue">Register your content.</h1>
             <div className="upload-wrapper">
-              <div
+              {activeStep !== 1 && <div
                 className="icon-back cursor"
                 onClick={handleBack}
               >
                 <i className="fal fa-arrow-circle-left"></i>
-              </div>
+              </div>}
               {mode === 'change' && (
                 <Form
                   layout="horizontal"
