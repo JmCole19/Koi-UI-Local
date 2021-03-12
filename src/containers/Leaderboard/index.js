@@ -2,7 +2,8 @@
 import React, { useEffect, useState } from "react";
 import { Button, Image, Modal } from "react-bootstrap";
 import { Logo, IconLeft, ItemTempModal } from "assets/images";
-// import {koiTools} from 'koi_tools';
+import { koi_tools } from "koi_tools";
+import { ScaleLoader } from "react-spinners";
 import { LeaderboardContainer, StyledThumb } from "./style";
 import { Collapse } from "antd";
 import ReactSlider from "react-slider";
@@ -13,7 +14,7 @@ const { Panel } = Collapse;
 
 const itemsTemp = [
   {
-    id: '1',
+    id: "1",
     title: "Batman",
     username: "Maxstealth",
     created_at: "Jan, 01, 2021",
@@ -21,7 +22,7 @@ const itemsTemp = [
     rewards: 10658,
   },
   {
-    id: '2',
+    id: "2",
     title: "Mercury (The Planets #1)",
     username: "alexmorris",
     created_at: "Jan, 01, 2021",
@@ -29,7 +30,7 @@ const itemsTemp = [
     rewards: 10658,
   },
   {
-    id: '3',
+    id: "3",
     title: "Vitalik Buterin Gold Edition 1/100",
     username: "vitalikbuterin",
     created_at: "Jan, 01, 2021",
@@ -37,7 +38,7 @@ const itemsTemp = [
     rewards: 10658,
   },
   {
-    id: '4',
+    id: "4",
     title: "Astrid’s cute little face",
     username: "kaylakroot",
     created_at: "Jan, 01, 2021",
@@ -45,7 +46,7 @@ const itemsTemp = [
     rewards: 10658,
   },
   {
-    id: '5',
+    id: "5",
     title: "Mercury (The Planets #1)",
     username: "alexmorris",
     created_at: "Jan, 01, 2021",
@@ -53,7 +54,7 @@ const itemsTemp = [
     rewards: 10658,
   },
   {
-    id: '6',
+    id: "6",
     title: "Batman",
     username: "alexmorris",
     created_at: "Jan, 01, 2021",
@@ -61,7 +62,7 @@ const itemsTemp = [
     rewards: 10658,
   },
   {
-    id: '7',
+    id: "7",
     title: "Batman",
     username: "alexmorris",
     created_at: "Jan, 01, 2021",
@@ -74,12 +75,13 @@ const options = ["24h", "1w", "1m", "1y", "all"];
 
 function Leaderboard() {
   const history = useHistory();
-  // const ktools = new koiTools();
+  const ktools = new koi_tools();
   // const [activeOption, setActiveOption] = useState("24h");
   const [isExpanded, setIsExpanded] = useState(false);
   const [selectedItem, setSelectedItem] = useState({});
   const [isFiltered, setIsFiltered] = useState(false);
-  const [items, setItems] = useState(itemsTemp);
+  const [contents, setContents] = useState(itemsTemp);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [showModalItem, setShowModalItem] = useState(false);
 
@@ -87,15 +89,15 @@ function Leaderboard() {
 
   const onClickItem = (item) => {
     setSelectedItem(item);
-    history.push(`/content-detail/${item.id}?type=view`)
+    history.push(`/content-detail/${item.id}?type=view`);
     // setShowModalItem(true);
   };
   const onClickShare = (item) => {
-    history.push(`/content-detail/${item.id}?type=share`)
+    history.push(`/content-detail/${item.id}?type=share`);
     // setShowModalItem(true);
   };
   const onClickEmbed = (item) => {
-    history.push(`/content-detail/${item.id}?type=embed`)
+    history.push(`/content-detail/${item.id}?type=embed`);
     // setShowModalItem(true);
   };
 
@@ -110,20 +112,29 @@ function Leaderboard() {
   const onClickMyContent = () => {
     setIsFiltered(!isFiltered);
     if (isFiltered) {
-      setItems(itemsTemp);
+      setContents(itemsTemp);
     } else {
-      setItems(items.filter((_item) => _item.username === "alexmorris"));
+      setContents(contents.filter((_item) => _item.username === "alexmorris"));
     }
   };
 
   const onClickUsername = (item) => {
     setIsFiltered(true);
-    setItems(items.filter((_item) => _item.username === item.username));
-  }
+    setContents(contents.filter((_item) => _item.username === item.username));
+  };
 
-  // useEffect(() => {
-  //   ktools.retrieveTopContent().then(res => console.log({res}))
-  // })
+  const getContents = async () => {
+    setIsLoading(true);
+    ktools.retrieveTopContent().then((res) => {
+      setIsLoading(false);
+      console.log({res})
+    });
+  };
+  
+  useEffect(() => {
+    getContents()
+  }, [history.location.pathname]);
+
   return (
     <LeaderboardContainer>
       <div className="leaderboard">
@@ -169,26 +180,32 @@ function Leaderboard() {
           </Button>
         </div>
         <div className="leaderboard-items">
-          {items
-            .filter((_item, _i) => _i < 5)
-            .map((_item, _i) => (
-              <LeaderboardItem
-                key={_i}
-                item={_item}
-                order={_i}
-                onClickItem={() => onClickItem(_item)}
-                onClickUsername={() => onClickUsername(_item)}
-                onClickShare={() => onClickShare(_item)}
-                onClickEmbed={() => onClickEmbed(_item)}
-              />
-            ))}
+          {isLoading ? (
+            <div className="loading-container">
+              <ScaleLoader size={15} color={"#2a58ad"} />
+            </div>
+          ) : (
+            contents
+              .filter((_item, _i) => _i < 5)
+              .map((_item, _i) => (
+                <LeaderboardItem
+                  key={_i}
+                  item={_item}
+                  order={_i}
+                  onClickItem={() => onClickItem(_item)}
+                  onClickUsername={() => onClickUsername(_item)}
+                  onClickShare={() => onClickShare(_item)}
+                  onClickEmbed={() => onClickEmbed(_item)}
+                />
+              ))
+          )}
           <Collapse
             activeKey={isExpanded ? ["1"] : null}
             bordered={false}
             expandIcon={() => <div />}
           >
             <Panel header={null} key="1">
-              {items
+              {contents
                 .filter((_item, _i) => _i >= 5)
                 .map((_item, _i) => (
                   <LeaderboardItem
