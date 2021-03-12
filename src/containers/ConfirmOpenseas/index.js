@@ -42,7 +42,7 @@ function ConfirmOpenseas() {
   const [activeOpenSea, setActiveOpenSea] = useState({ id: 0, thumb: '', title: '', owner: '', description: ''});
   // const [activeContent, setActiveContent] = useState({ id: 0, thumb: '', title: '', owner: '', description: ''});
   const [showModal, setShowModal] = useState(false);
-  const selectedIds = selected.split("_");
+  var selectedIds = selected.split("_");
   
   const onClickConfirm = () => {
     if (parseInt(step) === selectedIds.length) {
@@ -81,18 +81,23 @@ function ConfirmOpenseas() {
   }
 
   useEffect(() => {
-    const selectedOpenSea = openSeas.find(
-      (_openSea) => selectedIds[parseInt(step) - 1] == _openSea.id
-    )
-    setActiveOpenSea(
-      { 
-        id: selectedOpenSea?.id || 0, 
-        thumb: selectedOpenSea?.image_thumbnail_url || '', 
-        title: selectedOpenSea?.name || '', 
-        owner: selectedOpenSea?.owner?.user?.username || '', 
-        description: selectedOpenSea?.description || ''
+    let contentsOS = []
+    selectedIds.forEach( (tId) => {
+      let tempOpenSea = openSeas.find((_openSea) => tId == _openSea.id) 
+      if(tempOpenSea) {
+        contentsOS.push({ 
+          id: tempOpenSea?.id || 0, 
+          thumb: tempOpenSea?.image_thumbnail_url || '', 
+          title: tempOpenSea?.name || '', 
+          owner: tempOpenSea?.owner?.user?.username || '', 
+          description: tempOpenSea?.description || ''
+        })
       }
-    );
+    })
+    if(contentsOS.length > 0) {
+      setActiveOpenSea(contentsOS[0])  
+    }
+    setUploadContents(contentsOS)
   }, [step, openSeas]);
 
   useEffect(() => {
@@ -118,6 +123,8 @@ function ConfirmOpenseas() {
         });
     }
   }, [history.location.pathname]);
+
+  console.log({uploadContens})
 
   return (
     <ConfirmOpenseasContainer>

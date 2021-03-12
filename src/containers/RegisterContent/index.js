@@ -13,6 +13,7 @@ import { Link, useHistory } from "react-router-dom";
 import { RegisterContentContainer } from "./style";
 import { abi } from "./abi";
 import { DataContext } from "contexts/DataContextContainer";
+import { show_notification } from "service/utils";
 import { notification } from "antd";
 
 // const arweave = Arweave.init();
@@ -120,32 +121,42 @@ function RegisterContent() {
 
   const openMetaMask = (card_type) => {
     const web3 = new Web3(Web3.givenProvider || "http://localhost:8545");
-    window.ethereum.enable().then(function (accounts) {
-      setAddressEth(accounts[0]);
-      if (card_type === "opensea") {
-        let contractInstance = new web3.eth.Contract(
-          abi,
-          "0x60F80121C31A0d46B5279700f9DF786054aa5eE5",
-          { from: accounts[0] }
-        );
-        console.log("hello world");
-        console.log(contractInstance);
-        history.push(`/opensea?address=${accounts[0]}`);
-      } else {
-        notification.success({
-          message: "Success",
-          description: "Set Ethereum address successfully!",
-          placement: "topRight",
-          onClick: () => {
-            console.log("Notification Clicked!");
-          },
-          onClose: () => {
-            history.push(`/contents`);
-          },
-        });
-      }
-      // let contentOwnerAddress = accounts[0];
-    });
+    if(window.ethereum) {
+
+      window.ethereum.enable().then(function (accounts) {
+        setAddressEth(accounts[0]);
+        if (card_type === "opensea") {
+          let contractInstance = new web3.eth.Contract(
+            abi,
+            "0x60F80121C31A0d46B5279700f9DF786054aa5eE5",
+            { from: accounts[0] }
+          );
+          console.log("hello world");
+          console.log(contractInstance);
+          history.push(`/opensea?address=${accounts[0]}`);
+        } else {
+          notification.success({
+            message: "Success",
+            description: "Set Ethereum address successfully!",
+            placement: "topRight",
+            onClick: () => {
+              console.log("Notification Clicked!");
+            },
+            onClose: () => {
+              history.push(`/contents`);
+            },
+          });
+        }
+        // let contentOwnerAddress = accounts[0];
+      });
+    }else{
+      // metamask extension didn't install
+      show_notification("Please install metamask extension first.", "KOI");
+      setTimeout(() => {
+        let url = 'https://metamask.io/download.html'
+        window.open(url, "_blank")
+      }, 2000)
+    }
   };
   console.log({ address: addressEth });
   return (
