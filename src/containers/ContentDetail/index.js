@@ -91,20 +91,24 @@ function ContentDetail() {
   const { type } = queryString.parse(location.search);
   const [detail, setDetail] = useState({});
   const [showMessage, setShowMessage] = useState(false);
-  const [showModalShare, setShowModalShare] = useState(false);
-  const [showModalEmbed, setShowModalEmbed] = useState(false);
+  const [showModal, setShowModal] = useState(true);
+  // const [showModalEmbed, setShowModalEmbed] = useState(false);
+  // const [currentModal, setCurrentModal] = useState("share");
 
-  const onSwitchToEmbed = () => {
-    
-  }
+  const onSwitchModal = () => {
+    history.push(
+      `/content-detail/${id}?type=${type === "share" ? "embed" : "share"}`
+    );
+  };
+
   useEffect(() => {
-    showModalShare && setShowModalShare(false);
-    showModalEmbed && setShowModalEmbed(false);
-    if (type === "share") {
-      setShowModalShare(true);
-    } else if (type === "embed") {
-      setShowModalEmbed(true);
-    }
+    // showModalShare && setShowModalShare(false);
+    // showModalEmbed && setShowModalEmbed(false);
+    // if (type === "share") {
+    //   setShowModalShare(true);
+    // } else if (type === "embed") {
+    //   setShowModalEmbed(true);
+    // }
   }, [type]);
 
   useEffect(() => {
@@ -189,9 +193,110 @@ function ContentDetail() {
         </div>
       </div>
       <Modal
-        show={showModalShare}
-        onHide={() => setShowModalShare(false)}
+        show={showModal}
+        onHide={() => setShowModal(false)}
         dialogClassName="modal-share"
+      >
+        <Modal.Body>
+          <FaTimes
+            className="icon-close cursor"
+            color={colors.blueDark}
+            size={24}
+            onClick={() => setShowModal(false)}
+          />
+          <h2 className="modal-title text-blue">Share to earn more rewards</h2>
+          {type === "embed" && (
+            <h6 className="modal-description text-blue">
+              Every time someone visits a site with your embedded NFTs, you’ll
+              earn KOI.
+            </h6>
+          )}
+          {type === "share" ? (
+            <div className="content-wrapper content-share">
+              <div className="modal-left">
+                <Image src={ItemTemp} />
+                <h6 className="text-blue mb-0 text-bold">Genesis</h6>
+              </div>
+              <div className="modal-right">
+                <div className="part">
+                  <h6 className="part-title text-blue">Copy the link</h6>
+                  <div className="input-group">
+                    <input
+                      type="text"
+                      className="form-control"
+                      placeholder="koi.rocks/genesis_1857746"
+                    />
+                    <span className="input-group-btn">
+                      <button className="btn btn-blueDark" type="button">
+                        Copy Link
+                      </button>
+                    </span>
+                  </div>
+                </div>
+                <div className="part">
+                  <h6 className="part-title text-blue">Share on social</h6>
+                  <div className="share-social">
+                    {shareSocial.map((_social, _i) => (
+                      <div key={_i} className="icon-share">
+                        {_social.icon}
+                        <p className="text-blue">{_social.title}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <div className="part">
+                  <h6 className="part-title text-blue">Share directly</h6>
+                  <div className="share-direct">
+                    {shareDirect.map((_direct, _i) => (
+                      <div key={_i} className="icon-share">
+                        {_direct.icon}
+                        <p className="text-blue">{_direct.title}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div className="content-wrapper content-embed">
+              <div className="modal-left">
+                <Image src={ItemTemp} width={136} />
+                <h6 className="text-blue mb-0 text-bold">Genesis</h6>
+              </div>
+              <div className="modal-right">
+                <div className="part">
+                  <h6 className="part-title text-blue">Copy the snippet</h6>
+                  <div className="input-group">
+                    <input
+                      type="text"
+                      className="form-control"
+                      placeholder="<embedding_code_snippet_here>"
+                    />
+                    <span className="input-group-btn">
+                      <button className="btn btn-blueDark" type="button">
+                        Copy Code
+                      </button>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+          {type === "share" ? (
+            <p className="text-blue footer-title">
+              or <b onClick={onSwitchModal}>embed it</b> on a website
+            </p>
+          ) : (
+            <p className="text-blue footer-title">
+              or <b onClick={onSwitchModal}>share it</b> with friends
+            </p>
+          )}
+        </Modal.Body>
+      </Modal>
+      {/* <Modal
+        show={showModalEmbed}
+        onHide={() => setShowModalEmbed(false)}
+        dialogClassName="modal-embed"
       >
         <Modal.Body>
           <FaTimes
@@ -200,11 +305,17 @@ function ContentDetail() {
             size={24}
             onClick={() => setShowModalShare(false)}
           />
-          <h2 className="modal-title text-blue">Share to earn more rewards</h2>
+          <h2 className="modal-title text-blue">
+            Embed your NFT to earn more.
+          </h2>
+          <h6 className="modal-description text-blue">
+            Every time someone visits a site with your embedded NFTs, you’ll
+            earn KOI.
+          </h6>
           <div className="content-wrapper">
             <div className="modal-left">
               <Image src={ItemTemp} width={136} />
-              <h6 className="text-blue mb-0">Genesis</h6>
+              <h6 className="text-blue mb-0 text-bold">Genesis</h6>
             </div>
             <div className="modal-right">
               <div className="part">
@@ -250,24 +361,7 @@ function ContentDetail() {
             </div>
           </div>
         </Modal.Body>
-      </Modal>
-      <Modal
-        show={showModalEmbed}
-        onHide={() => setShowModalEmbed(false)}
-        dialogClassName="modal-embed"
-      >
-        <Modal.Body>
-          <FaTimes
-            className="icon-close cursor"
-            color={colors.blueDark}
-            size={24}
-            onClick={() => setShowModalShare(false)}
-          />
-          <h2 className="modal-title text-blue">
-            Embed your NFT to earn more.
-          </h2>
-        </Modal.Body>
-      </Modal>
+      </Modal> */}
     </ContentDetailContainer>
   );
 }
