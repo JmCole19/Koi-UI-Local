@@ -64,6 +64,9 @@ function ConfirmOpenseas() {
       case 'complete':
         setMode('change')
         break;
+      default:
+        setMode('change')
+        break;
     }
   }
 
@@ -87,6 +90,9 @@ function ConfirmOpenseas() {
       case 'complete':
         // go to myContent page
         history.push('/contents')
+        break;
+      default:
+        setMode('change')
         break;
     }
   };
@@ -174,11 +180,6 @@ function ConfirmOpenseas() {
     }
   }, [history.location.pathname]);
   
-  // console.log({mode})
-  // console.log({activeStep})
-  // console.log({activeOpenSea})
-  // console.log({uploadContens})
-
   return (
     <ConfirmOpenseasContainer>
       <Container>
@@ -215,7 +216,7 @@ function ConfirmOpenseas() {
                       </div>
                       <div className="upload-content-form">
                         <div className="content-img-wrapper">
-                          <Image src={activeOpenSea.thumb} />
+                          <Image src={activeOpenSea.thumb || ItemTemp} />
                         </div>
                         <div className="upload-content-row">
                           <Form.Item>
@@ -427,7 +428,7 @@ function ConfirmOpenseas() {
             <div className="imgs-wrapper">
               <Space size={28}>
                 {uploadContens.map( (c, key) => 
-                  <Image className="br-4" src={c.thumb} width={40} key={key} />
+                  <Image className="br-4" src={c.thumb || ItemTemp} width={40} key={key} />
                 )}
                 {/* <Image src={ItemTemp} width={40} />
                 <Image src={ItemTemp} width={40} /> */}
