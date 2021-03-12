@@ -39,8 +39,9 @@ function ConfirmOpenseas() {
   const location = useLocation();
   const { step = "1", selected, address } = queryString.parse(location.search);
   const [uploading] = useState(false);
+  const { mode, setMode } = useState('change'); // change | confirm | uploading | complete
   const [activeOpenSea, setActiveOpenSea] = useState({ id: 0, thumb: '', title: '', owner: '', description: ''});
-  // const [activeContent, setActiveContent] = useState({ id: 0, thumb: '', title: '', owner: '', description: ''});
+  const [activeStep, setActiveStep] = useState(1);
   const [uploadContens, setUploadContents] = useState([]);
   const [showModal, setShowModal] = useState(false);
   var selectedIds = selected.split("_");
@@ -75,6 +76,25 @@ function ConfirmOpenseas() {
     console.log("connect wallet")
   }
 
+  const handleBack = () => {
+    switch(mode){// change | confirm | uploading | complete
+      case 'change':
+        setActiveOpenSea(uploadContens[activeStep-1])  
+        break;
+      case 'confirm':
+        // setActiveStep(activeStep)
+        setMode('change')
+        break;
+      case 'uploading':
+        setMode('change')
+        break;
+      case 'complete':
+        setMode('change')
+        break;
+    }
+
+  }
+
   const updateContent = (key, value) => {
     let tpContent = cloneDeep(activeOpenSea)
     tpContent[key] = value
@@ -97,6 +117,7 @@ function ConfirmOpenseas() {
     })
     if(contentsOS.length > 0) {
       setActiveOpenSea(contentsOS[0])  
+      setActiveStep(1)
     }
     setUploadContents(contentsOS)
   }, [step, openSeas]);
@@ -125,8 +146,6 @@ function ConfirmOpenseas() {
     }
   }, [history.location.pathname]);
 
-  console.log({uploadContens})
-
   return (
     <ConfirmOpenseasContainer>
       <Container>
@@ -136,11 +155,11 @@ function ConfirmOpenseas() {
             <div className="upload-wrapper">
               <div
                 className="icon-back cursor"
-                onClick={() => history.goBack()}
+                onClick={handleBack}
               >
                 <i className="fal fa-arrow-circle-left"></i>
               </div>
-              {parseInt(step) <= selectedIds.length ? (
+              {mode === 'change' && (
                 <Form
                   layout="horizontal"
                   form={form}
@@ -217,7 +236,8 @@ function ConfirmOpenseas() {
                     </Col>
                   </Row>
                 </Form>
-              ) : parseInt(step) == selectedIds.length + 1 ? (
+              )}
+              {mode === 'confirm' && (
                 <Form
                   layout="horizontal"
                   form={form}
@@ -288,7 +308,8 @@ function ConfirmOpenseas() {
                     </div>
                   </div>
                 </Form>
-              ) : (
+              )}
+              {mode === 'complete' && (
                 <Form
                   layout="horizontal"
                   form={form}
@@ -347,7 +368,7 @@ function ConfirmOpenseas() {
                   </Button>
                 </Form>
               )}
-              {parseInt(step) <= selectedIds.length && (
+              {mode === 'uploading' && (
                 <Progress
                   strokeColor={colors.blueDark}
                   trailColor={colors.blueLight}
