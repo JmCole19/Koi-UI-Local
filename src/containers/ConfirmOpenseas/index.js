@@ -91,14 +91,14 @@ function ConfirmOpenseas() {
 
   const onClickEditLater = () => {
     let tpContents = cloneDeep(uploadContens)
-    console.log("here0", JSON.stringify(tpContents))
+    console.log("here0", JSON.stringify(activeStep))
     tpContents.splice( (activeStep-1), 1)
-    console.log("here1", JSON.stringify(tpContents))
+    // console.log("here1", JSON.stringify(tpContents))
     if(tpContents.length){
-      if(activeStep === tpContents.length) {
-        setActiveOpenSea(tpContents[activeStep-1])
+      if(activeStep >= tpContents.length) {
+        setActiveOpenSea(tpContents[tpContents.length-1])
         setUploadContents(tpContents)  
-        setActiveStep(activeStep - 1)
+        setActiveStep(tpContents.length)
       }else{
         console.log("here31", JSON.stringify(tpContents[activeStep]))
         console.log("here41", JSON.stringify(tpContents))
