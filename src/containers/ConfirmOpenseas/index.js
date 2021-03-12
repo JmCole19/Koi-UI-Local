@@ -39,9 +39,9 @@ function ConfirmOpenseas() {
   const location = useLocation();
   const { step = "1", selected, address } = queryString.parse(location.search);
   const [uploading] = useState(false);
-  const [activeOpenSea, setActiveOpenSea] = useState({});
-  const [activeContent, setActiveContent] = useState({ id: 0, thumb: '', title: '', owner: '', description: ''});
-  const [uploadContens, setUploadContents] = useState(null);
+  const [activeOpenSea, setActiveOpenSea] = useState({ id: 0, thumb: '', title: '', owner: '', description: ''});
+  // const [activeContent, setActiveContent] = useState({ id: 0, thumb: '', title: '', owner: '', description: ''});
+  const [uploadContens, setUploadContents] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const selectedIds = selected.split("_");
   
@@ -51,6 +51,7 @@ function ConfirmOpenseas() {
     } else {
       console.log("here1")
       console.log(activeOpenSea)
+
       history.push(
         `/confirm-opensea?address=${address}&step=${
           parseInt(step) + 1
@@ -75,16 +76,23 @@ function ConfirmOpenseas() {
   }
 
   const updateContent = (key, value) => {
-    let tpContent = cloneDeep(activeContent)
+    let tpContent = cloneDeep(activeOpenSea)
     tpContent[key] = value
-    setActiveContent(tpContent)
+    setActiveOpenSea(tpContent)
   }
 
   useEffect(() => {
+    const selectedOpenSea = openSeas.find(
+      (_openSea) => selectedIds[parseInt(step) - 1] == _openSea.id
+    )
     setActiveOpenSea(
-      openSeas.find(
-        (_openSea) => selectedIds[parseInt(step) - 1] == _openSea.id
-      )
+      { 
+        id: selectedOpenSea?.id || 0, 
+        thumb: selectedOpenSea?.image_thumbnail_url || '', 
+        title: selectedOpenSea?.name || '', 
+        owner: selectedOpenSea?.owner?.user?.username || '', 
+        description: selectedOpenSea?.description || ''
+      }
     );
   }, [step, openSeas]);
 
@@ -148,7 +156,7 @@ function ConfirmOpenseas() {
                       </div>
                       <div className="upload-content-form">
                         <div className="content-img-wrapper">
-                          <Image src={activeOpenSea?.image_thumbnail_url} />
+                          <Image src={activeOpenSea.thumb} />
                         </div>
                         <div className="upload-content-row">
                           <Form.Item>
@@ -156,7 +164,8 @@ function ConfirmOpenseas() {
                               <p className="mb-0">Title</p>
                             </div>
                             <Input
-                              value={activeOpenSea?.name}
+                              value={activeOpenSea.title}
+                              onChange={(e) => updateContent('title', e.target.value)}
                               placeholder="input placeholder"
                               className="ethereum-value-input"
                             />
@@ -168,7 +177,8 @@ function ConfirmOpenseas() {
                             <Input
                               placeholder="input placeholder"
                               className="ethereum-value-input"
-                              value={activeOpenSea?.owner?.user?.username}
+                              value={activeOpenSea.owner}
+                              onChange={(e) => updateContent('owner', e.target.value)}
                             />
                           </Form.Item>
                           <Form.Item>
@@ -177,7 +187,8 @@ function ConfirmOpenseas() {
                             </div>
                             <TextArea
                               placeholder="input placeholder"
-                              value={activeOpenSea?.description}
+                              value={activeOpenSea.description}
+                              onChange={(e) => updateContent('description', e.target.value)}
                               className="ethereum-value-input"
                               rows={5}
                             />
