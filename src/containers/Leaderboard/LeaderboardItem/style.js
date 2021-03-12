@@ -19,6 +19,15 @@ export const LeaderboardItemContainer = styled.div`
       .item-order {
         color: ${colors.blueDark};
       }
+      &.item-img-wrapper {
+        min-width: 150px;
+        display: flex;
+        justify-content: center;
+        img {
+          max-width: 144px;
+          max-height: 144px;
+        }
+      }
       &.item-info-wrapper {
         flex: 1;
         .item-title {

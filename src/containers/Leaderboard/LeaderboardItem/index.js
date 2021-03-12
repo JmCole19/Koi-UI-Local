@@ -8,6 +8,8 @@ import { HiOutlineMail } from "react-icons/hi";
 import { LeaderboardItemContainer } from "./style";
 import { colors } from "theme";
 
+const preUrl = "https://arweave.net/";
+
 function LeaderboardItem({
   item = {},
   order,
@@ -23,7 +25,7 @@ function LeaderboardItem({
           <h3 className="item-order">{order + 1}</h3>
         </div>
         <div className="item-img-wrapper item-col">
-          <Image src={ItemTemp} className="cursor" onClick={onClickItem} />
+          <Image src={item.txIdContent ? `${preUrl}${item.txIdContent}` : ItemTemp} className="cursor" onClick={onClickItem} />
         </div>
         <div className="item-info-wrapper item-col">
           <h2 className="item-title mb-1">{item.ticker}</h2>
