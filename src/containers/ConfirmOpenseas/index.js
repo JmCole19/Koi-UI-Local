@@ -87,27 +87,18 @@ function ConfirmOpenseas() {
       let tempOpenSea = openSeas.find((_openSea) => tId == _openSea.id) 
       if(tempOpenSea) {
         contentsOS.push({ 
-          id: selectedOpenSea?.id || 0, 
-          thumb: selectedOpenSea?.image_thumbnail_url || '', 
-          title: selectedOpenSea?.name || '', 
-          owner: selectedOpenSea?.owner?.user?.username || '', 
-          description: selectedOpenSea?.description || ''
+          id: tempOpenSea?.id || 0, 
+          thumb: tempOpenSea?.image_thumbnail_url || '', 
+          title: tempOpenSea?.name || '', 
+          owner: tempOpenSea?.owner?.user?.username || '', 
+          description: tempOpenSea?.description || ''
         })
       }
     })
-    const selectedOpenSea = openSeas.find(
-      (_openSea) => selectedIds[parseInt(step) - 1] == _openSea.id
-    )
-    setUploadContents()
-    setActiveOpenSea(
-      { 
-        id: selectedOpenSea?.id || 0, 
-        thumb: selectedOpenSea?.image_thumbnail_url || '', 
-        title: selectedOpenSea?.name || '', 
-        owner: selectedOpenSea?.owner?.user?.username || '', 
-        description: selectedOpenSea?.description || ''
-      }
-    );
+    if(contentsOS.length > 0) {
+      setActiveOpenSea(contentsOS[0])  
+    }
+    setUploadContents(contentsOS)
   }, [step, openSeas]);
 
   useEffect(() => {
@@ -133,6 +124,8 @@ function ConfirmOpenseas() {
         });
     }
   }, [history.location.pathname]);
+
+  console.log({uploadContens})
 
   return (
     <ConfirmOpenseasContainer>
