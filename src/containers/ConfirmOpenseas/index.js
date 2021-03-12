@@ -43,7 +43,7 @@ function ConfirmOpenseas() {
   // const [activeContent, setActiveContent] = useState({ id: 0, thumb: '', title: '', owner: '', description: ''});
   const [uploadContens, setUploadContents] = useState([]);
   const [showModal, setShowModal] = useState(false);
-  const selectedIds = selected.split("_");
+  var selectedIds = selected.split("_");
   
   const onClickConfirm = () => {
     if (parseInt(step) === selectedIds.length) {
@@ -82,9 +82,23 @@ function ConfirmOpenseas() {
   }
 
   useEffect(() => {
+    let contentsOS = []
+    selectedIds.forEach( (tId) => {
+      let tempOpenSea = openSeas.find((_openSea) => tId == _openSea.id) 
+      if(tempOpenSea) {
+        contentsOS.push({ 
+          id: selectedOpenSea?.id || 0, 
+          thumb: selectedOpenSea?.image_thumbnail_url || '', 
+          title: selectedOpenSea?.name || '', 
+          owner: selectedOpenSea?.owner?.user?.username || '', 
+          description: selectedOpenSea?.description || ''
+        })
+      }
+    })
     const selectedOpenSea = openSeas.find(
       (_openSea) => selectedIds[parseInt(step) - 1] == _openSea.id
     )
+    setUploadContents()
     setActiveOpenSea(
       { 
         id: selectedOpenSea?.id || 0, 
