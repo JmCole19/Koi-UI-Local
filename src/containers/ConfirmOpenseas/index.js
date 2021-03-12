@@ -91,24 +91,28 @@ function ConfirmOpenseas() {
 
   const onClickEditLater = () => {
     let tpContents = cloneDeep(uploadContens)
-    console.log({tpContents})
-    tpContents = tpContents.splice(activeStep-1, 1)
-    console.log({tpContents})
-    /*
+    console.log("here0", JSON.stringify(tpContents))
+    tpContents.splice( (activeStep-1), 1)
+    console.log("here1", JSON.stringify(tpContents))
     if(activeStep === uploadContens.length) {
       if(activeStep === 1) {
         // back to select page
         history.goBack()
       }else{
-        setActiveOpenSea(tpContents[activeStep - 1])
-        setUploadContents(tpContents)
-        setActiveStep(activeStep - 1)
+        let newActiveStep = activeStep - 1
+        console.log("here2", JSON.stringify(newActiveStep))
+        console.log("here3", JSON.stringify(tpContents[newActiveStep-1]))
+        console.log("here4", JSON.stringify(tpContents))
+        // setActiveOpenSea(tpContents[activeStep - 1])
+        // setUploadContents(tpContents)
+        // setActiveStep(newActiveStep)
       }
     }else{
-      setActiveOpenSea(tpContents[activeStep - 1])
+      console.log("here3", JSON.stringify(tpContents[activeStep]))
+      console.log("here4", JSON.stringify(tpContents))
+      setActiveOpenSea(tpContents[activeStep])
       setUploadContents(tpContents)
     }
-    */
   }
 
   const onCompleteStep3 = () => {
@@ -125,10 +129,6 @@ function ConfirmOpenseas() {
     setActiveOpenSea(tpContent)
   }
 
-  console.log({mode})
-  console.log({activeStep})
-  console.log({activeOpenSea})
-
   useEffect(() => {
     let contentsOS = []
     selectedIds.forEach( (tId) => {
@@ -144,7 +144,8 @@ function ConfirmOpenseas() {
       }
     })
     if(contentsOS.length > 0) {
-      setActiveOpenSea(contentsOS[0])  
+      let firstOpenSea = contentsOS[0]
+      setActiveOpenSea(firstOpenSea)  
       setActiveStep(1)
     }
     setUploadContents(contentsOS)
@@ -173,6 +174,12 @@ function ConfirmOpenseas() {
         });
     }
   }, [history.location.pathname]);
+
+  
+  console.log({mode})
+  console.log({activeStep})
+  console.log({activeOpenSea})
+  console.log({uploadContens})
 
   return (
     <ConfirmOpenseasContainer>
