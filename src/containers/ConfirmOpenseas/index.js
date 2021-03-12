@@ -3,6 +3,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Container, Image, Button, Modal } from "react-bootstrap";
 import queryString from "query-string";
+import cloneDeep from 'clone-deep'
 import {
   IconArConnect,
   IconHtml,
@@ -39,13 +40,17 @@ function ConfirmOpenseas() {
   const { step = "1", selected, address } = queryString.parse(location.search);
   const [uploading] = useState(false);
   const [activeOpenSea, setActiveOpenSea] = useState({});
+  const [activeContent, setActiveContent] = useState({ id: 0, thumb: '', title: '', owner: '', description: ''});
+  const [uploadContens, setUploadContents] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const selectedIds = selected.split("_");
-
+  
   const onClickConfirm = () => {
     if (parseInt(step) === selectedIds.length) {
       setShowModal(true);
     } else {
+      console.log("here1")
+      console.log(activeOpenSea)
       history.push(
         `/confirm-opensea?address=${address}&step=${
           parseInt(step) + 1
@@ -67,6 +72,12 @@ function ConfirmOpenseas() {
 
   const onConnectWallet = () => {
     console.log("connect wallet")
+  }
+
+  const updateContent = (key, value) => {
+    let tpContent = cloneDeep(activeContent)
+    tpContent[key] = value
+    setActiveContent(tpContent)
   }
 
   useEffect(() => {
@@ -177,10 +188,10 @@ function ConfirmOpenseas() {
                               type="submit"
                               className="btn-blueDark btn-confirm"
                             >
-                              Confirm & Upload
+                              Confirm
                             </Button>
                             <Button className="btn-white btn-edit ml-3" onClick={onClickEditLater}>
-                              Edit Later
+                              Later
                             </Button>
                           </Form.Item>
                         </div>
