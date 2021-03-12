@@ -14,14 +14,30 @@ import {
 import { FaInstagram } from "react-icons/fa";
 import { FiFacebook, FiMessageCircle, FiTwitter } from "react-icons/fi";
 import { HiOutlineMail } from "react-icons/hi";
-import { useHistory, useLocation } from "react-router-dom";
+import { useHistory, useLocation, useParams } from "react-router-dom";
 import { colors } from "theme";
 import { ContentDetailContainer } from "./style";
 
+const contents = [
+  {
+    balances: { "sQTWslyCdKF6oeQ7xXUYUV1bluP0_5-483FXH_RVZKU": 1 },
+    description:
+      "'The Delights of Purim' at the Israeli Opera, photo by Ziv Barak",
+    name: "Kayla",
+    owner: "sQTWslyCdKF6oeQ7xXUYUV1bluP0_5-483FXH_RVZKU",
+    ticker: "KRK",
+    totalReward: 0,
+    totalViews: 0,
+    twentyFourHrViews: 0,
+    txIdContent: "EKW3AApL4mdLc6sIhVr3Cn8VN7N9VAQUp2BNALHXFtQ",
+  },
+];
 function ContentDetail() {
   const history = useHistory();
   const location = useLocation();
+  const { id } = useParams();
   const { type } = queryString.parse(location.search);
+  const [detail, setDetail] = useState({});
   const [showMessage, setShowMessage] = useState(false);
   const [showModalShare, setShowModalShare] = useState(false);
   const [showModalEmbed, setShowModalEmbed] = useState(false);
@@ -35,6 +51,10 @@ function ContentDetail() {
       setShowModalEmbed(true);
     }
   }, [type]);
+
+  useEffect(() => {
+    setDetail(contents.find(_content => _content.txIdContent === id))
+  }, [id])
 
   useEffect(() => {
     if (!showMessage) {
@@ -53,7 +73,7 @@ function ContentDetail() {
             <div className="icon-back cursor" onClick={() => history.goBack()}>
               <i className="fal fa-arrow-circle-left"></i>
             </div>
-            <h2 className="text-blue mb-0">Genesis</h2>
+            <h2 className="text-blue mb-0">{detail.ticker}</h2>
             <Button className="btn-orange ml-auto">Buy It</Button>
             <Button className="btn-green btn-plus">
               <i className="fas fa-plus"></i>
@@ -74,25 +94,20 @@ function ContentDetail() {
                 </Col>
                 <Col className="col-md-6">
                   <div className="detail-body-description">
-                    <h1 className="mb-0 text-blue">Genesis</h1>
-                    <p className="detail-username">Maxstealth</p>
-                    <p>Registered Jan. 01, 2021</p>
+                    <h1 className="mb-0 text-blue">{detail.ticker}</h1>
+                    <p className="detail-username">{detail.name}</p>
+                    <p>Registered {detail.created_at || 'Jan. 01, 2021'}</p>
                     <p className="mb-0">
-                      José Delbo sent me his striking pencil sketch and powerful
-                      inked work, which I then interpreted in oil on canvas. I
-                      wanted to create a very painterly piece with obvious brush
-                      marks etc, but I was also aiming for a nostalgic feel, a
-                      kind of 1980’s superhero comic book look, the kind I grew
-                      up with.
+                      {detail.description}
                     </p>
                     <p className="see-more">see more</p>
                     <div className="views-wrapper">
                       <div className="view-row">
-                        <h5 className="total-value">795,267</h5>
+                        <h5 className="total-value">{detail.totalViews}</h5>
                         <h5 className="total-views">total views</h5>
                       </div>
                       <div className="view-row">
-                        <h5 className="total-value">2,106.58</h5>
+                        <h5 className="total-value">{detail.totalReward}</h5>
                         <h5 className="total-views">total KOI rewards</h5>
                       </div>
                     </div>
