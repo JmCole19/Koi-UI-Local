@@ -41,7 +41,6 @@ function ConfirmOpenseas() {
   const [uploading] = useState(false);
   const [activeOpenSea, setActiveOpenSea] = useState({ id: 0, thumb: '', title: '', owner: '', description: ''});
   // const [activeContent, setActiveContent] = useState({ id: 0, thumb: '', title: '', owner: '', description: ''});
-  const [uploadContens, setUploadContents] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const selectedIds = selected.split("_");
   

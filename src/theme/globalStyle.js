@@ -174,6 +174,63 @@ const GlobalStyle = createGlobalStyle`
             }
         }
     }
+    .modal-share {
+        .modal-content {
+            display: flex;
+            align-items: center;
+            .modal-body {
+                position: unset;
+                min-width: 330px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                padding: 24px 0;
+                .icon-close {
+                    position: absolute;
+                    right: 8px;
+                    top: 8px;
+                }
+                .content-wrapper {
+                    display: flex;
+                    align-items: flex-start;
+                    .modal-right {
+                        .input-group {
+                            width: 248px;
+                            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.16);
+                            .form-control {
+                                height: 32px;
+                            }
+                            .input-group-btn {
+                                .btn {
+                                height: 32px;
+                                font-size: 15px;
+                                border-radius: 0 4px 4px 0;
+                                transform: unset;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        @media (min-width: 576px) {
+            max-width: 662px;
+        }
+        @media (max-width: ${mixins.sm}px) {
+            .modal-content {
+                .modal-body {
+                    .item-modal-body {
+                        padding: 16px 13px;
+                        .item-info-wrapper {
+                            h1 {
+                                font-size: 28px !important;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
     #overlay-nav {
         padding: 24px 0 0;
         opacity: 1;
