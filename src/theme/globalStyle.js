@@ -46,6 +46,7 @@ const GlobalStyle = createGlobalStyle`
         line-height: 24px;
         letter-spacing: 0.03em;
     }
+    .br-4{ border-radius: 4px; }
     h1,
     h2,
     h3,

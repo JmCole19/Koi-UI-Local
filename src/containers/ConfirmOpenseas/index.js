@@ -19,6 +19,7 @@ import { useHistory, useLocation } from "react-router-dom";
 import { colors } from "theme";
 import { DataContext } from "contexts/DataContextContainer";
 import { FaTimes } from "react-icons/fa";
+import { show_notification, show_fixed_number } from "service/utils";
 
 const { TextArea } = Input;
 const { Dragger } = Upload;
@@ -108,6 +109,11 @@ function ConfirmOpenseas() {
     }
   }
 
+  const onClickCloseConfirmModal = () => {
+    setShowModal(false)
+    setMode('change')
+  }
+
   const onCompleteStep3 = () => {
     console.log("Completed");
   };
@@ -186,7 +192,7 @@ function ConfirmOpenseas() {
               >
                 <i className="fal fa-arrow-circle-left"></i>
               </div>}
-              {mode === 'change' && (
+              {(mode === 'change' || mode === 'confirm') && (
                 <Form
                   layout="horizontal"
                   form={form}
@@ -415,13 +421,13 @@ function ConfirmOpenseas() {
               className="icon-close cursor"
               color={colors.blueDark}
               size={24}
-              onClick={() => setShowModal(false)}
+              onClick={onClickCloseConfirmModal}
             />
             <h2 className="modal-title text-blue">Confirm transaction</h2>
             <div className="imgs-wrapper">
               <Space size={28}>
                 {uploadContens.map( (c, key) => 
-                  <Image src={c.thumb} width={40} key={key} />
+                  <Image className="br-4" src={c.thumb} width={40} key={key} />
                 )}
                 {/* <Image src={ItemTemp} width={40} />
                 <Image src={ItemTemp} width={40} /> */}
@@ -450,8 +456,8 @@ function ConfirmOpenseas() {
             <h6 className="text-blue">
               <b>Estimated Total</b>
             </h6>
-            <h6 className="text-blue">{uploadContens.length * 0.0002} AR</h6>
-            <h6 className="text-blue">{uploadContens.length * 1} KOI</h6>
+            <h6 className="text-blue">{show_fixed_number(uploadContens.length * 0.0002, 4)} AR</h6>
+            <h6 className="text-blue">{show_fixed_number(uploadContens.length * 1, 1)} KOI</h6>
             <Button className="btn-blueDark btn-connect" onClick={onConnectWallet}>Connect Wallet</Button>
           </Modal.Body>
         </Modal>
