@@ -146,6 +146,10 @@ export const LeaderboardContainer = styled.div`
     }
   }
   .leaderboard-items {
+    .loading-container {
+      display: flex;
+      justify-content: center;
+    }
     .ant-collapse {
       .ant-collapse-item {
         .ant-collapse-header {
@@ -189,6 +193,7 @@ export const StyledThumb = styled.div`
   line-height: 24px;
   border-radius: 2px;
   color: ${colors.blueDark};
+  box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.16);
   cursor: pointer;
   left: ${(props) =>
     props.value === 0

@@ -27,9 +27,14 @@ function Topbar() {
           <Link to="/faucet?step=0" className="btn-nav">
             Faucet
           </Link>
-          <Link to="#" className="btn-nav">
+          <a
+            href="https://openkoi.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-nav"
+          >
             OpenKoi
-          </Link>
+          </a>
           <Image
             src={DefaultUser}
             ref={target}
