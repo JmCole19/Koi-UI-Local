@@ -34,20 +34,20 @@ import { ScaleLoader } from "react-spinners";
 
 const preUrl = "https://arweave.net/";
 
-const contents = [
-  {
-    balances: { "sQTWslyCdKF6oeQ7xXUYUV1bluP0_5-483FXH_RVZKU": 1 },
-    description:
-      "'The Delights of Purim' at the Israeli Opera, photo by Ziv Barak",
-    name: "Kayla",
-    owner: "sQTWslyCdKF6oeQ7xXUYUV1bluP0_5-483FXH_RVZKU",
-    ticker: "KRK",
-    totalReward: 0,
-    totalViews: 0,
-    twentyFourHrViews: 0,
-    txIdContent: "EKW3AApL4mdLc6sIhVr3Cn8VN7N9VAQUp2BNALHXFtQ",
-  },
-];
+// const contents = [
+//   {
+//     balances: { "sQTWslyCdKF6oeQ7xXUYUV1bluP0_5-483FXH_RVZKU": 1 },
+//     description:
+//       "'The Delights of Purim' at the Israeli Opera, photo by Ziv Barak",
+//     name: "Kayla",
+//     owner: "sQTWslyCdKF6oeQ7xXUYUV1bluP0_5-483FXH_RVZKU",
+//     ticker: "KRK",
+//     totalReward: 0,
+//     totalViews: 0,
+//     twentyFourHrViews: 0,
+//     txIdContent: "EKW3AApL4mdLc6sIhVr3Cn8VN7N9VAQUp2BNALHXFtQ",
+//   },
+// ];
 
 const shareSocial = [
   {
@@ -96,12 +96,15 @@ function ContentDetail() {
   const location = useLocation();
   const { id } = useParams();
   const { type } = queryString.parse(location.search);
-  const { setContents } = useContext(DataContext);
+  const { contents, setContents } = useContext(DataContext);
   const [isLoading, setIsLoading] = useState(false);
   const [detail, setDetail] = useState({});
   const [showMessage, setShowMessage] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  
+  const [copiedLink, setCopiedLink] = useState(false);
+
+  const currentUrl = `${window.location.hostname}${location.pathname}`;
+
   const onSwitchModal = () => {
     history.push(
       `/content-detail/${id}?type=${type === "share" ? "embed" : "share"}`
@@ -120,6 +123,10 @@ function ContentDetail() {
     }
   };
 
+  const onCopyLink = () => {
+    navigator.clipboard.writeText(currentUrl);
+    setCopiedLink(true);
+  };
   useEffect(() => {
     contents.length > 0 &&
       setDetail(contents.find((_content) => _content.txIdContent === id));
@@ -270,14 +277,22 @@ function ContentDetail() {
                     <input
                       type="text"
                       className="form-control"
-                      value={`${window.location.hostname}${location.pathname}`}
+                      defaultValue={currentUrl}
                       placeholder="koi.rocks/genesis_1857746"
+                      disabled
                     />
                     <span className="input-group-btn">
-                      <button className="btn btn-blueDark" type="button">
+                      <button
+                        className="btn btn-blueDark"
+                        type="button"
+                        onClick={onCopyLink}
+                      >
                         Copy Link
                       </button>
                     </span>
+                    {copiedLink && (
+                      <div className="copied-message">Link copied!</div>
+                    )}
                   </div>
                 </div>
                 <div className="part">
