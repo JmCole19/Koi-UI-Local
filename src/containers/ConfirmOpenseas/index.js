@@ -94,7 +94,23 @@ function ConfirmOpenseas() {
     console.log("here0", JSON.stringify(tpContents))
     tpContents.splice( (activeStep-1), 1)
     console.log("here1", JSON.stringify(tpContents))
-    if(activeStep === uploadContens.length) {
+    if(tpContents.length){
+      if(activeStep === tpContents.length) {
+        setActiveOpenSea(tpContents[activeStep-1])
+        setUploadContents(tpContents)  
+        setActiveStep(activeStep - 1)
+      }else{
+        console.log("here31", JSON.stringify(tpContents[activeStep]))
+        console.log("here41", JSON.stringify(tpContents))
+        setActiveOpenSea(tpContents[activeStep])
+        setUploadContents(tpContents)
+      }
+    }else{
+      // back to select page
+      history.goBack()
+    }
+    /*
+    if(activeStep === tpContents.length) {
       if(activeStep === 1) {
         // back to select page
         history.goBack()
@@ -108,11 +124,12 @@ function ConfirmOpenseas() {
         // setActiveStep(newActiveStep)
       }
     }else{
-      console.log("here3", JSON.stringify(tpContents[activeStep]))
-      console.log("here4", JSON.stringify(tpContents))
+      console.log("here31", JSON.stringify(tpContents[activeStep]))
+      console.log("here41", JSON.stringify(tpContents))
       setActiveOpenSea(tpContents[activeStep])
       setUploadContents(tpContents)
     }
+    */
   }
 
   const onCompleteStep3 = () => {
