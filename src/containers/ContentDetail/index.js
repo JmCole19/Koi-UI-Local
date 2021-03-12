@@ -11,8 +11,19 @@ import {
   Modal,
   Row,
 } from "react-bootstrap";
-import { FaInstagram, FaTimes } from "react-icons/fa";
-import { FiFacebook, FiMessageCircle, FiTwitter } from "react-icons/fi";
+import {
+  FaInstagram,
+  FaTelegramPlane,
+  FaTimes,
+  FaWhatsapp,
+} from "react-icons/fa";
+import {
+  FiFacebook,
+  FiLinkedin,
+  FiMessageCircle,
+  FiTwitter,
+} from "react-icons/fi";
+import { IoLogoTiktok } from "react-icons/io5";
 import { HiOutlineMail } from "react-icons/hi";
 import { useHistory, useLocation, useParams } from "react-router-dom";
 import { colors } from "theme";
@@ -32,6 +43,47 @@ const contents = [
     txIdContent: "EKW3AApL4mdLc6sIhVr3Cn8VN7N9VAQUp2BNALHXFtQ",
   },
 ];
+
+const shareSocial = [
+  {
+    icon: <FiTwitter size={24} color={colors.greenDark} />,
+    title: "twitter",
+  },
+  {
+    icon: <FaInstagram size={24} color={colors.greenDark} />,
+    title: "instagram",
+  },
+  {
+    icon: <FiFacebook size={24} color={colors.greenDark} />,
+    title: "facebook",
+  },
+  {
+    icon: <FiLinkedin size={24} color={colors.greenDark} />,
+    title: "linkedin",
+  },
+  {
+    icon: <IoLogoTiktok size={24} color={colors.greenDark} />,
+    title: "tiktok",
+  },
+];
+const shareDirect = [
+  {
+    icon: <FiMessageCircle size={24} color={colors.greenDark} />,
+    title: "text",
+  },
+  {
+    icon: <HiOutlineMail size={24} color={colors.greenDark} />,
+    title: "email",
+  },
+  {
+    icon: <FaWhatsapp size={24} color={colors.greenDark} />,
+    title: "whatsapp",
+  },
+  {
+    icon: <FaTelegramPlane size={24} color={colors.greenDark} />,
+    title: "telegram",
+  },
+];
 function ContentDetail() {
   const history = useHistory();
   const location = useLocation();
@@ -42,6 +94,9 @@ function ContentDetail() {
   const [showModalShare, setShowModalShare] = useState(false);
   const [showModalEmbed, setShowModalEmbed] = useState(false);
 
+  const onSwitchToEmbed = () => {
+    
+  }
   useEffect(() => {
     showModalShare && setShowModalShare(false);
     showModalEmbed && setShowModalEmbed(false);
@@ -152,19 +207,46 @@ function ContentDetail() {
               <h6 className="text-blue mb-0">Genesis</h6>
             </div>
             <div className="modal-right">
-              <h6 className="text-blue mb-0">Copy the link</h6>
-              <div className="input-group">
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="name@example.com"
-                />
-                <span className="input-group-btn">
-                  <button className="btn btn-orange" type="button">
-                    Copy Link
-                  </button>
-                </span>
+              <div className="part">
+                <h6 className="part-title text-blue">Copy the link</h6>
+                <div className="input-group">
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder="name@example.com"
+                  />
+                  <span className="input-group-btn">
+                    <button className="btn btn-blueDark" type="button">
+                      Copy Link
+                    </button>
+                  </span>
+                </div>
               </div>
+              <div className="part">
+                <h6 className="part-title text-blue">Share on social</h6>
+                <div className="share-social">
+                  {shareSocial.map((_social, _i) => (
+                    <div key={_i} className="icon-share">
+                      {_social.icon}
+                      <p className="text-blue">{_social.title}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div className="part">
+                <h6 className="part-title text-blue">Share directly</h6>
+                <div className="share-direct">
+                  {shareDirect.map((_direct, _i) => (
+                    <div key={_i} className="icon-share">
+                      {_direct.icon}
+                      <p className="text-blue">{_direct.title}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <p className="text-blue footer-title">
+                or <b onClick={onSwitchToEmbed}>embed it</b> on a website
+              </p>
             </div>
           </div>
         </Modal.Body>

@@ -17,20 +17,20 @@ const GlobalStyle = createGlobalStyle`
     overflow-x: hidden !important;
     }
     h1 {
-        font-size: 32px !important;
-        font-weight: 600;
+      font-size: 32px !important;
+      font-weight: 600;
     }
     h2 {
-        font-size: 28px !important;
-        font-weight: 600;
+      font-size: 28px !important;
+      font-weight: 600;
     }
     h3 {
-        font-size: 24px !important;
-        font-weight: 600;
+      font-size: 24px !important;
+      font-weight: 600;
     }
     h4 {
-        font-size: 22px !important;
-        font-weight: 400;
+      font-size: 22px !important;
+      font-weight: 400;
     }
     h5 {
         font-size: 20px !important;
@@ -125,111 +125,153 @@ const GlobalStyle = createGlobalStyle`
     }
     
     .modal-confirm-transaction {
-        .modal-content {
+      .modal-content {
+        display: flex;
+        align-items: center;
+        .modal-body {
+          position: unset;
+          min-width: 330px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          padding: 24px 0;
+          .icon-close {
+            position: absolute;
+            right: 8px;
+            top: 8px;
+          }
+          .imgs-wrapper {
+            margin: 23px 0;
+          }
+          .modal-row {
             display: flex;
-            align-items: center;
-            .modal-body {
-                position: unset;
-                min-width: 330px;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                padding: 24px 0;
-                .icon-close {
-                    position: absolute;
-                    right: 8px;
-                    top: 8px;
+            justify-content: space-between;
+            width: 100%;
+          }
+          .btn-connect {
+            width: 186px;
+            height: 40px;
+            border-radius: 4px;
+            margin-top: 32px;
+          }
+        }
+      }
+      @media (min-width: 576px) {
+        max-width: 662px;
+      }
+      @media (max-width: ${mixins.sm}px) {
+        .modal-content {
+          .modal-body {
+            .item-modal-body {
+              padding: 16px 13px;
+              .item-info-wrapper {
+                h1 {
+                    font-size: 28px !important;
                 }
-                .imgs-wrapper {
-                    margin: 23px 0;
-                }
-                .modal-row {
-                    display: flex;
-                    justify-content: space-between;
-                    width: 100%;
-                }
-                .btn-connect {
-                    width: 186px;
-                    height: 40px;
-                    border-radius: 4px;
-                    margin-top: 32px;
-                }
+              }
             }
+          }
         }
-        @media (min-width: 576px) {
-            max-width: 662px;
-        }
-        @media (max-width: ${mixins.sm}px) {
-            .modal-content {
-                .modal-body {
-                    .item-modal-body {
-                        padding: 16px 13px;
-                        .item-info-wrapper {
-                            h1 {
-                                font-size: 28px !important;
-                            }
-                        }
-                    }
-                }
-            }
-        }
+      }
     }
     .modal-share {
-        .modal-content {
+      .modal-content {
+        display: flex;
+        align-items: center;
+        .modal-body {
+          position: unset;
+          min-width: 330px;
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          padding: 24px 0;
+          .icon-close {
+            position: absolute;
+            right: 8px;
+            top: 8px;
+          }
+          .modal-title {
+            margin-bottom: 26px;
+          }
+          .content-wrapper {
+            width: 100%;
             display: flex;
-            align-items: center;
-            .modal-body {
-                position: unset;
-                min-width: 330px;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                padding: 24px 0;
-                .icon-close {
-                    position: absolute;
-                    right: 8px;
-                    top: 8px;
+            align-items: flex-start;
+            .modal-left {
+              width: 240px;
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+            }
+            .modal-right {
+              .part {
+                margin-bottom: 25px;
+                .input-group {
+                  width: 100%;
+                  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.16);
+                  .form-control {
+                    height: 32px;
+                    border-color: ${colors.greenDark};
+                    border-right: unset;
+                  }
+                  .input-group-btn {
+                    .btn {
+                      height: 32px;
+                      font-size: 15px !important;
+                      border-radius: 0 4px 4px 0;
+                      transform: unset;
+                    }
+                  }
                 }
-                .content-wrapper {
+                .part-title {
+                  line-height: 22px;
+                  letter-spacing: 0.03em;
+                }
+                .share-social, .share-direct {
+                  display: flex;
+                  justify-content: flex-start;
+                  .icon-share {
+                    min-width: 35px;
+                    margin-right: 20px;
                     display: flex;
-                    align-items: flex-start;
-                    .modal-right {
-                        .input-group {
-                            width: 248px;
-                            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.16);
-                            .form-control {
-                                height: 32px;
-                            }
-                            .input-group-btn {
-                                .btn {
-                                height: 32px;
-                                font-size: 15px;
-                                border-radius: 0 4px 4px 0;
-                                transform: unset;
-                                }
-                            }
-                        }
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+                    p {
+                      font-size: 10px !important;
+                      margin-bottom: 0;
                     }
+                  }
                 }
-            }
-        }
-        @media (min-width: 576px) {
-            max-width: 662px;
-        }
-        @media (max-width: ${mixins.sm}px) {
-            .modal-content {
-                .modal-body {
-                    .item-modal-body {
-                        padding: 16px 13px;
-                        .item-info-wrapper {
-                            h1 {
-                                font-size: 28px !important;
-                            }
-                        }
-                    }
+              }
+              .footer-title {
+                b {
+                  text-decoration: underline;
+                  cursor: pointer;
                 }
+              }
             }
+          }
         }
+      }
+      @media (min-width: 576px) {
+        max-width: 662px;
+      }
+      @media (max-width: ${mixins.sm}px) {
+        .modal-content {
+          .modal-body {
+            .item-modal-body {
+              padding: 16px 13px;
+              .item-info-wrapper {
+                h1 {
+                    font-size: 28px !important;
+                }
+              }
+            }
+          }
+        }
+      }
     }
     #overlay-nav {
         padding: 24px 0 0;
