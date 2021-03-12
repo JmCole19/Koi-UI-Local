@@ -35,8 +35,21 @@ const getBase64 = (img, callback) => {
   reader.readAsDataURL(img);
 }
 
+const show_fixed_number = (val, fixed = 0) => {
+  return val.toFixed(fixed)
+}
+
+const show_digit_number = (val, digit = 0) => {
+  return val.toLocaleString('en-US', {
+    minimumIntegerDigits: digit,
+    useGrouping: false
+  })
+}
+
 export {
   show_notification,
   show_message,
+  show_digit_number,
+  show_fixed_number,
   getBase64,
 }
