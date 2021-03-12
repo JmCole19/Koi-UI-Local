@@ -26,11 +26,11 @@ function LeaderboardItem({
           <Image src={ItemTemp} className="cursor" onClick={onClickItem} />
         </div>
         <div className="item-info-wrapper item-col">
-          <h2 className="item-title mb-1">{item.title}</h2>
+          <h2 className="item-title mb-1">{item.ticker}</h2>
           <p className="item-username mb-3 cursor" onClick={onClickUsername}>
-            {item.username}
+            {item.name}
           </p>
-          <p className="item-created_at mb-0">Registered: {item.created_at}</p>
+          <p className="item-created_at mb-0">Registered: {item.created_at || 'Jan, 01, 2021'}</p>
           <a
             href="https://viewblock.io/"
             target="_blank"
@@ -44,13 +44,13 @@ function LeaderboardItem({
       <div className="part-right">
         <div className="item-reviews-wrapper item-col">
           <h5 className="item-total_reviews mb-0">
-            {item.total_reviews}
+            {item.totalViews}
             <span className="ml-2">
               <Image src={IconEyes} />
             </span>
           </h5>
           <h5 className="item-rewards mb-0">
-            {item.rewards}{" "}
+            {item.totalReward}{" "}
             <span className="ml-1">
               <Image src={IconFish} />
             </span>

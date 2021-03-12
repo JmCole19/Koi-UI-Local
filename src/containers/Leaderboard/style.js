@@ -146,6 +146,10 @@ export const LeaderboardContainer = styled.div`
     }
   }
   .leaderboard-items {
+    .loading-container {
+      display: flex;
+      justify-content: center;
+    }
     .ant-collapse {
       .ant-collapse-item {
         .ant-collapse-header {

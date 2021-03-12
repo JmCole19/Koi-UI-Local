@@ -12,65 +12,6 @@ import LeaderboardItem from "./LeaderboardItem";
 
 const { Panel } = Collapse;
 
-const itemsTemp = [
-  {
-    id: "1",
-    title: "Batman",
-    username: "Maxstealth",
-    created_at: "Jan, 01, 2021",
-    total_reviews: 795,
-    rewards: 10658,
-  },
-  {
-    id: "2",
-    title: "Mercury (The Planets #1)",
-    username: "alexmorris",
-    created_at: "Jan, 01, 2021",
-    total_reviews: 795,
-    rewards: 10658,
-  },
-  {
-    id: "3",
-    title: "Vitalik Buterin Gold Edition 1/100",
-    username: "vitalikbuterin",
-    created_at: "Jan, 01, 2021",
-    total_reviews: 795,
-    rewards: 10658,
-  },
-  {
-    id: "4",
-    title: "Astrid’s cute little face",
-    username: "kaylakroot",
-    created_at: "Jan, 01, 2021",
-    total_reviews: 795,
-    rewards: 10658,
-  },
-  {
-    id: "5",
-    title: "Mercury (The Planets #1)",
-    username: "alexmorris",
-    created_at: "Jan, 01, 2021",
-    total_reviews: 795,
-    rewards: 10658,
-  },
-  {
-    id: "6",
-    title: "Batman",
-    username: "alexmorris",
-    created_at: "Jan, 01, 2021",
-    total_reviews: 795,
-    rewards: 10658,
-  },
-  {
-    id: "7",
-    title: "Batman",
-    username: "alexmorris",
-    created_at: "Jan, 01, 2021",
-    total_reviews: 795,
-    rewards: 10658,
-  },
-];
-
 const options = ["24h", "1w", "1m", "1y", "all"];
 
 function Leaderboard() {
@@ -80,7 +21,7 @@ function Leaderboard() {
   const [isExpanded, setIsExpanded] = useState(false);
   const [selectedItem, setSelectedItem] = useState({});
   const [isFiltered, setIsFiltered] = useState(false);
-  const [contents, setContents] = useState(itemsTemp);
+  const [contents, setContents] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
   const [showModalItem, setShowModalItem] = useState(false);
@@ -111,28 +52,35 @@ function Leaderboard() {
 
   const onClickMyContent = () => {
     setIsFiltered(!isFiltered);
-    if (isFiltered) {
-      setContents(itemsTemp);
-    } else {
-      setContents(contents.filter((_item) => _item.username === "alexmorris"));
-    }
+    setIsLoading(true);
+    ktools.retrieveTopContent().then((res) => {
+      setContents(res);
+      setIsLoading(false);
+      console.log({ res });
+      if (isFiltered) {
+        setContents(res);
+      } else {
+        setContents(res.filter((_item) => _item.name === "Kayla"));
+      }
+    });
   };
 
   const onClickUsername = (item) => {
     setIsFiltered(true);
-    setContents(contents.filter((_item) => _item.username === item.username));
+    setContents(contents.filter((_item) => _item.name === item.name));
   };
 
   const getContents = async () => {
     setIsLoading(true);
     ktools.retrieveTopContent().then((res) => {
+      setContents(res);
       setIsLoading(false);
-      console.log({res})
+      console.log({ res });
     });
   };
-  
+
   useEffect(() => {
-    getContents()
+    getContents();
   }, [history.location.pathname]);
 
   return (
@@ -213,15 +161,20 @@ function Leaderboard() {
                     item={_item}
                     order={_i + 5}
                     onClickItem={() => onClickItem(_item)}
+                    onClickUsername={() => onClickUsername(_item)}
+                    onClickShare={() => onClickShare(_item)}
+                    onClickEmbed={() => onClickEmbed(_item)}
                   />
                 ))}
             </Panel>
           </Collapse>
-          <div className="btn-show-more-wrapper">
-            <Button className="btn-show-more" onClick={onClickShowMore}>
-              {isExpanded ? "Show Less" : "Show More"}
-            </Button>
-          </div>
+          {contents.length > 5 && (
+            <div className="btn-show-more-wrapper">
+              <Button className="btn-show-more" onClick={onClickShowMore}>
+                {isExpanded ? "Show Less" : "Show More"}
+              </Button>
+            </div>
+          )}
         </div>
       </div>
       <Modal
@@ -243,19 +196,19 @@ function Leaderboard() {
             <div className="item-info-wrapper">
               <div className="item-info-left item-col">
                 <h1 className="item-title mb-1 text-blue">
-                  {selectedItem.title}
+                  {selectedItem.ticker}
                 </h1>
                 <p className="item-username mb-0 text-blue">
-                  {selectedItem.username}
+                  {selectedItem.name}
                 </p>
               </div>
               <div className="item-info-right">
                 <h5 className="item-total_reviews mb-0 text-blue">
-                  {selectedItem.total_reviews}{" "}
+                  {selectedItem.totalViews}{" "}
                   <span className="text-greenDark">total views</span>
                 </h5>
                 <h5 className="item-rewards mb-0 text-blue">
-                  {selectedItem.rewards}{" "}
+                  {selectedItem.totalReward}{" "}
                   <span>
                     <Image src={Logo} width={30} />
                   </span>{" "}
