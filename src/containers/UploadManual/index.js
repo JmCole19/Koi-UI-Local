@@ -74,10 +74,16 @@ function UploadManual() {
         var arJson = JSON.parse(e.target.result)
         let addressResult = await getArWalletAddressFromJson(arJson);
         show_notification(addressResult)
-        exportNFT(addressResult, 0.0001, '', imageBlob)
-        .then(res => console.log("success", res))
-        .catch(err => console.log("error", err))
-        .finally( () => show_notification('upload successfully', 'KOI', 'success'))
+        try{
+          await exportNFT(addressResult, 0.0001, 'https://lh3.googleusercontent.com/9OlQ8XvK-6cA5LYt8w-G_OGMXlJDRmeEKT7t8RaG_uXiujizuUr6DC2m6IjMA1_qxv-mNP94Hd2eYl_Q_ErYrN1dFHznDFiofeHT=s128', null)
+        }catch(err) {
+          console.log("here1")
+          console.log(err)
+        }
+        // exportNFT(addressResult, 0.0001, '', imageBlob)
+        // .then(res => console.log("success", res))
+        // .catch(err => console.log("error", err))
+        // .finally( () => show_notification('upload successfully', 'KOI', 'success'))
       }
       reader.readAsText(file);
       // Prevent upload
