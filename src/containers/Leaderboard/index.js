@@ -11,7 +11,7 @@ import { useHistory } from "react-router-dom";
 import LeaderboardItem from "./LeaderboardItem";
 
 const { Panel } = Collapse;
-
+const preUrl = "https://arweave.net/";
 const options = ["24h", "1w", "1m", "1y", "all"];
 
 function Leaderboard() {
