@@ -71,6 +71,7 @@ function ConfirmOpenseas() {
       case 'change':
         if(activeStep === uploadContens.length) {
           setMode('confirm')
+          setShowModal(true)
         }else{
           setActiveStep(activeStep + 1)
           setActiveOpenSea(uploadContens[activeStep])  
@@ -91,17 +92,13 @@ function ConfirmOpenseas() {
 
   const onClickEditLater = () => {
     let tpContents = cloneDeep(uploadContens)
-    console.log("here0", JSON.stringify(activeStep))
     tpContents.splice( (activeStep-1), 1)
-    // console.log("here1", JSON.stringify(tpContents))
     if(tpContents.length){
       if(activeStep >= tpContents.length) {
         setActiveOpenSea(tpContents[tpContents.length-1])
         setUploadContents(tpContents)  
         setActiveStep(tpContents.length)
       }else{
-        console.log("here31", JSON.stringify(tpContents[activeStep]))
-        console.log("here41", JSON.stringify(tpContents))
         setActiveOpenSea(tpContents[activeStep])
         setUploadContents(tpContents)
       }
@@ -109,27 +106,6 @@ function ConfirmOpenseas() {
       // back to select page
       history.goBack()
     }
-    /*
-    if(activeStep === tpContents.length) {
-      if(activeStep === 1) {
-        // back to select page
-        history.goBack()
-      }else{
-        let newActiveStep = activeStep - 1
-        console.log("here2", JSON.stringify(newActiveStep))
-        console.log("here3", JSON.stringify(tpContents[newActiveStep-1]))
-        console.log("here4", JSON.stringify(tpContents))
-        // setActiveOpenSea(tpContents[activeStep - 1])
-        // setUploadContents(tpContents)
-        // setActiveStep(newActiveStep)
-      }
-    }else{
-      console.log("here31", JSON.stringify(tpContents[activeStep]))
-      console.log("here41", JSON.stringify(tpContents))
-      setActiveOpenSea(tpContents[activeStep])
-      setUploadContents(tpContents)
-    }
-    */
   }
 
   const onCompleteStep3 = () => {
@@ -191,12 +167,11 @@ function ConfirmOpenseas() {
         });
     }
   }, [history.location.pathname]);
-
   
-  console.log({mode})
-  console.log({activeStep})
-  console.log({activeOpenSea})
-  console.log({uploadContens})
+  // console.log({mode})
+  // console.log({activeStep})
+  // console.log({activeOpenSea})
+  // console.log({uploadContens})
 
   return (
     <ConfirmOpenseasContainer>
@@ -289,7 +264,7 @@ function ConfirmOpenseas() {
                   </Row>
                 </Form>
               )}
-              {mode === 'confirm' && (
+              {mode === 'confirm1' && (
                 <Form
                   layout="horizontal"
                   form={form}
@@ -420,15 +395,13 @@ function ConfirmOpenseas() {
                   </Button>
                 </Form>
               )}
-              {mode === 'uploading' && (
-                <Progress
-                  strokeColor={colors.blueDark}
-                  trailColor={colors.blueLight}
-                  percent={(parseInt(step) * 100) / selectedIds.length}
-                  status="active"
-                  showInfo={false}
-                />
-              )}
+              <Progress
+                strokeColor={colors.blueDark}
+                trailColor={colors.blueLight}
+                percent={((activeStep) * 100) / uploadContens.length}
+                status="active"
+                showInfo={false}
+              />
             </div>
           </div>
         </div>
@@ -447,9 +420,11 @@ function ConfirmOpenseas() {
             <h2 className="modal-title text-blue">Confirm transaction</h2>
             <div className="imgs-wrapper">
               <Space size={28}>
-                <Image src={ItemTemp} width={40} />
-                <Image src={ItemTemp} width={40} />
-                <Image src={ItemTemp} width={40} />
+                {uploadContens.map( (c, key) => 
+                  <Image src={c.thumb} width={40} key={key} />
+                )}
+                {/* <Image src={ItemTemp} width={40} />
+                <Image src={ItemTemp} width={40} /> */}
               </Space>
             </div>
             <div className="modal-row mb-2">
@@ -459,7 +434,7 @@ function ConfirmOpenseas() {
                 </p>
               </div>
               <div className="modal-row-right">
-                <p className="text-blue mb-0">x 3 uploads</p>
+                <p className="text-blue mb-0">x {uploadContens.length} uploads</p>
               </div>
             </div>
             <div className="modal-row mb-4">
@@ -469,14 +444,14 @@ function ConfirmOpenseas() {
                 </p>
               </div>
               <div className="modal-row-right">
-                <p className="text-blue mb-0">x 3 uploads</p>
+                <p className="text-blue mb-0">x {uploadContens.length} uploads</p>
               </div>
             </div>
             <h6 className="text-blue">
               <b>Estimated Total</b>
             </h6>
-            <h6 className="text-blue">0.006 AR</h6>
-            <h6 className="text-blue">3.0 KOI</h6>
+            <h6 className="text-blue">{uploadContens.length * 0.0002} AR</h6>
+            <h6 className="text-blue">{uploadContens.length * 1} KOI</h6>
             <Button className="btn-blueDark btn-connect" onClick={onConnectWallet}>Connect Wallet</Button>
           </Modal.Body>
         </Modal>
