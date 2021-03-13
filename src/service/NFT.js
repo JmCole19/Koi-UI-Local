@@ -1,8 +1,7 @@
-import Arweave from "arweave";
+// import Arweave from "arweave";
+// const arweave = Arweave.init()
 
-const arweave = Arweave.init()
-
-const getArWalletAddressFromJson = async (keyData) => {
+const getArWalletAddressFromJson = async (arweave, keyData) => {
   let addressResult = await arweave.wallets.jwkToAddress(keyData);
   return addressResult
 }
@@ -23,7 +22,7 @@ async function getDataBlob(imageUrl) {
   return obj;
 }
 
-const exportNFT = async (ownerAddress, content, imageUrl = '', imageBlob, wallet = {}) => {
+const exportNFT = async (arweave, ownerAddress, content, imageUrl = '', imageBlob, wallet = {}) => {
   try {
 
     // var wallet = await window.arweaveWallet.connect()

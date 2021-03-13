@@ -221,7 +221,7 @@ function ConfirmOpenseas() {
         let tpUpdatingProcess = updatingProcess
         for(let content of uploadContens) {
           try{
-            let res = await exportNFT(addressArweave, content, content.thumb, null)
+            let res = await exportNFT(arweave, addressArweave, content, content.thumb, null)
             console.log(res)
             tpUpdatingProcess ++ 
             // console.log("test1", JSON.stringify(tpUpdatingProcess))
