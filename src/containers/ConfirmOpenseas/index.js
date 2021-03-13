@@ -19,8 +19,11 @@ import { useHistory, useLocation } from "react-router-dom";
 import { colors } from "theme";
 import { DataContext } from "contexts/DataContextContainer";
 import { FaTimes } from "react-icons/fa";
-import { show_notification, show_fixed_number, show_message } from "service/utils";
+import Arweave from "arweave";
+import { show_notification, show_fixed_number } from "service/utils";
+import { exportNFT } from 'service/NFT'
 
+const arweave = Arweave.init();
 const { TextArea } = Input;
 const { Dragger } = Upload;
 
@@ -35,7 +38,11 @@ const formItemLayout = {
 
 function ConfirmOpenseas() {
   const history = useHistory();
-  const { openSeas, setOpenSeas } = useContext(DataContext);
+  const { openSeas, 
+          setOpenSeas,
+          addressArweave,
+          setAddressArweave,
+        } = useContext(DataContext);
   const [form] = useForm();
   const location = useLocation();
   const { step = "1", selected, address } = queryString.parse(location.search);
@@ -46,6 +53,7 @@ function ConfirmOpenseas() {
   const [uploadContens, setUploadContents] = useState([]);
   const [showModal, setShowModal] = useState(true);
   var selectedIds = selected.split("_");
+  const [detectorAr, setDetectorAr] = useState(false);
   
   const handleBack = () => {
     switch(mode){// change | confirm | uploading | complete
@@ -188,6 +196,41 @@ function ConfirmOpenseas() {
         });
     }
   }, [history.location.pathname]);
+
+  useEffect(() => {
+    if (detectorAr) {
+      // console.log("here2 ", detectorAr)
+      window.addEventListener("arweaveWalletLoaded", detectArweaveWallet());
+      window.addEventListener("walletSwitch", (e) =>
+        detectSwitchArweaveWallet(e)
+      );
+      return () => {
+        window.removeEventListener(
+          "arweaveWalletLoaded",
+          detectArweaveWallet()
+        );
+        window.removeEventListener("walletSwitch", (e) =>
+          detectSwitchArweaveWallet(e)
+        );
+      };
+    }
+  }, [detectorAr]);
+
+  const detectArweaveWallet = async () => {
+    try {
+      let addr = await arweave.wallets.getAddress();
+      console.log("detected arweave wallet address : ", addr);
+      if (addr) {
+        setAddressArweave(addr);
+        history.push(`/upload/arweave?step=1`);
+      } else {
+        history.push(`/upload/arweave?step=1`);
+      }
+    } catch (err) {
+      console.log(err);
+      history.push(`/upload/arweave?step=1`);
+    }
+  };
   
   return (
     <ConfirmOpenseasContainer>
