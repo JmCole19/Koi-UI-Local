@@ -134,7 +134,7 @@ function ContentDetail() {
 
   useEffect(() => {
     if (type !== "view") {
-      setShowModal(true);
+      !showModal && setShowModal(true);
     }
   }, [type]);
 
@@ -209,18 +209,20 @@ function ContentDetail() {
                       <div className="btns-wrapper">
                         <Button
                           className="btn-share btn-blueDark"
-                          onClick={() =>
+                          onClick={() => {
+                            setShowModal(true)
                             history.push(`/content-detail/${id}?type=share`)
-                          }
+                          }}
                         >
                           <Image src={IconShare} />
                           Share NFT
                         </Button>
                         <Button
                           className="btn-html btn-white ml-3"
-                          onClick={() =>
+                          onClick={() => {
+                            setShowModal(true)
                             history.push(`/content-detail/${id}?type=embed`)
-                          }
+                          }}
                         >
                           <Image src={IconHtml} />
                           Embed to Earn
@@ -243,7 +245,10 @@ function ContentDetail() {
       </div>
       <Modal
         show={showModal}
-        onHide={() => setShowModal(false)}
+        onHide={() => {
+          setCopiedLink(false)
+          setShowModal(false)
+        }}
         dialogClassName="modal-share"
       >
         <Modal.Body>
