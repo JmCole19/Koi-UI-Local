@@ -84,7 +84,7 @@ const exportNFT = async (arweave, ownerAddress, content, imageUrl = '', imageBlo
         // eslint-disable-next-line no-undef
         // data: nftData.data
         data: JSON.stringify(metadata)
-      });
+      }, wallet);
     }catch(err) {
       console.log("create transaction error")
       console.log("err-transaction", err)
@@ -100,7 +100,7 @@ const exportNFT = async (arweave, ownerAddress, content, imageUrl = '', imageBlo
     tx.addTag('Init-State', JSON.stringify(initialState))
   
     try{
-      await arweave.transactions.sign(tx);
+      await arweave.transactions.sign(tx, wallet);
     }catch(err) {
       console.log("transaction sign error")
       console.log("err-sign", err)
