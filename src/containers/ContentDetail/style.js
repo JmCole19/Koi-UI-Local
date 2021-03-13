@@ -76,6 +76,7 @@ export const ContentDetailContainer = styled.div`
             }
           }
           .views-wrapper {
+            margin-top: 20px;
             .view-row {
               display: flex;
               justify-content: flex-start;
