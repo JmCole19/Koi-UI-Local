@@ -10,7 +10,17 @@ const GlobalStyle = createGlobalStyle`
   .App {
     height: 100vh;
   }
-  .w100 {width: 100%;}
+  .custom-pd{
+    width: 500px;
+    @media (max-width: 600px) {
+      width: 400px
+    }
+    @media (max-width: 480px) {
+      width: 100%;
+      padding-left: 10%;
+      padding-right: 10%;
+    }
+  }
   nav {
     width: 100vw !important;
     max-width: 100vw !important;
@@ -46,6 +56,7 @@ const GlobalStyle = createGlobalStyle`
         line-height: 24px;
         letter-spacing: 0.03em;
     }
+    .br-4{ border-radius: 4px; }
     h1,
     h2,
     h3,
