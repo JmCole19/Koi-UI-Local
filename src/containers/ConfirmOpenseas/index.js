@@ -54,6 +54,7 @@ function ConfirmOpenseas() {
   const [showModal, setShowModal] = useState(true);
   var selectedIds = selected.split("_");
   const [detectorAr, setDetectorAr] = useState(false);
+  const [updatingProcess, setUploadingProcess] = useState(0);
   
   const handleBack = () => {
     switch(mode){// change | confirm | uploading | complete
@@ -90,7 +91,7 @@ function ConfirmOpenseas() {
         }
         break;
       case 'confirm':
-        setMode('uploading')
+        setDetectorAr(true)
         break;
       case 'uploading':
         setMode('complete')
@@ -199,18 +200,11 @@ function ConfirmOpenseas() {
 
   useEffect(() => {
     if (detectorAr) {
-      // console.log("here2 ", detectorAr)
       window.addEventListener("arweaveWalletLoaded", detectArweaveWallet());
-      window.addEventListener("walletSwitch", (e) =>
-        detectSwitchArweaveWallet(e)
-      );
       return () => {
         window.removeEventListener(
           "arweaveWalletLoaded",
           detectArweaveWallet()
-        );
-        window.removeEventListener("walletSwitch", (e) =>
-          detectSwitchArweaveWallet(e)
         );
       };
     }
@@ -222,13 +216,19 @@ function ConfirmOpenseas() {
       console.log("detected arweave wallet address : ", addr);
       if (addr) {
         setAddressArweave(addr);
-        history.push(`/upload/arweave?step=1`);
+        setMode('uploading')
+        // uploading process
+        for(let content of uploadContens) {
+          try{
+            await await exportNFT(addressResult, 'https://lh3.googleusercontent.com/9OlQ8XvK-6cA5LYt8w-G_OGMXlJDRmeEKT7t8RaG_uXiujizuUr6DC2m6IjMA1_qxv-mNP94Hd2eYl_Q_ErYrN1dFHznDFiofeHT=s128', null)
+          }
+        }
       } else {
-        history.push(`/upload/arweave?step=1`);
+        show_notification('can\t detect ArWallet address. Please check install ArConnect extension or create a wallet.')
       }
     } catch (err) {
       console.log(err);
-      history.push(`/upload/arweave?step=1`);
+      show_notification('can\t detect ArWallet address. Please install ArConnect extension and create a wallet.')
     }
   };
   
