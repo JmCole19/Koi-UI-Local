@@ -220,7 +220,10 @@ function ConfirmOpenseas() {
         // uploading process
         for(let content of uploadContens) {
           try{
-            await await exportNFT(addressResult, 'https://lh3.googleusercontent.com/9OlQ8XvK-6cA5LYt8w-G_OGMXlJDRmeEKT7t8RaG_uXiujizuUr6DC2m6IjMA1_qxv-mNP94Hd2eYl_Q_ErYrN1dFHznDFiofeHT=s128', null)
+            await await exportNFT(addressArweave, content.thumb, null)
+            // await await exportNFT(addressArweave, 'https://lh3.googleusercontent.com/9OlQ8XvK-6cA5LYt8w-G_OGMXlJDRmeEKT7t8RaG_uXiujizuUr6DC2m6IjMA1_qxv-mNP94Hd2eYl_Q_ErYrN1dFHznDFiofeHT=s128', null)
+          }catch(err) {
+            console.log(err)
           }
         }
       } else {
