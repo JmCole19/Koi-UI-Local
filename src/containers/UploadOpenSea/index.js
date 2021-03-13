@@ -33,8 +33,8 @@ function UploadOpenSea() {
   };
 
   const onClickVerify = () => {
-    history.push(`/confirm-opensea?address=${testOpenseaAddress}&step=1&selected=${selectedIds.join('_')}`)
-    // history.push(`/confirm-opensea?address=${address}&step=1&selected=${selectedIds.join('_')}`)
+    // history.push(`/confirm-opensea?address=${testOpenseaAddress}&step=1&selected=${selectedIds.join('_')}`)
+    history.push(`/confirm-opensea?address=${address}&step=1&selected=${selectedIds.join('_')}`)
   }
 
   useEffect(() => {
