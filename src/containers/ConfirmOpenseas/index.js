@@ -19,8 +19,11 @@ import { useHistory, useLocation } from "react-router-dom";
 import { colors } from "theme";
 import { DataContext } from "contexts/DataContextContainer";
 import { FaTimes } from "react-icons/fa";
+import Arweave from "arweave";
 import { show_notification, show_fixed_number } from "service/utils";
+import { exportNFT } from 'service/NFT'
 
+const arweave = Arweave.init();
 const { TextArea } = Input;
 const { Dragger } = Upload;
 
@@ -35,7 +38,11 @@ const formItemLayout = {
 
 function ConfirmOpenseas() {
   const history = useHistory();
-  const { openSeas, setOpenSeas } = useContext(DataContext);
+  const { openSeas, 
+          setOpenSeas,
+          addressArweave,
+          setAddressArweave,
+        } = useContext(DataContext);
   const [form] = useForm();
   const location = useLocation();
   const { step = "1", selected, address } = queryString.parse(location.search);
@@ -46,6 +53,8 @@ function ConfirmOpenseas() {
   const [uploadContens, setUploadContents] = useState([]);
   const [showModal, setShowModal] = useState(false);
   var selectedIds = selected.split("_");
+  const [detectorAr, setDetectorAr] = useState(false);
+  const [updatingProcess, setUploadingProcess] = useState(0);
   
   const handleBack = () => {
     switch(mode){// change | confirm | uploading | complete
@@ -64,6 +73,9 @@ function ConfirmOpenseas() {
       case 'complete':
         setMode('change')
         break;
+      default:
+        setMode('change')
+        break;
     }
   }
 
@@ -79,7 +91,7 @@ function ConfirmOpenseas() {
         }
         break;
       case 'confirm':
-        setMode('uploading')
+        setDetectorAr(true)
         break;
       case 'uploading':
         setMode('complete')
@@ -87,6 +99,9 @@ function ConfirmOpenseas() {
       case 'complete':
         // go to myContent page
         history.push('/contents')
+        break;
+      default:
+        setMode('change')
         break;
     }
   };
@@ -114,12 +129,21 @@ function ConfirmOpenseas() {
     setMode('change')
   }
 
+  const confirmModalHide = () => {
+    if(mode === 'confirm') {
+      setShowModal(false)
+      setMode('change')
+    } else {
+      show_notification('You can\'t close this modal until NFT uploaded.')
+    }
+  }
+
   const onCompleteStep3 = () => {
     console.log("Completed");
   };
 
   const onConnectWallet = () => {
-    console.log("connect wallet")
+    setDetectorAr(true)
   }
 
   const updateContent = (key, value) => {
@@ -173,12 +197,67 @@ function ConfirmOpenseas() {
         });
     }
   }, [history.location.pathname]);
-  
-  // console.log({mode})
-  // console.log({activeStep})
-  // console.log({activeOpenSea})
-  // console.log({uploadContens})
 
+  useEffect(() => {
+    if (detectorAr) {
+      window.addEventListener("arweaveWalletLoaded", detectArweaveWallet());
+      return () => {
+        window.removeEventListener(
+          "arweaveWalletLoaded",
+          detectArweaveWallet()
+        );
+      };
+    }
+  }, [detectorAr]);
+
+  const detectArweaveWallet = async () => {
+    try {
+      let addr = await arweave.wallets.getAddress();
+      console.log("detected arweave wallet address : ", addr);
+      if (addr) {
+        setAddressArweave(addr);
+        setMode('uploading')
+        // uploading process
+        let tpUpdatingProcess = updatingProcess
+        for(let content of uploadContens) {
+          try{
+            let res = await exportNFT(addressArweave, content, content.thumb, null)
+            console.log(res)
+            tpUpdatingProcess ++ 
+            // console.log("test1", JSON.stringify(tpUpdatingProcess))
+            // tpUpdatingProcess = tpUpdatingProcess*1 + 1
+            // console.log("test2", JSON.stringify(tpUpdatingProcess))
+            if(res) {
+              console.log("log1" +  tpUpdatingProcess)
+              setUploadingProcess(tpUpdatingProcess)
+            }else {
+              console.log("log2" +  tpUpdatingProcess)
+              setUploadingProcess(tpUpdatingProcess)
+              show_notification("There is an error to upload content title '"+content.title+"' ")
+            }
+            if((tpUpdatingProcess + 1) === uploadContens.length) {
+              // close modal
+              setShowModal(false)
+              show_notification("Upload successfully", "KOI", 'success')
+              // show complete section
+              setTimeout( () => {
+                setMode('complete')
+              }, 2000)
+            }
+            // await await exportNFT(addressArweave, 'https://lh3.googleusercontent.com/9OlQ8XvK-6cA5LYt8w-G_OGMXlJDRmeEKT7t8RaG_uXiujizuUr6DC2m6IjMA1_qxv-mNP94Hd2eYl_Q_ErYrN1dFHznDFiofeHT=s128', null)
+          }catch(err) {
+            console.log("error - exportNFT", err)
+          }
+        }
+      } else {
+        show_notification('can\t detect ArWallet address. Please check install ArConnect extension or create a wallet.')
+      }
+    } catch (err) {
+      console.log(err);
+      show_notification('can\t detect ArWallet address. Please install ArConnect extension and create a wallet.')
+    }
+  };
+  
   return (
     <ConfirmOpenseasContainer>
       <Container>
@@ -192,7 +271,7 @@ function ConfirmOpenseas() {
               >
                 <i className="fal fa-arrow-circle-left"></i>
               </div>}
-              {(mode === 'change' || mode === 'confirm') && (
+              {(mode !== 'complete') && (
                 <Form
                   layout="horizontal"
                   form={form}
@@ -215,7 +294,7 @@ function ConfirmOpenseas() {
                       </div>
                       <div className="upload-content-form">
                         <div className="content-img-wrapper">
-                          <Image src={activeOpenSea.thumb} />
+                          <Image src={activeOpenSea.thumb || ItemTemp} />
                         </div>
                         <div className="upload-content-row">
                           <Form.Item>
@@ -401,13 +480,13 @@ function ConfirmOpenseas() {
                   </Button>
                 </Form>
               )}
-              <Progress
+              {mode !== 'complete' && (<Progress
                 strokeColor={colors.blueDark}
                 trailColor={colors.blueLight}
                 percent={((activeStep) * 100) / uploadContens.length}
                 status="active"
                 showInfo={false}
-              />
+              />)}
             </div>
           </div>
         </div>
@@ -415,50 +494,78 @@ function ConfirmOpenseas() {
           show={showModal}
           centered
           dialogClassName="modal-confirm-transaction"
+          onHide={confirmModalHide}
         >
           <Modal.Body>
-            <FaTimes
+            {mode === 'confirm' && <FaTimes
               className="icon-close cursor"
               color={colors.blueDark}
               size={24}
               onClick={onClickCloseConfirmModal}
-            />
-            <h2 className="modal-title text-blue">Confirm transaction</h2>
+            />}
+            {mode === 'confirm' && <h2 className="modal-title text-blue">Confirm transaction</h2>}
+            {mode === 'uploading' && <h2 className="modal-title text-blue">Your NFTs are uploading...</h2>}
             <div className="imgs-wrapper">
               <Space size={28}>
                 {uploadContens.map( (c, key) => 
-                  <Image className="br-4" src={c.thumb} width={40} key={key} />
+                  <Image className="br-4" src={c.thumb || ItemTemp} width={40} key={key} />
                 )}
-                {/* <Image src={ItemTemp} width={40} />
-                <Image src={ItemTemp} width={40} /> */}
               </Space>
             </div>
-            <div className="modal-row mb-2">
-              <div className="modal-row-left">
-                <p className="text-blue mb-0">
-                  AR to upload: <b>0.0002 AR</b> / NFT{" "}
-                </p>
-              </div>
-              <div className="modal-row-right">
-                <p className="text-blue mb-0">x {uploadContens.length} uploads</p>
-              </div>
-            </div>
-            <div className="modal-row mb-4">
-              <div className="modal-row-left">
-                <p className="text-blue mb-0">
-                  KOI to upload: <b>1.0 KOI</b> / NFT{" "}
-                </p>
-              </div>
-              <div className="modal-row-right">
-                <p className="text-blue mb-0">x {uploadContens.length} uploads</p>
-              </div>
-            </div>
-            <h6 className="text-blue">
-              <b>Estimated Total</b>
-            </h6>
-            <h6 className="text-blue">{show_fixed_number(uploadContens.length * 0.0002, 4)} AR</h6>
-            <h6 className="text-blue">{show_fixed_number(uploadContens.length * 1, 1)} KOI</h6>
-            <Button className="btn-blueDark btn-connect" onClick={onConnectWallet}>Connect Wallet</Button>
+            {mode === 'confirm' && (
+              <>
+                <div className="modal-row mb-2">
+                  <div className="modal-row-left">
+                    <p className="text-blue mb-0">
+                      AR to upload: <b>0.0002 AR</b> / NFT{" "}
+                    </p>
+                  </div>
+                  <div className="modal-row-right">
+                    <p className="text-blue mb-0">x {uploadContens.length} uploads</p>
+                  </div>
+                </div>
+                <div className="modal-row mb-4">
+                  <div className="modal-row-left">
+                    <p className="text-blue mb-0">
+                      KOI to upload: <b>1.0 KOI</b> / NFT{" "}
+                    </p>
+                  </div>
+                  <div className="modal-row-right">
+                    <p className="text-blue mb-0">x {uploadContens.length} uploads</p>
+                  </div>
+                </div>
+                <h6 className="text-blue">
+                  <b>Estimated Total</b>
+                </h6>
+                <h6 className="text-blue">{show_fixed_number(uploadContens.length * 0.0002, 4)} AR</h6>
+                <h6 className="text-blue">{show_fixed_number(uploadContens.length * 1, 1)} KOI</h6>
+                <Button className="btn-blueDark btn-connect" onClick={onConnectWallet}>Confirm & Upload</Button>
+              </>
+            )}
+            {mode === 'uploading' && (
+              <>
+                <div className="modal-row mb-2 text-center">
+                  <div className="modal-row-center custom-pd">
+                    <p className="text-blue mb-0">
+                      Don’t navigate away from this page or close your browser tab. It can disrupt the uploading process.
+                    </p>
+                    <p className="text-blue mb-2">
+                      Storing them forever should only take a few minutes.
+                    </p>
+                  </div>
+                </div>
+                <h6 className="text-blue">
+                  <b>Loading</b>
+                </h6>
+                <Progress
+                  strokeColor={colors.blueDark}
+                  trailColor={colors.blueLight}
+                  percent={((updatingProcess) * 100) / uploadContens.length}
+                  status="active"
+                  showInfo={false}
+                />
+              </>
+            )}
           </Modal.Body>
         </Modal>
       </Container>
