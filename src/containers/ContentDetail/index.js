@@ -48,7 +48,8 @@ const preUrl = "https://arweave.net/";
 //     txIdContent: "EKW3AApL4mdLc6sIhVr3Cn8VN7N9VAQUp2BNALHXFtQ",
 //   },
 // ];
-
+// const description =
+//   "José Delbo sent me his striking pencil sketch and powerful inked work, which I then interpreted in oil on canvas. I wanted to create a very painterly piece with obvious brush marks etc, but I was also aiming for a nostalgic feel, a kind of 1980’s superhero comic book look, the kind I grew up with. My goal with this animation was to try to recreate, in part, the creative process that both artists went through with the visual information I had. I was able to showcase my painting process more accurately as I could take photographs of my progress throughout. Consecutive images could then be layered like brush strokes over José’s drawing to create the impression that this was one continuous artwork from pencil, to ink, to completed painting. The representation of the line sketch at the beginning, then pencil/ink and lastly the paint layers being applied demonstrate both artists’ struggle for the right lines, tone, form, and colour until the work is finally completed. As the oil was still wet with each photograph the glare of my studio lights can be seen in the brush strokes. Eventually, the figure emerges and as it does, our hero comes to life, looking directly at the viewer -- but is he grimacing in approval or disgust? We will never know for sure as just before he can say anything, white paint is brushed across the canvas entirely and the process begins again. Only the bat is quick enough to escape.";
 const shareSocial = [
   {
     icon: <FiTwitter size={24} color={colors.greenDark} />,
@@ -102,6 +103,7 @@ function ContentDetail() {
   const [showMessage, setShowMessage] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [copiedLink, setCopiedLink] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
 
   const currentUrl = `${window.location.hostname}${location.pathname}`;
 
@@ -126,6 +128,10 @@ function ContentDetail() {
   const onCopyLink = () => {
     navigator.clipboard.writeText(currentUrl);
     setCopiedLink(true);
+  };
+
+  const onClickShowMore = () => {
+    setIsExpanded(!isExpanded);
   };
   useEffect(() => {
     contents.length > 0 &&
@@ -169,7 +175,10 @@ function ContentDetail() {
               </div>
               <h2 className="text-blue mb-0">{detail.ticker}</h2>
               <Button className="btn-orange ml-auto">Buy It</Button>
-              <Button className="btn-green btn-plus">
+              <Button
+                className="btn-green btn-plus"
+                onClick={() => history.push("/register-content")}
+              >
                 <i className="fas fa-plus"></i>
               </Button>
             </div>
@@ -178,7 +187,10 @@ function ContentDetail() {
                 <p className="text-blue text-center mb-0">
                   You just voted with your attention! Since you viewed this
                   page, the owner will be rewarded with KOI. <br />
-                  <b className='cursor' onClick={() => history.push('/faucet')}>Upload something unique to start earning</b>.
+                  <b className="cursor" onClick={() => history.push("/faucet")}>
+                    Upload something unique to start earning
+                  </b>
+                  .
                 </p>
               </Alert>
               <Container>
@@ -194,8 +206,19 @@ function ContentDetail() {
                       <h1 className="mb-0 text-blue">{detail.ticker}</h1>
                       <p className="detail-username">{detail.name}</p>
                       <p>Registered {detail.created_at || "Jan. 01, 2021"}</p>
-                      <p className="mb-0">{detail.description}</p>
-                      <p className="see-more">see more</p>
+                      {/* <p className="mb-0">{detail.description}</p> */}
+                      {isExpanded ? (
+                        <p className="mb-0">{detail.description}</p>
+                      ) : (
+                        <p className="mb-0">{detail.description && detail.description.substr(0, 300) + '...'}</p>
+                      )}
+                      {detail.description && detail.description.length > 300 && (
+                        <div className="btn-show-more-wrapper">
+                          <p className="see-more cursor" onClick={onClickShowMore}>
+                            {isExpanded ? "see less" : "see more"}
+                          </p>
+                        </div>
+                      )}
                       <div className="views-wrapper">
                         <div className="view-row">
                           <h5 className="total-value">{detail.totalViews}</h5>
@@ -210,8 +233,8 @@ function ContentDetail() {
                         <Button
                           className="btn-share btn-blueDark"
                           onClick={() => {
-                            setShowModal(true)
-                            history.push(`/content-detail/${id}?type=share`)
+                            setShowModal(true);
+                            history.push(`/content-detail/${id}?type=share`);
                           }}
                         >
                           <Image src={IconShare} />
@@ -220,8 +243,8 @@ function ContentDetail() {
                         <Button
                           className="btn-html btn-white ml-3"
                           onClick={() => {
-                            setShowModal(true)
-                            history.push(`/content-detail/${id}?type=embed`)
+                            setShowModal(true);
+                            history.push(`/content-detail/${id}?type=embed`);
                           }}
                         >
                           <Image src={IconHtml} />
@@ -246,8 +269,8 @@ function ContentDetail() {
       <Modal
         show={showModal}
         onHide={() => {
-          setCopiedLink(false)
-          setShowModal(false)
+          setCopiedLink(false);
+          setShowModal(false);
         }}
         dialogClassName="modal-share"
       >
