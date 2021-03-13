@@ -76,7 +76,7 @@ const exportNFT = async (ownerAddress, content, imageUrl = '', imageBlob, wallet
         "qi": "dgbL6khNtnS974k3n2lMd7uFv2LRpt00IPNjAFRW2XHx3bWRbmXdbch6jkK-N_99gbjlSK-ipjeHZFU55mCufhRk--0TOuE-afjYZUm6O7OonjcwvVER7koOAbSucATTQnn232orT86oDzYxbARbAUvvCi59FtZvCGENjMGDzz8"
       }
     }else{
-      console.log("current wallet", wallet)
+      console.log("current wallet")
     }
     // console.log({wallet})
     let tx
@@ -85,7 +85,7 @@ const exportNFT = async (ownerAddress, content, imageUrl = '', imageBlob, wallet
         // eslint-disable-next-line no-undef
         // data: nftData.data
         data: JSON.stringify(metadata)
-      }, wallet);
+      });
     }catch(err) {
       console.log("create transaction error")
       console.log("err-transaction", err)
@@ -101,7 +101,7 @@ const exportNFT = async (ownerAddress, content, imageUrl = '', imageBlob, wallet
     tx.addTag('Init-State', JSON.stringify(initialState))
   
     try{
-      await arweave.transactions.sign(tx, wallet);
+      await arweave.transactions.sign(tx);
     }catch(err) {
       console.log("transaction sign error")
       console.log("err-sign", err)
