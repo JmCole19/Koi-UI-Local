@@ -103,8 +103,7 @@ const exportNFT = async (ownerAddress, content, imageUrl = '', imageBlob) => {
       return false
     }
     console.log(tx);
-    console.log(tx.id);
-    console.log(" wallet : ", wallet);
+    // console.log(" wallet : ", wallet);
   
     let uploader = await arweave.transactions.getUploader(tx)
   
@@ -115,6 +114,7 @@ const exportNFT = async (ownerAddress, content, imageUrl = '', imageBlob) => {
         uploader.uploadedChunks + '/' + uploader.totalChunks
       )
     }
+    console.log(tx.id);
     return tx.id
   }catch(err) {
     console.log("err-last", err)

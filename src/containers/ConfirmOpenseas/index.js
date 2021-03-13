@@ -47,11 +47,11 @@ function ConfirmOpenseas() {
   const location = useLocation();
   const { step = "1", selected, address } = queryString.parse(location.search);
   const [uploading] = useState(false);
-  const [ mode, setMode ] = useState('uploading'); // change | confirm | uploading | complete
+  const [ mode, setMode ] = useState('change'); // change | confirm | uploading | complete
   const [activeOpenSea, setActiveOpenSea] = useState({ id: 0, thumb: '', title: '', owner: '', description: ''});
   const [activeStep, setActiveStep] = useState(1);
   const [uploadContens, setUploadContents] = useState([]);
-  const [showModal, setShowModal] = useState(true);
+  const [showModal, setShowModal] = useState(false);
   var selectedIds = selected.split("_");
   const [detectorAr, setDetectorAr] = useState(false);
   const [updatingProcess, setUploadingProcess] = useState(0);
@@ -143,7 +143,7 @@ function ConfirmOpenseas() {
   };
 
   const onConnectWallet = () => {
-    console.log("connect wallet")
+    setDetectorAr(true)
   }
 
   const updateContent = (key, value) => {
@@ -218,14 +218,31 @@ function ConfirmOpenseas() {
         setAddressArweave(addr);
         setMode('uploading')
         // uploading process
+        let tpUpdatingProcess = updatingProcess
         for(let content of uploadContens) {
           try{
-            let res = await await exportNFT(addressArweave, content, content.thumb, null)
+            let res = await exportNFT(addressArweave, content, content.thumb, null)
+            console.log(res)
+            tpUpdatingProcess ++ 
+            // console.log("test1", JSON.stringify(tpUpdatingProcess))
+            // tpUpdatingProcess = tpUpdatingProcess*1 + 1
+            // console.log("test2", JSON.stringify(tpUpdatingProcess))
             if(res) {
-              setUploadingProcess(updatingProcess + 1)
+              console.log("log1" +  tpUpdatingProcess)
+              setUploadingProcess(tpUpdatingProcess)
             }else {
-              setUploadingProcess(updatingProcess + 1)
+              console.log("log2" +  tpUpdatingProcess)
+              setUploadingProcess(tpUpdatingProcess)
               show_notification("There is an error to upload content title '"+content.title+"' ")
+            }
+            if((tpUpdatingProcess + 1) === uploadContens.length) {
+              // close modal
+              setShowModal(false)
+              show_notification("Upload successfully", "KOI", 'success')
+              // show complete section
+              setTimeout( () => {
+                setMode('complete')
+              }, 2000)
             }
             // await await exportNFT(addressArweave, 'https://lh3.googleusercontent.com/9OlQ8XvK-6cA5LYt8w-G_OGMXlJDRmeEKT7t8RaG_uXiujizuUr6DC2m6IjMA1_qxv-mNP94Hd2eYl_Q_ErYrN1dFHznDFiofeHT=s128', null)
           }catch(err) {
@@ -543,7 +560,7 @@ function ConfirmOpenseas() {
                 <Progress
                   strokeColor={colors.blueDark}
                   trailColor={colors.blueLight}
-                  percent={((activeStep) * 100) / uploadContens.length}
+                  percent={((updatingProcess) * 100) / uploadContens.length}
                   status="active"
                   showInfo={false}
                 />
