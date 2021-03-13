@@ -32,7 +32,7 @@ function UploadManual() {
   const { step } = queryString.parse(location.search);
   const [uploading] = useState(false);
   const [imageUrl, setImageUrl] = useState(null);
-  const [, setImageBlob] = useState(null);
+  const [imageBlob, setImageBlob] = useState(null);
   const [activeContent, setActiveContent] = useState({ title: '', owner: '', description: ''});
 
   const onCompleteStep1 = () => {
@@ -73,12 +73,20 @@ function UploadManual() {
       reader.onload = async (e) => {
         var arJson = JSON.parse(e.target.result)
         let addressResult = await getArWalletAddressFromJson(arJson);
-        show_notification(addressResult)
         try{
-          await exportNFT(addressResult, activeContent, 'https://lh3.googleusercontent.com/9OlQ8XvK-6cA5LYt8w-G_OGMXlJDRmeEKT7t8RaG_uXiujizuUr6DC2m6IjMA1_qxv-mNP94Hd2eYl_Q_ErYrN1dFHznDFiofeHT=s128', null)
+          let res = await exportNFT(addressResult, activeContent, '', imageBlob, arJson)
+          if(res) {
+            show_notification('Your transaction id is ' + res + '. Upload successfully', 'NFT uploading', 'success')
+            setTimeout(() => {
+              history.push('/contents')
+            }, 3000)
+          }else{
+            show_notification('Something error', 'NFT uploading')
+          }
         }catch(err) {
           console.log("here1")
           console.log(err)
+          show_notification('Something error', 'NFT uploading')
         }
         // exportNFT(addressResult, 0.0001, '', imageBlob)
         // .then(res => console.log("success", res))
@@ -104,8 +112,13 @@ function UploadManual() {
       const reader = new FileReader();
       reader.onload = (e) => {
         setImageUrl(e.target.result)
+        fetch(e.target.result).then(function(response) {
+          return response.blob();
+        }).then(function(blob) {
+          setImageBlob(blob)
+        });
       }
-      setImageBlob(file)
+      // setImageBlob(file)
       reader.readAsDataURL(file);
       // Prevent upload
       return false;
