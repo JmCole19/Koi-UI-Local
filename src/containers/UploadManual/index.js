@@ -75,7 +75,7 @@ function UploadManual() {
         let addressResult = await getArWalletAddressFromJson(arJson);
         show_notification(addressResult)
         try{
-          await exportNFT(addressResult, 'https://lh3.googleusercontent.com/9OlQ8XvK-6cA5LYt8w-G_OGMXlJDRmeEKT7t8RaG_uXiujizuUr6DC2m6IjMA1_qxv-mNP94Hd2eYl_Q_ErYrN1dFHznDFiofeHT=s128', null)
+          await exportNFT(addressResult, activeContent, 'https://lh3.googleusercontent.com/9OlQ8XvK-6cA5LYt8w-G_OGMXlJDRmeEKT7t8RaG_uXiujizuUr6DC2m6IjMA1_qxv-mNP94Hd2eYl_Q_ErYrN1dFHznDFiofeHT=s128', null)
         }catch(err) {
           console.log("here1")
           console.log(err)

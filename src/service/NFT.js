@@ -23,7 +23,7 @@ async function getDataBlob(imageUrl) {
   return obj;
 }
 
-const exportNFT = async (ownerAddress, imageUrl = '', imageBlob) => {
+const exportNFT = async (ownerAddress, content, imageUrl = '', imageBlob) => {
   try {
 
     // var wallet = await window.arweaveWallet.connect()
@@ -38,13 +38,18 @@ const exportNFT = async (ownerAddress, imageUrl = '', imageBlob) => {
   
     console.log("image buffer blob : ", nftData)
   
-    const metadata = {
+    let metadata = {
       // owner: 'l2Fe-SdzRD-fPvlkrxlrnu0IC3uQlVeXIkHWde8Z0Qg', // This is Al's test wallet for Koi server
       owner: ownerAddress, // my test wallet
       name: 'koi nft',
       description: 'first koi nft',
       ticker: 'KOINFT'
     }
+    metadata.title = content.title
+    metadata.name = content.owner
+    metadata.owner = ownerAddress
+    metadata.description = content.description
+    metadata.ticker = 'KOINFT'
     
     const balances = {};
     balances[metadata.owner] = 0;
