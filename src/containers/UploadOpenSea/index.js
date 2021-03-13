@@ -9,7 +9,7 @@ import { UploadOpenSeaContainer } from "./style";
 import { useHistory } from "react-router-dom";
 import { DataContext } from "contexts/DataContextContainer";
 
-const testOpenseaAddress = '0xd703accc62251189a67106f22d54cd470494de40'
+// const testOpenseaAddress = '0xd703accc62251189a67106f22d54cd470494de40'
 
 function UploadOpenSea() {
   const history = useHistory();
