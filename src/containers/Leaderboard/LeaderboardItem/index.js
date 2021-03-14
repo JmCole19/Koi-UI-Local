@@ -34,7 +34,7 @@ function LeaderboardItem({
           </p>
           <p className="item-created_at mb-0">Registered: {item.created_at || 'Jan, 01, 2021'}</p>
           <a
-            href="https://viewblock.io/"
+            href={`https://viewblock.io/arweave/tx/${item.txIdContent}`}
             target="_blank"
             rel="noopener noreferrer"
             className="explore-block mb-0"

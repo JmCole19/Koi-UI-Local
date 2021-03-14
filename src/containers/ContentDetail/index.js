@@ -1,23 +1,16 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { IconShare, IconHtml } from "assets/images";
 import React, { useContext, useEffect, useState } from "react";
+import {
+  FacebookShareButton,
+  TwitterShareButton,
+  InstapaperShareButton,
+  EmailShareButton,
+} from "react-share";
 import { koi_tools } from "koi_tools";
-import {
-  Alert,
-  Button,
-  Col,
-  Container,
-  Image,
-  Row,
-} from "react-bootstrap";
-import {
-  FaInstagram,
-} from "react-icons/fa";
-import {
-  FiFacebook,
-  FiMessageCircle,
-  FiTwitter,
-} from "react-icons/fi";
+import { Alert, Button, Col, Container, Image, Row } from "react-bootstrap";
+import { FaInstagram } from "react-icons/fa";
+import { FiFacebook, FiMessageCircle, FiTwitter } from "react-icons/fi";
 import { HiOutlineMail } from "react-icons/hi";
 import { useHistory, useParams } from "react-router-dom";
 import { colors } from "theme";
@@ -49,6 +42,7 @@ const ktools = new koi_tools();
 function ContentDetail() {
   const history = useHistory();
   const { id } = useParams();
+  const currentUrl = `${window.location.hostname}${history.location.pathname}`;
   const { contents, setContents } = useContext(DataContext);
   const [isLoading, setIsLoading] = useState(false);
   const [detail, setDetail] = useState({});
@@ -56,7 +50,6 @@ function ContentDetail() {
   const [showModal, setShowModal] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const [modalType, setModalType] = useState("share");
-
 
   const onSwitchModal = () => {
     setModalType(modalType === "share" ? "embed" : "share");
@@ -196,11 +189,19 @@ function ContentDetail() {
                         </Button>
                       </div>
                       <div className="social-wrapper">
-                        <FiTwitter size={24} color={colors.greenDark} />
-                        <FaInstagram size={24} color={colors.greenDark} />
-                        <FiFacebook size={24} color={colors.greenDark} />
+                        <TwitterShareButton url={currentUrl}>
+                          <FiTwitter size={24} color={colors.greenDark} />
+                        </TwitterShareButton>
+                        <InstapaperShareButton url={currentUrl}>
+                          <FaInstagram size={24} color={colors.greenDark} />
+                        </InstapaperShareButton>
+                        <FacebookShareButton url={currentUrl}>
+                          <FiFacebook size={24} color={colors.greenDark} />
+                        </FacebookShareButton>
                         <FiMessageCircle size={24} color={colors.greenDark} />
-                        <HiOutlineMail size={24} color={colors.greenDark} />
+                        <EmailShareButton url={currentUrl}>
+                          <HiOutlineMail size={24} color={colors.greenDark} />
+                        </EmailShareButton>
                       </div>
                     </div>
                   </Col>
