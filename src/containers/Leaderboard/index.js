@@ -9,9 +9,25 @@ import ReactSlider from "react-slider";
 import { useHistory } from "react-router-dom";
 import LeaderboardItem from "./LeaderboardItem";
 import { DataContext } from "contexts/DataContextContainer";
+import ModalContent from "components/Elements/ModalContent";
 
 const { Panel } = Collapse;
 const options = ["24h", "1w", "1m", "1y", "all"];
+
+// const contents = [
+//   {
+//     balances: { "sQTWslyCdKF6oeQ7xXUYUV1bluP0_5-483FXH_RVZKU": 1 },
+//     description:
+//       "'The Delights of Purim' at the Israeli Opera, photo by Ziv Barak",
+//     name: "Kayla",
+//     owner: "sQTWslyCdKF6oeQ7xXUYUV1bluP0_5-483FXH_RVZKU",
+//     ticker: "KRK",
+//     totalReward: 0,
+//     totalViews: 0,
+//     twentyFourHrViews: 0,
+//     txIdContent: "EKW3AApL4mdLc6sIhVr3Cn8VN7N9VAQUp2BNALHXFtQ",
+//   },
+// ];
 
 const ktools = new koi_tools();
 
@@ -21,15 +37,22 @@ function Leaderboard() {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isFiltered, setIsFiltered] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [modalType, setModalType] = useState("share");
+  const [selectedContent, setSelectedContent] = useState([]);
 
-  const onClickItem = (item) => {
-    history.push(`/content-detail/${item.txIdContent}?type=view`);
+  const onClickItem = (item, type) => {
+    if (type === "view") {
+      history.push(`/content-detail/${item.txIdContent}?type=view`);
+    } else {
+      setSelectedContent(item);
+      setModalType(type);
+      setShowModal(true);
+    }
   };
-  const onClickShare = (item) => {
-    history.push(`/content-detail/${item.txIdContent}?type=share`);
-  };
-  const onClickEmbed = (item) => {
-    history.push(`/content-detail/${item.txIdContent}?type=embed`);
+
+  const onSwitchModal = () => {
+    setModalType(modalType === "share" ? "embed" : "share");
   };
 
   const onClickShowMore = () => {
@@ -132,10 +155,10 @@ function Leaderboard() {
                   key={_i}
                   item={_item}
                   order={_i}
-                  onClickItem={() => onClickItem(_item)}
+                  onClickItem={() => onClickItem(_item, "view")}
                   onClickUsername={() => onClickUsername(_item)}
-                  onClickShare={() => onClickShare(_item)}
-                  onClickEmbed={() => onClickEmbed(_item)}
+                  onClickShare={() => onClickItem(_item, "share")}
+                  onClickEmbed={() => onClickItem(_item, "embed")}
                 />
               ))
           )}
@@ -152,10 +175,10 @@ function Leaderboard() {
                     key={_i}
                     item={_item}
                     order={_i + 5}
-                    onClickItem={() => onClickItem(_item)}
+                    onClickItem={() => onClickItem(_item, "view")}
                     onClickUsername={() => onClickUsername(_item)}
-                    onClickShare={() => onClickShare(_item)}
-                    onClickEmbed={() => onClickEmbed(_item)}
+                    onClickShare={() => onClickItem(_item, "share")}
+                    onClickEmbed={() => onClickItem(_item, "embed")}
                   />
                 ))}
             </Panel>
@@ -169,6 +192,13 @@ function Leaderboard() {
           )}
         </div>
       </div>
+      <ModalContent
+        type={modalType}
+        show={showModal}
+        detail={selectedContent}
+        onHide={() => setShowModal(false)}
+        onSwitchModal={onSwitchModal}
+      />
     </LeaderboardContainer>
   );
 }
