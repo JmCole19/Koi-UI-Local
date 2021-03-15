@@ -6,7 +6,7 @@ import customAxios from "service/customAxios";
 import fileDownload from "js-file-download";
 import { Carousel, Container, Toast } from "react-bootstrap";
 import { FaucetContainer } from "./style";
-import { Button, Input } from "antd";
+import { Button, Input, Spin } from "antd";
 import { useHistory } from "react-router-dom";
 import { show_notification, show_fixed_number } from "service/utils";
 
@@ -20,6 +20,7 @@ function Faucet() {
   const { step } = queryString.parse(history.location.search);
   const queryAddress = queryString.parse(history.location.search).address || "";
   const [curStep, setCurStep] = useState(0);
+  const [loading, setLoading] = useState(false);
 
   const onSkipGetWallet = () => {
     setCurStep(1);
@@ -60,6 +61,7 @@ function Faucet() {
   };
 
   const getKoi = async () => {
+    setLoading(true)
     let {
       ok,
       data: { data },
@@ -67,10 +69,12 @@ function Faucet() {
       address: address,
     });
     if (ok) {
+      setLoading(false)
       setKoiBalance(data.koiBalance);
       setCurStep(4);
       history.push(`/faucet?step=4&address=${address}`);
     } else {
+      setLoading(false)
       console.log("get koi error");
     }
   }
@@ -78,6 +82,7 @@ function Faucet() {
   const onClickGetKoi = async () => {
     console.log("here");
     if (address) {
+      setLoading(true)
       let { ok, data: {data} } = await customAxios.post(`/searchTweet`, {
         address: address,
       });
@@ -89,10 +94,12 @@ function Faucet() {
         console.log(data.freeKoi)
         await getKoi()
       } else {
+        setLoading(false)
         setErrMessage("Not posted on twitter!");
         setShowToast(true);
       }
     } else {
+      setLoading(false)
       setErrMessage("You don't have an address yet!");
       setShowToast(true);
     }
@@ -239,6 +246,7 @@ function Faucet() {
                   <h6 className="text-blue">
                     After you’ve tweeted, click here to claim your free KOI!
                   </h6>
+                  {loading && <div className='text-center w-100'><Spin size="large" /></div>}
                   <Button
                     className="btn-step-card mt-auto mx-auto"
                     onClick={onClickGetKoi}
