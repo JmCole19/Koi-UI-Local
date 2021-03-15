@@ -8,6 +8,7 @@ import { Carousel, Container, Toast } from "react-bootstrap";
 import { FaucetContainer } from "./style";
 import { Button, Input } from "antd";
 import { useHistory } from "react-router-dom";
+import { show_notification, show_fixed_number } from "service/utils";
 
 function Faucet() {
   const history = useHistory();
@@ -58,30 +59,35 @@ function Faucet() {
     history.push(`/faucet?step=3&address=${address}`);
   };
 
+  const getKoi = async () => {
+    let {
+      ok,
+      data: { data },
+    } = await customAxios.post(`/getKoi`, {
+      address: address,
+    });
+    if (ok) {
+      setKoiBalance(data.koiBalance);
+      setCurStep(4);
+      history.push(`/faucet?step=4&address=${address}`);
+    } else {
+      console.log("get koi error");
+    }
+  }
+
   const onClickGetKoi = async () => {
     console.log("here");
     if (address) {
-      let { ok, data: { data } } = await customAxios.post(`/searchTweet`, {
+      let { ok, data: {data} } = await customAxios.post(`/searchTweet`, {
         address: address,
       });
       if (ok) {
+        show_notification(data.message)
         setTwMessage(data.message)
         console.log(data.posted)
         console.log(data.duplicate)
         console.log(data.freeKoi)
-        let {
-          ok,
-          data: { data },
-        } = await customAxios.post(`/getKoi`, {
-          address: address,
-        });
-        if (ok) {
-          setKoiBalance(data.koiBalance);
-          setCurStep(4);
-          history.push(`/faucet?step=4&address=${address}`);
-        } else {
-          console.log("get koi error");
-        }
+        await getKoi()
       } else {
         setErrMessage("Not posted on twitter!");
         setShowToast(true);
@@ -253,7 +259,7 @@ function Faucet() {
                 </div>
                 {/* <h1 className="f-32 text-blue">4</h1> */}
                 <div className="step-content congratulation">
-                  <h6 className="step-title text-blue">
+                  <h6 className="step-title text-blue text-center">
                     {twMessage}
                   </h6>
                   <h6 className="step-title text-blue">
