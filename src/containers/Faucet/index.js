@@ -14,6 +14,7 @@ function Faucet() {
   const [address, setAddress] = useState(null);
   const [koiBalance, setKoiBalance] = useState(0);
   const [showToast, setShowToast] = useState(false);
+  const [twMessage, setTwMessage] = useState("");
   const [errMessage, setErrMessage] = useState("");
   const { step } = queryString.parse(history.location.search);
   const queryAddress = queryString.parse(history.location.search).address || "";
@@ -60,11 +61,15 @@ function Faucet() {
   const onClickGetKoi = async () => {
     console.log("here");
     if (address) {
-      const { ok } = await customAxios.post(`/searchTweet`, {
+      let { ok, data: { data } } = await customAxios.post(`/searchTweet`, {
         address: address,
       });
       if (ok) {
-        const {
+        setTwMessage(data.message)
+        console.log(data.posted)
+        console.log(data.duplicate)
+        console.log(data.freeKoi)
+        let {
           ok,
           data: { data },
         } = await customAxios.post(`/getKoi`, {
@@ -88,7 +93,7 @@ function Faucet() {
   };
   console.log({ address });
   const onClickUpload = () => {
-    history.push("/contents");
+    history.replace("/contents");
   };
 
   const onClickBackTo = (step) => {
@@ -249,7 +254,7 @@ function Faucet() {
                 {/* <h1 className="f-32 text-blue">4</h1> */}
                 <div className="step-content congratulation">
                   <h6 className="step-title text-blue">
-                    You just earned 5 KOI!{" "}
+                    {twMessage}
                   </h6>
                   <h6 className="step-title text-blue">
                     Your KOI balance: {koiBalance}
