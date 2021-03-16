@@ -138,7 +138,7 @@ function ContentDetail() {
                       <p className="detail-username">{detail.name}</p>
                       <p>Registered {detail.created_at || "Jan. 01, 2021"}</p>
                       {/* <p className="mb-0">{detail.description}</p> */}
-                      {isExpanded ? (
+                      {isExpanded || detail.description?.length < 300 ? (
                         <p className="mb-0">{detail.description}</p>
                       ) : (
                         <p className="mb-0">
