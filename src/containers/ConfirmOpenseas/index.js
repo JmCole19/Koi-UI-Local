@@ -54,7 +54,7 @@ function ConfirmOpenseas() {
   const [showModal, setShowModal] = useState(false);
   var selectedIds = selected.split("_");
   const [detectorAr, setDetectorAr] = useState(false);
-  const [requiredKey, setRequiredKey] = useState(true);
+  const [requiredKey, setRequiredKey] = useState(false);
   const [walletKey, setWalletKey] = useState(null);
   const [updatingProcess, setUploadingProcess] = useState(0);
   
@@ -93,7 +93,8 @@ function ConfirmOpenseas() {
         }
         break;
       case 'confirm':
-        setDetectorAr(true)
+        setRequiredKey(true)
+        // setDetectorAr(true)
         break;
       case 'uploading':
         setMode('complete')
@@ -191,8 +192,7 @@ function ConfirmOpenseas() {
       reader.onload = async (e) => {
         var arJson = JSON.parse(e.target.result)
         setWalletKey(arJson)
-        const arweave = Arweave.init()
-        let addressResult = await getArWalletAddressFromJson(arweave, arJson);
+        setDetectorAr(true)
       }
       reader.readAsText(file);
       // Prevent upload
@@ -240,8 +240,10 @@ function ConfirmOpenseas() {
   const detectArweaveWallet = async () => {
     try {
       let addr = await arweave.wallets.getAddress();
+      let addressResult = await getArWalletAddressFromJson(arweave, walletKey);
+      console.log({addressResult})
       console.log("detected arweave wallet address : ", addr);
-      if (addr) {
+      if (addr === addressResult) {
         setAddressArweave(addr);
         setMode('uploading')
         // uploading process
