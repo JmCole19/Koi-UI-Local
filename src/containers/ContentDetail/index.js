@@ -118,7 +118,10 @@ function ContentDetail() {
                 <p className="text-blue text-center mb-0">
                   You just voted with your attention! Since you viewed this
                   page, the owner will be rewarded with KOI. <br />
-                  <b className="cursor" onClick={() => history.push("/faucet")}>
+                  <b
+                    className="cursor"
+                    onClick={() => history.push("/register-content")}
+                  >
                     Upload something unique to start earning
                   </b>
                   .
