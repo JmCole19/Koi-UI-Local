@@ -13,7 +13,6 @@ import ArconnectCard from "components/Elements/ArconnectCard";
 import { show_notification } from 'service/utils'
 import Arweave from "arweave";
 import { getArWalletAddressFromJson, exportNFT } from 'service/NFT'
-const arweave = Arweave.init()
 
 const { TextArea } = Input;
 const { Dragger } = Upload;
@@ -74,6 +73,7 @@ function UploadManual() {
       const reader = new FileReader();
       reader.onload = async (e) => {
         var arJson = JSON.parse(e.target.result)
+        const arweave = Arweave.init()
         let addressResult = await getArWalletAddressFromJson(arweave, arJson);
         try{
           let res = await exportNFT(arweave, addressResult, activeContent, '', imageBlob, arJson)

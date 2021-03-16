@@ -12,12 +12,12 @@ async function getDataBlob(imageUrl) {
   var blob = await res.blob();
   var obj = {};
   obj.contentType = blob.type;
-  
- // var uri = await parseURI(blob);
- console.log(blob);
- var buffer = await blob.arrayBuffer();
- obj.data = buffer;
- console.log(buffer);
+
+  // var uri = await parseURI(blob);
+  console.log(blob);
+  var buffer = await blob.arrayBuffer();
+  obj.data = buffer;
+  console.log(buffer);
 
   return obj;
 }
@@ -27,17 +27,17 @@ const exportNFT = async (arweave, ownerAddress, content, imageUrl = '', imageBlo
 
     // var wallet = await window.arweaveWallet.connect()
     const contractSrc = process.env.REACT_APP_CONTRACT_SRC
-    let nftData 
-    if (imageUrl){
-      console.log({imageUrl})
+    let nftData
+    if (imageUrl) {
+      console.log({ imageUrl })
       nftData = await getDataBlob(imageUrl)
-    }else{
-      console.log({imageBlob})
+    } else {
+      console.log({ imageBlob })
       nftData = imageBlob
     }
-  
+
     console.log("image buffer blob : ", nftData)
-  
+
     let metadata = {
       // owner: 'l2Fe-SdzRD-fPvlkrxlrnu0IC3uQlVeXIkHWde8Z0Qg', // This is Al's test wallet for Koi server
       owner: ownerAddress, // my test wallet
@@ -50,10 +50,10 @@ const exportNFT = async (arweave, ownerAddress, content, imageUrl = '', imageBlo
     metadata.owner = ownerAddress
     metadata.description = content.description
     metadata.ticker = 'KOINFT'
-    
+
     const balances = {};
     balances[metadata.owner] = 0;
-  
+
     const initialState = {
       "owner": metadata.owner,
       "name": metadata.name,
@@ -61,23 +61,12 @@ const exportNFT = async (arweave, ownerAddress, content, imageUrl = '', imageBlo
       "ticker": metadata.ticker,
       "balances": balances
     }
-    if(wallet === {}) {
-      wallet = {
-        "d": "S0lHD8Y8w9H0u2MxhWPSWxW6jwUm3qpIZKkVFBGz_yWrZjWwgEh5KNOdZ2i5swohsuxe4pYsVWbTt1qtbJmRGnH8cjrBDmnna0UusJkcGiAmzZHgP58-nvqUplK1X8TPxIVpHKAe9ji2QT5HalBDtDNg1C1rgZlRjXH3EQt4ZYJFhlTrMA_1cPFMlPq6b057JJo-nraV9KfYGRww5fVbcebHKQzODX3bI6OA6U8NI7ofrJdKNYvt-ZYAzO5c0PofZzuqE9TpqP3P1KU_hiHF1MVACNTsG1gjjuZTNq31B1nmuJmSR3YADV0I4BlyFoI8HSWeTIMokmPJ9oKlIn_q-Q",
-        "dp": "cjG9L5WkWevNL-AGYOIHtDFuzauLxC7JE0YIeVDVWbCh7XRF8UHVrEvBQYMGUToP8JtNB4rsh9UJWMaTPCiFQA_-ttES3wVYLo3iAMrowXAE0-kG2uNFg65l-oHSxmLBZWDJASzZUPs07TEzhzBNMN1NAshokNKI30UIzZmzJuc",
-        "dq": "URnFZGPLG080kCbTxQJxdlptyZ8fiVxXASTLvmcxCR9mJr9Xi33XSsAIyjOK213hPAA9EsCpVj5PJucIW6eDuc87fHAvWgA9LMPbWge8bRfgb5NIkohg52dBw1eAFnNcuzLf79CE70ZmQi8_mfeWv--yqLeyKw8veJo__ywS7eM",
-        "e": "AQAB",
-        "ext": true,
-        "kty": "RSA",
-        "n": "hEXMUNqZ01PTyOBsU_vTWy5dAt3ge_q5C0dtY4t-7aj36ifu6UNVwQgEd8k21T4yWn6ljbLhih31FteqSoYx9kagGWoqCVOPwifYgmTOn37fvhDeJhJocPG1eZ61nAI_cydj-qDA-TQXu0rS6i__z5-7-MuwVCUU0EWl87EPHm1I-Cp2HQyNoYBqXeXutBVJTprLnXKpnX-Wg1JLwOn-XCxGqBZ611BPd9womjyU5u34kAYrcb2RtseG0uJTpa2Gii0CHQU5X5a2vOFF07zUAYg2vXf4mSQb7F8DwFtzyiPvlr2CNHVlwUuJiYz1dksL6HR9-rXZ7h_KvtNg5ygeWQ",
-        "p": "__mwsxFqSR06g4I2jtlzzOjmzRG53KFm8fTOvdwSMxmbqBvWwUdTdHEAWkJ07iHca94caXUK33M2oJE-vk0nJz8lgllg-U2z6MMW1Tefgvh_l5v-zvVmZIA84T0DtKQ55WIdWZBq3-Vu830fBqlutnHltxMgT8_kRtXgGT1BSA8",
-        "q": "hEkPAYE-Dxb0pfXreFOvpdsCDu2GEMgeNdZ57rN0q5mEMLALyuVnbp-0bEQ1B4EB4PrxBuYMrBq32cJvGP6ZxyWegFue4xCA1n8PmmG3Tn4GZ_5erdvEpE8XID3Mv1hSncStCo96WbGNIDRpFhj30oXutd64kvXq1SMhPIKuCxc",
-        "qi": "dgbL6khNtnS974k3n2lMd7uFv2LRpt00IPNjAFRW2XHx3bWRbmXdbch6jkK-N_99gbjlSK-ipjeHZFU55mCufhRk--0TOuE-afjYZUm6O7OonjcwvVER7koOAbSucATTQnn232orT86oDzYxbARbAUvvCi59FtZvCGENjMGDzz8"
-      }
-    }else{
+    if (wallet === {}) {
+      wallet = { "kty": "RSA", "e": "AQAB", "n": "pyK_z1Jmluzr775_gwQgkRVhq5LbZ8RDpqwyV6CYIufphPMOSemd60BceRdrM-KmKExLpakWLOs6zBj6mcUgMhwqKuS_as8R1IqX6VFwEj4oW2VyPO4oKdgz9HVP3BSwiHSznc1O6DkTtaqQnHHP_61AGMMMfJsubuOEMS-VJwF9yyAeuwtdiryYpe_Y0nOvfySSe7OUzncdRsfEznSyBEpSCUB-vRpHe-6E7USGo9vu1DyTv1Svw5Ly5VqsRNeAWF2uKdKEf4muUiyPLnijgqzzQ0N-q2GDAPJi-xjHpDwjxBSPPVpLn2IB8-YQSE3SmeTzTi6nitkzcPwpQxbmYb40K7V3xyQGoq_QBSbvOdYy5epMco1GeCq5AFeQB5k5C-a9e66Hc4GhBjArycc-DXStokZ7_c7F95dtC0ynLW6rGipp1PDLAEOXwD-0sxnvh43MvinIUjQL4MICYDdP15GNVqoqNTs7gZU7oP15OgTEem-4Uf3WkvJcS6uRGZPmDtF3eKOIMXLytf-QSECU9WE7qoWEd8TdO17Gns688LGKpJwuPGZ7bwGqU5iteBWQMKcoArPJdTCQCT_T7fOE6COO4oEYoHp7WRtM3HUO2MUTbM7rb4h9InZ5OPZ600jYWmMYnFhO_tquR5_-GmtL7m7KmPrfCOGB2XI42baWdwM", "d": "FdYl7l3rNmvU9ZlTipgW8y2yeZqx3NBZMGUOHMHILsNTEMI6yzBhKBPcIRwMrxY9NEWnmojJc2v2XiUjVMTbDID-h2Uklz1frH_BEkRIGrIRTsOl1c0d5T2wqA9NtEjluaZZs1PYK-INL66Nv0rlbJfDqJiPQJZ7zhQeuNhpKdP5jfjv2utEuPQkE4YPM4vW0YtDMjNHzWPlqNI_5eN8QLA_IKNTC7zruwbySheqaa05-nPBr_1OC4TfBFVA7aukQqdWsnMlSY6A_o6A1IcBgfi7vb2LRrPyTETe5sSZjN0opR00i8UI3VWOQMH9vZyhV-cAXOYekLcJEAl6EKBk0AkaucrU4D5GIW8vrvdQlGQEkFIOQzzjri73-DOu0MZAEFl0H5nv6NKYHuZVuTm12f8ordBaeIoxNvgu0AbfbmT-W-YUhlA2iXT4-J2TuyGmXCJoa-uyG_uwWCWC72JIOGsojudHgOhrQ8Jnrjq5pBQXAtbG0MqgTaY-MSQtQLyH4GbMcyzQi08vuBfCFigItqgSKJXANoXe1L-PpVsXVEd2j6lfpzbw4DMjHgqURxgLePJTrQJ3KrKCO-DdJ1SsJiDosKhRu_XmbLrKX6dARWt9XZ89E9DZonJWqCp1C6zsIxuWT9A89fOqzYqePY5zNfDOWkiYkaOkRvvJ28aoPEk", "p": "5Hg3zT9CRxcOvjLyuTtkvqL4fbFEqYta9oKJu3vhB21IMi8GsZv5oUpXvB6shqYFNOpRLNpuRiUDw0dlbIWP_6HPB5pNGHnoOqB8YdGPHNx7jwdEvrGJULxETaViNoQpAP3ZdD2sV-KAdlOp-tWz9T5-BeIKf8MsOPNZHL3kwRsL_rRbffXqV_uWs8MA0_0xObOlYHFJCaC7FHXjwtj--T05-IxlKaA2zyya0TnqheVipHlyEEzpS7KNyFltQDXhZY5nKnN4RFn_JeMFzH7I2zlaTcZV97p-FQkcksSMgPseauaU57G-Wmjpwo2wy5ANxnij5ZikgC67d1TWN3MBqw", "q": "u0aEap1zpwEEXXORu8OoOjrnJGKxij_MYr5-Rh86pNh_elx3WRwB5XPr9FbLrZlXbuBsUjRFvbRlad3qta174C1PAnLV7lN3NuQc6JC8aUKH8Yo40hI0ezJvkTomQQcoV5Ny3vBmoKP3wfSjNaX3WfswAiloeLTPsa-k8nZvn7ljZyZBesneeJbnGpWvw5HH7ZCkFZQ2m2Jz7kcyG33VBjS3nPDMWiN2n5vPAJOZJuNqnwdhnr4QCX32UFs1d8C70QmJ8XlkrP4Rb2Diw2nJsNAwDiq75dYFn8G_KirYFcS_PnzSR7Sze_VDocysCUe2gEc4qywLjCfhkc36H4o4CQ", "dp": "seWB3clB_ETR7_uPz_eVTHNtdcGQK0wdOhEO2fNtlvDa5GiFl8pRp-tRQWPJBtdC-p7xMjGq5-dudKGlMckWBQCjSdI18bcKwouwDiK0gs6TTx1jw_BNcZYGwUbjoHtryh_fMInNJmlxibE_i9bW10Efs8j8T9tTFc02OBEMi-hZgKxDCWNwY628_J_8hxSBPeLKBLxxGJQU16ur-04nyz6HYyc-phjgVJTwv7WPDU89bcA6tsKMbarMh5JKZVMO_JrTbdSXcvF4oLGTFFYsY7bWv_SNf-WwwwRjQUzV8qCWYLrGe1qFU7SZQCo_3WF_uGi7hc1DWaQJyLNAUdC1HQ", "dq": "Gt9XiOTm_4PJ2I8IzmSY8yIYoMP4rdnRvimPfQhmJdlbEXfLOGIoc4Baz0jVGSfzv9k8Md-GUl5cXwCU-VTXfaeCuts3j2cyqBG7hDOglYoSb7phxOMP3M2z7KbnblVUmJxz00GzuEFO_-nWsZALGkJM9UJz1z46v0hw5snP4p97gAWhR7lHzw34Q3xPKET250PmB6Ko40sRT5OvwPohYy6VWlPDPvvvvZ9h6LdFNqtTVVZ9z4V-T55fhdBQr8pcKPaxcJD2vUwHvG-umlPHuTNmceH37Fb1n6Lxh192ekktGA5ZLijjyFm9Rq5T0VEVAvs1SnqbfZULbRydU4FF4Q", "qi": "L4qZnvGtcr-OAPuWyJb8vJ-UBwhIVO7FtwG3cMwTpUX1OM0AVb3UajoEyuwwJoZkbC4Hn3go-sg01gB9FsERGhxTLP3R6tCy6X1qlvURbvG2JQtYI6UmtHV_NIf0MIsUrYeG2n6-lpiadz6-tXaJ3W6e8tBC-XNuPF2VVQ4TTGOV28bNoqF0s_mzG4_ZlJcmgTm4H5i0n178vqGWP8Z9MbEGJngBGopOpnTDumGr-ZHZglB7_abyWSCZZSA_3YD4JnZ9feja00DK4rGuWcYZJVxCi7R0PF0KtmMSHCf6ygJXYxBs1adbYDD71L7wbZdcAhLgeslWvO_3ZVOWJvFhbw" }
+    } else {
       console.log("current wallet")
+      console.log({wallet})
     }
-    // console.log({wallet})
     let tx
     try {
       tx = await arweave.createTransaction({
@@ -85,12 +74,12 @@ const exportNFT = async (arweave, ownerAddress, content, imageUrl = '', imageBlo
         // data: nftData.data
         data: JSON.stringify(metadata)
       }, wallet);
-    }catch(err) {
+    } catch (err) {
       console.log("create transaction error")
       console.log("err-transaction", err)
       return false
     }
-  
+
     tx.addTag('Content-Type', 'image/png')
     tx.addTag('Network', 'Koi')
     tx.addTag('Action', 'marketplace/Create')
@@ -98,19 +87,19 @@ const exportNFT = async (arweave, ownerAddress, content, imageUrl = '', imageBlo
     tx.addTag('App-Version', '0.3.0')
     tx.addTag('Contract-Src', contractSrc)
     tx.addTag('Init-State', JSON.stringify(initialState))
-  
-    try{
+
+    try {
       await arweave.transactions.sign(tx, wallet);
-    }catch(err) {
+    } catch (err) {
       console.log("transaction sign error")
       console.log("err-sign", err)
       return false
     }
     console.log(tx);
     // console.log(" wallet : ", wallet);
-  
+
     let uploader = await arweave.transactions.getUploader(tx)
-  
+
     while (!uploader.isComplete) {
       await uploader.uploadChunk()
       console.log(
@@ -120,7 +109,7 @@ const exportNFT = async (arweave, ownerAddress, content, imageUrl = '', imageBlo
     }
     console.log(tx.id);
     return tx.id
-  }catch(err) {
+  } catch (err) {
     console.log("err-last", err)
     return false
   }

@@ -12,7 +12,7 @@ import {
   IconUpload,
   ItemTemp,
 } from "assets/images";
-import { ConfirmOpenseasContainer } from "./style";
+import { ConfirmOpenseasContainer, SingleAntFileUpload } from "./style";
 import { Col, Form, Input, Row, Upload, Spin, Progress, Space } from "antd";
 import { useForm } from "antd/lib/form/Form";
 import { useHistory, useLocation } from "react-router-dom";
@@ -21,7 +21,7 @@ import { DataContext } from "contexts/DataContextContainer";
 import { FaTimes } from "react-icons/fa";
 import Arweave from "arweave";
 import { show_notification, show_fixed_number } from "service/utils";
-import { exportNFT } from 'service/NFT'
+import { getArWalletAddressFromJson, exportNFT } from 'service/NFT'
 
 const arweave = Arweave.init();
 const { TextArea } = Input;
@@ -47,17 +47,19 @@ function ConfirmOpenseas() {
   const location = useLocation();
   const { step = "1", selected, address } = queryString.parse(location.search);
   const [uploading] = useState(false);
-  const [ mode, setMode ] = useState('change'); // change | confirm | uploading | complete
+  const [ mode, setMode ] = useState('change'); // change | confirm | uploadKey | uploading | complete
   const [activeOpenSea, setActiveOpenSea] = useState({ id: 0, thumb: '', title: '', owner: '', description: ''});
   const [activeStep, setActiveStep] = useState(1);
   const [uploadContens, setUploadContents] = useState([]);
   const [showModal, setShowModal] = useState(false);
   var selectedIds = selected.split("_");
   const [detectorAr, setDetectorAr] = useState(false);
+  const [requiredKey, setRequiredKey] = useState(false);
+  const [walletKey, setWalletKey] = useState(null);
   const [updatingProcess, setUploadingProcess] = useState(0);
   
   const handleBack = () => {
-    switch(mode){// change | confirm | uploading | complete
+    switch(mode){// change | confirm | uploadKey | uploading | complete
       case 'change':
         let newStep = activeStep - 1
         setActiveOpenSea(uploadContens[newStep-1])  
@@ -65,6 +67,9 @@ function ConfirmOpenseas() {
         break;
       case 'confirm':
         // setActiveStep(activeStep)
+        setMode('change')
+        break;
+      case 'uploadKey':
         setMode('change')
         break;
       case 'uploading':
@@ -80,7 +85,7 @@ function ConfirmOpenseas() {
   }
 
   const onClickConfirm = () => {
-    switch(mode){// change | confirm | uploading | complete
+    switch(mode){// change | confirm | uploadKey | uploading | complete
       case 'change':
         if(activeStep === uploadContens.length) {
           setMode('confirm')
@@ -91,8 +96,12 @@ function ConfirmOpenseas() {
         }
         break;
       case 'confirm':
-        setDetectorAr(true)
+        setMode('uploadKey')
+        // setDetectorAr(true)
         break;
+      // case 'uploadKey':
+      //   setDetectorAr(true)
+      //   break;
       case 'uploading':
         setMode('complete')
         break;
@@ -143,7 +152,9 @@ function ConfirmOpenseas() {
   };
 
   const onConnectWallet = () => {
-    setDetectorAr(true)
+    // setRequiredKey(true)
+    setMode('uploadKey')
+    // setDetectorAr(true)
   }
 
   const updateContent = (key, value) => {
@@ -173,6 +184,30 @@ function ConfirmOpenseas() {
     }
     setUploadContents(contentsOS)
   }, [step, openSeas]);
+
+  const beforeJsonUpload = (file) => {
+    // console.log('file type : ', file)
+    const isJson = file.type === 'application/json';
+    if (!isJson) {
+      show_notification('You can only upload JPG/PNG file!');
+    }
+    const isLt1M = file.size / 1024 < 512;
+    if (!isLt1M) {
+      show_notification('JSON must smaller than 512KB!');
+    }
+    if(isJson && isLt1M) {
+      const reader = new FileReader();
+      reader.onload = async (e) => {
+        var arJson = JSON.parse(e.target.result)
+        setWalletKey(arJson)
+        setDetectorAr(true)
+      }
+      reader.readAsText(file);
+      // Prevent upload
+      return false;
+    }
+    return isJson && isLt1M;
+  }
 
   useEffect(() => {
     if (address) {
@@ -213,15 +248,17 @@ function ConfirmOpenseas() {
   const detectArweaveWallet = async () => {
     try {
       let addr = await arweave.wallets.getAddress();
-      console.log("detected arweave wallet address : ", addr);
+      let addressResult = await getArWalletAddressFromJson(arweave, walletKey);
+      console.log("addressResult : ", addressResult)
+      console.log("detect address: ", addr);
       if (addr) {
         setAddressArweave(addr);
         setMode('uploading')
         // uploading process
         let tpUpdatingProcess = updatingProcess
         for(let content of uploadContens) {
-          try{
-            let res = await exportNFT(arweave, addressArweave, content, content.thumb, null)
+          try {
+            let res = await exportNFT(arweave, addressArweave, content, content.thumb, null, walletKey)
             console.log(res)
             tpUpdatingProcess ++ 
             // console.log("test1", JSON.stringify(tpUpdatingProcess))
@@ -244,7 +281,6 @@ function ConfirmOpenseas() {
                 setMode('complete')
               }, 2000)
             }
-            // await await exportNFT(addressArweave, 'https://lh3.googleusercontent.com/9OlQ8XvK-6cA5LYt8w-G_OGMXlJDRmeEKT7t8RaG_uXiujizuUr6DC2m6IjMA1_qxv-mNP94Hd2eYl_Q_ErYrN1dFHznDFiofeHT=s128', null)
           }catch(err) {
             console.log("error - exportNFT", err)
           }
@@ -542,6 +578,36 @@ function ConfirmOpenseas() {
                 <Button className="btn-blueDark btn-connect" onClick={onConnectWallet}>Confirm & Upload</Button>
               </>
             )}
+            {mode === 'uploadKey' && <>
+              <div className="upload-cards-wrapper">
+                <SingleAntFileUpload>
+                  <Dragger
+                    name="file"
+                    accept="application/JSON"
+                    multiple={false}
+                    listType="picture"
+                    beforeUpload={beforeJsonUpload}
+                    fileList={false}
+                    showUploadList={false}
+                  >
+                    <div className="uploader-container">
+                      {uploading ? (
+                        <Spin size="large" />
+                      ) : (
+                        <>
+                          <div className="uploader-icon d-flex justify-content-center align-items-center">
+                            <Image src={IconUpload} />
+                          </div>
+                          <p className="text-blue mb-0">
+                            Drag & Drop your Arweave keyfile here.
+                          </p>
+                        </>
+                      )}
+                    </div>
+                  </Dragger>
+                </SingleAntFileUpload>
+              </div>
+            </>}
             {mode === 'uploading' && (
               <>
                 <div className="modal-row mb-2 text-center">

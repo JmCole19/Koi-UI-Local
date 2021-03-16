@@ -8,7 +8,7 @@ import { Carousel, Container, Toast } from "react-bootstrap";
 import { FaucetContainer } from "./style";
 import { Button, Input, Spin } from "antd";
 import { useHistory } from "react-router-dom";
-import { show_notification, show_fixed_number } from "service/utils";
+import { show_notification } from "service/utils";
 
 function Faucet() {
   const history = useHistory();
@@ -21,7 +21,7 @@ function Faucet() {
   const queryAddress = queryString.parse(history.location.search).address || "";
   const [curStep, setCurStep] = useState(0);
   const [loading, setLoading] = useState(false);
-
+  
   const onSkipGetWallet = () => {
     setCurStep(1);
     history.push(`/faucet?step=1`);
