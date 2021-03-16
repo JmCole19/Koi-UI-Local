@@ -2,11 +2,18 @@
 import React from "react";
 import { Button, Image } from "react-bootstrap";
 import { IconEyes, IconFish, IconHtml, ItemTemp } from "assets/images";
+import {
+  FacebookShareButton,
+  TwitterShareButton,
+  InstapaperShareButton,
+  EmailShareButton,
+} from "react-share";
 import { FiTwitter, FiFacebook, FiMessageCircle } from "react-icons/fi";
 import { FaInstagram } from "react-icons/fa";
 import { HiOutlineMail } from "react-icons/hi";
 import { LeaderboardItemContainer } from "./style";
 import { colors } from "theme";
+import { useLocation } from "react-router-dom";
 
 const preUrl = "https://arweave.net/";
 
@@ -18,6 +25,10 @@ function LeaderboardItem({
   onClickShare = () => {},
   onClickEmbed = () => {},
 }) {
+
+  const location = useLocation();
+  const currentUrl = `${window.location.hostname}${location.pathname}`;
+
   return (
     <LeaderboardItemContainer>
       <div className="part-left">
@@ -25,14 +36,20 @@ function LeaderboardItem({
           <h3 className="item-order">{order + 1}</h3>
         </div>
         <div className="item-img-wrapper item-col">
-          <Image src={item.txIdContent ? `${preUrl}${item.txIdContent}` : ItemTemp} className="cursor" onClick={onClickItem} />
+          <Image
+            src={item.txIdContent ? `${preUrl}${item.txIdContent}` : ItemTemp}
+            className="cursor"
+            onClick={onClickItem}
+          />
         </div>
         <div className="item-info-wrapper item-col">
           <h2 className="item-title mb-1">{item.ticker}</h2>
           <p className="item-username mb-3 cursor" onClick={onClickUsername}>
             {item.name}
           </p>
-          <p className="item-created_at mb-0">Registered: {item.created_at || 'Jan, 01, 2021'}</p>
+          <p className="item-created_at mb-0">
+            Registered: {item.created_at || "Jan, 01, 2021"}
+          </p>
           <a
             href={`https://viewblock.io/arweave/tx/${item.txIdContent}`}
             target="_blank"
@@ -67,33 +84,19 @@ function LeaderboardItem({
           </Button>
         </div>
         <div className="social-wrapper">
-          <a
-            href="https://twitter.com/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+          <TwitterShareButton url={currentUrl}>
             <FiTwitter size={24} color={colors.greenDark} />
-          </a>
-          <a
-            href="https://www.instagram.com/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+          </TwitterShareButton>
+          <InstapaperShareButton url={currentUrl}>
             <FaInstagram size={24} color={colors.greenDark} />
-          </a>
-          <a
-            href="https://www.facebook.com/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+          </InstapaperShareButton>
+          <FacebookShareButton url={currentUrl}>
             <FiFacebook size={24} color={colors.greenDark} />
-          </a>
-          <a href="sms:">
-            <FiMessageCircle size={24} color={colors.greenDark} />
-          </a>
-          <a href="mailto:itsimpledeveloper@gmail.com">
+          </FacebookShareButton>
+          <FiMessageCircle size={24} color={colors.greenDark} />
+          <EmailShareButton url={currentUrl}>
             <HiOutlineMail size={24} color={colors.greenDark} />
-          </a>
+          </EmailShareButton>
         </div>
       </div>
     </LeaderboardItemContainer>
