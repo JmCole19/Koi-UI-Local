@@ -24,6 +24,7 @@ import UploadEthereum from "containers/UploadEthereum";
 import ConfirmOpenseas from "containers/ConfirmOpenseas";
 import DataContextContainer from "contexts/DataContextContainer";
 import AnnounceContextContainer from "contexts/AnnounceContextContainer";
+import Embed from "containers/Embed";
 
 function App() {
   return (
@@ -57,6 +58,7 @@ function App() {
                 <MyRoute exact path="/upload/manual" component={UploadManual} />
                 <MyRoute path="/faucet" component={Faucet} />
                 <MyRoute path="/confirm-opensea" component={ConfirmOpenseas} />
+                <Route path="/embed/:id" component={Embed} />
               </AnnounceContextContainer>
             </DataContextContainer>
           </Switch>
