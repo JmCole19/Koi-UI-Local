@@ -48,7 +48,7 @@ function Faucet() {
   };
 
   const onClickTweet = async () => {
-    const text = encodeURI("I'm verifying my Arweave address ");
+    const text = encodeURI("I am verifying my Koi address ");
     window.open(
       `https://twitter.com/intent/tweet?text=${text}${address}`,
       "twitpostpopup",
