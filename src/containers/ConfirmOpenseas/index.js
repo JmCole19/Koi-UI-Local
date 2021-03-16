@@ -12,7 +12,7 @@ import {
   IconUpload,
   ItemTemp,
 } from "assets/images";
-import { ConfirmOpenseasContainer } from "./style";
+import { ConfirmOpenseasContainer, SingleAntFileUpload } from "./style";
 import { Col, Form, Input, Row, Upload, Spin, Progress, Space } from "antd";
 import { useForm } from "antd/lib/form/Form";
 import { useHistory, useLocation } from "react-router-dom";
@@ -249,15 +249,15 @@ function ConfirmOpenseas() {
     try {
       let addr = await arweave.wallets.getAddress();
       let addressResult = await getArWalletAddressFromJson(arweave, walletKey);
-      console.log({addressResult})
-      console.log("detected arweave wallet address : ", addr);
-      if (addr === addressResult) {
+      console.log("addressResult : ", addressResult)
+      console.log("detect address: ", addr);
+      if (addr) {
         setAddressArweave(addr);
         setMode('uploading')
         // uploading process
         let tpUpdatingProcess = updatingProcess
         for(let content of uploadContens) {
-          try{
+          try {
             let res = await exportNFT(arweave, addressArweave, content, content.thumb, null)
             console.log(res)
             tpUpdatingProcess ++ 
@@ -578,9 +578,9 @@ function ConfirmOpenseas() {
                 <Button className="btn-blueDark btn-connect" onClick={onConnectWallet}>Confirm & Upload</Button>
               </>
             )}
-            {setMode('uploadKey') && <>
+            {mode === 'uploadKey' && <>
               <div className="upload-cards-wrapper">
-                <div className="single-ant-file-upload">
+                <SingleAntFileUpload>
                   <Dragger
                     name="file"
                     accept="application/JSON"
@@ -605,7 +605,7 @@ function ConfirmOpenseas() {
                       )}
                     </div>
                   </Dragger>
-                </div>
+                </SingleAntFileUpload>
               </div>
             </>}
             {mode === 'uploading' && (
