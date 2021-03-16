@@ -47,7 +47,7 @@ function ConfirmOpenseas() {
   const location = useLocation();
   const { step = "1", selected, address } = queryString.parse(location.search);
   const [uploading] = useState(false);
-  const [ mode, setMode ] = useState('change'); // change | confirm | uploading | complete
+  const [ mode, setMode ] = useState('change'); // change | confirm | uploadKey | uploading | complete
   const [activeOpenSea, setActiveOpenSea] = useState({ id: 0, thumb: '', title: '', owner: '', description: ''});
   const [activeStep, setActiveStep] = useState(1);
   const [uploadContens, setUploadContents] = useState([]);
@@ -59,7 +59,7 @@ function ConfirmOpenseas() {
   const [updatingProcess, setUploadingProcess] = useState(0);
   
   const handleBack = () => {
-    switch(mode){// change | confirm | uploading | complete
+    switch(mode){// change | confirm | uploadKey | uploading | complete
       case 'change':
         let newStep = activeStep - 1
         setActiveOpenSea(uploadContens[newStep-1])  
@@ -67,6 +67,9 @@ function ConfirmOpenseas() {
         break;
       case 'confirm':
         // setActiveStep(activeStep)
+        setMode('change')
+        break;
+      case 'uploadKey':
         setMode('change')
         break;
       case 'uploading':
@@ -82,7 +85,7 @@ function ConfirmOpenseas() {
   }
 
   const onClickConfirm = () => {
-    switch(mode){// change | confirm | uploading | complete
+    switch(mode){// change | confirm | uploadKey | uploading | complete
       case 'change':
         if(activeStep === uploadContens.length) {
           setMode('confirm')
@@ -93,9 +96,12 @@ function ConfirmOpenseas() {
         }
         break;
       case 'confirm':
-        setRequiredKey(true)
+        setMode('uploadKey')
         // setDetectorAr(true)
         break;
+      // case 'uploadKey':
+      //   setDetectorAr(true)
+      //   break;
       case 'uploading':
         setMode('complete')
         break;
@@ -146,7 +152,9 @@ function ConfirmOpenseas() {
   };
 
   const onConnectWallet = () => {
-    setDetectorAr(true)
+    // setRequiredKey(true)
+    setMode('uploadKey')
+    // setDetectorAr(true)
   }
 
   const updateContent = (key, value) => {
@@ -570,7 +578,7 @@ function ConfirmOpenseas() {
                 <Button className="btn-blueDark btn-connect" onClick={onConnectWallet}>Confirm & Upload</Button>
               </>
             )}
-            {requiredKey && <>
+            {setMode('uploadKey') && <>
               <div className="upload-cards-wrapper">
                 <div className="single-ant-file-upload">
                   <Dragger
