@@ -86,12 +86,17 @@ function ModalContent({
 }) {
   const location = useLocation();
   const [copiedLink, setCopiedLink] = useState(false);
+  const [copiedCode, setCopiedCode] = useState(false);
 
   const currentUrl = `${window.location.hostname}${location.pathname}`;
 
   const onCopyLink = () => {
     navigator.clipboard.writeText(currentUrl);
     setCopiedLink(true);
+  };
+  const onCopyCode = () => {
+    navigator.clipboard.writeText(currentUrl);
+    setCopiedCode(true);
   };
 
   const hideModal = () => {
@@ -100,14 +105,17 @@ function ModalContent({
   };
 
   useEffect(() => {
-    if (copiedLink) {
-      const timer = setTimeout(() => setCopiedLink(false), 2000);
+    if (copiedLink || copiedCode) {
+      const timer = setTimeout(() => {
+        copiedLink && setCopiedLink(false);
+        copiedCode && setCopiedCode(false);
+      }, 2000);
       return () => {
         clearTimeout(timer);
       };
     }
-  }, [copiedLink])
-  
+  }, [copiedLink, copiedCode]);
+
   return (
     <Modal show={show} onHide={hideModal} dialogClassName="modal-share">
       <Modal.Body>
@@ -199,10 +207,17 @@ function ModalContent({
                     placeholder="<embedding_code_snippet_here>"
                   />
                   <span className="input-group-btn">
-                    <button className="btn btn-blueDark" type="button">
+                    <button
+                      className="btn btn-blueDark"
+                      type="button"
+                      onClick={onCopyCode}
+                    >
                       Copy Code
                     </button>
                   </span>
+                  {copiedCode && (
+                    <div className="copied-message">Code snippet copied!</div>
+                  )}
                 </div>
               </div>
             </div>
