@@ -1,18 +1,13 @@
-import {
-  DefaultUser,
-  Logo,
-  IconEyes,
-  IconFish,
-  IconArweave,
-} from "assets/images";
-import React, { useRef, useState } from "react";
-import { Navbar, Nav, Image, Overlay, Tooltip } from "react-bootstrap";
+import { Space } from "antd";
+import { Logo, IconArweave, IconEthereum } from "assets/images";
+import React from "react";
+import { Navbar, Nav, Image } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { TopbarContainer } from "./style";
 
 function Topbar() {
-  const [show, setShow] = useState(false);
-  const target = useRef(null);
+  // const [show, setShow] = useState(false);
+  // const target = useRef(null);
 
   return (
     <TopbarContainer collapseOnSelect expand="md" fixed="top">
@@ -35,7 +30,12 @@ function Topbar() {
           >
             OpenKoi
           </a>
-          <Image
+          <Space size={12} className="btns-connect">
+            <p className="text-blue mb-0 text-bold">Connect Wallet</p>
+            <Image src={IconArweave} className="cursor" width={18} />
+            <Image src={IconEthereum} className="cursor" width={18} />
+          </Space>
+          {/* <Image
             src={DefaultUser}
             ref={target}
             className="icon-user d-none d-md-flex cursor"
@@ -73,7 +73,7 @@ function Topbar() {
                 </div>
               </Tooltip>
             )}
-          </Overlay>
+          </Overlay> */}
         </Nav>
       </Navbar.Collapse>
     </TopbarContainer>
