@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React from "react";
-import { Alert, Button, Col, Container, Image, Row } from "react-bootstrap";
-import { colors } from "theme";
+import { Alert } from "react-bootstrap";
 import { CustomAlertContainer } from "./style";
 
 /**
@@ -14,9 +13,7 @@ function AlertArea({
     showMessage = false,
     variant = 'error',
     message = '',
-    onClick = () => {},
-    link = '',
-    link_message = ''
+    children
 }) {
     return (
         <CustomAlertContainer>
@@ -24,11 +21,7 @@ function AlertArea({
                 <p className="text-blue text-center mb-0">
                     {message} 
                     <br />
-                    <b 
-                        className="alert-link cursor" 
-                    >
-                        {link_message}
-                    </b>
+                    {children}
                 </p>
             </Alert>
         </CustomAlertContainer>

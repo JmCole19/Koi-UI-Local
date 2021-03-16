@@ -18,25 +18,26 @@ import { ContentDetailContainer } from "./style";
 import { DataContext } from "contexts/DataContextContainer";
 import { ScaleLoader } from "react-spinners";
 import ModalContent from "components/Elements/ModalContent";
+import { CustomAlertContainer } from "components/Sections/AlertArea/style";
 
 const preUrl = "https://arweave.net/";
 
-// const contents = [
-//   {
-//     balances: { "sQTWslyCdKF6oeQ7xXUYUV1bluP0_5-483FXH_RVZKU": 1 },
-//     description:
-//       "'The Delights of Purim' at the Israeli Opera, photo by Ziv Barak",
-//     name: "Kayla",
-//     owner: "sQTWslyCdKF6oeQ7xXUYUV1bluP0_5-483FXH_RVZKU",
-//     ticker: "KRK",
-//     totalReward: 0,
-//     totalViews: 0,
-//     twentyFourHrViews: 0,
-//     txIdContent: "EKW3AApL4mdLc6sIhVr3Cn8VN7N9VAQUp2BNALHXFtQ",
-//   },
-// ];
-// const description =
-//   "José Delbo sent me his striking pencil sketch and powerful inked work, which I then interpreted in oil on canvas. I wanted to create a very painterly piece with obvious brush marks etc, but I was also aiming for a nostalgic feel, a kind of 1980’s superhero comic book look, the kind I grew up with. My goal with this animation was to try to recreate, in part, the creative process that both artists went through with the visual information I had. I was able to showcase my painting process more accurately as I could take photographs of my progress throughout. Consecutive images could then be layered like brush strokes over José’s drawing to create the impression that this was one continuous artwork from pencil, to ink, to completed painting. The representation of the line sketch at the beginning, then pencil/ink and lastly the paint layers being applied demonstrate both artists’ struggle for the right lines, tone, form, and colour until the work is finally completed. As the oil was still wet with each photograph the glare of my studio lights can be seen in the brush strokes. Eventually, the figure emerges and as it does, our hero comes to life, looking directly at the viewer -- but is he grimacing in approval or disgust? We will never know for sure as just before he can say anything, white paint is brushed across the canvas entirely and the process begins again. Only the bat is quick enough to escape.";
+const contents = [
+  {
+    balances: { "sQTWslyCdKF6oeQ7xXUYUV1bluP0_5-483FXH_RVZKU": 1 },
+    description:
+      "'The Delights of Purim' at the Israeli Opera, photo by Ziv Barak",
+    name: "Kayla",
+    owner: "sQTWslyCdKF6oeQ7xXUYUV1bluP0_5-483FXH_RVZKU",
+    ticker: "KRK",
+    totalReward: 0,
+    totalViews: 0,
+    twentyFourHrViews: 0,
+    txIdContent: "EKW3AApL4mdLc6sIhVr3Cn8VN7N9VAQUp2BNALHXFtQ",
+  },
+];
+const description =
+  "José Delbo sent me his striking pencil sketch and powerful inked work, which I then interpreted in oil on canvas. I wanted to create a very painterly piece with obvious brush marks etc, but I was also aiming for a nostalgic feel, a kind of 1980’s superhero comic book look, the kind I grew up with. My goal with this animation was to try to recreate, in part, the creative process that both artists went through with the visual information I had. I was able to showcase my painting process more accurately as I could take photographs of my progress throughout. Consecutive images could then be layered like brush strokes over José’s drawing to create the impression that this was one continuous artwork from pencil, to ink, to completed painting. The representation of the line sketch at the beginning, then pencil/ink and lastly the paint layers being applied demonstrate both artists’ struggle for the right lines, tone, form, and colour until the work is finally completed. As the oil was still wet with each photograph the glare of my studio lights can be seen in the brush strokes. Eventually, the figure emerges and as it does, our hero comes to life, looking directly at the viewer -- but is he grimacing in approval or disgust? We will never know for sure as just before he can say anything, white paint is brushed across the canvas entirely and the process begins again. Only the bat is quick enough to escape.";
 const ktools = new koi_tools();
 
 function ContentDetail() {
@@ -56,15 +57,15 @@ function ContentDetail() {
   };
 
   const getContents = async () => {
-    if (contents.length === 0) {
-      setIsLoading(true);
-      ktools.retrieveTopContent().then((res) => {
-        setContents(res);
-        setDetail(res.find((_content) => _content.txIdContent === id));
-        setIsLoading(false);
-        console.log({ res });
-      });
-    }
+    // if (contents.length === 0) {
+    //   setIsLoading(true);
+    //   ktools.retrieveTopContent().then((res) => {
+    //     setContents(res);
+    //     setDetail(res.find((_content) => _content.txIdContent === id));
+    //     setIsLoading(false);
+    //     console.log({ res });
+    //   });
+    // }
   };
 
   const onClickShowMore = () => {
@@ -79,15 +80,15 @@ function ContentDetail() {
     if (contents.length === 0) {
       getContents();
     }
-    if (!localStorage.getItem("visited")) {
-      let timer = setTimeout(() => {
-        setShowMessage(true);
-        localStorage.setItem("visited", 'yes')
-      }, 1000);
-      return () => {
-        clearTimeout(timer);
-      };
-    }
+    // if (!localStorage.getItem("visited")) {
+    //   let timer = setTimeout(() => {
+    //     setShowMessage(true);
+    //     localStorage.setItem("visited", 'yes')
+    //   }, 1000);
+    //   return () => {
+    //     clearTimeout(timer);
+    //   };
+    // }
   }, [history.location.pathname]);
 
   console.log({ detail });
@@ -130,6 +131,18 @@ function ContentDetail() {
                   .
                 </p>
               </Alert>
+              <CustomAlertContainer
+                showMessage={true}
+                variant = 'error'
+                message = 'You just voted with your attention! Since you viewed this page, the owner will be rewarded with KOI.'
+              >
+                  <b
+                    className="cursor"
+                    onClick={() => history.push("/register-content")}
+                  >
+                    Upload something unique to start earning
+                  </b>
+              </CustomAlertContainer>
               <Container>
                 <Row>
                   <Col className="col-md-6">
