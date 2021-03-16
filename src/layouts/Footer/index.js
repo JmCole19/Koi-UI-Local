@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { FooterContainer } from "./style";
 
 const items = [
@@ -6,12 +7,16 @@ const items = [
     header: "COMPANY",
     className: "col-lg-5 col-md-4 col-sm-6 company",
     child: [
-      { name: "Home", link: "/", className: "normal" },
-      { name: "Blog", link: "https://blog.openkoi.com/", className: "normal" },
-      { name: "Help Us", link: "/koi", className: "normal" },
-      { name: "Services", link: "/services", className: "" },
+      { name: "OpenKoi", link: "https://openkoi.com/", className: "normal" },
+      { name: "Leaderboard", route: "/", className: "normal" },
+      { name: "KOI Faucet", route: "/faucet", className: "normal" },
+      { name: "Blog", link: "https://blog.openkoi.com/", className: "" },
       { name: "Developers", link: "https://docs.openkoi.com/", className: "" },
-      { name: "Desktop App", link: "/downloads", className: "" },
+      {
+        name: "Desktop App",
+        link: "https://openkoi.com/downloads",
+        className: "",
+      },
       { name: "Support", link: "mailto:support@openkoi.com", className: "" },
       { name: "Careers", link: "mailto:jobs@openkoi.com", className: "" },
     ],
@@ -20,15 +25,19 @@ const items = [
     header: "GET INVOLVED",
     className: "col-lg-4 col-md-4 col-sm-6 get-involved",
     child: [
-      { name: "Run a node", link: "/downloads", className: "normal" },
       {
-        name: "Purchase",
-        link: "mailto:sales@openkoi.com",
+        name: "Upload content",
+        route: "/register-content",
         className: "normal",
       },
       {
-        name: "Earn for Code",
-        link: "https://discord.gg/dRsAJ6kAcP",
+        name: "Run a node",
+        link: "https://openkoi.com/downloads",
+        className: "normal",
+      },
+      {
+        name: "Get KOI",
+        route: "/faucet",
         className: "normal",
       },
       {
@@ -36,7 +45,11 @@ const items = [
         link: "https://discord.gg/dRsAJ6kAcP",
         className: "",
       },
-      { name: "Whitepaper", link: "https://docs.openkoi.com/", className: "" },
+      {
+        name: "Developer SDK",
+        link: "https://docs.openkoi.com/",
+        className: "",
+      },
     ],
   },
   {
@@ -75,9 +88,9 @@ function Footer() {
   return (
     <FooterContainer className="w-100">
       <div className="container">
-        <h2>Run a node.</h2>
+        <h2>Store forever. Earn forever.</h2>
         <h3 className="footer-description">
-          Join the network, and help us preserve the best of human knowledge.
+          Get rewarded for the best content on the web.
         </h3>
         <div className="row">
           <div className="col-sm-6">
@@ -104,9 +117,24 @@ function Footer() {
               <div className="footer-option-list">
                 {_item.child.map((_child, _j) => (
                   <div key={_j} className="nav-item mb-1">
-                    <a className={`nav-link ${_child.className}`} href="#/">
-                      {_child.name}
-                    </a>
+                    {_child.route && (
+                      <Link
+                        to={_child.route}
+                        className={`nav-link ${_child.className}`}
+                      >
+                        {_child.name}
+                      </Link>
+                    )}
+                    {_child.link && (
+                      <a
+                        className={`nav-link ${_child.className}`}
+                        href={_child.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {_child.name}
+                      </a>
+                    )}
                   </div>
                 ))}
               </div>
