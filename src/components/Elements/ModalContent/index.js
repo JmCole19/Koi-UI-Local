@@ -1,9 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState } from "react";
-import {
-  Image,
-  Modal,
-} from "react-bootstrap";
+import React, { useEffect, useState } from "react";
+import { Image, Modal } from "react-bootstrap";
 import {
   FaInstagram,
   FaTelegramPlane,
@@ -81,7 +78,7 @@ const shareDirect = [
 ];
 
 function ModalContent({
-  type = 'share',
+  type = "share",
   show = false,
   detail = {},
   onHide = () => {},
@@ -97,21 +94,28 @@ function ModalContent({
     setCopiedLink(true);
   };
 
+  const hideModal = () => {
+    setCopiedLink(false);
+    onHide();
+  };
+
+  useEffect(() => {
+    if (copiedLink) {
+      const timer = setTimeout(() => setCopiedLink(false), 2000);
+      return () => {
+        clearTimeout(timer);
+      };
+    }
+  }, [copiedLink])
+  
   return (
-    <Modal
-      show={show}
-      onHide={() => {
-        setCopiedLink(false);
-        onHide();
-      }}
-      dialogClassName="modal-share"
-    >
+    <Modal show={show} onHide={hideModal} dialogClassName="modal-share">
       <Modal.Body>
         <FaTimes
           className="icon-close cursor"
           color={colors.blueDark}
           size={24}
-          onClick={onHide}
+          onClick={hideModal}
         />
         <h2 className="modal-title text-blue">
           {type === "share"
