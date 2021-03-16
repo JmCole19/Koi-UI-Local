@@ -211,8 +211,8 @@ function ConfirmOpenseas() {
       };
 
       fetch(
-        // `https://api.opensea.io/api/v1/assets?owner=0xd703accc62251189a67106f22d54cd470494de40&order_direction=desc&offset=0&limit=20`,
-        `https://api.opensea.io/api/v1/assets?owner=${address}&order_direction=desc&offset=0&limit=20`,
+        `https://api.opensea.io/api/v1/assets?owner=0xd703accc62251189a67106f22d54cd470494de40&order_direction=desc&offset=0&limit=20`,
+        // `https://api.opensea.io/api/v1/assets?owner=${address}&order_direction=desc&offset=0&limit=20`,
         options
       )
         .then((response) => {
@@ -273,7 +273,6 @@ function ConfirmOpenseas() {
                 setMode('complete')
               }, 2000)
             }
-            // await await exportNFT(addressArweave, 'https://lh3.googleusercontent.com/9OlQ8XvK-6cA5LYt8w-G_OGMXlJDRmeEKT7t8RaG_uXiujizuUr6DC2m6IjMA1_qxv-mNP94Hd2eYl_Q_ErYrN1dFHznDFiofeHT=s128', null)
           }catch(err) {
             console.log("error - exportNFT", err)
           }
