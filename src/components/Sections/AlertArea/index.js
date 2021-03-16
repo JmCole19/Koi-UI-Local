@@ -7,21 +7,19 @@ function AlertArea({
   value = 1,
 }) {
   return (
-    <CircularProgressbar
-      value={value}
-      text={`${value}`}
-      maxValue={3}
-      strokeWidth={15}
-      styles={buildStyles({
-        strokeLinecap: "butt",
-        textSize: "44px",
-        pathTransitionDuration: 0.5,
-        pathColor: colors.blueDark,
-        textColor: colors.blueDark,
-        trailColor: colors.white,
-        backgroundColor: "#3e98c7",
-      })}
-    />
+    <Alert show={showMessage} variant="success">
+        <p className="text-blue text-center mb-0">
+            You just voted with your attention! Since you viewed this
+            page, the owner will be rewarded with KOI. <br />
+            <b
+            className="cursor"
+            onClick={() => history.push("/register-content")}
+            >
+            Upload something unique to start earning
+            </b>
+            .
+        </p>
+    </Alert>
   );
 }
 
