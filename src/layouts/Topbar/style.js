@@ -27,11 +27,15 @@ export const TopbarContainer = styled(Navbar)`
         &.btn-nav {
           background: transparent;
           border-radius: 4px;
-          padding: 2px 25px;
           color: ${colors.white};
-          border: 1.5px solid ${colors.white};
         }
       }
+    }
+    .btns-connect {
+      background: #ffffff;
+      box-shadow: 0px 2px 4px rgb(0 0 0 / 16%);
+      border-radius: 4px;
+      padding: 7px 13px;
     }
   }
   @media (max-width: 767px) {
