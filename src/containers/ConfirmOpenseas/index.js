@@ -54,7 +54,6 @@ function ConfirmOpenseas() {
   const [showModal, setShowModal] = useState(false);
   var selectedIds = selected.split("_");
   const [detectorAr, setDetectorAr] = useState(false);
-  const [requiredKey, setRequiredKey] = useState(false);
   const [walletKey, setWalletKey] = useState(null);
   const [updatingProcess, setUploadingProcess] = useState(0);
   
