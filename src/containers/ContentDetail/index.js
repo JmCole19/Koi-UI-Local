@@ -79,8 +79,11 @@ function ContentDetail() {
     if (contents.length === 0) {
       getContents();
     }
-    if (!showMessage) {
-      let timer = setTimeout(() => setShowMessage(true), 1000);
+    if (!localStorage.getItem("visited")) {
+      let timer = setTimeout(() => {
+        setShowMessage(true);
+        localStorage.setItem("visited", 'yes')
+      }, 1000);
       return () => {
         clearTimeout(timer);
       };
