@@ -157,6 +157,9 @@ function RegisterContent() {
       }, 2000)
     }
   };
+  const onRedeemVoucher = () => {
+    console.log("here333")
+  }
   console.log({ address: addressEth });
   return (
     <RegisterContentContainer>
@@ -197,7 +200,7 @@ function RegisterContent() {
               </Button>
             </div>
             <p className="bottom-description text-blue text-center">
-              Got a voucher? <Link to="#/">Redeem an NFT voucher</Link> from
+              Got a voucher? <span className="span-link" onClick={onRedeemVoucher}>Redeem an NFT voucher</span> from
               Ethereum to claim your Atomic NFT.
             </p>
           </div>

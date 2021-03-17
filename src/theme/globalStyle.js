@@ -57,6 +57,14 @@ const GlobalStyle = createGlobalStyle`
         letter-spacing: 0.03em;
     }
     .br-4{ border-radius: 4px; }
+    .span-link{
+      color: #171753;
+      font-weight: 600;
+      text-decoration: underline;
+      letter-spacing: 0.03em;
+      touch-action: manipulation;
+      cursor: pointer;
+    }
     h1,
     h2,
     h3,
