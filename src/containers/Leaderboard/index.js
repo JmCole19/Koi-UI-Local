@@ -35,7 +35,7 @@ function Leaderboard() {
   const history = useHistory();
   const { contents, setContents } = useContext(DataContext);
   const [isExpanded, setIsExpanded] = useState(false);
-  const [isFiltered, setIsFiltered] = useState(false);
+  // const [isFiltered, setIsFiltered] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [modalType, setModalType] = useState("share");
@@ -80,7 +80,7 @@ function Leaderboard() {
   };
 
   const onClickUsername = (item) => {
-    setIsFiltered(true);
+    // setIsFiltered(true);
     setContents(contents.filter((_item) => _item.name === item.name));
   };
 
@@ -104,7 +104,8 @@ function Leaderboard() {
       <div className="leaderboard">
         <div className="leaderboard-header">
           <h2 className="text-blue mb-0">
-            {isFiltered ? "My Content" : "Top Content"}
+            My Content
+            {/* {isFiltered ? "My Content" : "Top Content"} */}
           </h2>
           <ReactSlider
             className="filter-options-desktop mr-auto d-none d-md-flex"
@@ -137,7 +138,8 @@ function Leaderboard() {
             )}
           />
           <Button className="btn-my-content" onClick={onClickMyContent}>
-            {!isFiltered ? "My Content" : "Top Content"}
+            My Content
+            {/* {!isFiltered ? "My Content" : "Top Content"} */}
           </Button>
           <Button className="btn-leaderbard-plus" onClick={onClickPlus}>
             <i className="fas fa-plus"></i>

@@ -63,23 +63,11 @@ function MyContent() {
     history.push("/register-content");
   };
 
-  const onClickMyContent = () => {
-    setIsFiltered(!isFiltered);
-    setIsLoading(true);
-    ktools.retrieveTopContent().then((res) => {
-      setContents(res);
-      setIsLoading(false);
-      console.log({ res });
-      if (isFiltered) {
-        setContents(res);
-      } else {
-        setContents(res.filter((_item) => _item.name === "Kayla"));
-      }
-    });
+  const onClickContents = () => {
+    history.push('/contents')
   };
 
   const onClickUsername = (item) => {
-    setIsFiltered(true);
     setContents(contents.filter((_item) => _item.name === item.name));
   };
 
@@ -103,7 +91,7 @@ function MyContent() {
       <div className="leaderboard">
         <div className="leaderboard-header">
           <h2 className="text-blue mb-0">
-            {isFiltered ? "My Content" : "Top Content"}
+            Top Content
           </h2>
           <ReactSlider
             className="filter-options-desktop mr-auto d-none d-md-flex"
@@ -135,8 +123,8 @@ function MyContent() {
               <div {...props}>{options[state.valueNow]}</div>
             )}
           />
-          <Button className="btn-my-content" onClick={onClickMyContent}>
-            {!isFiltered ? "My Content" : "Top Content"}
+          <Button className="btn-my-content" onClick={onClickContents}>
+            Top Content
           </Button>
           <Button className="btn-leaderbard-plus" onClick={onClickPlus}>
             <i className="fas fa-plus"></i>
