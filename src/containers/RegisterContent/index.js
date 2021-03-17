@@ -158,7 +158,7 @@ function RegisterContent() {
     }
   };
   const onRedeemVoucher = () => {
-    console.log("here333")
+    openMetaMask('redeem')
   }
   console.log({ address: addressEth });
   return (
