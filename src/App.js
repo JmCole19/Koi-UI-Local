@@ -13,6 +13,7 @@ import "antd/dist/antd.css";
 import GlobalStyle from "theme/globalStyle";
 import MyRoute from "service/MyRoute";
 import Leaderboard from "containers/Leaderboard";
+import MyContent from "containers/Leaderboard/MyContent";
 import RegisterContent from "containers/RegisterContent";
 import UploadArweave from "containers/UploadArweave";
 import UploadManual from "containers/UploadManual";
@@ -41,6 +42,7 @@ function App() {
                   render={() => <Redirect to="/contents" />}
                 />
                 <MyRoute exact path="/contents" component={Leaderboard} />
+                <MyRoute exact path="/my-content" component={MyContent} />
                 <MyRoute path="/content-detail/:id" component={ContentDetail} />
                 <MyRoute
                   exact

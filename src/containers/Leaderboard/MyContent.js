@@ -10,7 +10,11 @@ import { useHistory } from "react-router-dom";
 import LeaderboardItem from "./LeaderboardItem";
 import { DataContext } from "contexts/DataContextContainer";
 import ModalContent from "components/Elements/ModalContent";
+import { show_notification } from "service/utils";
+import AlertArea from "components/Sections/AlertArea";
+import Arweave from "arweave";
 
+const arweave = Arweave.init();
 const { Panel } = Collapse;
 const options = ["24h", "1w", "1m", "1y", "all"];
 
@@ -31,15 +35,17 @@ const options = ["24h", "1w", "1m", "1y", "all"];
 
 const ktools = new koi_tools();
 
-function Leaderboard() {
+function MyContent() {
   const history = useHistory();
-  const { contents, setContents } = useContext(DataContext);
+  const { contents, setContents, addressArweave, setAddressArweave } = useContext(DataContext);
   const [isExpanded, setIsExpanded] = useState(false);
-  // const [isFiltered, setIsFiltered] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [modalType, setModalType] = useState("share");
   const [selectedContent, setSelectedContent] = useState([]);
+  const [detectorAr, setDetectorAr] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
+  const [errEmessage, setErrMessage] = useState(false);
 
   const onClickItem = (item, type) => {
     if (type === "view") {
@@ -63,48 +69,101 @@ function Leaderboard() {
     history.push("/register-content");
   };
 
-  const onClickMyContent = () => {
-    history.push('/my-content')
-    // setIsFiltered(!isFiltered);
-    // setIsLoading(true);
-    // ktools.retrieveTopContent().then((res) => {
-    //   setContents(res);
-    //   setIsLoading(false);
-    //   console.log({ res });
-    //   if (isFiltered) {
-    //     setContents(res);
-    //   } else {
-    //     setContents(res.filter((_item) => _item.name === "Kayla"));
-    //   }
-    // });
+  const onClickContents = () => {
+    history.push('/contents')
   };
 
   const onClickUsername = (item) => {
-    // setIsFiltered(true);
     setContents(contents.filter((_item) => _item.name === item.name));
   };
 
-  const getContents = async () => {
+  const getContents = async (walletAddress = '') => {
     if (contents.length === 0) {
-      setIsLoading(true);
-      ktools.retrieveTopContent().then((res) => {
-        setContents(res);
-        console.log({ res });
-      }).catch( err => console.log(err)).finally( () => setIsLoading(false));
+      console.log("here2")
+      if(walletAddress) {
+        setIsLoading(true);
+        console.log("here3 : ", walletAddress)
+        ktools.myContent(walletAddress).then((res) => {
+          setContents(res);
+          console.log({ res });
+        }).catch(err => {
+          console.log(err)
+          show_notification("There is an error to getting NFT contents.")
+        }).finally( () => {
+          console.log("finally")
+          setIsLoading(false);
+        });
+      }else{
+        if(!detectorAr){
+          console.log("here --1")
+          setTimeout(() => {
+            setDetectorAr(true)
+          }, 100)
+        }else{
+          // show alert
+          show_alert('There is a problem to get your arwallet address. Please install arconnect extension and try again.1111')
+        }
+      }
     }
   };
 
   useEffect(() => {
-    getContents();
+    console.log("here1")
+    getContents(addressArweave);
+    // if(addressArweave) {
+    //   getContents()
+    // }
   }, [history.location.pathname]);
+
+  useEffect(() => {
+    if (detectorAr) {
+      window.addEventListener("arweaveWalletLoaded", detectArweaveWallet());
+      return () => {
+        window.removeEventListener(
+          "arweaveWalletLoaded",
+          () => {}
+        );
+      };
+    }
+  }, [detectorAr]);
+
+  const detectArweaveWallet = async () => {
+    try {
+      console.log("here4")
+      let addr = await arweave.wallets.getAddress();
+      console.log("detected arweave wallet address : ", addr);
+      if (addr) {
+        getContents(addr)
+        setAddressArweave(addr);
+      } else {
+        // show alert
+        show_alert('There is a problem to get your arwallet address. Please install arconnect extension and try again.')
+      }
+    } catch (err) {
+      // console.log(err);
+      show_alert('Error on detectomg Arweave wallet address')
+    }
+  };
+
+  const show_alert = (message = '') => {
+    setShowAlert(true)
+    setErrMessage(message)
+    setTimeout( () => {
+      setShowAlert(false)
+      setErrMessage('')
+    }, 4000)
+  }
 
   return (
     <LeaderboardContainer>
       <div className="leaderboard">
+        <AlertArea
+          showMessage={showAlert}
+          message={errEmessage}
+        ></AlertArea>
         <div className="leaderboard-header">
           <h2 className="text-blue mb-0">
-            My Content
-            {/* {isFiltered ? "My Content" : "Top Content"} */}
+            Top Content
           </h2>
           <ReactSlider
             className="filter-options-desktop mr-auto d-none d-md-flex"
@@ -136,9 +195,8 @@ function Leaderboard() {
               <div {...props}>{options[state.valueNow]}</div>
             )}
           />
-          <Button className="btn-my-content" onClick={onClickMyContent}>
-            My Content
-            {/* {!isFiltered ? "My Content" : "Top Content"} */}
+          <Button className="btn-my-content" onClick={onClickContents}>
+            Top Content
           </Button>
           <Button className="btn-leaderbard-plus" onClick={onClickPlus}>
             <i className="fas fa-plus"></i>
@@ -205,4 +263,4 @@ function Leaderboard() {
   );
 }
 
-export default Leaderboard;
+export default MyContent;

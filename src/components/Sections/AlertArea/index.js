@@ -11,13 +11,13 @@ import { CustomAlertContainer } from "./style";
  */
 function AlertArea({
     showMessage = false,
-    variant = 'error',
+    variant = 'danger',
     message = '',
     children
 }) {
     return (
         <CustomAlertContainer>
-            <Alert className="custom-alert" show={showMessage} variant={variant}>
+            <Alert className="custom-alert" transition show={showMessage} variant={variant}>
                 <p className="text-blue text-center mb-0">
                     {message} 
                     <br />
