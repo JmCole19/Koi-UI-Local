@@ -89,9 +89,8 @@ function Leaderboard() {
       setIsLoading(true);
       ktools.retrieveTopContent().then((res) => {
         setContents(res);
-        setIsLoading(false);
         console.log({ res });
-      });
+      }).catch( err => console.log(err)).finally( () => setIsLoading(false));
     }
   };
 

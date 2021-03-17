@@ -77,22 +77,28 @@ function MyContent() {
     setContents(contents.filter((_item) => _item.name === item.name));
   };
 
-  const getContents = async () => {
+  const getContents = async (walletAddress = '') => {
     if (contents.length === 0) {
-      setIsLoading(true);
-      if(addressArweave) {
-        ktools.myContent(addressArweave).then((res) => {
+      console.log("here2")
+      if(walletAddress) {
+        setIsLoading(true);
+        console.log("here3 : ", walletAddress)
+        ktools.myContent(walletAddress).then((res) => {
           setContents(res);
           console.log({ res });
         }).catch(err => {
           console.log(err)
           show_notification("There is an error to getting NFT contents.")
         }).finally( () => {
+          console.log("finally")
           setIsLoading(false);
         });
       }else{
         if(!detectorAr){
-          setDetectorAr(true)
+          console.log("here --1")
+          setTimeout(() => {
+            setDetectorAr(true)
+          }, 100)
         }else{
           // show alert
           show_alert('There is a problem to get your arwallet address. Please install arconnect extension and try again.1111')
@@ -102,7 +108,11 @@ function MyContent() {
   };
 
   useEffect(() => {
-    getContents();
+    console.log("here1")
+    getContents(addressArweave);
+    // if(addressArweave) {
+    //   getContents()
+    // }
   }, [history.location.pathname]);
 
   useEffect(() => {
@@ -111,7 +121,7 @@ function MyContent() {
       return () => {
         window.removeEventListener(
           "arweaveWalletLoaded",
-          detectArweaveWallet()
+          () => {}
         );
       };
     }
@@ -119,11 +129,12 @@ function MyContent() {
 
   const detectArweaveWallet = async () => {
     try {
+      console.log("here4")
       let addr = await arweave.wallets.getAddress();
       console.log("detected arweave wallet address : ", addr);
       if (addr) {
+        getContents(addr)
         setAddressArweave(addr);
-        getContents()
       } else {
         // show alert
         show_alert('There is a problem to get your arwallet address. Please install arconnect extension and try again.')
