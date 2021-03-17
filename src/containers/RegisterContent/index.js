@@ -133,6 +133,14 @@ function RegisterContent() {
           );
           console.log(contractInstance);
           history.push(`/opensea?address=${accounts[0]}`);
+        } else if (card_type === "opensea") {
+          let contractInstance = new web3.eth.Contract(
+            abi,
+            "0x60F80121C31A0d46B5279700f9DF786054aa5eE5",
+            { from: accounts[0] }
+          );
+          console.log(contractInstance);
+          history.push(`/opensea?address=${accounts[0]}`);
         } else {
           notification.success({
             message: "Success",
