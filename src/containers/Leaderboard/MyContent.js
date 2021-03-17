@@ -11,6 +11,7 @@ import LeaderboardItem from "./LeaderboardItem";
 import { DataContext } from "contexts/DataContextContainer";
 import ModalContent from "components/Elements/ModalContent";
 import { show_notification } from "service/utils";
+import AlertArea from "components/Sections/AlertArea";
 import Arweave from "arweave";
 
 const arweave = Arweave.init();
@@ -43,6 +44,8 @@ function MyContent() {
   const [modalType, setModalType] = useState("share");
   const [selectedContent, setSelectedContent] = useState([]);
   const [detectorAr, setDetectorAr] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
+  const [errEmessage, setErrMessage] = useState(false);
 
   const onClickItem = (item, type) => {
     if (type === "view") {
@@ -88,13 +91,15 @@ function MyContent() {
           setDetectorAr(true)
         }else{
           // show alert
+          show_alert('There is a problem to get your arwallet address. Please install arconnect extension and try again.')
         }
       }
     }
   };
 
   useEffect(() => {
-    getContents();
+    show_alert('There is a problem to get your arwallet address. Please install arconnect extension and try again.')
+    // getContents();
   }, [history.location.pathname]);
 
   useEffect(() => {
@@ -118,6 +123,7 @@ function MyContent() {
         getContents()
       } else {
         // show alert
+        show_alert('There is a problem to get your arwallet address. Please install arconnect extension and try again.')
       }
     } catch (err) {
       console.log(err);
@@ -125,9 +131,22 @@ function MyContent() {
     }
   };
 
+  const show_alert = (message = '') => {
+    setShowAlert(true)
+    setErrMessage(message)
+    setTimeout( () => {
+      setShowAlert(false)
+      setErrMessage('')
+    }, 4000)
+  }
+
   return (
     <LeaderboardContainer>
       <div className="leaderboard">
+        <AlertArea
+          showMessage={showAlert}
+          message={errEmessage}
+        ></AlertArea>
         <div className="leaderboard-header">
           <h2 className="text-blue mb-0">
             Top Content

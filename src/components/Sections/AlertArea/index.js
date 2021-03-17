@@ -11,7 +11,7 @@ import { CustomAlertContainer } from "./style";
  */
 function AlertArea({
     showMessage = false,
-    variant = 'error',
+    variant = 'danger',
     message = '',
     children
 }) {

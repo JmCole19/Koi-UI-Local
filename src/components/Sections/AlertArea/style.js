@@ -2,7 +2,8 @@ import styled from "styled-components";
 // import { colors } from "theme";
 
 export const CustomAlertContainer = styled.div`
+  .custom-alert{ margin-bottom: 0px; }  
   p {
-    margin-top: 12px;
+    margin-top: 0px;
   }
 `;
