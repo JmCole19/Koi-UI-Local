@@ -10,7 +10,10 @@ import { useHistory } from "react-router-dom";
 import LeaderboardItem from "./LeaderboardItem";
 import { DataContext } from "contexts/DataContextContainer";
 import ModalContent from "components/Elements/ModalContent";
+import { show_notification } from "service/utils";
+import Arweave from "arweave";
 
+const arweave = Arweave.init();
 const { Panel } = Collapse;
 const options = ["24h", "1w", "1m", "1y", "all"];
 
@@ -35,11 +38,11 @@ function MyContent() {
   const history = useHistory();
   const { contents, setContents, addressArweave, setAddressArweave } = useContext(DataContext);
   const [isExpanded, setIsExpanded] = useState(false);
-  const [isFiltered, setIsFiltered] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [modalType, setModalType] = useState("share");
   const [selectedContent, setSelectedContent] = useState([]);
+  const [detectorAr, setDetectorAr] = useState(false);
 
   const onClickItem = (item, type) => {
     if (type === "view") {
@@ -74,17 +77,53 @@ function MyContent() {
   const getContents = async () => {
     if (contents.length === 0) {
       setIsLoading(true);
-      ktools.retrieveTopContent().then((res) => {
-        setContents(res);
-        setIsLoading(false);
-        console.log({ res });
-      });
+      if(addressArweave) {
+        ktools.myContent(addressArweave).then((res) => {
+          setContents(res);
+          setIsLoading(false);
+          console.log({ res });
+        });
+      }else{
+        if(!detectorAr){
+          setDetectorAr(true)
+        }else{
+          // show alert
+        }
+      }
     }
   };
 
   useEffect(() => {
     getContents();
   }, [history.location.pathname]);
+
+  useEffect(() => {
+    if (detectorAr) {
+      window.addEventListener("arweaveWalletLoaded", detectArweaveWallet());
+      return () => {
+        window.removeEventListener(
+          "arweaveWalletLoaded",
+          detectArweaveWallet()
+        );
+      };
+    }
+  }, [detectorAr]);
+
+  const detectArweaveWallet = async () => {
+    try {
+      let addr = await arweave.wallets.getAddress();
+      console.log("detected arweave wallet address : ", addr);
+      if (addr) {
+        setAddressArweave(addr);
+        getContents()
+      } else {
+        // show alert
+      }
+    } catch (err) {
+      console.log(err);
+      show_notification('Error on detectomg Arweave wallet address')
+    }
+  };
 
   return (
     <LeaderboardContainer>
