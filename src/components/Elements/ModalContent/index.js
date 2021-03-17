@@ -18,7 +18,7 @@ import { HiOutlineMail } from "react-icons/hi";
 import { useLocation } from "react-router-dom";
 import { colors } from "theme";
 
-const preUrl = "https://arweave.net/";
+import { preUrl } from "config"
 
 // const contents = [
 //   {

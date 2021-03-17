@@ -3,8 +3,7 @@ import React from "react";
 import { Image } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import { EmbedContainer } from "./style";
-
-const preUrl = "https://arweave.net/";
+import { preUrl } from "config"
 
 function Embed() {
   const { id } = useParams();

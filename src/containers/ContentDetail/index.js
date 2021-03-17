@@ -18,10 +18,10 @@ import { ContentDetailContainer } from "./style";
 import { DataContext } from "contexts/DataContextContainer";
 import { ScaleLoader } from "react-spinners";
 import ModalContent from "components/Elements/ModalContent";
+// import AlertArea from "components/Sections/AlertArea";
+import { preUrl } from "config"
 
-const preUrl = "https://arweave.net/";
-
-// const contents = [
+// const temp_contents = [
 //   {
 //     balances: { "sQTWslyCdKF6oeQ7xXUYUV1bluP0_5-483FXH_RVZKU": 1 },
 //     description:
@@ -56,6 +56,7 @@ function ContentDetail() {
   };
 
   const getContents = async () => {
+    // setContents(temp_contents)
     if (contents.length === 0) {
       setIsLoading(true);
       ktools.retrieveTopContent().then((res) => {
