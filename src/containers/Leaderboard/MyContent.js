@@ -31,9 +31,9 @@ const options = ["24h", "1w", "1m", "1y", "all"];
 
 const ktools = new koi_tools();
 
-function Leaderboard() {
+function MyContent() {
   const history = useHistory();
-  const { contents, setContents } = useContext(DataContext);
+  const { contents, setContents, addressArweave, setAddressArweave } = useContext(DataContext);
   const [isExpanded, setIsExpanded] = useState(false);
   const [isFiltered, setIsFiltered] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -64,19 +64,18 @@ function Leaderboard() {
   };
 
   const onClickMyContent = () => {
-    history.push('/my-content')
-    // setIsFiltered(!isFiltered);
-    // setIsLoading(true);
-    // ktools.retrieveTopContent().then((res) => {
-    //   setContents(res);
-    //   setIsLoading(false);
-    //   console.log({ res });
-    //   if (isFiltered) {
-    //     setContents(res);
-    //   } else {
-    //     setContents(res.filter((_item) => _item.name === "Kayla"));
-    //   }
-    // });
+    setIsFiltered(!isFiltered);
+    setIsLoading(true);
+    ktools.retrieveTopContent().then((res) => {
+      setContents(res);
+      setIsLoading(false);
+      console.log({ res });
+      if (isFiltered) {
+        setContents(res);
+      } else {
+        setContents(res.filter((_item) => _item.name === "Kayla"));
+      }
+    });
   };
 
   const onClickUsername = (item) => {
@@ -204,4 +203,4 @@ function Leaderboard() {
   );
 }
 
-export default Leaderboard;
+export default MyContent;

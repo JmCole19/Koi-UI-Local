@@ -9,7 +9,7 @@ const DataContextContainer = (props) => {
   const [authUser, setAuthUser] = useState(false);
   const [addressEth, setAddressEth] = useState(null);
   const [openSeas, setOpenSeas] = useState([]);
-  const [addressArweave, setAddressArweave] = useState("");
+  const [addressArweave, setAddressArweave] = useState(null);
   const [contents, setContents] = useState([]);
 
   return (
