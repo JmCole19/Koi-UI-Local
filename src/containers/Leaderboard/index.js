@@ -103,7 +103,7 @@ function Leaderboard() {
       <div className="leaderboard">
         <div className="leaderboard-header">
           <h2 className="text-blue mb-0">
-            My Content
+            Top Content
             {/* {isFiltered ? "My Content" : "Top Content"} */}
           </h2>
           <ReactSlider
