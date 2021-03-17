@@ -14,8 +14,7 @@ import { HiOutlineMail } from "react-icons/hi";
 import { LeaderboardItemContainer } from "./style";
 import { colors } from "theme";
 import { useLocation } from "react-router-dom";
-
-const preUrl = "https://arweave.net/";
+import { preUrl } from "config"
 
 function LeaderboardItem({
   item = {},

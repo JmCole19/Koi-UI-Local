@@ -20,7 +20,6 @@ import { ScaleLoader } from "react-spinners";
 import ModalContent from "components/Elements/ModalContent";
 // import AlertArea from "components/Sections/AlertArea";
 import { preUrl } from "config"
-// const preUrl = "https://arweave.net/";
 
 // const temp_contents = [
 //   {
