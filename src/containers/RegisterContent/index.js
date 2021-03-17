@@ -131,7 +131,6 @@ function RegisterContent() {
             "0x60F80121C31A0d46B5279700f9DF786054aa5eE5",
             { from: accounts[0] }
           );
-          console.log("hello world");
           console.log(contractInstance);
           history.push(`/opensea?address=${accounts[0]}`);
         } else {

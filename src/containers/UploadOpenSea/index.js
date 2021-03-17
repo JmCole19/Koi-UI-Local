@@ -8,6 +8,8 @@ import { FaCheck, FaPlus } from "react-icons/fa";
 import { UploadOpenSeaContainer } from "./style";
 import { useHistory } from "react-router-dom";
 import { DataContext } from "contexts/DataContextContainer";
+import {alertTimeout} from 'config'
+import AlertArea from "components/Sections/AlertArea";
 
 // const testOpenseaAddress = '0xd703accc62251189a67106f22d54cd470494de40'
 
@@ -18,6 +20,8 @@ function UploadOpenSea() {
   const [isLoading, setIsLoading] = useState(false);
   const [selectedIds, setSelectedIds] = useState([]);
   const [isAllSelected, setIsAllSelected] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
+  const [errEmessage, setErrMessage] = useState(false);
 
   const onClickCard = (cardId) => {
     let tempSelectedCards = [...selectedIds];
@@ -66,13 +70,32 @@ function UploadOpenSea() {
         .then(async (data) => {
           console.log({ data });
           setOpenSeas(data.assets);
+        })
+        .catch(err => {
+          console.log(err)
+          show_alert('There is no contents')
+        })
+        .finally(() =>{
           setIsLoading(false);
         });
     }
   }, [history.location.pathname]);
 
+  const show_alert = (message = '') => {
+    setShowAlert(true)
+    setErrMessage(message)
+    setTimeout( () => {
+      setShowAlert(false)
+      setErrMessage('')
+    }, alertTimeout)
+  }
+
   return (
     <UploadOpenSeaContainer>
+      <AlertArea
+        showMessage={showAlert}
+        message={errEmessage}
+      ></AlertArea>
       <Container>
         <div className="opensea-content-wrapper">
           <div className="opensea-content">
