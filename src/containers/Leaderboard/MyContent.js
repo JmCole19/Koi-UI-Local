@@ -163,7 +163,7 @@ function MyContent() {
         ></AlertArea>
         <div className="leaderboard-header">
           <h2 className="text-blue mb-0">
-            Top Content
+            My Content
           </h2>
           <ReactSlider
             className="filter-options-desktop mr-auto d-none d-md-flex"
