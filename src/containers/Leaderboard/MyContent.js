@@ -83,23 +83,26 @@ function MyContent() {
       if(addressArweave) {
         ktools.myContent(addressArweave).then((res) => {
           setContents(res);
-          setIsLoading(false);
           console.log({ res });
+        }).catch(err => {
+          console.log(err)
+          show_notification("There is an error to getting NFT contents.")
+        }).finally( () => {
+          setIsLoading(false);
         });
       }else{
         if(!detectorAr){
           setDetectorAr(true)
         }else{
           // show alert
-          show_alert('There is a problem to get your arwallet address. Please install arconnect extension and try again.')
+          show_alert('There is a problem to get your arwallet address. Please install arconnect extension and try again.1111')
         }
       }
     }
   };
 
   useEffect(() => {
-    show_alert('There is a problem to get your arwallet address. Please install arconnect extension and try again.')
-    // getContents();
+    getContents();
   }, [history.location.pathname]);
 
   useEffect(() => {
@@ -126,8 +129,8 @@ function MyContent() {
         show_alert('There is a problem to get your arwallet address. Please install arconnect extension and try again.')
       }
     } catch (err) {
-      console.log(err);
-      show_notification('Error on detectomg Arweave wallet address')
+      // console.log(err);
+      show_alert('Error on detectomg Arweave wallet address')
     }
   };
 
