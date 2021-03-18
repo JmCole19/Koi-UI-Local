@@ -114,6 +114,14 @@ const GlobalStyle = createGlobalStyle`
     .btn-orange {
         background: ${colors.orange};
         color: ${colors.blueDark};
+        &:hover, &:focus, &:disabled, &:active {
+            color: ${colors.white} !important;
+            background-color: ${colors.blueDark} !important;
+            border-color: transparent;
+            h6, svg {
+              color: ${colors.white} !important;
+            }
+        }
     }
     .btn-white {
         background: ${colors.white};
