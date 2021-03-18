@@ -3,7 +3,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Container, Image, Button, Modal } from "react-bootstrap";
 import queryString from "query-string";
-import cloneDeep from 'clone-deep'
+import cloneDeep from "clone-deep";
 import {
   IconArConnect,
   IconHtml,
@@ -18,10 +18,10 @@ import { useForm } from "antd/lib/form/Form";
 import { useHistory, useLocation } from "react-router-dom";
 import { colors } from "theme";
 import { DataContext } from "contexts/DataContextContainer";
-import { FaTimes } from "react-icons/fa";
+import { FaArrowLeft, FaTimes } from "react-icons/fa";
 import Arweave from "arweave";
 import { show_notification, show_fixed_number } from "service/utils";
-import { getArWalletAddressFromJson, exportNFT } from 'service/NFT'
+import { getArWalletAddressFromJson, exportNFT } from "service/NFT";
 
 const arweave = Arweave.init();
 const { TextArea } = Input;
@@ -38,17 +38,24 @@ const formItemLayout = {
 
 function ConfirmOpenseas() {
   const history = useHistory();
-  const { openSeas, 
-          setOpenSeas,
-          addressArweave,
-          setAddressArweave,
-        } = useContext(DataContext);
+  const {
+    openSeas,
+    setOpenSeas,
+    addressArweave,
+    setAddressArweave,
+  } = useContext(DataContext);
   const [form] = useForm();
   const location = useLocation();
   const { step = "1", selected, address } = queryString.parse(location.search);
   const [uploading] = useState(false);
-  const [ mode, setMode ] = useState('change'); // change | confirm | uploadKey | uploading | complete
-  const [activeOpenSea, setActiveOpenSea] = useState({ id: 0, thumb: '', title: '', owner: '', description: ''});
+  const [mode, setMode] = useState("change"); // change | confirm | uploadKey | uploading | complete
+  const [activeOpenSea, setActiveOpenSea] = useState({
+    id: 0,
+    thumb: "",
+    title: "",
+    owner: "",
+    description: "",
+  });
   const [activeStep, setActiveStep] = useState(1);
   const [uploadContens, setUploadContents] = useState([]);
   const [showModal, setShowModal] = useState(false);
@@ -56,95 +63,99 @@ function ConfirmOpenseas() {
   const [detectorAr, setDetectorAr] = useState(false);
   const [walletKey, setWalletKey] = useState(null);
   const [updatingProcess, setUploadingProcess] = useState(0);
-  
+
   const handleBack = () => {
-    switch(mode){// change | confirm | uploadKey | uploading | complete
-      case 'change':
-        let newStep = activeStep - 1
-        setActiveOpenSea(uploadContens[newStep-1])  
-        setActiveStep(newStep)
+    switch (
+      mode // change | confirm | uploadKey | uploading | complete
+    ) {
+      case "change":
+        let newStep = activeStep - 1;
+        setActiveOpenSea(uploadContens[newStep - 1]);
+        setActiveStep(newStep);
         break;
-      case 'confirm':
+      case "confirm":
         // setActiveStep(activeStep)
-        setMode('change')
+        setMode("change");
         break;
-      case 'uploadKey':
-        setMode('change')
+      case "uploadKey":
+        setMode("change");
         break;
-      case 'uploading':
-        setMode('change')
+      case "uploading":
+        setMode("change");
         break;
-      case 'complete':
-        setMode('change')
+      case "complete":
+        setMode("change");
         break;
       default:
-        setMode('change')
+        setMode("change");
         break;
     }
-  }
+  };
 
   const onClickConfirm = () => {
-    switch(mode){// change | confirm | uploadKey | uploading | complete
-      case 'change':
-        if(activeStep === uploadContens.length) {
-          setMode('confirm')
-          setShowModal(true)
-        }else{
-          setActiveStep(activeStep + 1)
-          setActiveOpenSea(uploadContens[activeStep])  
+    switch (
+      mode // change | confirm | uploadKey | uploading | complete
+    ) {
+      case "change":
+        if (activeStep === uploadContens.length) {
+          setMode("confirm");
+          setShowModal(true);
+        } else {
+          setActiveStep(activeStep + 1);
+          setActiveOpenSea(uploadContens[activeStep]);
         }
         break;
-      case 'confirm':
-        setMode('uploadKey')
+      case "confirm":
+        setMode("uploadKey");
         // setDetectorAr(true)
         break;
       // case 'uploadKey':
       //   setDetectorAr(true)
       //   break;
-      case 'uploading':
-        setMode('complete')
+      case "uploading":
+        setMode("complete");
         break;
-      case 'complete':
+      case "complete":
         // go to myContent page
-        history.push('/contents')
+        history.push("/contents");
         break;
       default:
-        setMode('change')
+        setMode("change");
         break;
     }
   };
 
   const onClickEditLater = () => {
-    let tpContents = cloneDeep(uploadContens)
-    tpContents.splice( (activeStep-1), 1)
-    if(tpContents.length){
-      if(activeStep >= tpContents.length) {
-        setActiveOpenSea(tpContents[tpContents.length-1])
-        setUploadContents(tpContents)  
-        setActiveStep(tpContents.length)
-      }else{
-        setActiveOpenSea(tpContents[activeStep])
-        setUploadContents(tpContents)
+    let tpContents = cloneDeep(uploadContens);
+    tpContents.splice(activeStep - 1, 1);
+    if (tpContents.length) {
+      if (activeStep >= tpContents.length) {
+        setActiveOpenSea(tpContents[tpContents.length - 1]);
+        setUploadContents(tpContents);
+        setActiveStep(tpContents.length);
+      } else {
+        setActiveOpenSea(tpContents[activeStep]);
+        setUploadContents(tpContents);
       }
-    }else{
+    } else {
       // back to select page
-      history.goBack()
+      history.goBack();
     }
-  }
+  };
 
   const onClickCloseConfirmModal = () => {
-    setShowModal(false)
-    setMode('change')
-  }
+    setShowModal(false);
+    setMode("change");
+  };
 
   const confirmModalHide = () => {
-    if(mode === 'confirm') {
-      setShowModal(false)
-      setMode('change')
+    if (mode === "confirm") {
+      setShowModal(false);
+      setMode("change");
     } else {
-      show_notification('You can\'t close this modal until NFT uploaded.')
+      show_notification("You can't close this modal until NFT uploaded.");
     }
-  }
+  };
 
   const onCompleteStep3 = () => {
     console.log("Completed");
@@ -152,61 +163,61 @@ function ConfirmOpenseas() {
 
   const onConnectWallet = () => {
     // setRequiredKey(true)
-    setMode('uploadKey')
+    setMode("uploadKey");
     // setDetectorAr(true)
-  }
+  };
 
   const updateContent = (key, value) => {
-    let tpContent = cloneDeep(activeOpenSea)
-    tpContent[key] = value
-    setActiveOpenSea(tpContent)
-  }
+    let tpContent = cloneDeep(activeOpenSea);
+    tpContent[key] = value;
+    setActiveOpenSea(tpContent);
+  };
 
   useEffect(() => {
-    let contentsOS = []
-    selectedIds.forEach( (tId) => {
-      let tempOpenSea = openSeas.find((_openSea) => tId == _openSea.id) 
-      if(tempOpenSea) {
-        contentsOS.push({ 
-          id: tempOpenSea?.id || 0, 
-          thumb: tempOpenSea?.image_thumbnail_url || '', 
-          title: tempOpenSea?.name || '', 
-          owner: tempOpenSea?.owner?.user?.username || '', 
-          description: tempOpenSea?.description || ''
-        })
+    let contentsOS = [];
+    selectedIds.forEach((tId) => {
+      let tempOpenSea = openSeas.find((_openSea) => tId == _openSea.id);
+      if (tempOpenSea) {
+        contentsOS.push({
+          id: tempOpenSea?.id || 0,
+          thumb: tempOpenSea?.image_thumbnail_url || "",
+          title: tempOpenSea?.name || "",
+          owner: tempOpenSea?.owner?.user?.username || "",
+          description: tempOpenSea?.description || "",
+        });
       }
-    })
-    if(contentsOS.length > 0) {
-      let firstOpenSea = contentsOS[0]
-      setActiveOpenSea(firstOpenSea)  
-      setActiveStep(1)
+    });
+    if (contentsOS.length > 0) {
+      let firstOpenSea = contentsOS[0];
+      setActiveOpenSea(firstOpenSea);
+      setActiveStep(1);
     }
-    setUploadContents(contentsOS)
+    setUploadContents(contentsOS);
   }, [step, openSeas]);
 
   const beforeJsonUpload = (file) => {
     // console.log('file type : ', file)
-    const isJson = file.type === 'application/json';
+    const isJson = file.type === "application/json";
     if (!isJson) {
-      show_notification('You can only upload JPG/PNG file!');
+      show_notification("You can only upload JPG/PNG file!");
     }
     const isLt1M = file.size / 1024 < 512;
     if (!isLt1M) {
-      show_notification('JSON must smaller than 512KB!');
+      show_notification("JSON must smaller than 512KB!");
     }
-    if(isJson && isLt1M) {
+    if (isJson && isLt1M) {
       const reader = new FileReader();
       reader.onload = async (e) => {
-        var arJson = JSON.parse(e.target.result)
-        setWalletKey(arJson)
-        setDetectorAr(true)
-      }
+        var arJson = JSON.parse(e.target.result);
+        setWalletKey(arJson);
+        setDetectorAr(true);
+      };
       reader.readAsText(file);
       // Prevent upload
       return false;
     }
     return isJson && isLt1M;
-  }
+  };
 
   useEffect(() => {
     if (address) {
@@ -248,65 +259,89 @@ function ConfirmOpenseas() {
     try {
       let addr = await arweave.wallets.getAddress();
       let addressResult = await getArWalletAddressFromJson(arweave, walletKey);
-      console.log("addressResult : ", addressResult)
+      console.log("addressResult : ", addressResult);
       console.log("detect address: ", addr);
       if (addr) {
         setAddressArweave(addr);
-        setMode('uploading')
+        setMode("uploading");
         // uploading process
-        let tpUpdatingProcess = updatingProcess
-        for(let content of uploadContens) {
+        let tpUpdatingProcess = updatingProcess;
+        for (let content of uploadContens) {
           try {
-            let res = await exportNFT(arweave, addressArweave, content, content.thumb, null, walletKey)
-            console.log(res)
-            tpUpdatingProcess ++ 
+            let res = await exportNFT(
+              arweave,
+              addressArweave,
+              content,
+              content.thumb,
+              null,
+              walletKey
+            );
+            console.log(res);
+            tpUpdatingProcess++;
             // console.log("test1", JSON.stringify(tpUpdatingProcess))
             // tpUpdatingProcess = tpUpdatingProcess*1 + 1
             // console.log("test2", JSON.stringify(tpUpdatingProcess))
-            if(res) {
-              console.log("log1" +  tpUpdatingProcess)
-              setUploadingProcess(tpUpdatingProcess)
-            }else {
-              console.log("log2" +  tpUpdatingProcess)
-              setUploadingProcess(tpUpdatingProcess)
-              show_notification("There is an error to upload content title '"+content.title+"' ")
+            if (res) {
+              console.log("log1" + tpUpdatingProcess);
+              setUploadingProcess(tpUpdatingProcess);
+            } else {
+              console.log("log2" + tpUpdatingProcess);
+              setUploadingProcess(tpUpdatingProcess);
+              show_notification(
+                "There is an error to upload content title '" +
+                  content.title +
+                  "' "
+              );
             }
-            if((tpUpdatingProcess + 1) === uploadContens.length) {
+            if (tpUpdatingProcess + 1 === uploadContens.length) {
               // close modal
-              setShowModal(false)
-              show_notification("Upload successfully", "KOI", 'success')
+              setShowModal(false);
+              show_notification("Upload successfully", "KOI", "success");
               // show complete section
-              setTimeout( () => {
-                setMode('complete')
-              }, 2000)
+              setTimeout(() => {
+                setMode("complete");
+              }, 2000);
             }
-          }catch(err) {
-            console.log("error - exportNFT", err)
+          } catch (err) {
+            console.log("error - exportNFT", err);
           }
         }
       } else {
-        show_notification('can\t detect ArWallet address. Please check install ArConnect extension or create a wallet.')
+        show_notification(
+          "can\t detect ArWallet address. Please check install ArConnect extension or create a wallet."
+        );
       }
     } catch (err) {
       console.log(err);
-      show_notification('can\t detect ArWallet address. Please install ArConnect extension and create a wallet.')
+      show_notification(
+        "can\t detect ArWallet address. Please install ArConnect extension and create a wallet."
+      );
     }
   };
-  
+
   return (
     <ConfirmOpenseasContainer>
       <Container>
         <div className="upload-content-wrapper">
           <div className="upload-content">
-            <h1 className="upload-title text-blue">Register your content.</h1>
-            <div className="upload-wrapper">
-              {activeStep !== 1 && <div
-                className="icon-back cursor"
-                onClick={handleBack}
+            <div className="title-wrapper">
+              <h1 className="text-blue upload-title">Register your content</h1>
+              <Button
+                className="back-wrapper btn-orange"
+                onClick={() => history.replace("/register-content")}
               >
-                <i className="fal fa-arrow-circle-left"></i>
-              </div>}
-              {(mode !== 'complete') && (
+                <FaArrowLeft size={20} color={colors.blueDark} />
+                <h6 className="mb-0 text-blue text-bold ml-2">Leaderboard</h6>
+              </Button>
+            </div>
+            {/* <h1 className="upload-title text-blue">Register your content.</h1> */}
+            <div className="upload-wrapper">
+              {activeStep !== 1 && (
+                <div className="icon-back cursor" onClick={handleBack}>
+                  <i className="fal fa-arrow-circle-left"></i>
+                </div>
+              )}
+              {mode !== "complete" && (
                 <Form
                   layout="horizontal"
                   form={form}
@@ -338,7 +373,9 @@ function ConfirmOpenseas() {
                             </div>
                             <Input
                               value={activeOpenSea.title}
-                              onChange={(e) => updateContent('title', e.target.value)}
+                              onChange={(e) =>
+                                updateContent("title", e.target.value)
+                              }
                               placeholder="input placeholder"
                               className="ethereum-value-input"
                             />
@@ -351,7 +388,9 @@ function ConfirmOpenseas() {
                               placeholder="input placeholder"
                               className="ethereum-value-input"
                               value={activeOpenSea.owner}
-                              onChange={(e) => updateContent('owner', e.target.value)}
+                              onChange={(e) =>
+                                updateContent("owner", e.target.value)
+                              }
                             />
                           </Form.Item>
                           <Form.Item>
@@ -361,7 +400,9 @@ function ConfirmOpenseas() {
                             <TextArea
                               placeholder="input placeholder"
                               value={activeOpenSea.description}
-                              onChange={(e) => updateContent('description', e.target.value)}
+                              onChange={(e) =>
+                                updateContent("description", e.target.value)
+                              }
                               className="ethereum-value-input"
                               rows={5}
                             />
@@ -374,7 +415,10 @@ function ConfirmOpenseas() {
                             >
                               Confirm
                             </Button>
-                            <Button className="btn-white btn-edit ml-3" onClick={onClickEditLater}>
+                            <Button
+                              className="btn-white btn-edit ml-3"
+                              onClick={onClickEditLater}
+                            >
                               Later
                             </Button>
                           </Form.Item>
@@ -384,7 +428,7 @@ function ConfirmOpenseas() {
                   </Row>
                 </Form>
               )}
-              {mode === 'confirm1' && (
+              {mode === "confirm1" && (
                 <Form
                   layout="horizontal"
                   form={form}
@@ -456,7 +500,7 @@ function ConfirmOpenseas() {
                   </div>
                 </Form>
               )}
-              {mode === 'complete' && (
+              {mode === "complete" && (
                 <Form
                   layout="horizontal"
                   form={form}
@@ -515,13 +559,15 @@ function ConfirmOpenseas() {
                   </Button>
                 </Form>
               )}
-              {mode !== 'complete' && (<Progress
-                strokeColor={colors.blueDark}
-                trailColor={colors.blueLight}
-                percent={((activeStep) * 100) / uploadContens.length}
-                status="active"
-                showInfo={false}
-              />)}
+              {mode !== "complete" && (
+                <Progress
+                  strokeColor={colors.blueDark}
+                  trailColor={colors.blueLight}
+                  percent={(activeStep * 100) / uploadContens.length}
+                  status="active"
+                  showInfo={false}
+                />
+              )}
             </div>
           </div>
         </div>
@@ -532,22 +578,35 @@ function ConfirmOpenseas() {
           onHide={confirmModalHide}
         >
           <Modal.Body>
-            {mode === 'confirm' && <FaTimes
-              className="icon-close cursor"
-              color={colors.blueDark}
-              size={24}
-              onClick={onClickCloseConfirmModal}
-            />}
-            {mode === 'confirm' && <h2 className="modal-title text-blue">Confirm transaction</h2>}
-            {mode === 'uploading' && <h2 className="modal-title text-blue">Your NFTs are uploading...</h2>}
+            {mode === "confirm" && (
+              <FaTimes
+                className="icon-close cursor"
+                color={colors.blueDark}
+                size={24}
+                onClick={onClickCloseConfirmModal}
+              />
+            )}
+            {mode === "confirm" && (
+              <h2 className="modal-title text-blue">Confirm transaction</h2>
+            )}
+            {mode === "uploading" && (
+              <h2 className="modal-title text-blue">
+                Your NFTs are uploading...
+              </h2>
+            )}
             <div className="imgs-wrapper">
               <Space size={28}>
-                {uploadContens.map( (c, key) => 
-                  <Image className="br-4" src={c.thumb || ItemTemp} width={40} key={key} />
-                )}
+                {uploadContens.map((c, key) => (
+                  <Image
+                    className="br-4"
+                    src={c.thumb || ItemTemp}
+                    width={40}
+                    key={key}
+                  />
+                ))}
               </Space>
             </div>
-            {mode === 'confirm' && (
+            {mode === "confirm" && (
               <>
                 <div className="modal-row mb-2">
                   <div className="modal-row-left">
@@ -556,7 +615,9 @@ function ConfirmOpenseas() {
                     </p>
                   </div>
                   <div className="modal-row-right">
-                    <p className="text-blue mb-0">x {uploadContens.length} uploads</p>
+                    <p className="text-blue mb-0">
+                      x {uploadContens.length} uploads
+                    </p>
                   </div>
                 </div>
                 <div className="modal-row mb-4">
@@ -566,53 +627,67 @@ function ConfirmOpenseas() {
                     </p>
                   </div>
                   <div className="modal-row-right">
-                    <p className="text-blue mb-0">x {uploadContens.length} uploads</p>
+                    <p className="text-blue mb-0">
+                      x {uploadContens.length} uploads
+                    </p>
                   </div>
                 </div>
                 <h6 className="text-blue">
                   <b>Estimated Total</b>
                 </h6>
-                <h6 className="text-blue">{show_fixed_number(uploadContens.length * 0.0002, 4)} AR</h6>
-                <h6 className="text-blue">{show_fixed_number(uploadContens.length * 1, 1)} KOI</h6>
-                <Button className="btn-blueDark btn-connect" onClick={onConnectWallet}>Confirm & Upload</Button>
+                <h6 className="text-blue">
+                  {show_fixed_number(uploadContens.length * 0.0002, 4)} AR
+                </h6>
+                <h6 className="text-blue">
+                  {show_fixed_number(uploadContens.length * 1, 1)} KOI
+                </h6>
+                <Button
+                  className="btn-blueDark btn-connect"
+                  onClick={onConnectWallet}
+                >
+                  Confirm & Upload
+                </Button>
               </>
             )}
-            {mode === 'uploadKey' && <>
-              <div className="upload-cards-wrapper">
-                <SingleAntFileUpload>
-                  <Dragger
-                    name="file"
-                    accept="application/JSON"
-                    multiple={false}
-                    listType="picture"
-                    beforeUpload={beforeJsonUpload}
-                    fileList={false}
-                    showUploadList={false}
-                  >
-                    <div className="uploader-container">
-                      {uploading ? (
-                        <Spin size="large" />
-                      ) : (
-                        <>
-                          <div className="uploader-icon d-flex justify-content-center align-items-center">
-                            <Image src={IconUpload} />
-                          </div>
-                          <p className="text-blue mb-0">
-                            Drag & Drop your Arweave keyfile here.
-                          </p>
-                        </>
-                      )}
-                    </div>
-                  </Dragger>
-                </SingleAntFileUpload>
-              </div>
-            </>}
-            {mode === 'uploading' && (
+            {mode === "uploadKey" && (
+              <>
+                <div className="upload-cards-wrapper">
+                  <SingleAntFileUpload>
+                    <Dragger
+                      name="file"
+                      accept="application/JSON"
+                      multiple={false}
+                      listType="picture"
+                      beforeUpload={beforeJsonUpload}
+                      fileList={false}
+                      showUploadList={false}
+                    >
+                      <div className="uploader-container">
+                        {uploading ? (
+                          <Spin size="large" />
+                        ) : (
+                          <>
+                            <div className="uploader-icon d-flex justify-content-center align-items-center">
+                              <Image src={IconUpload} />
+                            </div>
+                            <p className="text-blue mb-0">
+                              Drag & Drop your Arweave keyfile here.
+                            </p>
+                          </>
+                        )}
+                      </div>
+                    </Dragger>
+                  </SingleAntFileUpload>
+                </div>
+              </>
+            )}
+            {mode === "uploading" && (
               <>
                 <div className="modal-row mb-2 text-center">
                   <div className="modal-row-center custom-pd">
                     <p className="text-blue mb-0">
-                      Don’t navigate away from this page or close your browser tab. It can disrupt the uploading process.
+                      Don’t navigate away from this page or close your browser
+                      tab. It can disrupt the uploading process.
                     </p>
                     <p className="text-blue mb-2">
                       Storing them forever should only take a few minutes.
@@ -625,7 +700,7 @@ function ConfirmOpenseas() {
                 <Progress
                   strokeColor={colors.blueDark}
                   trailColor={colors.blueLight}
-                  percent={((updatingProcess) * 100) / uploadContens.length}
+                  percent={(updatingProcess * 100) / uploadContens.length}
                   status="active"
                   showInfo={false}
                 />
