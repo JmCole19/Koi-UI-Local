@@ -1,5 +1,5 @@
 import { Space } from "antd";
-import { Logo, IconArweave, IconEthereum } from "assets/images";
+import { Logo, IconArweave, IconEthereum, IconFish, IconEyes } from "assets/images";
 import React, { useContext, useEffect, useState } from "react";
 import { Navbar, Nav, Image } from "react-bootstrap";
 import { Link } from "react-router-dom";
@@ -12,11 +12,11 @@ const arweave = Arweave.init();
 
 function Topbar() {
   
-  const { addressArweave, setAddressArweave } = useContext(DataContext);
+  const { walletKoi, walletAr, addressArweave, setAddressArweave } = useContext(DataContext);
   const [detectorAr, setDetectorAr] = useState(false);
 
   const activeArweave = () => {
-    
+    setDetectorAr(true)
   }
 
   const activeEthereum = () => {
@@ -73,11 +73,19 @@ function Topbar() {
           >
             OpenKoi
           </a>
-          <Space size={12} className="btns-connect">
-            <p className="text-blue mb-0 text-bold">Connect Wallet</p>
-            <Image onClick={activeArweave} src={IconArweave} className="cursor" width={18} />
-            <Image onClick={activeEthereum} src={IconEthereum} className="cursor" width={18} />
-          </Space>
+          {walletKoi === 0 && walletKoi ?
+            <Space size={12} className="btns-connect">
+              <p className="text-blue mb-0 text-bold">Connect Wallet</p>
+              <Image onClick={activeArweave} src={IconArweave} className="cursor" width={18} />
+              <Image onClick={activeEthereum} src={IconEthereum} className="cursor" width={18} />
+            </Space>
+            :
+            <Space size={12} className="btns-connect">
+              <p className="text-blue mb-0 text-bold">Connect Wallet</p>
+              <Image onClick={activeArweave} src={IconArweave} className="cursor" width={18} />
+              <Image onClick={activeEthereum} src={IconEthereum} className="cursor" width={18} />
+            </Space>
+          }
           {/* <Image
             src={DefaultUser}
             ref={target}
