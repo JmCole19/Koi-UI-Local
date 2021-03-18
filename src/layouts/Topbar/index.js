@@ -75,7 +75,7 @@ function Topbar() {
           >
             OpenKoi
           </a>
-          {walletKoi == null ?
+          {walletKoi === null ?
             <Space size={12} className="btns-connect">
               <p className="text-blue mb-0 text-bold">Connect Wallet</p>
               <Image onClick={activeArweave} src={IconArweave} className="cursor" width={18} />
@@ -95,7 +95,7 @@ function Topbar() {
             className="icon-user d-none d-md-flex cursor"
             onClick={() => setShow(!show)}
           />*/}
-          <Overlay target={target.current} show={show} onHide={()=>setShow(false)} placement="bottom-end">
+          <Overlay target={target.current} show={show} onHide={()=>setShow(false)} placement="bottom-end" rootClose>
             {(props) => (
               <Tooltip
                 id="overlay-nav"

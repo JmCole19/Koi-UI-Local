@@ -11,7 +11,7 @@ const DataContextContainer = (props) => {
   const [openSeas, setOpenSeas] = useState([]);
   const [addressArweave, setAddressArweave] = useState(null);
   const [keyAr, setKeyAr] = useState(null);
-  const [walletKoi, setWalletKoi] = useState(null);
+  const [walletKoi, setWalletKoi] = useState(0);
   const [walletAr, setWalletAr] = useState(null);
   const [contents, setContents] = useState([]);
 
@@ -28,8 +28,8 @@ const DataContextContainer = (props) => {
         setAddressArweave,
         keyArweave: keyAr,
         setKeyArweave: setKeyAr,
-        walletEth: walletKoi,
-        setWalletEth: setWalletKoi,
+        walletKoi,
+        setWalletKoi,
         walletAr,
         setWalletAr,
         contents,
