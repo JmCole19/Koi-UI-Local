@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useContext, useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
-import { koi_tools } from "koi_tools";
+// import { koi_tools } from "koi_tools";
 import { ScaleLoader } from "react-spinners";
 import { LeaderboardContainer, StyledThumb } from "./style";
 import { Collapse } from "antd";
@@ -10,6 +10,8 @@ import { useHistory } from "react-router-dom";
 import LeaderboardItem from "./LeaderboardItem";
 import { DataContext } from "contexts/DataContextContainer";
 import ModalContent from "components/Elements/ModalContent";
+import axios from "axios";
+import { show_notification } from "service/utils";
 
 const { Panel } = Collapse;
 const options = ["24h", "1w", "1m", "1y", "all"];
@@ -29,7 +31,7 @@ const options = ["24h", "1w", "1m", "1y", "all"];
 //   },
 // ];
 
-const ktools = new koi_tools();
+// const ktools = new koi_tools();
 
 function Leaderboard() {
   const history = useHistory();
@@ -87,10 +89,23 @@ function Leaderboard() {
   const getContents = async () => {
     if (contents.length === 0) {
       setIsLoading(true);
-      ktools.retrieveTopContent().then((res) => {
-        setContents(res);
-        console.log({ res });
-      }).catch( err => console.log(err)).finally( () => setIsLoading(false));
+      axios.get('http://bundler.openkoi.com:8887/state/getTopContent/')
+      .then((res) => {
+        const data = res.data
+        // console.log({ data });
+        if(data === 0) {
+          show_notification("There is no contents.")  
+        }else{
+          setContents(data);
+        }
+      }).catch( err => {
+        console.log(err)
+        show_notification('There is an error')
+      }).finally( () => setIsLoading(false));
+      // ktools.retrieveTopContent().then((res) => {
+      //   setContents(res);
+      //   console.log({ res });
+      // }).catch( err => console.log(err)).finally( () => setIsLoading(false));
     }
   };
 
