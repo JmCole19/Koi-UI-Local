@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useContext, useState } from "react";
 import Arweave from "arweave";
 import queryString from "query-string";
 import customAxios from "service/customAxios";
@@ -8,7 +8,10 @@ import { Carousel, Container, Toast } from "react-bootstrap";
 import { FaucetContainer } from "./style";
 import { Button, Input, Spin } from "antd";
 import { useHistory } from "react-router-dom";
+import { DataContext } from "contexts/DataContextContainer";
 import { show_notification } from "service/utils";
+
+const arweave = Arweave.init();
 
 function Faucet() {
   const history = useHistory();
@@ -21,6 +24,11 @@ function Faucet() {
   const queryAddress = queryString.parse(history.location.search).address || "";
   const [curStep, setCurStep] = useState(0);
   const [loading, setLoading] = useState(false);
+  const {
+    addressArweave,
+    setAddressArweave,
+  } = useContext(DataContext);
+  const [detectorAr, setDetectorAr] = useState(false);
   
   const onSkipGetWallet = () => {
     setCurStep(1);
@@ -33,18 +41,24 @@ function Faucet() {
   };
 
   const onClickGetWallet = async () => {
-    const arweave = Arweave.init({
-      host: "arweave.net",
-      port: 443,
-      protocol: "https",
-    });
-    let keyData = await arweave.wallets.generate();
-    const data = JSON.stringify(keyData);
-    fileDownload(data, "filename.json");
-    let addressResult = await arweave.wallets.jwkToAddress(keyData);
-    setAddress(addressResult);
-    setCurStep(2);
-    history.push(`/faucet?step=2&address=${addressResult}`);
+    if(addressArweave) {
+      show_notification('You already have an Araweave address')
+    }else if( !detectorAr ){
+      setDetectorAr(true)
+    }else{
+      const arweave = Arweave.init({
+        host: "arweave.net",
+        port: 443,
+        protocol: "https",
+      });
+      let keyData = await arweave.wallets.generate();
+      const data = JSON.stringify(keyData);
+      fileDownload(data, "filename.json");
+      let addressResult = await arweave.wallets.jwkToAddress(keyData);
+      setAddress(addressResult);
+      setCurStep(2);
+      history.push(`/faucet?step=2&address=${addressResult}`);
+    }
   };
 
   const onClickTweet = async () => {
@@ -104,7 +118,7 @@ function Faucet() {
       setShowToast(true);
     }
   };
-  console.log({ address });
+  
   const onClickUpload = () => {
     history.replace("/contents");
   };
@@ -122,6 +136,30 @@ function Faucet() {
     step && setCurStep(parseInt(step));
     queryAddress && setAddress(queryAddress);
   }, [step, queryAddress]);
+
+  useEffect(() => {
+    if (detectorAr) {
+      window.addEventListener("arweaveWalletLoaded", detectArweaveWallet());
+      return () => {
+        window.removeEventListener("arweaveWalletLoaded", () => {});
+      };
+    }
+  }, [detectorAr]);
+
+  const detectArweaveWallet = async () => {
+    try {
+      let addr = await arweave.wallets.getAddress();
+      console.log("detected arweave wallet address : ", addr);
+      if (addr) {
+        setAddressArweave(addr);
+      } else {
+        show_notification("Error on detectimg Arweave wallet address");
+      }
+    } catch (err) {
+      console.log(err);
+      show_notification("Error on detectimg Arweave wallet address");
+    }
+  };
 
   return (
     <FaucetContainer>

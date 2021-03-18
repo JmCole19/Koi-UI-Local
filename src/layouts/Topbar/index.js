@@ -54,7 +54,7 @@ function Topbar() {
       }
     } catch (err) {
       // console.log(err);
-      show_notification("Error on detectomg Arweave wallet address");
+      show_notification("Error on detectimg Arweave wallet address");
     }
   };
 
