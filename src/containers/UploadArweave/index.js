@@ -10,6 +10,8 @@ import { useForm } from "antd/lib/form/Form";
 import { useHistory, useLocation } from "react-router-dom";
 import MyProgress from "components/Elements/MyProgress";
 import { DataContext } from "contexts/DataContextContainer";
+import { FaArrowLeft } from "react-icons/fa";
+import { colors } from "theme";
 
 const { TextArea } = Input;
 const { Dragger } = Upload;
@@ -28,7 +30,7 @@ function UploadArweave() {
   const [form] = useForm();
   const location = useLocation();
   const { step } = queryString.parse(location.search);
-  const {setAddressArweave} = useContext(DataContext);
+  const { setAddressArweave } = useContext(DataContext);
   const [uploading] = useState(false);
 
   const onCompleteStep1 = () => {
@@ -43,8 +45,8 @@ function UploadArweave() {
     console.log("Completed");
   };
 
-  const beforeUpload = file => {
-    if (file.type !== 'application/json') {
+  const beforeUpload = (file) => {
+    if (file.type !== "application/json") {
       notification.warn({
         message: "Warning!",
         description: `${file.name} is not a json file`,
@@ -54,32 +56,43 @@ function UploadArweave() {
     } else {
       const reader = new FileReader();
       // reader.readAsDataURL(file);
-      reader.readAsText(file)
-      reader.onload = async(e) => {
+      reader.readAsText(file);
+      reader.onload = async (e) => {
         const arweave = Arweave.init({
           host: "arweave.net",
           port: 443,
           protocol: "https",
         });
-        let addressResult = await arweave.wallets.jwkToAddress(JSON.parse(e.target.result));
-        setAddressArweave(addressResult)
+        let addressResult = await arweave.wallets.jwkToAddress(
+          JSON.parse(e.target.result)
+        );
+        setAddressArweave(addressResult);
         notification.success({
           message: "Success!",
           description: `Set address successfully.`,
           placement: "bottomRight",
-          onClose: () => history.push(`/contents`)
+          onClose: () => history.push(`/contents`),
         });
-      }
+      };
       return false;
     }
-  }
+  };
 
   return (
     <UploadArweaveContainer>
       <Container>
         <div className="upload-content-wrapper">
           <div className="upload-content">
-            <h1 className="upload-title text-blue">Register your content.</h1>
+            <div className="title-wrapper">
+              <h1 className="text-blue upload-title">Register your content.</h1>
+              <Button
+                className="back-wrapper btn-orange"
+                onClick={() => history.replace("/register-content")}
+              >
+                <FaArrowLeft size={20} color={colors.blueDark} />
+                <h6 className="mb-0 text-blue text-bold ml-2">Leaderboard</h6>
+              </Button>
+            </div>
             {step === "1" && (
               <div className="upload-body">
                 <Form
@@ -91,9 +104,7 @@ function UploadArweave() {
                   <Row>
                     <Col flex="100px">
                       <div className="type-img-wrapper">
-                        <Image
-                          src={IconArweave}
-                        />
+                        <Image src={IconArweave} />
                       </div>
                     </Col>
                     <Col flex={1}>
@@ -138,9 +149,7 @@ function UploadArweave() {
                   <Row>
                     <Col flex="100px">
                       <div className="type-img-wrapper">
-                        <Image
-                          src={IconArweave}
-                        />
+                        <Image src={IconArweave} />
                       </div>
                     </Col>
                     <Col flex={1}>
@@ -198,9 +207,7 @@ function UploadArweave() {
                   <Row>
                     <Col flex="100px">
                       <div className="type-img-wrapper">
-                        <Image
-                          src={IconArweave}
-                        />
+                        <Image src={IconArweave} />
                       </div>
                     </Col>
                     <Col flex={1}>

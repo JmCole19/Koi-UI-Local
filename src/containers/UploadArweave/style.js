@@ -15,9 +15,17 @@ export const UploadArweaveContainer = styled.div`
         display: flex;
         flex-direction: column;
         align-items: center;
-        h1 {
-          margin-bottom: 80px;
+        .title-wrapper {
           width: 100%;
+          display: flex;
+          justify-content: space-between;
+          margin-bottom: 80px;
+          .back-wrapper {
+            width: fit-content;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+          }
         }
         .upload-body {
           width: 100%;

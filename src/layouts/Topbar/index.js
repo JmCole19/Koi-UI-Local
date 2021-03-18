@@ -1,5 +1,12 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Space } from "antd";
-import { Logo, IconArweave, IconEthereum, IconFish, IconEyes } from "assets/images";
+import {
+  Logo,
+  IconArweave,
+  IconEthereum,
+  IconFish,
+  IconEyes,
+} from "assets/images";
 import React, { useContext, useEffect, useState, useRef } from "react";
 import { Navbar, Nav, Image, Overlay, Tooltip } from "react-bootstrap";
 import { Link } from "react-router-dom";
@@ -11,46 +18,42 @@ import Arweave from "arweave";
 const arweave = Arweave.init();
 
 function Topbar() {
-  
-  const { walletKoi, walletAr, addressArweave, setAddressArweave } = useContext(DataContext);
-  const [show, setShow] = useState(false)
-  const target = useRef(null)
+  const { walletKoi, setAddressArweave } = useContext(DataContext);
+  const [show, setShow] = useState(false);
+  const target = useRef(null);
   const [detectorAr, setDetectorAr] = useState(false);
 
   const activeArweave = () => {
-    setDetectorAr(true)
-  }
+    setDetectorAr(true);
+  };
 
-  const activeEthereum = () => {
-
-  }
+  const activeEthereum = () => {};
 
   useEffect(() => {
     if (detectorAr) {
       window.addEventListener("arweaveWalletLoaded", detectArweaveWallet());
       return () => {
-        window.removeEventListener(
-          "arweaveWalletLoaded",
-          () => {}
-        );
+        window.removeEventListener("arweaveWalletLoaded", () => {});
       };
     }
   }, [detectorAr]);
 
   const detectArweaveWallet = async () => {
     try {
-      console.log("here4")
+      console.log("here4");
       let addr = await arweave.wallets.getAddress();
       console.log("detected arweave wallet address : ", addr);
       if (addr) {
         setAddressArweave(addr);
       } else {
         // show alert
-        show_notification('There is a problem to get your arwallet address. Please install arconnect extension and try again.')
+        show_notification(
+          "There is a problem to get your arwallet address. Please install arconnect extension and try again."
+        );
       }
     } catch (err) {
       // console.log(err);
-      show_notification('Error on detectomg Arweave wallet address')
+      show_notification("Error on detectomg Arweave wallet address");
     }
   };
 
@@ -75,27 +78,55 @@ function Topbar() {
           >
             OpenKoi
           </a>
-          {walletKoi === null ?
+          {walletKoi === null ? (
             <Space size={12} className="btns-connect">
               <p className="text-blue mb-0 text-bold">Connect Wallet</p>
-              <Image onClick={activeArweave} src={IconArweave} className="cursor" width={18} />
-              <Image onClick={activeEthereum} src={IconEthereum} className="cursor" width={18} />
+              <Image
+                onClick={activeArweave}
+                src={IconArweave}
+                className="cursor"
+                width={18}
+              />
+              <Image
+                onClick={activeEthereum}
+                src={IconEthereum}
+                className="cursor"
+                width={18}
+              />
             </Space>
-            :
+          ) : (
             <Space size={12} className="btns-connect">
               <span className="text-blue mb-0 text-bold">0.00</span>
-              <Image ref={target} onClick={() => setShow(!show)} src={IconFish} className="cursor" width={18} />
+              <Image
+                ref={target}
+                onClick={() => setShow(!show)}
+                src={IconFish}
+                className="cursor"
+                width={18}
+              />
               <span className="text-blue mb-0 text-bold">0.00</span>
-              <Image ref={target} onClick={() => setShow(!show)} src={IconEyes} className="cursor" width={18} />
+              <Image
+                ref={target}
+                onClick={() => setShow(!show)}
+                src={IconEyes}
+                className="cursor"
+                width={18}
+              />
             </Space>
-          }
+          )}
           {/* <Image
             src={DefaultUser}
             ref={target}
             className="icon-user d-none d-md-flex cursor"
             onClick={() => setShow(!show)}
           />*/}
-          <Overlay target={target.current} show={show} onHide={()=>setShow(false)} placement="bottom-end" rootClose>
+          <Overlay
+            target={target.current}
+            show={show}
+            onHide={() => setShow(false)}
+            placement="bottom-end"
+            rootClose
+          >
             {(props) => (
               <Tooltip
                 id="overlay-nav"

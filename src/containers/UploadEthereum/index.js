@@ -8,6 +8,8 @@ import { Col, Form, Input, Row, Upload, Spin } from "antd";
 import { useForm } from "antd/lib/form/Form";
 import { useHistory, useLocation } from "react-router-dom";
 import MyProgress from "components/Elements/MyProgress";
+import { FaArrowLeft } from "react-icons/fa";
+import { colors } from "theme";
 
 const { TextArea } = Input;
 const { Dragger } = Upload;
@@ -45,7 +47,16 @@ function UploadEthereum() {
       <Container>
         <div className="upload-content-wrapper">
           <div className="upload-content">
-            <h1 className="upload-title text-blue">Register your content.</h1>
+            <div className="title-wrapper">
+              <h1 className="text-blue upload-title">Register your content.</h1>
+              <Button
+                className="back-wrapper btn-orange"
+                onClick={() => history.replace("/register-content")}
+              >
+                <FaArrowLeft size={20} color={colors.blueDark} />
+                <h6 className="mb-0 text-blue text-bold ml-2">Leaderboard</h6>
+              </Button>
+            </div>
             {step === "1" && (
               <div className="upload-body">
                 <Form
@@ -231,14 +242,19 @@ function UploadEthereum() {
                       {/* <p className="text-secondary">dddddd</p> */}
                     </div>
                     <div className="arConnect-card">
-                      <div className='card-icon'>
+                      <div className="card-icon">
                         <Image src={IconArConnect} />
                       </div>
-                      <p className="text-blue text-center mb-0">Click here to open ArConnect browser extension. </p>
+                      <p className="text-blue text-center mb-0">
+                        Click here to open ArConnect browser extension.{" "}
+                      </p>
                     </div>
                   </div>
                 </Form>
-                <p className='footer-description text-blue'>Don’t have any Arweave (AR) tokens? Visit the <a href="#/">Arweave Faucet</a> to get started.</p>
+                <p className="footer-description text-blue">
+                  Don’t have any Arweave (AR) tokens? Visit the{" "}
+                  <a href="#/">Arweave Faucet</a> to get started.
+                </p>
               </div>
             )}
           </div>
