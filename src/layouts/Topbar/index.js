@@ -18,13 +18,15 @@ import Arweave from "arweave";
 const arweave = Arweave.init();
 
 function Topbar() {
-  const { walletKoi, setAddressArweave } = useContext(DataContext);
+  const { walletKoi, walletAr, setWalletKoi, setWalletAr, setAddressArweave } = useContext(DataContext);
   const [show, setShow] = useState(false);
   const target = useRef(null);
   const [detectorAr, setDetectorAr] = useState(false);
 
   const activeArweave = () => {
-    setDetectorAr(true);
+    // setDetectorAr(true);
+    setWalletKoi(50.01);
+    setWalletAr(50.01);
   };
 
   const activeEthereum = () => {};
@@ -40,7 +42,6 @@ function Topbar() {
 
   const detectArweaveWallet = async () => {
     try {
-      console.log("here4");
       let addr = await arweave.wallets.getAddress();
       console.log("detected arweave wallet address : ", addr);
       if (addr) {
@@ -96,7 +97,7 @@ function Topbar() {
             </Space>
           ) : (
             <Space size={12} className="btns-connect">
-              <span className="text-blue mb-0 text-bold">0.00</span>
+              <span className="text-blue mb-0 text-bold">{walletKoi}</span>
               <Image
                 ref={target}
                 onClick={() => setShow(!show)}
@@ -104,7 +105,7 @@ function Topbar() {
                 className="cursor"
                 width={18}
               />
-              <span className="text-blue mb-0 text-bold">0.00</span>
+              <span className="text-blue mb-0 text-bold">{walletAr}</span>
               <Image
                 ref={target}
                 onClick={() => setShow(!show)}
@@ -147,12 +148,12 @@ function Topbar() {
                   </div>
                   <div className="overlay-body-row">
                     <p>KOI balance </p>
-                    <p className="overlay-value">2,106.58</p>
+                    <p className="overlay-value">{walletKoi}</p>
                     <Image src={IconFish} className="ml-2" />
                   </div>
                   <div className="overlay-body-row">
                     <p>AR balance </p>
-                    <p className="overlay-value">47.21</p>
+                    <p className="overlay-value">{walletAr}</p>
                     <Image src={IconArweave} className="ml-2" />
                   </div>
                 </div>
