@@ -328,7 +328,7 @@ function ConfirmOpenseas() {
               <h1 className="text-blue upload-title">Register your content</h1>
               <Button
                 className="back-wrapper btn-orange"
-                onClick={() => history.replace("/register-content")}
+                onClick={() => history.push(`/opensea?address=${address}`)}
               >
                 <FaArrowLeft size={20} color={colors.blueDark} />
                 <h6 className="mb-0 text-blue text-bold ml-2">Leaderboard</h6>
