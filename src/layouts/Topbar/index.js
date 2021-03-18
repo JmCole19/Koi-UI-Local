@@ -42,7 +42,6 @@ function Topbar() {
 
   const detectArweaveWallet = async () => {
     try {
-      console.log("here4");
       let addr = await arweave.wallets.getAddress();
       console.log("detected arweave wallet address : ", addr);
       if (addr) {
@@ -58,7 +57,6 @@ function Topbar() {
       show_notification("Error on detectomg Arweave wallet address");
     }
   };
-  console.log({walletAr})
 
   return (
     <TopbarContainer collapseOnSelect expand="md" fixed="top">
