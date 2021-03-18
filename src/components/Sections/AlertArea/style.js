@@ -2,6 +2,7 @@ import styled from "styled-components";
 // import { colors } from "theme";
 
 export const CustomAlertContainer = styled.div`
+  width: 100%;
   -webkit-transition: opacity 3s ease-in-out;
   -moz-transition: opacity 3s ease-in-out;
   -ms-transition: opacity 3s ease-in-out;
