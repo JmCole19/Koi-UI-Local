@@ -6,13 +6,15 @@ import { IconUpload } from "assets/images";
 import { UploadUploadContainer } from "./style";
 import { Col, Form, Input, Row, Upload, Spin } from "antd";
 import { useForm } from "antd/lib/form/Form";
-import cloneDeep from 'clone-deep'
+import cloneDeep from "clone-deep";
 import { useHistory, useLocation } from "react-router-dom";
 import MyProgress from "components/Elements/MyProgress";
 import ArconnectCard from "components/Elements/ArconnectCard";
-import { show_notification } from 'service/utils'
+import { show_notification } from "service/utils";
 import Arweave from "arweave";
-import { getArWalletAddressFromJson, exportNFT } from 'service/NFT'
+import { getArWalletAddressFromJson, exportNFT } from "service/NFT";
+import { colors } from "theme";
+import { FaArrowLeft } from "react-icons/fa";
 
 const { TextArea } = Input;
 const { Dragger } = Upload;
@@ -34,18 +36,26 @@ function UploadManual() {
   const [uploading] = useState(false);
   const [imageUrl, setImageUrl] = useState(null);
   const [imageBlob, setImageBlob] = useState(null);
-  const [activeContent, setActiveContent] = useState({ title: '', owner: '', description: ''});
+  const [activeContent, setActiveContent] = useState({
+    title: "",
+    owner: "",
+    description: "",
+  });
 
   const onCompleteStep1 = () => {
     history.push(`/upload/manual?step=2`);
   };
 
   const onCompleteStep2 = () => {
-    console.log(activeContent)
-    if(activeContent.title && activeContent.owner && activeContent.description){
+    console.log(activeContent);
+    if (
+      activeContent.title &&
+      activeContent.owner &&
+      activeContent.description
+    ) {
       history.push(`/upload/manual?step=3`);
-    }else{
-      show_notification('Please fill out all fields.', 'Error')
+    } else {
+      show_notification("Please fill out all fields.", "Error");
     }
   };
 
@@ -54,72 +64,85 @@ function UploadManual() {
   };
 
   const updateContent = (key, value) => {
-    let tpContent = cloneDeep(activeContent)
-    tpContent[key] = value
-    setActiveContent(tpContent)
-  }
+    let tpContent = cloneDeep(activeContent);
+    tpContent[key] = value;
+    setActiveContent(tpContent);
+  };
 
   const beforeJsonUpload = (file) => {
     // console.log('file type : ', file)
-    const isJson = file.type === 'application/json';
+    const isJson = file.type === "application/json";
     if (!isJson) {
-      show_notification('You can only upload JPG/PNG file!');
+      show_notification("You can only upload JPG/PNG file!");
     }
     const isLt1M = file.size / 1024 < 512;
     if (!isLt1M) {
-      show_notification('JSON must smaller than 512KB!');
+      show_notification("JSON must smaller than 512KB!");
     }
-    if(isJson && isLt1M) {
+    if (isJson && isLt1M) {
       const reader = new FileReader();
       reader.onload = async (e) => {
-        var arJson = JSON.parse(e.target.result)
-        const arweave = Arweave.init()
+        var arJson = JSON.parse(e.target.result);
+        const arweave = Arweave.init();
         let addressResult = await getArWalletAddressFromJson(arweave, arJson);
-        try{
-          let res = await exportNFT(arweave, addressResult, activeContent, '', imageBlob, arJson)
-          if(res) {
-            show_notification('Your transaction id is ' + res + '. Upload successfully', 'NFT uploading', 'success')
+        try {
+          let res = await exportNFT(
+            arweave,
+            addressResult,
+            activeContent,
+            "",
+            imageBlob,
+            arJson
+          );
+          if (res) {
+            show_notification(
+              "Your transaction id is " + res + ". Upload successfully",
+              "NFT uploading",
+              "success"
+            );
             setTimeout(() => {
-              history.push('/contents')
-            }, 3000)
-          }else{
-            show_notification('Something error', 'NFT uploading')
+              history.push("/contents");
+            }, 3000);
+          } else {
+            show_notification("Something error", "NFT uploading");
           }
-        }catch(err) {
-          console.log("here1")
-          console.log(err)
-          show_notification('Something error', 'NFT uploading')
+        } catch (err) {
+          console.log("here1");
+          console.log(err);
+          show_notification("Something error", "NFT uploading");
         }
         // exportNFT(addressResult, 0.0001, '', imageBlob)
         // .then(res => console.log("success", res))
         // .catch(err => console.log("error", err))
         // .finally( () => show_notification('upload successfully', 'KOI', 'success'))
-      }
+      };
       reader.readAsText(file);
       // Prevent upload
       return false;
     }
     return isJson && isLt1M;
-  }
+  };
   const beforeUpload = (file) => {
-    const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+    const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";
     if (!isJpgOrPng) {
-      show_notification('You can only upload JPG/PNG file!');
+      show_notification("You can only upload JPG/PNG file!");
     }
     const isLt2M = file.size / 1024 / 1024 < 10;
     if (!isLt2M) {
-      show_notification('Image must smaller than 10MB!');
+      show_notification("Image must smaller than 10MB!");
     }
-    if(isJpgOrPng && isLt2M) {
+    if (isJpgOrPng && isLt2M) {
       const reader = new FileReader();
       reader.onload = (e) => {
-        setImageUrl(e.target.result)
-        fetch(e.target.result).then(function(response) {
-          return response.blob();
-        }).then(function(blob) {
-          setImageBlob(blob)
-        });
-      }
+        setImageUrl(e.target.result);
+        fetch(e.target.result)
+          .then(function (response) {
+            return response.blob();
+          })
+          .then(function (blob) {
+            setImageBlob(blob);
+          });
+      };
       // setImageBlob(file)
       reader.readAsDataURL(file);
       // Prevent upload
@@ -133,24 +156,33 @@ function UploadManual() {
     // } else {
     //   // show_notification('Please input only image and video.')
     // }
-  }
+  };
 
   const onOpenArConnect = () => {
-    show_notification("ArConnection will be integrated soon", 'KOI', 'error')
-  }
+    show_notification("ArConnection will be integrated soon", "KOI", "error");
+  };
 
   useEffect(() => {
-    if(step !== '1' && !imageUrl) {
+    if (step !== "1" && !imageUrl) {
       history.replace(`/upload/manual?step=1`);
     }
-  }, [])
+  }, []);
 
   return (
     <UploadUploadContainer>
       <Container>
         <div className="upload-content-wrapper">
           <div className="upload-content">
-            <h1 className="upload-title text-blue">Register your content.</h1>
+            <div className="title-wrapper">
+              <h1 className="text-blue upload-title">Register your content.</h1>
+              <Button
+                className="back-wrapper btn-orange"
+                onClick={() => history.replace("/register-content")}
+              >
+                <FaArrowLeft size={20} color={colors.blueDark} />
+                <h6 className="mb-0 text-blue text-bold ml-2">Leaderboard</h6>
+              </Button>
+            </div>
             {step === "1" && (
               <div className="upload-body">
                 <Form
@@ -197,10 +229,12 @@ function UploadManual() {
                                       <Image src={IconUpload} />
                                     </div>
                                     <p className="text-blue mb-0">
-                                      Drag & Drop or click to browse your computer.
+                                      Drag & Drop or click to browse your
+                                      computer.
                                     </p>
                                   </div>
-                                </>)}
+                                </>
+                              )}
                             </Dragger>
                           </div>
                         </div>
@@ -208,7 +242,11 @@ function UploadManual() {
                     </Col>
                   </Row>
                   <Form.Item>
-                    <Button type="submit" disabled={!imageUrl} className="btn-blueDark mx-auto px-5">
+                    <Button
+                      type="submit"
+                      disabled={!imageUrl}
+                      className="btn-blueDark mx-auto px-5"
+                    >
                       Register your NFT
                     </Button>
                   </Form.Item>
@@ -251,7 +289,9 @@ function UploadManual() {
                             </div>
                             <Input
                               value={activeContent?.title}
-                              onChange={(e) => updateContent('title', e.target.value)}
+                              onChange={(e) =>
+                                updateContent("title", e.target.value)
+                              }
                               placeholder=""
                               className="ethereum-value-input"
                             />
@@ -264,7 +304,9 @@ function UploadManual() {
                               placeholder=""
                               className="ethereum-value-input"
                               value={activeContent?.owner}
-                              onChange={(e) => updateContent('owner', e.target.value)}
+                              onChange={(e) =>
+                                updateContent("owner", e.target.value)
+                              }
                             />
                           </Form.Item>
                           <Form.Item>
@@ -274,7 +316,9 @@ function UploadManual() {
                             <TextArea
                               placeholder=""
                               value={activeContent?.description}
-                              onChange={(e) => updateContent('description', e.target.value)}
+                              onChange={(e) =>
+                                updateContent("description", e.target.value)
+                              }
                               className="ethereum-value-input"
                               rows={5}
                             />
@@ -287,9 +331,12 @@ function UploadManual() {
                             >
                               Add Details
                             </Button>
-                            <Button 
-                              onClick={() => history.push(`/upload/manual?step=1`)}
-                              className="btn-white btn-edit ml-3">
+                            <Button
+                              onClick={() =>
+                                history.push(`/upload/manual?step=1`)
+                              }
+                              className="btn-white btn-edit ml-3"
+                            >
                               Add Later
                             </Button>
                           </Form.Item>
@@ -327,7 +374,12 @@ function UploadManual() {
                             <p className="mb-0 text-blue ml-2">
                               Drag & Drop your Arweave keyfile or connect using
                               an{" "}
-                              <a href="https://chrome.google.com/webstore/detail/arconnect/einnioafmpimabjcddiinlhmijaionap" target="_blank" rel="noopener noreferrer" className="text-bold">
+                              <a
+                                href="https://chrome.google.com/webstore/detail/arconnect/einnioafmpimabjcddiinlhmijaionap"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-bold"
+                              >
                                 Arweave browser extension
                               </a>
                               .
@@ -368,7 +420,13 @@ function UploadManual() {
                     <ArconnectCard openArConnect={onOpenArConnect} />
                   </div>
                 </Form>
-                <p className='footer-description text-blue'>Don’t have any Arweave (AR) tokens? Visit the <a href="/faucet" target="_blank">Arweave Faucet</a> to get started.</p>
+                <p className="footer-description text-blue">
+                  Don’t have any Arweave (AR) tokens? Visit the{" "}
+                  <a href="/faucet" target="_blank">
+                    Arweave Faucet
+                  </a>{" "}
+                  to get started.
+                </p>
               </div>
             )}
           </div>
