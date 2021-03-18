@@ -93,7 +93,11 @@ function Leaderboard() {
       .then((res) => {
         const data = res.data
         // console.log({ data });
-        setContents(data);
+        if(data === 0) {
+          show_notification("There is no contents.")  
+        }else{
+          setContents(data);
+        }
       }).catch( err => {
         console.log(err)
         show_notification('There is an error')

@@ -37,7 +37,8 @@ const ktools = new koi_tools();
 
 function MyContent() {
   const history = useHistory();
-  const { contents, setContents, addressArweave, setAddressArweave } = useContext(DataContext);
+  const { addressArweave, setAddressArweave } = useContext(DataContext);
+  const [contents, setContents] = useState([]);
   const [isExpanded, setIsExpanded] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -84,7 +85,11 @@ function MyContent() {
         setIsLoading(true);
         console.log("here3 : ", walletAddress)
         ktools.myContent(walletAddress).then((res) => {
-          setContents(res);
+          if(res.length === 0) {
+            show_notification("There is no contents.")  
+          }else{
+            setContents(res);
+          }
           console.log({ res });
         }).catch(err => {
           console.log(err)
