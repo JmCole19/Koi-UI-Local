@@ -73,7 +73,7 @@ function UploadManual() {
     // console.log('file type : ', file)
     const isJson = file.type === "application/json";
     if (!isJson) {
-      show_notification("You can only upload JPG/PNG file!");
+      show_notification("You can only upload JSON file!");
     }
     const isLt1M = file.size / 1024 < 512;
     if (!isLt1M) {
