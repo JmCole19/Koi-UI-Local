@@ -1,7 +1,7 @@
 import { Space } from "antd";
 import { Logo, IconArweave, IconEthereum, IconFish, IconEyes } from "assets/images";
-import React, { useContext, useEffect, useState } from "react";
-import { Navbar, Nav, Image } from "react-bootstrap";
+import React, { useContext, useEffect, useState, useRef } from "react";
+import { Navbar, Nav, Image, Overlay, Tooltip, Dropdown } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { DataContext } from "contexts/DataContextContainer";
 import { TopbarContainer } from "./style";
@@ -13,6 +13,8 @@ const arweave = Arweave.init();
 function Topbar() {
   
   const { walletKoi, walletAr, addressArweave, setAddressArweave } = useContext(DataContext);
+  const [show, setShow] = useState(false)
+  const target = useRef(null)
   const [detectorAr, setDetectorAr] = useState(false);
 
   const activeArweave = () => {
@@ -81,9 +83,10 @@ function Topbar() {
             </Space>
             :
             <Space size={12} className="btns-connect">
-              <p className="text-blue mb-0 text-bold">Connect Wallet</p>
-              <Image onClick={activeArweave} src={IconArweave} className="cursor" width={18} />
-              <Image onClick={activeEthereum} src={IconEthereum} className="cursor" width={18} />
+              <span className="text-blue mb-0 text-bold">0.00</span>
+              <Image ref={target} onClick={() => setShow(!show)} src={IconFish} className="cursor" width={18} />
+              <span className="text-blue mb-0 text-bold">0.00</span>
+              <Image ref={target} onClick={() => setShow(!show)} src={IconEyes} className="cursor" width={18} />
             </Space>
           }
           {/* <Image
@@ -91,8 +94,38 @@ function Topbar() {
             ref={target}
             className="icon-user d-none d-md-flex cursor"
             onClick={() => setShow(!show)}
-          />
-          <Overlay target={target.current} show={show} placement="bottom-end">
+          />*/}
+          <Dropdown
+            show={show}
+            onToggle={() => setShow(!show)}
+            drop={() => setShow(false)}
+            alignEnd={true}
+            itemSelector="button:not(:disabled)"
+          >
+              <div className="relative inline-block">
+                <div className="overlay-body">
+                  <div className="overlay-body-row">
+                    <p className="text-bold">Account summary</p>
+                  </div>
+                  <div className="overlay-body-row">
+                    <p>Total views</p>
+                    <p className="overlay-value">7,124</p>
+                    <Image src={IconEyes} className="ml-2" />
+                  </div>
+                  <div className="overlay-body-row">
+                    <p>KOI balance </p>
+                    <p className="overlay-value">2,106.58</p>
+                    <Image src={IconFish} className="ml-2" />
+                  </div>
+                  <div className="overlay-body-row">
+                    <p>AR balance </p>
+                    <p className="overlay-value">47.21</p>
+                    <Image src={IconArweave} className="ml-2" />
+                  </div>
+                </div>
+              </div>
+          </Dropdown>
+          {/* <Overlay target={target.current} show={show} placement="bottom-end">
             {(props) => (
               <Tooltip
                 id="overlay-nav"
