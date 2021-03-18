@@ -12,6 +12,8 @@ import { useHistory } from "react-router-dom";
 import { DataContext } from "contexts/DataContextContainer";
 import { show_notification } from "service/utils";
 import { getArWalletAddressFromJson } from "service/NFT";
+import { koi_tools } from "koi_tools"
+
 const { Dragger } = Upload;
 
 function Faucet() {
@@ -57,13 +59,18 @@ function Faucet() {
     if(addressArweave) {
       show_notification('You already have an Araweave address')
       setTimeout( () => {
-        setCurStep(2);
-        if(keyAr)
+        if(keyAr){
+          setCurStep(2);
           history.push(`/faucet?step=2&address=${addressArweave}`);
-        else
+        }
+        else{
+          setCurStep(1);
           history.push(`/faucet?step=1&address=${addressArweave}`);
+
+        }
       })
     }else if( !detectorAr ){
+      console.log("here1")
       setDetectorAr(true)
     }else{
       let arweave = Arweave.init({
@@ -96,24 +103,47 @@ function Faucet() {
     history.push(`/faucet?step=3&address=${address}`);
   };
 
-  const getKoi = async () => {
+  const getKoi = async (arJson = {}) => {
     setLoading(true)
-    let {
-      ok,
-      data: { data },
-    } = await customAxios.post(`/getKoi`, {
-      address: address,
-    });
-    if (ok) {
+    const ktools = new koi_tools();
+    try{
+      console.log("key")
+      console.log(arJson || keyAr)
+      await ktools.loadWallet(arJson || keyAr)
+  
+      let temp_address = await ktools.getWalletAddress()
+      let arBalance = await ktools.getWalletBalance()
+      let koiBalance = await ktools.getKoiBalance()
+      console.log({temp_address})
+      console.log({arBalance})
+      console.log({koiBalance})
       setLoading(false)
-      setKoiBalance(data.koiBalance);
-      setCurStep(4);
-      history.push(`/faucet?step=4&address=${address}`);
-    } else {
+    }catch(err) {
       setLoading(false)
-      console.log("get koi error");
+      console.log("get koi balance err")
+      console.log(err)
     }
+    // let {
+    //   ok,
+    //   data: { data },
+    // } = await customAxios.post(`/getKoi`, {
+    //   address: address,
+    // });
+    // if (ok) {
+    //   setLoading(false)
+    //   setKoiBalance(data.koiBalance);
+    //   setCurStep(4);
+    //   history.push(`/faucet?step=4&address=${address}`);
+    // } else {
+    //   setLoading(false)
+    //   console.log("get koi error");
+    // }
   }
+
+  // const sendFreeKoibalance = async () => {
+  //   const ktools = new koi_tools();
+  //   ktools.loadWallet(keyAr)
+  // }
 
   const onClickGetKoi = async () => {
     console.log("here");
@@ -168,15 +198,12 @@ function Faucet() {
       const reader = new FileReader();
       reader.onload = async (e) => {
         var arJson = JSON.parse(e.target.result);
-        const arweave = Arweave.init();
-        let addressResult = await getArWalletAddressFromJson(arweave, arJson);
-        setKeyAr(arJson)
-        setAddressArweave(addressResult)
-        history.push(`/faucet?step=2&address=${addressResult}`);
-        // if(addressResult !== addressArweave) {
-        //   show_notification('Key json and Address are not matched')
-        // }else{
-        // }
+        await getKoi(arJson)
+        // const arweave = Arweave.init();
+        // let addressResult = await getArWalletAddressFromJson(arweave, arJson);
+        // setKeyAr(arJson)
+        // setAddressArweave(addressResult)
+        // history.push(`/faucet?step=2&address=${addressResult}`);
       };
       reader.readAsText(file);
       // Prevent upload
@@ -206,7 +233,7 @@ function Faucet() {
       console.log("detected arweave wallet address : ", addr);
       if (addr) {
         setAddressArweave(addr);
-        setCurStep(2);
+        setCurStep(1);
         history.push(`/faucet?step=1&address=${addr}`);
       } else {
         show_notification("Error on detectimg Arweave wallet address");
