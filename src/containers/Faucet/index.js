@@ -48,7 +48,7 @@ function Faucet() {
   };
 
   const onClickTweet = async () => {
-    const text = encodeURI("I am verifying my Koi address ");
+    const text = encodeURI("I am joining @open_koi to register my content and earn crypto when it is viewed as #foreverMedia!' ");
     window.open(
       `https://twitter.com/intent/tweet?text=${text}${address}`,
       "twitpostpopup",
