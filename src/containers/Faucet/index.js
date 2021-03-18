@@ -48,7 +48,7 @@ function Faucet() {
   };
 
   const onClickTweet = async () => {
-    const text = encodeURI("I am joining @open_koi to register my content and earn crypto when it is viewed as #foreverMedia!' ");
+    const text = encodeURI("I just joined the @open_koi #web3 economy. #PayAttention with us, the future is now. ");
     window.open(
       `https://twitter.com/intent/tweet?text=${text}${address}`,
       "twitpostpopup",
