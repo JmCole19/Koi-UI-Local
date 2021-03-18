@@ -27,6 +27,8 @@ function Faucet() {
   const {
     addressArweave,
     setAddressArweave,
+    keyAr,
+    setKeyAr
   } = useContext(DataContext);
   const [detectorAr, setDetectorAr] = useState(false);
   
@@ -43,6 +45,10 @@ function Faucet() {
   const onClickGetWallet = async () => {
     if(addressArweave) {
       show_notification('You already have an Araweave address')
+      setTimeout( () => {
+        setCurStep(2);
+        history.push(`/faucet?step=2&address=${addressArweave}`);
+      })
     }else if( !detectorAr ){
       setDetectorAr(true)
     }else{
@@ -53,9 +59,11 @@ function Faucet() {
       });
       let keyData = await arweave.wallets.generate();
       const data = JSON.stringify(keyData);
-      fileDownload(data, "filename.json");
+      fileDownload(data, "arweaveWallet.json");
       let addressResult = await arweave.wallets.jwkToAddress(keyData);
       setAddress(addressResult);
+      setAddressArweave(addressResult);
+      setKeyAr(keyData)
       setCurStep(2);
       history.push(`/faucet?step=2&address=${addressResult}`);
     }
@@ -152,6 +160,8 @@ function Faucet() {
       console.log("detected arweave wallet address : ", addr);
       if (addr) {
         setAddressArweave(addr);
+        setCurStep(2);
+        history.push(`/faucet?step=2&address=${addr}`);
       } else {
         show_notification("Error on detectimg Arweave wallet address");
       }
