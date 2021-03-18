@@ -1,14 +1,19 @@
 import { Space } from "antd";
 import { Logo, IconArweave, IconEthereum } from "assets/images";
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Navbar, Nav, Image } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { DataContext } from "contexts/DataContextContainer";
 import { TopbarContainer } from "./style";
+import { show_notification } from "service/utils";
+import Arweave from "arweave";
+
+const arweave = Arweave.init();
 
 function Topbar() {
   
   const { addressArweave, setAddressArweave } = useContext(DataContext);
+  const [detectorAr, setDetectorAr] = useState(false);
 
   const activeArweave = () => {
     
@@ -36,15 +41,14 @@ function Topbar() {
       let addr = await arweave.wallets.getAddress();
       console.log("detected arweave wallet address : ", addr);
       if (addr) {
-        getContents(addr)
         setAddressArweave(addr);
       } else {
         // show alert
-        show_alert('There is a problem to get your arwallet address. Please install arconnect extension and try again.')
+        show_notification('There is a problem to get your arwallet address. Please install arconnect extension and try again.')
       }
     } catch (err) {
       // console.log(err);
-      show_alert('Error on detectomg Arweave wallet address')
+      show_notification('Error on detectomg Arweave wallet address')
     }
   };
 
