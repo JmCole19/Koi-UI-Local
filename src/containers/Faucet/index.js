@@ -14,8 +14,6 @@ import { show_notification } from "service/utils";
 import { getArWalletAddressFromJson } from "service/NFT";
 const { Dragger } = Upload;
 
-const arweave = Arweave.init();
-
 function Faucet() {
   const history = useHistory();
   const [address, setAddress] = useState(null);
@@ -42,6 +40,14 @@ function Faucet() {
   };
 
   const onClickSubmitAddress = () => {
+    // validation
+    if(!address) {
+      show_notification('Please input wallet address')
+      return false
+    }else if(!keyAr) {
+      show_notification('Please upload JSON keyfile')
+      return false
+    }
     setCurStep(2);
     setAddressArweave(address);
     history.push(`/faucet?step=1&address=${address}`);
@@ -60,7 +66,7 @@ function Faucet() {
     }else if( !detectorAr ){
       setDetectorAr(true)
     }else{
-      const arweave = Arweave.init({
+      let arweave = Arweave.init({
         host: "arweave.net",
         port: 443,
         protocol: "https",
@@ -164,11 +170,13 @@ function Faucet() {
         var arJson = JSON.parse(e.target.result);
         const arweave = Arweave.init();
         let addressResult = await getArWalletAddressFromJson(arweave, arJson);
-        if(addressResult !== addressArweave) {
-          show_notification('Key json and Address are not matched')
-        }else{
-          history.push(`/faucet?step=2&address=${address}`);
-        }
+        setKeyAr(arJson)
+        setAddressArweave(addressResult)
+        history.push(`/faucet?step=2&address=${addressResult}`);
+        // if(addressResult !== addressArweave) {
+        //   show_notification('Key json and Address are not matched')
+        // }else{
+        // }
       };
       reader.readAsText(file);
       // Prevent upload
@@ -193,6 +201,7 @@ function Faucet() {
 
   const detectArweaveWallet = async () => {
     try {
+      let arweave = Arweave.init()
       let addr = await arweave.wallets.getAddress();
       console.log("detected arweave wallet address : ", addr);
       if (addr) {
@@ -277,10 +286,11 @@ function Faucet() {
                   <h6 className="text-blue">
                     Paste your Arweave wallet address here.
                   </h6>
-                  <div className="mt-10">
+                  <div className="submit-wrapper mt-2">
                     <Input
                       className="input-address"
                       placeholder="1234567890123456789012345678901234567890123"
+                      value={address}
                       onChange={(e) => setAddress(e.target.value)}
                     />
                     {/* <Button

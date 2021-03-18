@@ -21,7 +21,7 @@ function Topbar() {
   const { walletKoi, walletAr, setWalletKoi, setWalletAr, setAddressArweave } = useContext(DataContext);
   const [show, setShow] = useState(false);
   const target = useRef(null);
-  const [detectorAr, setDetectorAr] = useState(false);
+  const [detectorAr] = useState(false);
 
   const activeArweave = () => {
     // setDetectorAr(true);
