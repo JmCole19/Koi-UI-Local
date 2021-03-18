@@ -1,13 +1,22 @@
 import { Space } from "antd";
 import { Logo, IconArweave, IconEthereum } from "assets/images";
-import React from "react";
+import React, { useContext } from "react";
 import { Navbar, Nav, Image } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { DataContext } from "contexts/DataContextContainer";
 import { TopbarContainer } from "./style";
 
 function Topbar() {
-  // const [show, setShow] = useState(false);
-  // const target = useRef(null);
+  
+  const { addressArweave, setAddressArweave } = useContext(DataContext);
+
+  const activeArweave = () => {
+    
+  }
+
+  const activeEthereum = () => {
+
+  }
 
   return (
     <TopbarContainer collapseOnSelect expand="md" fixed="top">
@@ -32,8 +41,8 @@ function Topbar() {
           </a>
           <Space size={12} className="btns-connect">
             <p className="text-blue mb-0 text-bold">Connect Wallet</p>
-            <Image src={IconArweave} className="cursor" width={18} />
-            <Image src={IconEthereum} className="cursor" width={18} />
+            <Image onClick={activeArweave} src={IconArweave} className="cursor" width={18} />
+            <Image onClick={activeEthereum} src={IconEthereum} className="cursor" width={18} />
           </Space>
           {/* <Image
             src={DefaultUser}
