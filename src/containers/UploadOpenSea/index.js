@@ -74,7 +74,7 @@ function UploadOpenSea() {
         })
         .then(async (data) => {
           console.log({ data });
-          if(data.assets.length() === 0) {
+          if(data.assets.length === 0) {
             show_alert('There is no contents')
           }
           setOpenSeas(data.assets);
