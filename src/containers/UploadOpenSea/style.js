@@ -8,6 +8,7 @@ export const UploadOpenSeaContainer = styled.div`
   background-color: ${colors.grayLight};
   display: flex;
   justify-content: center;
+  flex-direction: column;
   .container {
     .opensea-content-wrapper {
       padding: 30px 0 100px;

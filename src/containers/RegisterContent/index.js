@@ -9,7 +9,7 @@ import React, { useContext } from "react";
 import Web3 from "web3";
 // import Arweave from "arweave";
 import { Button, Container, Image } from "react-bootstrap";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { RegisterContentContainer } from "./style";
 import { abi } from "./abi";
 import { DataContext } from "contexts/DataContextContainer";
@@ -131,9 +131,11 @@ function RegisterContent() {
             "0x60F80121C31A0d46B5279700f9DF786054aa5eE5",
             { from: accounts[0] }
           );
-          console.log("hello world");
           console.log(contractInstance);
           history.push(`/opensea?address=${accounts[0]}`);
+        } else if (card_type === "redeem") {
+          console.log("contractInstance");
+          console.log(accounts[0]);
         } else {
           notification.success({
             message: "Success",
@@ -158,6 +160,9 @@ function RegisterContent() {
       }, 2000)
     }
   };
+  const onRedeemVoucher = () => {
+    openMetaMask('redeem')
+  }
   console.log({ address: addressEth });
   return (
     <RegisterContentContainer>
@@ -198,7 +203,7 @@ function RegisterContent() {
               </Button>
             </div>
             <p className="bottom-description text-blue text-center">
-              Got a voucher? <Link to="#/">Redeem an NFT voucher</Link> from
+              Got a voucher? <span className="span-link" onClick={onRedeemVoucher}>Redeem an NFT voucher</span> from
               Ethereum to claim your Atomic NFT.
             </p>
           </div>
