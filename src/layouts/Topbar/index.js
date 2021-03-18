@@ -75,7 +75,7 @@ function Topbar() {
           >
             OpenKoi
           </a>
-          {walletKoi === 0 && walletKoi ?
+          {walletKoi == null ?
             <Space size={12} className="btns-connect">
               <p className="text-blue mb-0 text-bold">Connect Wallet</p>
               <Image onClick={activeArweave} src={IconArweave} className="cursor" width={18} />
