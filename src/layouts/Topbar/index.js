@@ -1,7 +1,7 @@
 import { Space } from "antd";
 import { Logo, IconArweave, IconEthereum, IconFish, IconEyes } from "assets/images";
 import React, { useContext, useEffect, useState, useRef } from "react";
-import { Navbar, Nav, Image, Overlay, Tooltip, Dropdown } from "react-bootstrap";
+import { Navbar, Nav, Image, Overlay, Tooltip } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { DataContext } from "contexts/DataContextContainer";
 import { TopbarContainer } from "./style";
@@ -95,37 +95,7 @@ function Topbar() {
             className="icon-user d-none d-md-flex cursor"
             onClick={() => setShow(!show)}
           />*/}
-          <Dropdown
-            show={show}
-            onToggle={() => setShow(!show)}
-            drop={() => setShow(false)}
-            alignEnd={true}
-            itemSelector="button:not(:disabled)"
-          >
-              <div className="relative inline-block">
-                <div className="overlay-body">
-                  <div className="overlay-body-row">
-                    <p className="text-bold">Account summary</p>
-                  </div>
-                  <div className="overlay-body-row">
-                    <p>Total views</p>
-                    <p className="overlay-value">7,124</p>
-                    <Image src={IconEyes} className="ml-2" />
-                  </div>
-                  <div className="overlay-body-row">
-                    <p>KOI balance </p>
-                    <p className="overlay-value">2,106.58</p>
-                    <Image src={IconFish} className="ml-2" />
-                  </div>
-                  <div className="overlay-body-row">
-                    <p>AR balance </p>
-                    <p className="overlay-value">47.21</p>
-                    <Image src={IconArweave} className="ml-2" />
-                  </div>
-                </div>
-              </div>
-          </Dropdown>
-          {/* <Overlay target={target.current} show={show} placement="bottom-end">
+          <Overlay target={target.current} show={show} onHide={()=>setShow(false)} placement="bottom-end">
             {(props) => (
               <Tooltip
                 id="overlay-nav"
@@ -157,7 +127,7 @@ function Topbar() {
                 </div>
               </Tooltip>
             )}
-          </Overlay> */}
+          </Overlay>
         </Nav>
       </Navbar.Collapse>
     </TopbarContainer>
