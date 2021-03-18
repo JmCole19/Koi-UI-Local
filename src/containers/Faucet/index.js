@@ -4,12 +4,14 @@ import Arweave from "arweave";
 import queryString from "query-string";
 import customAxios from "service/customAxios";
 import fileDownload from "js-file-download";
-import { Carousel, Container, Toast } from "react-bootstrap";
+import { IconUpload } from "assets/images";
+import { Carousel, Container, Toast, Image } from "react-bootstrap";
 import { FaucetContainer } from "./style";
 import { Button, Input, Spin, Upload } from "antd";
 import { useHistory } from "react-router-dom";
 import { DataContext } from "contexts/DataContextContainer";
 import { show_notification } from "service/utils";
+import { getArWalletAddressFromJson } from "service/NFT";
 const { Dragger } = Upload;
 
 const arweave = Arweave.init();
@@ -25,6 +27,7 @@ function Faucet() {
   const queryAddress = queryString.parse(history.location.search).address || "";
   const [curStep, setCurStep] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [uploading] = useState(false);
   const {
     addressArweave,
     setAddressArweave,
@@ -149,7 +152,7 @@ function Faucet() {
     // console.log('file type : ', file)
     const isJson = file.type === "application/json";
     if (!isJson) {
-      show_notification("You can only upload JPG/PNG file!");
+      show_notification("You can only upload JSON file!");
     }
     const isLt1M = file.size / 1024 < 512;
     if (!isLt1M) {
@@ -161,36 +164,11 @@ function Faucet() {
         var arJson = JSON.parse(e.target.result);
         const arweave = Arweave.init();
         let addressResult = await getArWalletAddressFromJson(arweave, arJson);
-        try {
-          let res = await exportNFT(
-            arweave,
-            addressResult,
-            activeContent,
-            "",
-            imageBlob,
-            arJson
-          );
-          if (res) {
-            show_notification(
-              "Your transaction id is " + res + ". Upload successfully",
-              "NFT uploading",
-              "success"
-            );
-            setTimeout(() => {
-              history.push("/contents");
-            }, 3000);
-          } else {
-            show_notification("Something error", "NFT uploading");
-          }
-        } catch (err) {
-          console.log("here1");
-          console.log(err);
-          show_notification("Something error", "NFT uploading");
+        if(addressResult !== addressArweave) {
+          show_notification('Key json and Address are not matched')
+        }else{
+          history.push(`/faucet?step=2&address=${address}`);
         }
-        // exportNFT(addressResult, 0.0001, '', imageBlob)
-        // .then(res => console.log("success", res))
-        // .catch(err => console.log("error", err))
-        // .finally( () => show_notification('upload successfully', 'KOI', 'success'))
       };
       reader.readAsText(file);
       // Prevent upload
@@ -299,7 +277,7 @@ function Faucet() {
                   <h6 className="text-blue">
                     Paste your Arweave wallet address here.
                   </h6>
-                  <div className="submit-wrapper">
+                  <div className="mt-10">
                     <Input
                       className="input-address"
                       placeholder="1234567890123456789012345678901234567890123"
@@ -312,33 +290,43 @@ function Faucet() {
                       Submit Address
                     </Button> */}
                   </div>
-                  <div className="upload-cards-wrapper">
-                    <div className="single-ant-file-upload">
-                      <Dragger
-                        name="file"
-                        accept="application/JSON"
-                        multiple={false}
-                        listType="picture"
-                        beforeUpload={beforeJsonUpload}
-                        fileList={false}
-                        showUploadList={false}
-                      >
-                        <div className="uploader-container">
-                          {uploading ? (
-                            <Spin size="large" />
-                          ) : (
-                            <>
-                              <div className="uploader-icon d-flex justify-content-center align-items-center">
-                                <Image src={IconUpload} />
-                              </div>
-                              <p className="text-blue mb-0">
-                                Drag & Drop your Arweave keyfile here.
-                              </p>
-                            </>
-                          )}
-                        </div>
-                      </Dragger>
+                  <div className="w-100">
+                    <div className="upload-cards-wrapper">
+                      <div className="single-ant-file-upload">
+                        <Dragger
+                          name="file"
+                          accept="application/JSON"
+                          multiple={false}
+                          listType="picture"
+                          beforeUpload={beforeJsonUpload}
+                          fileList={false}
+                          showUploadList={false}
+                        >
+                          <div className="uploader-container">
+                            {uploading ? (
+                              <Spin size="large" />
+                            ) : (
+                              <>
+                                <div className="uploader-icon d-flex justify-content-center align-items-center">
+                                  <Image src={IconUpload} />
+                                </div>
+                                <p className="text-blue mb-0">
+                                  Drag & Drop your Arweave keyfile here.
+                                </p>
+                              </>
+                            )}
+                          </div>
+                        </Dragger>
+                      </div>
                     </div>
+                  </div>
+                  <div className="w-100 text-center">
+                    <Button
+                      className="btn-step-card"
+                      onClick={onClickSubmitAddress}
+                    >
+                      Submit Address
+                    </Button>
                   </div>
                 </div>
               </div>
