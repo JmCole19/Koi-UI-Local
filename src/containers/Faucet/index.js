@@ -39,7 +39,8 @@ function Faucet() {
 
   const onClickSubmitAddress = () => {
     setCurStep(2);
-    history.push(`/faucet?step=2&address=${address}`);
+    setAddressArweave(address);
+    history.push(`/faucet?step=1&address=${address}`);
   };
 
   const onClickGetWallet = async () => {
@@ -47,7 +48,10 @@ function Faucet() {
       show_notification('You already have an Araweave address')
       setTimeout( () => {
         setCurStep(2);
-        history.push(`/faucet?step=2&address=${addressArweave}`);
+        if(keyAr)
+          history.push(`/faucet?step=2&address=${addressArweave}`);
+        else
+          history.push(`/faucet?step=1&address=${addressArweave}`);
       })
     }else if( !detectorAr ){
       setDetectorAr(true)
@@ -161,7 +165,7 @@ function Faucet() {
       if (addr) {
         setAddressArweave(addr);
         setCurStep(2);
-        history.push(`/faucet?step=2&address=${addr}`);
+        history.push(`/faucet?step=1&address=${addr}`);
       } else {
         show_notification("Error on detectimg Arweave wallet address");
       }
