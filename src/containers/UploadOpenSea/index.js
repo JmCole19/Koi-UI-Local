@@ -4,10 +4,11 @@ import React, { useContext, useEffect, useState } from "react";
 import queryString from "query-string";
 import { Button, Container, Image } from "react-bootstrap";
 import { ScaleLoader } from "react-spinners";
-import { FaCheck, FaPlus } from "react-icons/fa";
+import { FaArrowLeft, FaCheck, FaPlus } from "react-icons/fa";
 import { UploadOpenSeaContainer } from "./style";
 import { useHistory } from "react-router-dom";
 import { DataContext } from "contexts/DataContextContainer";
+import { colors } from "theme";
 import {alertTimeout} from 'config'
 import AlertArea from "components/Sections/AlertArea";
 
@@ -15,7 +16,7 @@ import AlertArea from "components/Sections/AlertArea";
 
 function UploadOpenSea() {
   const history = useHistory();
-  const {openSeas, setOpenSeas} = useContext(DataContext);
+  const { openSeas, setOpenSeas } = useContext(DataContext);
   const { address } = queryString.parse(history.location.search);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedIds, setSelectedIds] = useState([]);
@@ -38,8 +39,12 @@ function UploadOpenSea() {
 
   const onClickVerify = () => {
     // history.push(`/confirm-opensea?address=${testOpenseaAddress}&step=1&selected=${selectedIds.join('_')}`)
-    history.push(`/confirm-opensea?address=${address}&step=1&selected=${selectedIds.join('_')}`)
-  }
+    history.push(
+      `/confirm-opensea?address=${address}&step=1&selected=${selectedIds.join(
+        "_"
+      )}`
+    );
+  };
 
   useEffect(() => {
     if (isAllSelected) {
@@ -69,7 +74,7 @@ function UploadOpenSea() {
         })
         .then(async (data) => {
           console.log({ data });
-          if(data.assets.length() === 0) {
+          if(data.assets.length === 0) {
             show_alert('There is no contents')
           }
           setOpenSeas(data.assets);
@@ -102,7 +107,13 @@ function UploadOpenSea() {
       <Container>
         <div className="opensea-content-wrapper">
           <div className="opensea-content">
-            <h1 className="text-blue opensea-title">Your OpenSea content</h1>
+            <div className="title-wrapper">
+              <h1 className="text-blue opensea-title">Your OpenSea content</h1>
+              <Button className="back-wrapper btn-orange" onClick={() => history.replace('/register-content')}>
+                <FaArrowLeft size={20} color={colors.blueDark} />
+                <h6 className="mb-0 text-blue text-bold ml-2">Leaderboard</h6>
+              </Button>
+            </div>
             <h4 className="opensea-description">
               Select your NFTs to upload them to Arweave’s permaweb. You’ll earn
               rewards every time someone views them!
@@ -175,7 +186,13 @@ function UploadOpenSea() {
               </Row>
             )}
             <div className="btn-back-wrapper">
-              <Button className="btn-back btn-blueDark" disabled={selectedIds.length === 0} onClick={onClickVerify}>Verify Details</Button>
+              <Button
+                className="btn-back btn-blueDark"
+                disabled={selectedIds.length === 0}
+                onClick={onClickVerify}
+              >
+                Verify Details
+              </Button>
             </div>
           </div>
         </div>

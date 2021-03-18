@@ -47,7 +47,7 @@ const items = [
       },
       {
         name: "Developer SDK",
-        link: "https://docs.openkoi.com/",
+        link: "https://www.npmjs.com/package/koi_tools",
         className: "",
       },
     ],
