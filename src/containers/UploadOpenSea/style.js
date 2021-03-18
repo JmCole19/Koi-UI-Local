@@ -12,6 +12,16 @@ export const UploadOpenSeaContainer = styled.div`
     .opensea-content-wrapper {
       padding: 30px 0 100px;
       .opensea-content {
+        .title-wrapper {
+          display: flex;
+          justify-content: space-between;
+          .back-wrapper {
+            width: fit-content;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+          }
+        }
         .opensea-description {
           color: ${colors.blueDark};
           margin-bottom: 34px;
