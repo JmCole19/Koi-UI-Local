@@ -16,7 +16,7 @@ import { koi_tools } from "koi_tools"
 
 const { Dragger } = Upload;
 
-function Faucet() {
+function KeyUpload() {
   const history = useHistory();
   const [address, setAddress] = useState(null);
   const [twMessage, setTwMessage] = useState("");
@@ -196,11 +196,6 @@ function Faucet() {
   };
 
   useEffect(() => {
-    step && setCurStep(parseInt(step));
-    queryAddress && setAddress(queryAddress);
-  }, [step, queryAddress]);
-
-  useEffect(() => {
     if (detectorAr) {
       window.addEventListener("arweaveWalletLoaded", detectArweaveWallet());
       return () => {
@@ -231,11 +226,7 @@ function Faucet() {
     <FaucetContainer>
       <Container>
         <div className="faucet-wrapper">
-          <h1 className="f-32 text-blue">Want to earn attention rewards?</h1>
-          <h6 className="faucet-description text-blue">
-            Get free KOI here so you can upload to the network. Just follow the
-            steps below.
-          </h6>
+          <h1 className="f-32 text-blue">Add ArWeave Wallet Key Upload</h1>
           <Carousel
             className="faucet-cards-wrapper"
             pause="hover"
@@ -427,4 +418,4 @@ function Faucet() {
   );
 }
 
-export default Faucet;
+export default KeyUpload;

@@ -18,15 +18,18 @@ import Arweave from "arweave";
 const arweave = Arweave.init();
 
 function Topbar() {
-  const { walletKoi, walletAr, setWalletKoi, setWalletAr, setAddressArweave } = useContext(DataContext);
+  const { balanceKoi, setBalanceKoi,
+          balanceAr, setBalanceAr, 
+          setAddressArweave 
+        } = useContext(DataContext);
   const [show, setShow] = useState(false);
   const target = useRef(null);
   const [detectorAr] = useState(false);
 
   const activeArweave = () => {
-    // setDetectorAr(true);
-    setWalletKoi(50.01);
-    setWalletAr(50.01);
+    setDetectorAr(true);
+    setBalanceKoi(50.01);
+    setBalanceAr(50.01);
   };
 
   const activeEthereum = () => {};
@@ -79,7 +82,7 @@ function Topbar() {
           >
             OpenKoi
           </a>
-          {walletKoi === null ? (
+          {balanceKoi === null ? (
             <Space size={12} className="btns-connect">
               <p className="text-blue mb-0 text-bold">Connect Wallet</p>
               <Image
@@ -97,7 +100,7 @@ function Topbar() {
             </Space>
           ) : (
             <Space size={12} className="btns-connect">
-              <span className="text-blue mb-0 text-bold">{walletKoi}</span>
+              <span className="text-blue mb-0 text-bold">{balanceKoi}</span>
               <Image
                 ref={target}
                 onClick={() => setShow(!show)}
@@ -105,7 +108,7 @@ function Topbar() {
                 className="cursor"
                 width={18}
               />
-              <span className="text-blue mb-0 text-bold">{walletAr}</span>
+              <span className="text-blue mb-0 text-bold">{balanceAr}</span>
               <Image
                 ref={target}
                 onClick={() => setShow(!show)}
@@ -148,12 +151,12 @@ function Topbar() {
                   </div>
                   <div className="overlay-body-row">
                     <p>KOI balance </p>
-                    <p className="overlay-value">{walletKoi}</p>
+                    <p className="overlay-value">{balanceKoi}</p>
                     <Image src={IconFish} className="ml-2" />
                   </div>
                   <div className="overlay-body-row">
                     <p>AR balance </p>
-                    <p className="overlay-value">{walletAr}</p>
+                    <p className="overlay-value">{balanceAr}</p>
                     <Image src={IconArweave} className="ml-2" />
                   </div>
                 </div>

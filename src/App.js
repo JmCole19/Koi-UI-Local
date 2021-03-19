@@ -14,6 +14,7 @@ import GlobalStyle from "theme/globalStyle";
 import MyRoute from "service/MyRoute";
 import Leaderboard from "containers/Leaderboard";
 import MyContent from "containers/Leaderboard/MyContent";
+import KeyUpload from "containers/KeyUpload";
 import RegisterContent from "containers/RegisterContent";
 import UploadArweave from "containers/UploadArweave";
 import UploadManual from "containers/UploadManual";
@@ -43,6 +44,7 @@ function App() {
                 />
                 <MyRoute exact path="/contents" component={Leaderboard} />
                 <MyRoute exact path="/my-content" component={MyContent} />
+                <MyRoute exact path="/wallet-key" component={KeyUpload} />
                 <MyRoute path="/content-detail/:id" component={ContentDetail} />
                 <MyRoute
                   exact
