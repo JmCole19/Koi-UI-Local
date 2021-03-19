@@ -321,6 +321,16 @@ function ConfirmOpenseas() {
 
   return (
     <ConfirmOpenseasContainer>
+      {mode !== "complete" && (
+        <Progress
+          className="d-md-none progress-sm"
+          strokeColor={colors.green}
+          trailColor={colors.white}
+          percent={(activeStep * 100) / uploadContens.length}
+          status="active"
+          showInfo={false}
+        />
+      )}
       <Container>
         <div className="upload-content-wrapper">
           <div className="upload-content">
@@ -349,7 +359,7 @@ function ConfirmOpenseas() {
                   onFinish={onClickConfirm}
                 >
                   <Row>
-                    <Col flex="100px">
+                    <Col flex="100px" className="d-none d-md-block">
                       <div className="type-img-wrapper">
                         <Image src={IconOpenSea} />
                       </div>
@@ -357,6 +367,9 @@ function ConfirmOpenseas() {
                     <Col flex={1}>
                       <div className="upload-header">
                         <div className="upload-header-title">
+                          <div className="type-img-wrapper">
+                            <Image src={IconOpenSea} />
+                          </div>
                           <h6 className="mb-0 text-blue ml-2">
                             Confirm the information for your upload.
                           </h6>
@@ -561,6 +574,7 @@ function ConfirmOpenseas() {
               )}
               {mode !== "complete" && (
                 <Progress
+                  className="d-none d-md-block"
                   strokeColor={colors.blueDark}
                   trailColor={colors.blueLight}
                   percent={(activeStep * 100) / uploadContens.length}
