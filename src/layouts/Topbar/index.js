@@ -9,6 +9,7 @@ import {
 } from "assets/images";
 import React, { useContext, useEffect, useState, useRef } from "react";
 import { Navbar, Nav, Image, Overlay, Tooltip } from "react-bootstrap";
+import { useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { DataContext } from "contexts/DataContextContainer";
 import { TopbarContainer } from "./style";
@@ -18,18 +19,19 @@ import Arweave from "arweave";
 const arweave = Arweave.init();
 
 function Topbar() {
+  const history = useHistory();
   const { balanceKoi, setBalanceKoi,
           balanceAr, setBalanceAr, 
           setAddressArweave 
         } = useContext(DataContext);
   const [show, setShow] = useState(false);
   const target = useRef(null);
-  const [detectorAr] = useState(false);
+  const [detectorAr, setDetectorAr] = useState(false);
 
   const activeArweave = () => {
     setDetectorAr(true);
-    setBalanceKoi(50.01);
-    setBalanceAr(50.01);
+    // setBalanceKoi(50.01);
+    // setBalanceAr(50.01);
   };
 
   const activeEthereum = () => {};
@@ -49,6 +51,7 @@ function Topbar() {
       console.log("detected arweave wallet address : ", addr);
       if (addr) {
         setAddressArweave(addr);
+        history.push('/wallet-key')
       } else {
         // show alert
         show_notification(
