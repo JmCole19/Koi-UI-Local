@@ -20,7 +20,7 @@ function Faucet() {
   const history = useHistory();
   const [address, setAddress] = useState(null);
   const [twMessage, setTwMessage] = useState("");
-  const [errMessage, setErrMessage] = useState("");
+  const [koiBal, setKoiBal] = useState(null);
   const { step } = queryString.parse(history.location.search);
   const queryAddress = queryString.parse(history.location.search).address || "";
   const [curStep, setCurStep] = useState(0);
@@ -92,9 +92,9 @@ function Faucet() {
   };
 
   const onClickTweet = async () => {
-    const text = encodeURI("I just joined the @open_koi #web3 economy. #PayAttention with us, the future is now. ");
+    const text = encodeURI("I just joined the @open_koi web3 economy. PayAttention with us, the future is now. "); // 
     window.open(
-      `https://twitter.com/intent/tweet?text=${text}${address}`,
+      `https://twitter.com/intent/tweet?text=${text}${address || addressArweave}`,
       "twitpostpopup",
       `left=${window.screenX + 100}, top=${
         window.screenY + 100
@@ -104,16 +104,19 @@ function Faucet() {
     history.push(`/faucet?step=3&address=${address}`);
   };
 
-  const getKoi = async (arJson = {}) => {
+  const getKoi = async () => {
     setLoading(true)
     const ktools = new koi_tools();
     try{
-      console.log(arJson || keyAr)
-      await ktools.loadWallet(arJson || keyAr)
+      console.log(keyAr)
+      await ktools.loadWallet(keyAr)
   
       // let temp_address = await ktools.getWalletAddress()
       let arBalance = await ktools.getWalletBalance() // "5500000000000"
       let koiBalance = await ktools.getKoiBalance()
+      console.log(convertArBalance(arBalance))
+      console.log(Number(koiBalance))
+      setKoiBal(Number(koiBalance))
       setBalanceKoi(Number(koiBalance))
       setBalanceAr(convertArBalance(arBalance))
       setLoading(false)
@@ -139,8 +142,10 @@ function Faucet() {
       let { ok, data: {data} } = await customAxios.post(`/searchTweet`, {
         address: address,
       });
+      console.log({data})
       if (ok) {
-        show_notification(data.message)
+        setLoading(false)
+        // show_notification(data.message)
         setTwMessage(data.message)
         console.log(data.posted)
         console.log(data.duplicate)
@@ -404,7 +409,7 @@ function Faucet() {
                     {twMessage}
                   </h6>
                   <h6 className="step-title text-blue">
-                    Your KOI balance: {show_digit_number(balanceKoi)}
+                    Your KOI balance: {show_digit_number(koiBal)}
                   </h6>
                   <h6 className="text-blue text-center">
                     In 3 minutes, you’ll be able to upload content, earn
