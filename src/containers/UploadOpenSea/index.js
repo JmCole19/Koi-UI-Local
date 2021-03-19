@@ -65,8 +65,8 @@ function UploadOpenSea() {
       };
 
       fetch(
-        // `https://api.opensea.io/api/v1/assets?owner=0xd703accc62251189a67106f22d54cd470494de40&order_direction=desc&offset=0&limit=20`,
-        `https://api.opensea.io/api/v1/assets?owner=${address}&order_direction=desc&offset=0&limit=20`,
+        `https://api.opensea.io/api/v1/assets?owner=0xd703accc62251189a67106f22d54cd470494de40&order_direction=desc&offset=0&limit=20`,
+        // `https://api.opensea.io/api/v1/assets?owner=${address}&order_direction=desc&offset=0&limit=20`,
         options
       )
         .then((response) => {
@@ -141,8 +141,8 @@ function UploadOpenSea() {
               <Row
                 // gutter={{ xs: [8, 8], sm: [16, 16], md: [24, 24], lg: [32, 32] }}
                 gutter={[
-                  { sm: 16, lg: 32 },
-                  { sm: 16, lg: 32 },
+                  { xs: 16, sm: 16, lg: 32 },
+                  { xs: 40, sm: 40, lg: 32 },
                 ]}
                 className="opensea-cards"
               >
@@ -153,8 +153,8 @@ function UploadOpenSea() {
                       <Col
                         key={_i}
                         className="gutter-row"
-                        xs={{ span: 24 }}
-                        sm={{ span: 24 }}
+                        xs={{ span: 12 }}
+                        sm={{ span: 12 }}
                         md={{ span: 12 }}
                         lg={{ span: 6 }}
                       >
@@ -185,7 +185,7 @@ function UploadOpenSea() {
                   })}
               </Row>
             )}
-            <div className="btn-back-wrapper">
+            <div className="btn-verify-wrapper">
               <Button
                 className="btn-back btn-blueDark"
                 disabled={selectedIds.length === 0}

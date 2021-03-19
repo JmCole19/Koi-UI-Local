@@ -84,7 +84,8 @@ export const UploadOpenSeaContainer = styled.div`
           .opensea-card {
             position: relative;
             /* width: 232px; */
-            height: 232px;
+            min-height: 232px;
+            height: 100%;
             background: ${colors.white};
             box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.25);
             border-radius: 4px;
@@ -162,7 +163,7 @@ export const UploadOpenSeaContainer = styled.div`
             }
           }
         }
-        .btn-back-wrapper {
+        .btn-verify-wrapper {
           display: flex;
           justify-content: center;
           margin-top: 76px;
@@ -190,14 +191,35 @@ export const UploadOpenSeaContainer = styled.div`
     .container {
       .opensea-content-wrapper {
         .opensea-content {
-          .opensea-title {
-            font-size: 32px !important;
+          .title-wrapper {
+            display: flex;
+            justify-content: space-between;
+            flex-direction: column-reverse;
+            .open-title {
+              font-size: 28px !important;
+            }
+            .back-wrapper {
+              margin-bottom: 15px;
+            }
           }
           .opensea-description {
             font-size: 20px !important;
           }
           .opensea-cards {
             .opensea-card {
+              width: 100%;
+              height: 100%;
+              .icon-plus {
+                right: -5px;
+                top: -12px;
+              }
+            }
+          }
+          .btn-verify-wrapper {
+            position: sticky;
+            bottom: 0;
+            width: 100%;
+            .btn-back {
               width: 100%;
             }
           }
