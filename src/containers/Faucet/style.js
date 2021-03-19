@@ -53,7 +53,7 @@ export const FaucetContainer = styled.div`
               position: relative;
               display: flex;
               min-height: 300px;
-              height: 300px;
+              // height: 300px;
               align-items: flex-start;
               padding: 43px 152px;
               .icon-back {
@@ -145,6 +145,64 @@ export const FaucetContainer = styled.div`
             opacity: 1;
             &.active {
               background-color: ${colors.redLight} !important;
+            }
+          }
+        }
+      }
+    }
+    .upload-cards-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      margin-top: 20px;
+      margin-bottom: 32px;
+    }
+    .single-ant-file-upload {
+      width: 270px;
+      height: 152px;
+      padding: 8px;
+      background: ${colors.grayLight};
+      border: 1.5px solid ${colors.blueDark};
+      box-sizing: border-box;
+      box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.16);
+      border-radius: 4px;
+      .ant-upload {
+        &.ant-upload-drag {
+          background: ${colors.grayLight};
+          border: 2px dashed ${colors.greenDark};
+          border-radius: 4px;
+          &:hover {
+            border: 2px dashed ${colors.greenLight};
+          }
+        }
+        .ant-upload-btn {
+          padding: 0;
+          .uploader-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 0 24px;
+            cursor: pointer;
+            .uploader-icon {
+              img {
+                width: 62px;
+                height: 62px;
+              }
+              i {
+                font-size: 20px;
+              }
+            }
+            p {
+              font-size: 14px;
+            }
+            span {
+              font-size: 12px;
+              opacity: 0.4;
+              &.ant-spin-dot {
+                opacity: 1;
+                font-size: 36px;
+              }
             }
           }
         }

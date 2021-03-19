@@ -21,7 +21,7 @@ function Topbar() {
   const { walletKoi, walletAr, setWalletKoi, setWalletAr, setAddressArweave } = useContext(DataContext);
   const [show, setShow] = useState(false);
   const target = useRef(null);
-  const [detectorAr, setDetectorAr] = useState(false);
+  const [detectorAr] = useState(false);
 
   const activeArweave = () => {
     // setDetectorAr(true);
@@ -54,7 +54,7 @@ function Topbar() {
       }
     } catch (err) {
       // console.log(err);
-      show_notification("Error on detectomg Arweave wallet address");
+      show_notification("Error on detectimg Arweave wallet address");
     }
   };
 

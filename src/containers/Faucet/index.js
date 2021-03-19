@@ -1,14 +1,20 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useContext, useState } from "react";
 import Arweave from "arweave";
 import queryString from "query-string";
 import customAxios from "service/customAxios";
 import fileDownload from "js-file-download";
-import { Carousel, Container, Toast } from "react-bootstrap";
+import { IconUpload } from "assets/images";
+import { Carousel, Container, Toast, Image } from "react-bootstrap";
 import { FaucetContainer } from "./style";
-import { Button, Input, Spin } from "antd";
+import { Button, Input, Spin, Upload } from "antd";
 import { useHistory } from "react-router-dom";
+import { DataContext } from "contexts/DataContextContainer";
 import { show_notification } from "service/utils";
+import { getArWalletAddressFromJson } from "service/NFT";
+import { koi_tools } from "koi_tools"
+
+const { Dragger } = Upload;
 
 function Faucet() {
   const history = useHistory();
@@ -21,6 +27,14 @@ function Faucet() {
   const queryAddress = queryString.parse(history.location.search).address || "";
   const [curStep, setCurStep] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [uploading] = useState(false);
+  const {
+    addressArweave,
+    setAddressArweave,
+    keyAr,
+    setKeyAr
+  } = useContext(DataContext);
+  const [detectorAr, setDetectorAr] = useState(false);
   
   const onSkipGetWallet = () => {
     setCurStep(1);
@@ -28,23 +42,52 @@ function Faucet() {
   };
 
   const onClickSubmitAddress = () => {
+    // validation
+    if(!address) {
+      show_notification('Please input wallet address')
+      return false
+    }else if(!keyAr) {
+      show_notification('Please upload JSON keyfile')
+      return false
+    }
     setCurStep(2);
-    history.push(`/faucet?step=2&address=${address}`);
+    setAddressArweave(address);
+    history.push(`/faucet?step=1&address=${address}`);
   };
 
   const onClickGetWallet = async () => {
-    const arweave = Arweave.init({
-      host: "arweave.net",
-      port: 443,
-      protocol: "https",
-    });
-    let keyData = await arweave.wallets.generate();
-    const data = JSON.stringify(keyData);
-    fileDownload(data, "filename.json");
-    let addressResult = await arweave.wallets.jwkToAddress(keyData);
-    setAddress(addressResult);
-    setCurStep(2);
-    history.push(`/faucet?step=2&address=${addressResult}`);
+    if(addressArweave) {
+      show_notification('You already have an Araweave address')
+      setTimeout( () => {
+        if(keyAr){
+          setCurStep(2);
+          history.push(`/faucet?step=2&address=${addressArweave}`);
+        }
+        else{
+          setCurStep(1);
+          history.push(`/faucet?step=1&address=${addressArweave}`);
+
+        }
+      })
+    }else if( !detectorAr ){
+      console.log("here1")
+      setDetectorAr(true)
+    }else{
+      let arweave = Arweave.init({
+        host: "arweave.net",
+        port: 443,
+        protocol: "https",
+      });
+      let keyData = await arweave.wallets.generate();
+      const data = JSON.stringify(keyData);
+      fileDownload(data, "arweaveWallet.json");
+      let addressResult = await arweave.wallets.jwkToAddress(keyData);
+      setAddress(addressResult);
+      setAddressArweave(addressResult);
+      setKeyAr(keyData)
+      setCurStep(2);
+      history.push(`/faucet?step=2&address=${addressResult}`);
+    }
   };
 
   const onClickTweet = async () => {
@@ -60,24 +103,47 @@ function Faucet() {
     history.push(`/faucet?step=3&address=${address}`);
   };
 
-  const getKoi = async () => {
+  const getKoi = async (arJson = {}) => {
     setLoading(true)
-    let {
-      ok,
-      data: { data },
-    } = await customAxios.post(`/getKoi`, {
-      address: address,
-    });
-    if (ok) {
+    const ktools = new koi_tools();
+    try{
+      console.log("key")
+      console.log(arJson || keyAr)
+      await ktools.loadWallet(arJson || keyAr)
+  
+      let temp_address = await ktools.getWalletAddress()
+      let arBalance = await ktools.getWalletBalance()
+      let koiBalance = await ktools.getKoiBalance()
+      console.log({temp_address})
+      console.log({arBalance})
+      console.log({koiBalance})
       setLoading(false)
-      setKoiBalance(data.koiBalance);
-      setCurStep(4);
-      history.push(`/faucet?step=4&address=${address}`);
-    } else {
+    }catch(err) {
       setLoading(false)
-      console.log("get koi error");
+      console.log("get koi balance err")
+      console.log(err)
     }
+    // let {
+    //   ok,
+    //   data: { data },
+    // } = await customAxios.post(`/getKoi`, {
+    //   address: address,
+    // });
+    // if (ok) {
+    //   setLoading(false)
+    //   setKoiBalance(data.koiBalance);
+    //   setCurStep(4);
+    //   history.push(`/faucet?step=4&address=${address}`);
+    // } else {
+    //   setLoading(false)
+    //   console.log("get koi error");
+    // }
   }
+
+  // const sendFreeKoibalance = async () => {
+  //   const ktools = new koi_tools();
+  //   ktools.loadWallet(keyAr)
+  // }
 
   const onClickGetKoi = async () => {
     console.log("here");
@@ -104,7 +170,7 @@ function Faucet() {
       setShowToast(true);
     }
   };
-  console.log({ address });
+  
   const onClickUpload = () => {
     history.replace("/contents");
   };
@@ -118,10 +184,65 @@ function Faucet() {
     }
   };
 
+  const beforeJsonUpload = (file) => {
+    // console.log('file type : ', file)
+    const isJson = file.type === "application/json";
+    if (!isJson) {
+      show_notification("You can only upload JSON file!");
+    }
+    const isLt1M = file.size / 1024 < 512;
+    if (!isLt1M) {
+      show_notification("JSON must smaller than 512KB!");
+    }
+    if (isJson && isLt1M) {
+      const reader = new FileReader();
+      reader.onload = async (e) => {
+        var arJson = JSON.parse(e.target.result);
+        await getKoi(arJson)
+        // const arweave = Arweave.init();
+        // let addressResult = await getArWalletAddressFromJson(arweave, arJson);
+        // setKeyAr(arJson)
+        // setAddressArweave(addressResult)
+        // history.push(`/faucet?step=2&address=${addressResult}`);
+      };
+      reader.readAsText(file);
+      // Prevent upload
+      return false;
+    }
+    return isJson && isLt1M;
+  };
+
   useEffect(() => {
     step && setCurStep(parseInt(step));
     queryAddress && setAddress(queryAddress);
   }, [step, queryAddress]);
+
+  useEffect(() => {
+    if (detectorAr) {
+      window.addEventListener("arweaveWalletLoaded", detectArweaveWallet());
+      return () => {
+        window.removeEventListener("arweaveWalletLoaded", () => {});
+      };
+    }
+  }, [detectorAr]);
+
+  const detectArweaveWallet = async () => {
+    try {
+      let arweave = Arweave.init()
+      let addr = await arweave.wallets.getAddress();
+      console.log("detected arweave wallet address : ", addr);
+      if (addr) {
+        setAddressArweave(addr);
+        setCurStep(1);
+        history.push(`/faucet?step=1&address=${addr}`);
+      } else {
+        show_notification("Error on detectimg Arweave wallet address");
+      }
+    } catch (err) {
+      console.log(err);
+      show_notification("Error on detectimg Arweave wallet address");
+    }
+  };
 
   return (
     <FaucetContainer>
@@ -192,12 +313,51 @@ function Faucet() {
                   <h6 className="text-blue">
                     Paste your Arweave wallet address here.
                   </h6>
-                  <div className="submit-wrapper">
+                  <div className="submit-wrapper mt-2">
                     <Input
                       className="input-address"
                       placeholder="1234567890123456789012345678901234567890123"
+                      value={address}
                       onChange={(e) => setAddress(e.target.value)}
                     />
+                    {/* <Button
+                      className="btn-step-card"
+                      onClick={onClickSubmitAddress}
+                    >
+                      Submit Address
+                    </Button> */}
+                  </div>
+                  <div className="w-100">
+                    <div className="upload-cards-wrapper">
+                      <div className="single-ant-file-upload">
+                        <Dragger
+                          name="file"
+                          accept="application/JSON"
+                          multiple={false}
+                          listType="picture"
+                          beforeUpload={beforeJsonUpload}
+                          fileList={false}
+                          showUploadList={false}
+                        >
+                          <div className="uploader-container">
+                            {uploading ? (
+                              <Spin size="large" />
+                            ) : (
+                              <>
+                                <div className="uploader-icon d-flex justify-content-center align-items-center">
+                                  <Image src={IconUpload} />
+                                </div>
+                                <p className="text-blue mb-0">
+                                  Drag & Drop your Arweave keyfile here.
+                                </p>
+                              </>
+                            )}
+                          </div>
+                        </Dragger>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="w-100 text-center">
                     <Button
                       className="btn-step-card"
                       onClick={onClickSubmitAddress}
