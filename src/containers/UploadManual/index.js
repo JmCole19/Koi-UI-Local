@@ -38,9 +38,6 @@ function UploadManual() {
   const {
     setAddressArweave,
     keyAr,
-    setKeyAr,
-    setBalanceKoi,
-    setBalanceAr,
   } = useContext(DataContext);
   const [uploading] = useState(false);
   const [imageUrl, setImageUrl] = useState(null);

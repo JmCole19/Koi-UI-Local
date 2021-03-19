@@ -20,8 +20,8 @@ const arweave = Arweave.init();
 
 function Topbar() {
   const history = useHistory();
-  const { balanceKoi, setBalanceKoi,
-          balanceAr, setBalanceAr, 
+  const { balanceKoi,
+          balanceAr,
           setAddressArweave 
         } = useContext(DataContext);
   const [show, setShow] = useState(false);

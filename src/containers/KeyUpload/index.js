@@ -27,11 +27,7 @@ function KeyUpload() {
   } = useContext(DataContext);
   const [uploading] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [detectorAr, setDetectorAr] = useState(false);
-
-  const onCompleteStep3 = () => {
-    console.log("Completed");
-  };
+  const [detectorAr] = useState(false);
 
   const getKoi = async () => {
     setLoading(true)
