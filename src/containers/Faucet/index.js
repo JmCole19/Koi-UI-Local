@@ -19,8 +19,6 @@ const { Dragger } = Upload;
 function Faucet() {
   const history = useHistory();
   const [address, setAddress] = useState(null);
-  const [koiBalance, setKoiBalance] = useState(0);
-  const [showToast, setShowToast] = useState(false);
   const [twMessage, setTwMessage] = useState("");
   const [errMessage, setErrMessage] = useState("");
   const { step } = queryString.parse(history.location.search);
@@ -108,37 +106,25 @@ function Faucet() {
 
   const getKoi = async (arJson = {}) => {
     setLoading(true)
-    // const ktools = new koi_tools();
+    const ktools = new koi_tools();
     try{
       console.log(arJson || keyAr)
-      // await ktools.loadWallet(arJson || keyAr)
+      await ktools.loadWallet(arJson || keyAr)
   
       // let temp_address = await ktools.getWalletAddress()
-      let arBalance = "5500000000000" //await ktools.getWalletBalance()
-      let koiBalance = 12 // await ktools.getKoiBalance()
-      setBalanceKoi(koiBalance)
+      let arBalance = await ktools.getWalletBalance() // "5500000000000"
+      let koiBalance = await ktools.getKoiBalance()
+      setBalanceKoi(Number(koiBalance))
       setBalanceAr(convertArBalance(arBalance))
       setLoading(false)
+      setCurStep(4);
+      history.push(`/faucet?step=4&address=${addressArweave}`);
     }catch(err) {
       setLoading(false)
       console.log("get koi balance err")
       console.log(err)
+      show_notification(err.message, 'KOI')
     }
-    // let {
-    //   ok,
-    //   data: { data },
-    // } = await customAxios.post(`/getKoi`, {
-    //   address: address,
-    // });
-    // if (ok) {
-    //   setLoading(false)
-    //   setKoiBalance(data.koiBalance);
-    //   setCurStep(4);
-    //   history.push(`/faucet?step=4&address=${address}`);
-    // } else {
-    //   setLoading(false)
-    //   console.log("get koi error");
-    // }
   }
 
   // const sendFreeKoibalance = async () => {
@@ -162,13 +148,11 @@ function Faucet() {
         await getKoi()
       } else {
         setLoading(false)
-        setErrMessage("Not posted on twitter!");
-        setShowToast(true);
+        show_notification("Not posted on twitter!");
       }
     } else {
       setLoading(false)
-      setErrMessage("You don't have an address yet!");
-      setShowToast(true);
+      show_notification("You don't have an address yet!")
     }
   };
   
@@ -199,12 +183,12 @@ function Faucet() {
       const reader = new FileReader();
       reader.onload = async (e) => {
         var arJson = JSON.parse(e.target.result);
-        await getKoi(arJson)
-        // const arweave = Arweave.init();
-        // let addressResult = await getArWalletAddressFromJson(arweave, arJson);
-        // setKeyAr(arJson)
-        // setAddressArweave(addressResult)
-        // history.push(`/faucet?step=2&address=${addressResult}`);
+        // await getKoi(arJson)
+        const arweave = Arweave.init();
+        let addressResult = await getArWalletAddressFromJson(arweave, arJson);
+        setKeyAr(arJson)
+        setAddressArweave(addressResult)
+        history.push(`/faucet?step=2&address=${addressResult}`);
       };
       reader.readAsText(file);
       // Prevent upload
@@ -254,18 +238,6 @@ function Faucet() {
             Get free KOI here so you can upload to the network. Just follow the
             steps below.
           </h6>
-          <Toast
-            onClose={() => setShowToast(false)}
-            show={showToast}
-            autohide
-            delay={3000}
-          >
-            <Toast.Header>
-              <i className="fal fa-info-circle text-warning"></i>
-              <strong className="mr-auto ml-2 text-warning">Warning!</strong>
-            </Toast.Header>
-            <Toast.Body>{errMessage}</Toast.Body>
-          </Toast>
           <Carousel
             className="faucet-cards-wrapper"
             pause="hover"
