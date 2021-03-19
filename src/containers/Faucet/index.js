@@ -32,7 +32,11 @@ function Faucet() {
     addressArweave,
     setAddressArweave,
     keyAr,
-    setKeyAr
+    setKeyAr,
+    balanceKoi,
+    setBalanceKoi,
+    balanceAr,
+    setBalanceAr,
   } = useContext(DataContext);
   const [detectorAr, setDetectorAr] = useState(false);
   
@@ -66,7 +70,6 @@ function Faucet() {
         else{
           setCurStep(1);
           history.push(`/faucet?step=1&address=${addressArweave}`);
-
         }
       })
     }else if( !detectorAr ){
@@ -105,16 +108,16 @@ function Faucet() {
 
   const getKoi = async (arJson = {}) => {
     setLoading(true)
-    const ktools = new koi_tools();
+    // const ktools = new koi_tools();
     try{
-      console.log("key")
       console.log(arJson || keyAr)
-      await ktools.loadWallet(arJson || keyAr)
+      // await ktools.loadWallet(arJson || keyAr)
   
-      let temp_address = await ktools.getWalletAddress()
-      let arBalance = await ktools.getWalletBalance()
-      let koiBalance = await ktools.getKoiBalance()
-      console.log({temp_address})
+      // let temp_address = await ktools.getWalletAddress()
+      let arBalance = "5000000000000" //await ktools.getWalletBalance()
+      let koiBalance = 12 // await ktools.getKoiBalance()
+      setKoiBalance(koiBalance)
+      setA = koiBalance
       console.log({arBalance})
       console.log({koiBalance})
       setLoading(false)
@@ -431,7 +434,7 @@ function Faucet() {
                     {twMessage}
                   </h6>
                   <h6 className="step-title text-blue">
-                    Your KOI balance: {koiBalance}
+                    Your KOI balance: {balanceKoi}
                   </h6>
                   <h6 className="text-blue text-center">
                     In 3 minutes, you’ll be able to upload content, earn
