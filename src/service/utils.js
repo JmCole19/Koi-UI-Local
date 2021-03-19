@@ -40,10 +40,19 @@ const show_fixed_number = (val, fixed = 0) => {
 }
 
 const show_digit_number = (val, digit = 0) => {
+  if(typeof val !== 'number'){
+    return ''
+  }
   return val.toLocaleString('en-US', {
-    minimumIntegerDigits: digit,
-    useGrouping: false
+    // minimumIntegerDigits: digit,
+    // useGrouping: false
   })
+}
+
+const convertArBalance = (str_number) => {
+  let balance = Number(str_number)
+  return balance / 1000000000000
+
 }
 
 export {
@@ -52,4 +61,5 @@ export {
   show_digit_number,
   show_fixed_number,
   getBase64,
+  convertArBalance,
 }

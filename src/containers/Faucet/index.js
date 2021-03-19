@@ -5,12 +5,12 @@ import queryString from "query-string";
 import customAxios from "service/customAxios";
 import fileDownload from "js-file-download";
 import { IconUpload } from "assets/images";
-import { Carousel, Container, Toast, Image } from "react-bootstrap";
+import { Carousel, Container, Image } from "react-bootstrap";
 import { FaucetContainer } from "./style";
 import { Button, Input, Spin, Upload } from "antd";
 import { useHistory } from "react-router-dom";
 import { DataContext } from "contexts/DataContextContainer";
-import { show_notification } from "service/utils";
+import { show_notification, convertArBalance, show_digit_number } from "service/utils";
 import { getArWalletAddressFromJson } from "service/NFT";
 import { koi_tools } from "koi_tools"
 
@@ -19,10 +19,7 @@ const { Dragger } = Upload;
 function Faucet() {
   const history = useHistory();
   const [address, setAddress] = useState(null);
-  const [koiBalance, setKoiBalance] = useState(0);
-  const [showToast, setShowToast] = useState(false);
   const [twMessage, setTwMessage] = useState("");
-  const [errMessage, setErrMessage] = useState("");
   const { step } = queryString.parse(history.location.search);
   const queryAddress = queryString.parse(history.location.search).address || "";
   const [curStep, setCurStep] = useState(0);
@@ -32,7 +29,10 @@ function Faucet() {
     addressArweave,
     setAddressArweave,
     keyAr,
-    setKeyAr
+    setKeyAr,
+    balanceKoi,
+    setBalanceKoi,
+    setBalanceAr,
   } = useContext(DataContext);
   const [detectorAr, setDetectorAr] = useState(false);
   
@@ -66,7 +66,6 @@ function Faucet() {
         else{
           setCurStep(1);
           history.push(`/faucet?step=1&address=${addressArweave}`);
-
         }
       })
     }else if( !detectorAr ){
@@ -91,9 +90,9 @@ function Faucet() {
   };
 
   const onClickTweet = async () => {
-    const text = encodeURI("I just joined the @open_koi #web3 economy. #PayAttention with us, the future is now. ");
+    const text = encodeURI("I just joined the @open_koi web3 economy. PayAttention with us, the future is now. "); // 
     window.open(
-      `https://twitter.com/intent/tweet?text=${text}${address}`,
+      `https://twitter.com/intent/tweet?text=${text}${address || addressArweave}`,
       "twitpostpopup",
       `left=${window.screenX + 100}, top=${
         window.screenY + 100
@@ -103,47 +102,31 @@ function Faucet() {
     history.push(`/faucet?step=3&address=${address}`);
   };
 
-  const getKoi = async (arJson = {}) => {
+  const getKoi = async () => {
     setLoading(true)
     const ktools = new koi_tools();
     try{
-      console.log("key")
-      console.log(arJson || keyAr)
-      await ktools.loadWallet(arJson || keyAr)
+      console.log(keyAr)
+      await ktools.loadWallet(keyAr)
   
-      let temp_address = await ktools.getWalletAddress()
-      let arBalance = await ktools.getWalletBalance()
+      // let temp_address = await ktools.getWalletAddress()
+      let arBalance = await ktools.getWalletBalance() // "5500000000000"
       let koiBalance = await ktools.getKoiBalance()
-      console.log({temp_address})
-      console.log({arBalance})
-      console.log({koiBalance})
+      console.log(convertArBalance(arBalance))
+      console.log(Number(koiBalance))
+      // setKoiBal(Number(koiBalance))
+      setBalanceKoi(Number(koiBalance))
+      setBalanceAr(convertArBalance(arBalance))
       setLoading(false)
+      setCurStep(4);
+      history.push(`/faucet?step=4&address=${addressArweave}`);
     }catch(err) {
       setLoading(false)
       console.log("get koi balance err")
       console.log(err)
+      show_notification(err.message, 'KOI')
     }
-    // let {
-    //   ok,
-    //   data: { data },
-    // } = await customAxios.post(`/getKoi`, {
-    //   address: address,
-    // });
-    // if (ok) {
-    //   setLoading(false)
-    //   setKoiBalance(data.koiBalance);
-    //   setCurStep(4);
-    //   history.push(`/faucet?step=4&address=${address}`);
-    // } else {
-    //   setLoading(false)
-    //   console.log("get koi error");
-    // }
   }
-
-  // const sendFreeKoibalance = async () => {
-  //   const ktools = new koi_tools();
-  //   ktools.loadWallet(keyAr)
-  // }
 
   const onClickGetKoi = async () => {
     console.log("here");
@@ -152,8 +135,10 @@ function Faucet() {
       let { ok, data: {data} } = await customAxios.post(`/searchTweet`, {
         address: address,
       });
+      console.log({data})
       if (ok) {
-        show_notification(data.message)
+        setLoading(false)
+        // show_notification(data.message)
         setTwMessage(data.message)
         console.log(data.posted)
         console.log(data.duplicate)
@@ -161,13 +146,11 @@ function Faucet() {
         await getKoi()
       } else {
         setLoading(false)
-        setErrMessage("Not posted on twitter!");
-        setShowToast(true);
+        show_notification("Not posted on twitter!");
       }
     } else {
       setLoading(false)
-      setErrMessage("You don't have an address yet!");
-      setShowToast(true);
+      show_notification("You don't have an address yet!")
     }
   };
   
@@ -198,12 +181,12 @@ function Faucet() {
       const reader = new FileReader();
       reader.onload = async (e) => {
         var arJson = JSON.parse(e.target.result);
-        await getKoi(arJson)
-        // const arweave = Arweave.init();
-        // let addressResult = await getArWalletAddressFromJson(arweave, arJson);
-        // setKeyAr(arJson)
-        // setAddressArweave(addressResult)
-        // history.push(`/faucet?step=2&address=${addressResult}`);
+        // await getKoi(arJson)
+        const arweave = Arweave.init();
+        let addressResult = await getArWalletAddressFromJson(arweave, arJson);
+        setKeyAr(arJson)
+        setAddressArweave(addressResult)
+        history.push(`/faucet?step=2&address=${addressResult}`);
       };
       reader.readAsText(file);
       // Prevent upload
@@ -253,18 +236,6 @@ function Faucet() {
             Get free KOI here so you can upload to the network. Just follow the
             steps below.
           </h6>
-          <Toast
-            onClose={() => setShowToast(false)}
-            show={showToast}
-            autohide
-            delay={3000}
-          >
-            <Toast.Header>
-              <i className="fal fa-info-circle text-warning"></i>
-              <strong className="mr-auto ml-2 text-warning">Warning!</strong>
-            </Toast.Header>
-            <Toast.Body>{errMessage}</Toast.Body>
-          </Toast>
           <Carousel
             className="faucet-cards-wrapper"
             pause="hover"
@@ -431,7 +402,7 @@ function Faucet() {
                     {twMessage}
                   </h6>
                   <h6 className="step-title text-blue">
-                    Your KOI balance: {koiBalance}
+                    Your KOI balance: {show_digit_number(balanceKoi)}
                   </h6>
                   <h6 className="text-blue text-center">
                     In 3 minutes, you’ll be able to upload content, earn
