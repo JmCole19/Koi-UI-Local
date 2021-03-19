@@ -18,21 +18,6 @@ const arweave = Arweave.init();
 const { Panel } = Collapse;
 const options = ["24h", "1w", "1m", "1y", "all"];
 
-// const contents = [
-//   {
-//     balances: { "sQTWslyCdKF6oeQ7xXUYUV1bluP0_5-483FXH_RVZKU": 1 },
-//     description:
-//       "'The Delights of Purim' at the Israeli Opera, photo by Ziv Barak",
-//     name: "Kayla",
-//     owner: "sQTWslyCdKF6oeQ7xXUYUV1bluP0_5-483FXH_RVZKU",
-//     ticker: "KRK",
-//     totalReward: 0,
-//     totalViews: 0,
-//     twentyFourHrViews: 0,
-//     txIdContent: "EKW3AApL4mdLc6sIhVr3Cn8VN7N9VAQUp2BNALHXFtQ",
-//   },
-// ];
-
 const ktools = new koi_tools();
 
 function MyContent() {
