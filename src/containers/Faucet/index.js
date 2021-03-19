@@ -10,7 +10,7 @@ import { FaucetContainer } from "./style";
 import { Button, Input, Spin, Upload } from "antd";
 import { useHistory } from "react-router-dom";
 import { DataContext } from "contexts/DataContextContainer";
-import { show_notification } from "service/utils";
+import { show_notification, convertArBalance, show_digit_number } from "service/utils";
 import { getArWalletAddressFromJson } from "service/NFT";
 import { koi_tools } from "koi_tools"
 
@@ -114,12 +114,10 @@ function Faucet() {
       // await ktools.loadWallet(arJson || keyAr)
   
       // let temp_address = await ktools.getWalletAddress()
-      let arBalance = "5000000000000" //await ktools.getWalletBalance()
+      let arBalance = "5500000000000" //await ktools.getWalletBalance()
       let koiBalance = 12 // await ktools.getKoiBalance()
-      setKoiBalance(koiBalance)
-      setA = koiBalance
-      console.log({arBalance})
-      console.log({koiBalance})
+      setBalanceKoi(koiBalance)
+      setBalanceAr(convertArBalance(arBalance))
       setLoading(false)
     }catch(err) {
       setLoading(false)
@@ -434,7 +432,7 @@ function Faucet() {
                     {twMessage}
                   </h6>
                   <h6 className="step-title text-blue">
-                    Your KOI balance: {balanceKoi}
+                    Your KOI balance: {show_digit_number(balanceKoi)}
                   </h6>
                   <h6 className="text-blue text-center">
                     In 3 minutes, you’ll be able to upload content, earn
