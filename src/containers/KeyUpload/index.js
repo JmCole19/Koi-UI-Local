@@ -3,12 +3,10 @@ import React, { useState, useEffect } from "react";
 import { Container, Image, Button } from "react-bootstrap";
 import { IconUpload } from "assets/images";
 import { KeyUploadContainer } from "./style";
-import { Col, Form, Input, Row, Upload, Spin } from "antd";
+import { Col, Form, Row, Upload, Spin } from "antd";
 import { useForm } from "antd/lib/form/Form";
-import cloneDeep from "clone-deep";
-import { useHistory, useLocation } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import MyProgress from "components/Elements/MyProgress";
-import ArconnectCard from "components/Elements/ArconnectCard";
 import { show_notification } from "service/utils";
 import Arweave from "arweave";
 import { getArWalletAddressFromJson, exportNFT } from "service/NFT";
@@ -30,16 +28,34 @@ function KeyUpload() {
     const history = useHistory();
     const [form] = useForm();
     const [uploading] = useState(false);
-    const [imageBlob, setImageBlob] = useState(null);
-    const [activeContent, setActiveContent] = useState({
-        title: "",
-        owner: "",
-        description: "",
-    });
 
     const onCompleteStep3 = () => {
         console.log("Completed");
     };
+
+    const getKoi = async () => {
+        setLoading(true)
+        const ktools = new koi_tools();
+        try{
+          console.log(keyAr)
+          await ktools.loadWallet(keyAr)
+      
+          // let temp_address = await ktools.getWalletAddress()
+          let arBalance = await ktools.getWalletBalance() // "5500000000000"
+          let koiBalance = await ktools.getKoiBalance()
+          console.log(convertArBalance(arBalance))
+          console.log(Number(koiBalance))
+          // setKoiBal(Number(koiBalance))
+          setBalanceKoi(Number(koiBalance))
+          setBalanceAr(convertArBalance(arBalance))
+          setLoading(false)
+        }catch(err) {
+          setLoading(false)
+          console.log("get koi balance err")
+          console.log(err)
+          show_notification(err.message, 'KOI')
+        }
+      }
 
     const beforeJsonUpload = (file) => {
         // console.log('file type : ', file)
@@ -57,46 +73,12 @@ function KeyUpload() {
                 var arJson = JSON.parse(e.target.result);
                 const arweave = Arweave.init();
                 let addressResult = await getArWalletAddressFromJson(arweave, arJson);
-                try {
-                    let res = await exportNFT(
-                        arweave,
-                        addressResult,
-                        activeContent,
-                        "",
-                        imageBlob,
-                        arJson
-                    );
-                    if (res) {
-                        show_notification(
-                            "Your transaction id is " + res + ". Upload successfully",
-                            "NFT uploading",
-                            "success"
-                        );
-                        setTimeout(() => {
-                            history.push("/contents");
-                        }, 3000);
-                    } else {
-                        show_notification("Something error", "NFT uploading");
-                    }
-                } catch (err) {
-                    console.log("here1");
-                    console.log(err);
-                    show_notification("Something error", "NFT uploading");
-                }
-                // exportNFT(addressResult, 0.0001, '', imageBlob)
-                // .then(res => console.log("success", res))
-                // .catch(err => console.log("error", err))
-                // .finally( () => show_notification('upload successfully', 'KOI', 'success'))
             };
             reader.readAsText(file);
             // Prevent upload
             return false;
         }
         return isJson && isLt1M;
-    };
-
-    const onOpenArConnect = () => {
-        show_notification("ArConnection will be integrated soon", "KOI", "error");
     };
 
     return (
@@ -123,26 +105,9 @@ function KeyUpload() {
                                     <Col flex={1}>
                                         <div className="upload-header">
                                             <div className="upload-header-title">
-                                                <div className="upload-step">
-                                                    <MyProgress value={3} />
-                                                </div>
                                                 <div className="header-description w-100">
-                                                    <h6 className="mb-0 text-blue ml-2">
-                                                        Confirm your upload.
-                            </h6>
-                                                    <p className="mb-0 text-blue ml-2">
-                                                        Drag & Drop your Arweave keyfile or connect using
-                                an{" "}
-                                                        <a
-                                                            href="https://chrome.google.com/webstore/detail/arconnect/einnioafmpimabjcddiinlhmijaionap"
-                                                            target="_blank"
-                                                            rel="noopener noreferrer"
-                                                            className="text-bold"
-                                                        >
-                                                            Arweave browser extension
-                                </a>
-                                .
-                            </p>
+                                                    <h6 className="mb-0 text-blue ml-2">Confirm your upload.</h6>
+                                                    <p className="mb-0 text-blue ml-2">Drag & Drop your Arweave keyfile</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -176,6 +141,14 @@ function KeyUpload() {
                                             </div>
                                         </Dragger>
                                     </div>
+                                </div>
+                                <div>
+                                    <Button
+                                        className="btn-step-card mt-auto mx-auto"
+                                        onClick={getKoi}
+                                    >
+                                        Get Balance
+                                    </Button>
                                 </div>
                             </Form>
                         </div>
