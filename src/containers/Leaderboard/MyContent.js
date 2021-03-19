@@ -46,7 +46,7 @@ function MyContent() {
   const [selectedContent, setSelectedContent] = useState([]);
   const [detectorAr, setDetectorAr] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
-  const [errEmessage, setErrMessage] = useState(false);
+  const [errEmessage, setErrMessage] = useState('');
 
   const onClickItem = (item, type) => {
     if (type === "view") {

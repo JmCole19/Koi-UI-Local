@@ -3,8 +3,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { Container, Image, Button } from "react-bootstrap";
 import { IconUpload } from "assets/images";
 import { KeyUploadContainer } from "./style";
-import { Col, Form, Row, Upload, Spin } from "antd";
-import { useForm } from "antd/lib/form/Form";
+import { Col, Row, Upload, Spin } from "antd";
 import Arweave from "arweave";
 import { getArWalletAddressFromJson } from "service/NFT";
 import { DataContext } from "contexts/DataContextContainer";
@@ -19,13 +18,10 @@ const { Dragger } = Upload;
 
 function KeyUpload() {
   const history = useHistory();
-  const [form] = useForm();
   const {
-    addressArweave,
     setAddressArweave,
     keyAr,
     setKeyAr,
-    balanceKoi,
     setBalanceKoi,
     setBalanceAr,
   } = useContext(DataContext);
@@ -129,7 +125,7 @@ function KeyUpload() {
               <h1 className="text-blue upload-title">Upload Arweave Wallet Key.</h1>
               <Button
                 className="back-wrapper btn-orange"
-                onClick={() => history.back()}
+                onClick={() => history.goBack()}
               >
                 <FaArrowLeft size={20} color={colors.blueDark} />
                 <h6 className="mb-0 text-blue text-bold ml-2">back</h6>
