@@ -8,6 +8,22 @@ export const KeyUploadContainer = styled.div`
   background-color: ${colors.white};
   display: flex;
   justify-content: center;
+  .btn-step-card {
+    width: 166px;
+    height: 32px;
+    background: ${colors.white};
+    border: 2px solid ${colors.blueDark};
+    box-sizing: border-box;
+    border-radius: 4px;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 15px;
+    text-align: center;
+    letter-spacing: 0.03em;
+    color: ${colors.blueDark};
+    margin-bottom: 14px;
+  }
   .single-ant-file-upload {
     width: 270px;
     height: 152px;
