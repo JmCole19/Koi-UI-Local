@@ -114,7 +114,7 @@ function Topbar() {
             OpenKoi
           </a>
           {balanceKoi === null ? (
-            <Space size={12} className="btns-connect" onClick={activeKoi}>
+            <Space size={12} className="btns-connect cursor" onClick={activeKoi}>
               <p className="text-blue mb-0 text-bold">Connect Wallet</p>
               <Image
                 src={IconArweave}
@@ -128,7 +128,7 @@ function Topbar() {
               />
             </Space>
           ) : (
-            <Space size={12} className="btns-connect" onClick={() => setShow(!show)}>
+            <Space size={12} className="btns-connect cursor" onClick={() => setShow(!show)}>
               <span className="text-blue mb-0 text-bold">{balanceKoi}</span>
               <Image
                 ref={target}

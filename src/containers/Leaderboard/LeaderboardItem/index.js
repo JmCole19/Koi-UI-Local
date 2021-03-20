@@ -13,7 +13,6 @@ import { FaInstagram } from "react-icons/fa";
 import { HiOutlineMail } from "react-icons/hi";
 import { LeaderboardItemContainer } from "./style";
 import { colors } from "theme";
-import { useLocation } from "react-router-dom";
 import { preUrl } from "config"
 
 function LeaderboardItem({
@@ -25,8 +24,7 @@ function LeaderboardItem({
   onClickEmbed = () => {},
 }) {
 
-  const location = useLocation();
-  const currentUrl = `${window.location.hostname}${location.pathname}`;
+  const shareUrl = `${window.location.hostname}/content-detail/${item.txIdContent}?type=view`;
 
   return (
     <LeaderboardItemContainer>
@@ -83,17 +81,17 @@ function LeaderboardItem({
           </Button>
         </div>
         <div className="social-wrapper">
-          <TwitterShareButton url={currentUrl}>
+          <TwitterShareButton url={shareUrl}>
             <FiTwitter size={24} color={colors.greenDark} />
           </TwitterShareButton>
-          <InstapaperShareButton url={currentUrl}>
+          <InstapaperShareButton url={shareUrl}>
             <FaInstagram size={24} color={colors.greenDark} />
           </InstapaperShareButton>
-          <FacebookShareButton url={currentUrl}>
+          <FacebookShareButton url={shareUrl}>
             <FiFacebook size={24} color={colors.greenDark} />
           </FacebookShareButton>
           <FiMessageCircle size={24} color={colors.greenDark} />
-          <EmailShareButton url={currentUrl}>
+          <EmailShareButton url={shareUrl}>
             <HiOutlineMail size={24} color={colors.greenDark} />
           </EmailShareButton>
         </div>
