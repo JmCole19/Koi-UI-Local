@@ -11,7 +11,7 @@ import Web3 from "web3";
 import { Button, Container, Image } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import { RegisterContentContainer } from "./style";
-import { abi } from "./abi";
+import { abi } from "assets/abi";
 import { DataContext } from "contexts/DataContextContainer";
 import { show_notification } from "service/utils";
 import { Col, notification, Row } from "antd";
