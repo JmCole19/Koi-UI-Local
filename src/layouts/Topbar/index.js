@@ -22,7 +22,9 @@ function Topbar() {
   const history = useHistory();
   const { balanceKoi,
           balanceAr,
-          setAddressArweave 
+          setAddressArweave,
+          addressEth,
+          setAddressEth, 
         } = useContext(DataContext);
   const [show, setShow] = useState(false);
   const target = useRef(null);
@@ -34,7 +36,33 @@ function Topbar() {
     // setBalanceAr(50.01);
   };
 
-  const activeEthereum = () => {};
+  const activeEthereum = async () => {
+    if (window.ethereum) {
+      try{
+        const accounts = await window.ethereum.enable()
+        setAddressEth(accounts[0]);
+        show_notification("Imported your ethereum account.", "KOI", 'success');
+      }catch(err) {
+        console.log(err)
+        show_notification("There is an error to import your ethereum account", "KOI");
+      }
+    } else {
+      // metamask extension didn't install
+      show_notification("Please install metamask extension first.", "KOI");
+      setTimeout(() => {
+        let url = "https://metamask.io/download.html";
+        window.open(url, "_blank");
+      }, 2000);
+    }
+  };
+  const activeKoi = async () => {
+    if(!addressEth){
+      await activeEthereum()
+      activeArweave()
+    }else{
+      activeArweave()
+    }
+  }
 
   useEffect(() => {
     if (detectorAr) {
@@ -86,27 +114,24 @@ function Topbar() {
             OpenKoi
           </a>
           {balanceKoi === null ? (
-            <Space size={12} className="btns-connect">
+            <Space size={12} className="btns-connect" onClick={activeKoi}>
               <p className="text-blue mb-0 text-bold">Connect Wallet</p>
               <Image
-                onClick={activeArweave}
                 src={IconArweave}
                 className="cursor"
                 width={18}
               />
               <Image
-                onClick={activeEthereum}
                 src={IconEthereum}
                 className="cursor"
                 width={18}
               />
             </Space>
           ) : (
-            <Space size={12} className="btns-connect">
+            <Space size={12} className="btns-connect" onClick={() => setShow(!show)}>
               <span className="text-blue mb-0 text-bold">{balanceKoi}</span>
               <Image
                 ref={target}
-                onClick={() => setShow(!show)}
                 src={IconFish}
                 className="cursor"
                 width={18}
@@ -114,7 +139,6 @@ function Topbar() {
               <span className="text-blue mb-0 text-bold">{balanceAr}</span>
               <Image
                 ref={target}
-                onClick={() => setShow(!show)}
                 src={IconEyes}
                 className="cursor"
                 width={18}
