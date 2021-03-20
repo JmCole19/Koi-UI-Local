@@ -14,7 +14,7 @@ import { RegisterContentContainer } from "./style";
 import { abi } from "./abi";
 import { DataContext } from "contexts/DataContextContainer";
 import { show_notification } from "service/utils";
-import { notification } from "antd";
+import { Col, notification, Row } from "antd";
 
 // const arweave = Arweave.init();
 const cards = [
@@ -24,7 +24,7 @@ const cards = [
     title: "OpenSea",
     subtitle1: "Import OpenSea portfolio",
     link: "/opensea",
-    comingSoon: false
+    comingSoon: false,
   },
   {
     id: "ethereum",
@@ -32,7 +32,7 @@ const cards = [
     title: "Ethereum NFT ",
     subtitle1: "Enter a Token ID",
     link: "/upload/ethereum?step=1",
-    comingSoon: true
+    comingSoon: true,
   },
   {
     id: "arweave",
@@ -40,7 +40,7 @@ const cards = [
     title: "Arweave Content",
     subtitle1: "Enter an Arweave ID",
     link: "/upload/arweave?step=1",
-    comingSoon: true
+    comingSoon: true,
   },
   {
     id: "manual",
@@ -49,7 +49,7 @@ const cards = [
     subtitle1: "Drag & Drop or",
     subtitle2: "Browse Computer",
     link: "/upload/manual?step=1",
-    comingSoon: false
+    comingSoon: false,
   },
 ];
 
@@ -121,8 +121,7 @@ function RegisterContent() {
 
   const openMetaMask = (card_type) => {
     const web3 = new Web3(Web3.givenProvider || "http://localhost:8545");
-    if(window.ethereum) {
-
+    if (window.ethereum) {
       window.ethereum.enable().then(function (accounts) {
         setAddressEth(accounts[0]);
         if (card_type === "opensea") {
@@ -151,18 +150,18 @@ function RegisterContent() {
         }
         // let contentOwnerAddress = accounts[0];
       });
-    }else{
+    } else {
       // metamask extension didn't install
       show_notification("Please install metamask extension first.", "KOI");
       setTimeout(() => {
-        let url = 'https://metamask.io/download.html'
-        window.open(url, "_blank")
-      }, 2000)
+        let url = "https://metamask.io/download.html";
+        window.open(url, "_blank");
+      }, 2000);
     }
   };
   const onRedeemVoucher = () => {
-    openMetaMask('redeem')
-  }
+    openMetaMask("redeem");
+  };
   console.log({ address: addressEth });
   return (
     <RegisterContentContainer>
@@ -171,29 +170,43 @@ function RegisterContent() {
           <div className="register-content">
             <h1 className="text-blue register-title">Register your content.</h1>
             <h4 className="register-description">
-              There are 3 ways to register on the Koi Network. Earn rewards today.
+              There are 3 ways to register on the Koi Network. Earn rewards
+              today.
             </h4>
-            <div className="register-cards">
+            <Row
+              className="register-cards"
+              justify="space-between"
+              gutter={[
+                { xs: 15, sm: 15, lg: 55 },
+                { sm: 15, lg: 0 },
+              ]}
+            >
               {cards.map((_card, _i) => (
-                <div
-                  key={_i}
-                  className={`register-card cursor ${_card.comingSoon ? 'disable' : ''}`}
-                  onClick={() => !_card.comingSoon && onClickCard(_card)}
-                >
-                  {_card.comingSoon && <div className="coming-soon">Coming soon</div>}
-                  <div className="card-img">
-                    <Image src={_card.img} />
-                  </div>
-                  <div className="card-content">
-                    <h5>{_card.title}</h5>
-                    <p className="mb-1">{_card.subtitle1}</p>
-                    {_card.subtitle2 && (
-                      <p className="mb-0">{_card.subtitle2}</p>
+                <Col xs={12} lg={6}>
+                  <div
+                    key={_i}
+                    className={`register-card cursor ${
+                      _card.comingSoon ? "disable" : ""
+                    }`}
+                    onClick={() => !_card.comingSoon && onClickCard(_card)}
+                  >
+                    {_card.comingSoon && (
+                      <div className="coming-soon">Coming soon</div>
                     )}
+                    <div className="card-img">
+                      <Image src={_card.img} />
+                    </div>
+                    <div className="card-content">
+                      <h5>{_card.title}</h5>
+                      <p className="mb-1">{_card.subtitle1}</p>
+                      {_card.subtitle2 && (
+                        <p className="mb-0">{_card.subtitle2}</p>
+                      )}
+                    </div>
                   </div>
-                </div>
+                </Col>
               ))}
-            </div>
+            </Row>
             <div className="btn-back-wrapper">
               <Button
                 className="btn-back btn-blueDark"
@@ -203,8 +216,11 @@ function RegisterContent() {
               </Button>
             </div>
             <p className="bottom-description text-blue text-center">
-              Got a voucher? <span className="span-link" onClick={onRedeemVoucher}>Redeem an NFT voucher</span> from
-              Ethereum to claim your Atomic NFT.
+              Got a voucher?{" "}
+              <span className="span-link" onClick={onRedeemVoucher}>
+                Redeem an NFT voucher
+              </span>{" "}
+              from Ethereum to claim your Atomic NFT.
             </p>
           </div>
         </div>

@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { colors, mixins } from "theme";
 
 export const ConfirmOpenseasContainer = styled.div`
+  position: relative;
   flex: 1;
   width: 100%;
   height: 100%;
@@ -238,9 +239,63 @@ export const ConfirmOpenseasContainer = styled.div`
   @media (max-width: ${mixins.md}px) {
   }
   @media (max-width: ${mixins.sm}px) {
+    .progress-sm {
+      position: absolute;
+      top: 0;
+      .ant-progress-outer {
+        display: flex;
+      }
+    }
     .container {
       .upload-content-wrapper {
         .upload-content {
+          .title-wrapper {
+            display: flex;
+            justify-content: space-between;
+            flex-direction: column-reverse;
+            .upload-title {
+              font-size: 28px !important;
+            }
+            .back-wrapper {
+              margin-bottom: 15px;
+            }
+          }
+          .upload-wrapper {
+            .upload-header {
+              margin-bottom: 18px;
+              .upload-header-title {
+                display: flex;
+                align-items: center;
+                .type-img-wrapper {
+                  img {
+                    width: 36px;
+                  }
+                }
+                h6 {
+                  font-size: 16px !important;
+                }
+              }
+            }
+            .upload-content-form {
+              flex-direction: column;
+              .content-img-wrapper {
+                width: 100%;
+                justify-content: center;
+                margin-bottom: 35px;
+              }
+              .upload-content-row {
+                margin-left: 0;
+                width: 100%;
+                .ant-form-item-control-input-content {
+                  flex-direction: column;
+                  .btn-edit {
+                    margin-left: 0px !important;
+                    margin-top: 25px;
+                  }
+                }
+              }
+            }
+          }
         }
       }
     }

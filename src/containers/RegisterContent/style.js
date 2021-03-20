@@ -17,13 +17,13 @@ export const RegisterContentContainer = styled.div`
           margin-bottom: 34px;
         }
         .register-cards {
-          display: flex;
+          /* display: flex;
           justify-content: space-between;
           flex-wrap: wrap;
-          margin-bottom: 15px;
+          margin-bottom: 15px; */
           .register-card {
             position: relative;
-            width: 232px;
+            min-width: 232px;
             height: 232px;
             background: ${colors.orangeLight};
             box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.25);
@@ -34,11 +34,11 @@ export const RegisterContentContainer = styled.div`
             align-items: center;
             margin-bottom: 15px;
             cursor: pointer;
-            &.disable{
+            &.disable {
               cursor: not-allowed;
               background: ${colors.white};
             }
-            .coming-soon{
+            .coming-soon {
               position: absolute;
               top: 8px;
             }
@@ -100,7 +100,7 @@ export const RegisterContentContainer = styled.div`
           }
           .register-cards {
             .register-card {
-              width: 100%;
+              min-width: 152px;
             }
           }
         }

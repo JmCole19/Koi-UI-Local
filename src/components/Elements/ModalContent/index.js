@@ -15,7 +15,6 @@ import {
 } from "react-icons/fi";
 import { IoLogoTiktok } from "react-icons/io5";
 import { HiOutlineMail } from "react-icons/hi";
-import { useLocation } from "react-router-dom";
 import { colors } from "theme";
 
 import { preUrl } from "config"
@@ -84,18 +83,19 @@ function ModalContent({
   onHide = () => {},
   onSwitchModal = () => {},
 }) {
-  const location = useLocation();
+
   const [copiedLink, setCopiedLink] = useState(false);
   const [copiedCode, setCopiedCode] = useState(false);
 
-  const currentUrl = `${window.location.hostname}${location.pathname}`;
+  const currentUrl = `${window.location.hostname}/content-detail/${detail.txIdContent}`;
+  const embedUrl = `${window.location.hostname}/embed/${detail.txIdContent}`;
 
   const onCopyLink = () => {
     navigator.clipboard.writeText(currentUrl);
     setCopiedLink(true);
   };
   const onCopyCode = () => {
-    navigator.clipboard.writeText(currentUrl);
+    navigator.clipboard.writeText(embedUrl);
     setCopiedCode(true);
   };
 
@@ -204,7 +204,7 @@ function ModalContent({
                   <input
                     type="text"
                     className="form-control"
-                    placeholder="<embedding_code_snippet_here>"
+                    placeholder={embedUrl}
                   />
                   <span className="input-group-btn">
                     <button
