@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 
 const DataContext = React.createContext(null);
@@ -6,26 +6,27 @@ const DataContext = React.createContext(null);
 export { DataContext };
 
 const DataContextContainer = (props) => {
-  const [authUser, setAuthUser] = useState(false);
   const [addressEth, setAddressEth] = useState(null);
   const [openSeas, setOpenSeas] = useState([]);
-  const [addressArweave, setAddressArweave] = useState(null);
+  const [addressAr, setAddressAr] = useState(null);
   const [keyAr, setKeyAr] = useState(null);
   const [balanceKoi, setBalanceKoi] = useState(null);
   const [balanceAr, setBalanceAr] = useState(null);
   const [contents, setContents] = useState([]);
 
+  useEffect( () => {
+
+  }, [addressEth, keyAr])
+
   return (
     <DataContext.Provider
       value={{
-        authUser,
-        setAuthUser,
         addressEth,
         setAddressEth,
+        addressAr,
+        setAddressAr,
         openSeas,
         setOpenSeas,
-        addressArweave,
-        setAddressArweave,
         keyAr,
         setKeyAr,
         balanceKoi,

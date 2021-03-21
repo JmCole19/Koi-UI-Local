@@ -41,8 +41,8 @@ function ConfirmOpenseas() {
   const {
     openSeas,
     setOpenSeas,
-    addressArweave,
-    setAddressArweave,
+    addressAr,
+    setAddressAr,
   } = useContext(DataContext);
   const [form] = useForm();
   const location = useLocation();
@@ -262,7 +262,7 @@ function ConfirmOpenseas() {
       console.log("addressResult : ", addressResult);
       console.log("detect address: ", addr);
       if (addr) {
-        setAddressArweave(addr);
+        setAddressAr(addr);
         setMode("uploading");
         // uploading process
         let tpUpdatingProcess = updatingProcess;
@@ -270,7 +270,7 @@ function ConfirmOpenseas() {
           try {
             let res = await exportNFT(
               arweave,
-              addressArweave,
+              addressAr,
               content,
               content.thumb,
               null,
