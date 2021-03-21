@@ -48,7 +48,7 @@ function ConfirmOpenseas() {
   const location = useLocation();
   const { step = "1", selected, address } = queryString.parse(location.search);
   const [uploading] = useState(false);
-  const [mode, setMode] = useState("change"); // change | confirm | uploadKey | uploading | complete
+  const [mode, setMode] = useState("complete"); // change | confirm | uploadKey | uploading | complete
   const [activeOpenSea, setActiveOpenSea] = useState({
     id: 0,
     thumb: "",
@@ -335,14 +335,24 @@ function ConfirmOpenseas() {
         <div className="upload-content-wrapper">
           <div className="upload-content">
             <div className="title-wrapper">
-              <h1 className="text-blue upload-title">Register your content</h1>
-              <Button
-                className="back-wrapper btn-orange"
-                onClick={() => history.push(`/opensea?address=${address}`)}
-              >
-                <FaArrowLeft size={20} color={colors.blueDark} />
-                <h6 className="mb-0 text-blue text-bold ml-2">Leaderboard</h6>
-              </Button>
+              {mode !== "complete" ? (
+                <h1 className="text-blue upload-title">
+                  Register your content
+                </h1>
+              ) : (
+                <h1 className="text-blue upload-title d-none d-md-block">
+                  Your NFTs are stored forever.
+                </h1>
+              )}
+              {mode !== "complete" && (
+                <Button
+                  className="back-wrapper btn-orange"
+                  onClick={() => history.push(`/opensea?address=${address}`)}
+                >
+                  <FaArrowLeft size={20} color={colors.blueDark} />
+                  <h6 className="mb-0 text-blue text-bold ml-2">Leaderboard</h6>
+                </Button>
+              )}
             </div>
             {/* <h1 className="upload-title text-blue">Register your content.</h1> */}
             <div className="upload-wrapper">
@@ -367,7 +377,7 @@ function ConfirmOpenseas() {
                     <Col flex={1}>
                       <div className="upload-header">
                         <div className="upload-header-title">
-                          <div className="type-img-wrapper">
+                          <div className="type-img-wrapper d-md-none">
                             <Image src={IconOpenSea} />
                           </div>
                           <h6 className="mb-0 text-blue ml-2">
