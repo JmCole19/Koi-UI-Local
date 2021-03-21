@@ -36,7 +36,7 @@ function UploadManual() {
   const location = useLocation();
   const { step } = queryString.parse(location.search);
   const {
-    setAddressArweave,
+    setAddressAr,
     keyAr,
   } = useContext(DataContext);
   const [uploading] = useState(false);
@@ -197,7 +197,7 @@ function UploadManual() {
       let addr = await arweave.wallets.getAddress();
       console.log("detected arweave wallet address : ", addr);
       if (addr) {
-        setAddressArweave(addr);
+        setAddressAr(addr);
         if(keyAr) {
           await uploadContent(keyAr)
         }else{
