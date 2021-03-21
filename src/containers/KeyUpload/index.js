@@ -19,7 +19,7 @@ const { Dragger } = Upload;
 function KeyUpload() {
   const history = useHistory();
   const {
-    setAddressArweave,
+    setAddressAr,
     keyAr,
     setKeyAr,
     setBalanceKoi,
@@ -78,7 +78,7 @@ function KeyUpload() {
         const arweave = Arweave.init();
         let addressResult = await getArWalletAddressFromJson(arweave, arJson);
         setKeyAr(arJson)
-        setAddressArweave(addressResult)
+        setAddressAr(addressResult)
       };
       reader.readAsText(file);
       // Prevent upload
@@ -102,7 +102,7 @@ function KeyUpload() {
       let addr = await arweave.wallets.getAddress();
       console.log("detected arweave wallet address : ", addr);
       if (addr) {
-        setAddressArweave(addr);
+        setAddressAr(addr);
       } else {
         show_notification("Error on detectimg Arweave wallet address");
       }

@@ -22,7 +22,7 @@ const ktools = new koi_tools();
 
 function MyContent() {
   const history = useHistory();
-  const { addressArweave, setAddressArweave } = useContext(DataContext);
+  const { addressAr, setAddressAr } = useContext(DataContext);
   const [contents, setContents] = useState([]);
   const [isExpanded, setIsExpanded] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -99,10 +99,7 @@ function MyContent() {
 
   useEffect(() => {
     console.log("here1")
-    getContents(addressArweave);
-    // if(addressArweave) {
-    //   getContents()
-    // }
+    getContents(addressAr);
   }, [history.location.pathname]);
 
   useEffect(() => {
@@ -124,7 +121,7 @@ function MyContent() {
       console.log("detected arweave wallet address : ", addr);
       if (addr) {
         getContents(addr)
-        setAddressArweave(addr);
+        setAddressAr(addr);
       } else {
         // show alert
         show_alert('There is a problem to get your arwallet address. Please install arconnect extension and try again.')

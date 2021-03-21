@@ -58,21 +58,13 @@ function RegisterContent() {
   const {
     addressEth,
     setAddressEth,
-    // addressArweave,
-    // setAddressArweave,
   } = useContext(DataContext);
-  // const [detectorAr, setDetectorAr] = useState(false);
 
   const onClickCard = (card) => {
     if (card.id === "opensea") {
       openMetaMask(card.id);
     } else if (card.id === "arweave") {
       history.push(card.link);
-      // if (addressArweave) {
-      //   history.push(card.link);
-      // } else {
-      //   setDetectorAr(true);
-      // }
     } else {
       history.push(card.link);
     }
