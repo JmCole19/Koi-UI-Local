@@ -196,10 +196,13 @@ export const ConfirmOpenseasContainer = styled.div`
               flex-direction: column;
               justify-content: space-between;
               align-items: center;
-              p {
+              .card-content-wrapper {
                 text-align: center;
-                margin-top: 20px;
-                font-weight: 600;
+                p {
+                  text-align: center;
+                  margin-top: 20px;
+                  font-weight: 600;
+                }
               }
               .uploaded-card-btns {
                 display: flex;
@@ -272,7 +275,8 @@ export const ConfirmOpenseasContainer = styled.div`
                   }
                 }
                 h6 {
-                  font-size: 16px !important;
+                  font-size: 28px !important;
+                  text-align: center;
                 }
               }
             }
@@ -291,6 +295,26 @@ export const ConfirmOpenseasContainer = styled.div`
                   .btn-edit {
                     margin-left: 0px !important;
                     margin-top: 25px;
+                  }
+                }
+              }
+            }
+            .uploaded-cards-wrapper {
+              .uploaded-card {
+                max-width: 100%;
+                width: 100%;
+                flex-direction: row;
+                align-items: flex-start;
+                margin: 20px 0;
+                .uploaded-card-btns-sm {
+                  margin-top: 0;
+                  flex-direction: column;
+                  .btn {
+                    min-width: 120px;
+                    &.btn-html {
+                      margin-left: 0px;
+                      margin-top: 26px;
+                    }
                   }
                 }
               }

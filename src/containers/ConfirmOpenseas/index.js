@@ -229,8 +229,8 @@ function ConfirmOpenseas() {
       };
 
       fetch(
-        // `https://api.opensea.io/api/v1/assets?owner=0xd703accc62251189a67106f22d54cd470494de40&order_direction=desc&offset=0&limit=20`,
-        `https://api.opensea.io/api/v1/assets?owner=${address}&order_direction=desc&offset=0&limit=20`,
+        `https://api.opensea.io/api/v1/assets?owner=0xd703accc62251189a67106f22d54cd470494de40&order_direction=desc&offset=0&limit=20`,
+        // `https://api.opensea.io/api/v1/assets?owner=${address}&order_direction=desc&offset=0&limit=20`,
         options
       )
         .then((response) => {
@@ -334,7 +334,11 @@ function ConfirmOpenseas() {
       <Container>
         <div className="upload-content-wrapper">
           <div className="upload-content">
-            <div className="title-wrapper">
+            <div
+              className={`title-wrapper ${
+                mode === "complete" && "d-none d-md-block"
+              }`}
+            >
               {mode !== "complete" ? (
                 <h1 className="text-blue upload-title">
                   Register your content
@@ -524,14 +528,9 @@ function ConfirmOpenseas() {
                 </Form>
               )}
               {mode === "complete" && (
-                <Form
-                  layout="horizontal"
-                  form={form}
-                  {...formItemLayout}
-                  onFinish={onCompleteStep3}
-                >
+                <div className="congrats">
                   <Row>
-                    <Col flex="100px">
+                    <Col flex="100px" className="d-none d-md-block">
                       <div className="type-img-wrapper">
                         <Image src={IconOpenSea} />
                       </div>
@@ -561,14 +560,34 @@ function ConfirmOpenseas() {
                         )
                         .map((_selected, _i) => (
                           <div key={_i} className="uploaded-card">
-                            <Image src={_selected.image_thumbnail_url} />
-                            <p className="text-blue">{_selected.name}</p>
-                            <div className="uploaded-card-btns">
+                            <div className="card-content-wrapper">
+                              <Image src={_selected.image_thumbnail_url} />
+                              <p className="text-blue">{_selected.name}</p>
+                            </div>
+                            <div className="uploaded-card-btns d-none d-md-flex">
                               <Button className="btn-blueDark">
                                 <Image src={IconShare} width={17} />
                               </Button>
                               <Button className="btn-white btn-html">
                                 <Image src={IconHtml} width={17} />
+                              </Button>
+                            </div>
+                            <div className="uploaded-card-btns-sm d-md-none">
+                              <Button className="btn-blueDark">
+                                <Image
+                                  src={IconShare}
+                                  className="mr-2"
+                                  width={17}
+                                />
+                                Share
+                              </Button>
+                              <Button className="btn-white btn-html">
+                                <Image
+                                  src={IconHtml}
+                                  className="mr-2"
+                                  width={17}
+                                />
+                                Embed
                               </Button>
                             </div>
                           </div>
@@ -580,7 +599,7 @@ function ConfirmOpenseas() {
                   >
                     See My Content
                   </Button>
-                </Form>
+                </div>
               )}
               {mode !== "complete" && (
                 <Progress
