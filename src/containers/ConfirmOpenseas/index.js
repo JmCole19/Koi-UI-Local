@@ -26,6 +26,14 @@ import { getArWalletAddressFromJson, exportNFT } from "service/NFT";
 const arweave = Arweave.init();
 const { TextArea } = Input;
 const { Dragger } = Upload;
+const modes = {
+  change: "change",
+  complete: "complete",
+  confirm: "confirm",
+  confirm1: "confirm1",
+  uploading: "uploading",
+  uploadKey: "uploadKey",
+};
 
 const formItemLayout = {
   labelCol: {
@@ -68,26 +76,26 @@ function ConfirmOpenseas() {
     switch (
       mode // change | confirm | uploadKey | uploading | complete
     ) {
-      case "change":
+      case modes.change:
         let newStep = activeStep - 1;
         setActiveOpenSea(uploadContens[newStep - 1]);
         setActiveStep(newStep);
         break;
       case "confirm":
         // setActiveStep(activeStep)
-        setMode("change");
+        setMode(modes.change);
         break;
       case "uploadKey":
-        setMode("change");
+        setMode(modes.change);
         break;
       case "uploading":
-        setMode("change");
+        setMode(modes.change);
         break;
       case "complete":
-        setMode("change");
+        setMode(modes.change);
         break;
       default:
-        setMode("change");
+        setMode(modes.change);
         break;
     }
   };
@@ -96,7 +104,7 @@ function ConfirmOpenseas() {
     switch (
       mode // change | confirm | uploadKey | uploading | complete
     ) {
-      case "change":
+      case modes.change:
         if (activeStep === uploadContens.length) {
           setMode("confirm");
           setShowModal(true);
@@ -120,7 +128,7 @@ function ConfirmOpenseas() {
         history.push("/contents");
         break;
       default:
-        setMode("change");
+        setMode(modes.change);
         break;
     }
   };
@@ -145,13 +153,13 @@ function ConfirmOpenseas() {
 
   const onClickCloseConfirmModal = () => {
     setShowModal(false);
-    setMode("change");
+    setMode(modes.change);
   };
 
   const confirmModalHide = () => {
-    if (mode === "confirm") {
+    if (mode === modes.confirm) {
       setShowModal(false);
-      setMode("change");
+      setMode(modes.change);
     } else {
       show_notification("You can't close this modal until NFT uploaded.");
     }
@@ -321,7 +329,7 @@ function ConfirmOpenseas() {
 
   return (
     <ConfirmOpenseasContainer>
-      {mode !== "complete" && (
+      {mode !== modes.complete && (
         <Progress
           className="d-md-none progress-sm"
           strokeColor={colors.green}
@@ -336,10 +344,10 @@ function ConfirmOpenseas() {
           <div className="upload-content">
             <div
               className={`title-wrapper ${
-                mode === "complete" && "d-none d-md-block"
+                mode === modes.complete && "d-none d-md-block"
               }`}
             >
-              {mode !== "complete" ? (
+              {mode !== modes.complete ? (
                 <h1 className="text-blue upload-title">
                   Register your content
                 </h1>
@@ -348,7 +356,7 @@ function ConfirmOpenseas() {
                   Your NFTs are stored forever.
                 </h1>
               )}
-              {mode !== "complete" && (
+              {mode !== modes.complete && (
                 <Button
                   className="back-wrapper btn-orange"
                   onClick={() => history.push(`/opensea?address=${address}`)}
@@ -365,7 +373,7 @@ function ConfirmOpenseas() {
                   <i className="fal fa-arrow-circle-left"></i>
                 </div>
               )}
-              {mode !== "complete" && (
+              {mode !== modes.complete && (
                 <Form
                   layout="horizontal"
                   form={form}
@@ -455,7 +463,7 @@ function ConfirmOpenseas() {
                   </Row>
                 </Form>
               )}
-              {mode === "confirm1" && (
+              {mode === modes.confirm1 && (
                 <Form
                   layout="horizontal"
                   form={form}
@@ -527,7 +535,7 @@ function ConfirmOpenseas() {
                   </div>
                 </Form>
               )}
-              {mode === "complete" && (
+              {mode === modes.complete && (
                 <div className="congrats">
                   <Row>
                     <Col flex="100px" className="d-none d-md-block">
@@ -601,7 +609,7 @@ function ConfirmOpenseas() {
                   </Button>
                 </div>
               )}
-              {mode !== "complete" && (
+              {mode !== modes.complete && (
                 <Progress
                   className="d-none d-md-block"
                   strokeColor={colors.blueDark}
@@ -621,7 +629,7 @@ function ConfirmOpenseas() {
           onHide={confirmModalHide}
         >
           <Modal.Body>
-            {mode === "confirm" && (
+            {mode === modes.confirm && (
               <FaTimes
                 className="icon-close cursor"
                 color={colors.blueDark}
@@ -629,10 +637,10 @@ function ConfirmOpenseas() {
                 onClick={onClickCloseConfirmModal}
               />
             )}
-            {mode === "confirm" && (
+            {mode === modes.confirm && (
               <h2 className="modal-title text-blue">Confirm transaction</h2>
             )}
-            {mode === "uploading" && (
+            {mode === modes.uploading && (
               <h2 className="modal-title text-blue">
                 Your NFTs are uploading...
               </h2>
@@ -649,7 +657,7 @@ function ConfirmOpenseas() {
                 ))}
               </Space>
             </div>
-            {mode === "confirm" && (
+            {mode === modes.confirm && (
               <>
                 <div className="modal-row mb-2">
                   <div className="modal-row-left">
@@ -692,7 +700,7 @@ function ConfirmOpenseas() {
                 </Button>
               </>
             )}
-            {mode === "uploadKey" && (
+            {mode === modes.uploadKey && (
               <>
                 <div className="upload-cards-wrapper">
                   <SingleAntFileUpload>
@@ -724,7 +732,7 @@ function ConfirmOpenseas() {
                 </div>
               </>
             )}
-            {mode === "uploading" && (
+            {mode === modes.uploading && (
               <>
                 <div className="modal-row mb-2 text-center">
                   <div className="modal-row-center custom-pd">
