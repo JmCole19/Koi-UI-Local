@@ -88,6 +88,11 @@ function ContentDetail() {
   const onClickShowMore = () => {
     setIsExpanded(!isExpanded);
   };
+
+  const onClickBuyIt = (contract_ID) => {
+    let url = "https://space.verto.exchange/asset/" + contract_ID;
+    window.open(url, "_blank");
+  }
   useEffect(() => {
     console.log(contents)
     if( contents.length > 0 ){
@@ -138,7 +143,7 @@ function ContentDetail() {
                   <i className="fal fa-arrow-circle-left"></i>
                 </div>
                 <h2 className="text-blue mb-0">{detail.ticker}</h2>
-                <Button className="btn-orange ml-auto">Buy It</Button>
+                <Button onClick={() => onClickBuyIt(detail.txIdContent)} className="btn-orange ml-auto">Buy It</Button>
                 <Button
                   className="btn-green btn-plus"
                   onClick={() => history.push("/register-content")}
@@ -170,9 +175,9 @@ function ContentDetail() {
                     </Col>
                     <Col className="col-md-6">
                       <div className="detail-body-description">
-                        <h1 className="mb-0 text-blue">{detail.ticker}</h1>
+                        <h1 className="mb-0 text-blue text-left">{detail.ticker}</h1>
                         <p className="detail-username">{detail.name}</p>
-                        <p>Registered {detail.created_at || "Jan. 01, 2021"}</p>
+                        <p className="text-left">Registered {detail.created_at || "Jan. 01, 2021"}</p>
                         {/* <p className="mb-0">{detail.description}</p> */}
                         {isExpanded || detail.description?.length < 300 ? (
                           <p className="mb-0">{detail.description}</p>
@@ -194,11 +199,11 @@ function ContentDetail() {
                         )}
                         <div className="views-wrapper">
                           <div className="view-row">
-                            <h5 className="total-value">{detail.totalViews}</h5>
+                            <h5 className="total-value text-left">{detail.totalViews}</h5>
                             <h5 className="total-views">total views</h5>
                           </div>
                           <div className="view-row">
-                            <h5 className="total-value">{detail.totalReward}</h5>
+                            <h5 className="total-value text-left">{detail.totalReward}</h5>
                             <h5 className="total-views">total KOI rewards</h5>
                           </div>
                         </div>

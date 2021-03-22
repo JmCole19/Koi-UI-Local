@@ -64,35 +64,36 @@ function MyContent() {
   };
 
   const getContents = async (walletAddress = '') => {
-    if (contents.length === 0) {
-      console.log("here2")
-      if(walletAddress) {
-        setIsLoading(true);
-        console.log("here3 : ", walletAddress)
-        ktools.myContent(walletAddress).then((res) => {
-          if(res.length === 0) {
-            show_notification("There is no contents.")  
-          }else{
-            setContents(res);
-          }
-          console.log({ res });
-        }).catch(err => {
-          console.log(err)
-          show_notification("There is an error to getting NFT contents.")
-        }).finally( () => {
-          console.log("finally")
-          setIsLoading(false);
-        });
-      }else{
-        if(!detectorAr){
-          console.log("here --1")
-          setTimeout(() => {
-            setDetectorAr(true)
-          }, 100)
+    // if (contents.length === 0) {
+    //   console.log("here2")
+    // }
+    console.log({walletAddress})
+    if(walletAddress) {
+      setIsLoading(true);
+      console.log("here3 : ", walletAddress)
+      ktools.myContent(walletAddress).then((res) => {
+        if(res.length === 0) {
+          show_notification("There is no contents.")  
         }else{
-          // show alert
-          show_alert('There is a problem to get your arwallet address. Please install arconnect extension and try again.1111')
+          setContents(res);
         }
+        console.log({ res });
+      }).catch(err => {
+        console.log(err)
+        show_alert("There is an error to getting NFT contents.")
+      }).finally( () => {
+        console.log("finally")
+        setIsLoading(false);
+      });
+    }else{
+      if(!detectorAr){
+        console.log("here --1")
+        setTimeout(() => {
+          setDetectorAr(true)
+        }, 100)
+      }else{
+        // show alert
+        show_alert('There is a problem to get your arwallet address. Please install arconnect extension and try again.1111')
       }
     }
   };
@@ -127,8 +128,8 @@ function MyContent() {
         show_alert('There is a problem to get your arwallet address. Please install arconnect extension and try again.')
       }
     } catch (err) {
-      // console.log(err);
-      show_alert('Error on detectomg Arweave wallet address')
+      console.log(err);
+      show_alert('Error on detectimg Arweave wallet address')
     }
   };
 
