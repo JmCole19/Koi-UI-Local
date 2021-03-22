@@ -135,7 +135,7 @@ function Topbar() {
                 className="cursor"
                 width={18}
               />
-              <span className="text-blue mb-0 text-bold">{show_ar_balance(2235.032659)}</span>
+              <span className="text-blue mb-0 text-bold">{show_ar_balance(balanceAr)}</span>
               <Image
                 ref={target}
                 src={IconArweave}
@@ -177,12 +177,12 @@ function Topbar() {
                   </div> */}
                   <div className="overlay-body-row">
                     <p>KOI </p>
-                    <p className="overlay-value">{balanceKoi}</p>
+                    <p className="overlay-value">{show_digit_number(balanceKoi)}</p>
                     <Image src={IconFish} className="ml-2" />
                   </div>
                   <div className="overlay-body-row">
                     <p>AR </p>
-                    <p className="overlay-value">{balanceAr}</p>
+                    <p className="overlay-value">{show_ar_balance(balanceAr)}</p>
                     <Image src={IconArweave} className="ml-2" />
                   </div>
                 </div>

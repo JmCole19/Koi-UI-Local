@@ -24,21 +24,33 @@ const DataContextContainer = (props) => {
     if(saveData && Object.keys(saveData).length !== 0){
       // console.log("here : save data ********* ")
       // console.log(saveData)
+      let d = new Date()
+      let expired = d.getTime() + 60 * 1000 * 5 // 5 minute
       localStorage.setItem('info', JSON.stringify(saveData))
+      localStorage.setItem('expired', expired.toString())
     }
   }, [addressEth, addressAr, keyAr, openSeas, balanceKoi, balanceAr])
 
   useEffect( () => {
     let saveData = localStorage.getItem('info')
-    if(saveData) {
-      let information = JSON.parse(saveData)
-      // console.log("here : load data ********* ")
-      // console.log(information)
-      if(information['addressEth']) setAddressEth(information['addressEth']) 
-      if(information['addressAr']) setAddressAr(information['addressAr']) 
-      if(information['keyAr']) setKeyAr(information['keyAr']) 
-      if(information.hasOwnProperty('balanceKoi')) setBalanceKoi(information['balanceKoi']) 
-      if(information.hasOwnProperty('balanceAr')) setBalanceAr(information['balanceAr']) 
+    let str_expired = localStorage.getItem('expired')
+    if(saveData && str_expired) {
+      let expired = Number(str_expired)
+      let cur = new Date()
+      if( cur.getTime() - expired > 0) {
+        // remove storage
+        localStorage.removeItem('expired')
+        localStorage.removeItem('info')
+      }else{
+        let information = JSON.parse(saveData)
+        // console.log("here : load data ********* ")
+        // console.log(information)
+        if(information['addressEth']) setAddressEth(information['addressEth']) 
+        if(information['addressAr']) setAddressAr(information['addressAr']) 
+        if(information['keyAr']) setKeyAr(information['keyAr']) 
+        if(information.hasOwnProperty('balanceKoi')) setBalanceKoi(information['balanceKoi']) 
+        if(information.hasOwnProperty('balanceAr')) setBalanceAr(information['balanceAr']) 
+      }
     }
   }, [])
 

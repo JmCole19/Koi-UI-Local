@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React from "react";
 import { Button, Image } from "react-bootstrap";
-import { IconEyes, IconFish, IconHtml, ItemTemp } from "assets/images";
+import { IconEyes, IconArweave, IconHtml, ItemTemp } from "assets/images";
 import {
   FacebookShareButton,
   TwitterShareButton,
@@ -14,6 +14,7 @@ import { HiOutlineMail } from "react-icons/hi";
 import { LeaderboardItemContainer } from "./style";
 import { colors } from "theme";
 import { preUrl } from "config"
+import { show_ar_balance, show_digit_number } from "service/utils";
 
 function LeaderboardItem({
   item = {},
@@ -60,15 +61,15 @@ function LeaderboardItem({
       <div className="part-right">
         <div className="item-reviews-wrapper item-col">
           <h5 className="item-total_reviews mb-0">
-            {item.totalViews}
+            {show_digit_number(item.totalViews)}
             <span className="ml-2">
               <Image src={IconEyes} />
             </span>
           </h5>
           <h5 className="item-rewards mb-0">
-            {item.totalReward}{" "}
+            {show_ar_balance(item.totalReward)}{" "}
             <span className="ml-1">
-              <Image src={IconFish} />
+              <Image src={IconArweave} width={18}/>
             </span>
           </h5>
         </div>
