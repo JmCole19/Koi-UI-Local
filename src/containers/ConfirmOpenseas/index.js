@@ -18,7 +18,7 @@ import { useForm } from "antd/lib/form/Form";
 import { useHistory, useLocation } from "react-router-dom";
 import { colors } from "theme";
 import { DataContext } from "contexts/DataContextContainer";
-import { FaArrowLeft, FaTimes } from "react-icons/fa";
+import { FaTimes } from "react-icons/fa";
 import Arweave from "arweave";
 import { show_notification, show_fixed_number } from "service/utils";
 import { getArWalletAddressFromJson, exportNFT } from "service/NFT";
