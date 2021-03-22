@@ -5,7 +5,7 @@ import {
   IconUpload,
   IconOpenSea,
 } from "assets/images";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import Web3 from "web3";
 // import Arweave from "arweave";
 import { Button, Container, Image } from "react-bootstrap";
@@ -15,6 +15,7 @@ import { abi } from "assets/abi";
 import { DataContext } from "contexts/DataContextContainer";
 import { show_notification } from "service/utils";
 import { Col, notification, Row } from "antd";
+import AlertArea from "components/Sections/AlertArea";
 
 // const arweave = Arweave.init();
 const cards = [
@@ -59,6 +60,19 @@ function RegisterContent() {
     addressEth,
     setAddressEth,
   } = useContext(DataContext);
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertVariant, setAlertVariant] = useState('error');
+  const [errEmessage, setErrMessage] = useState('');
+
+  const show_alert = (message = '', type = 'error') => {
+    setShowAlert(true)
+    setAlertVariant(type)
+    setErrMessage(message)
+    setTimeout( () => {
+      setShowAlert(false)
+      setErrMessage('')
+    }, 4000)
+  }
 
   const onClickCard = (card) => {
     if (card.id === "opensea") {
@@ -70,22 +84,18 @@ function RegisterContent() {
     }
   };
 
-  const onClickTweet = async () => {
-    const text = encodeURI("I just joined the @open_koi web3 economy. PayAttention with us, the future is now. "); // 
-    window.open(
-      `https://twitter.com/intent/tweet?text=${text}${address || addressAr}`,
-      "twitpostpopup",
-      `left=${window.screenX + 100}, top=${
-        window.screenY + 100
-      }, width=500, height=448, toolbar=no`
-    );
-    history.push(`/faucet?step=3&address=${address}`);
+  const rewardAddingEth = async (address) => {
+    if(!address) {
+      show_notification('There is an error to detecting Ethereum address form Metamask. Please check metamask extension again.')
+      return false
+    }
+    show_alert('You’ll earn 1 KOI until 3 minutes.', 'success')
   };
 
   const openMetaMask = (card_type) => {
     const web3 = new Web3(Web3.givenProvider || "http://localhost:8545");
     if (window.ethereum) {
-      window.ethereum.enable().then(function (accounts) {
+      window.ethereum.enable().then( async (accounts) => {
         setAddressEth(accounts[0]);
         if (card_type === "opensea") {
           let contractInstance = new web3.eth.Contract(
@@ -94,7 +104,8 @@ function RegisterContent() {
             { from: accounts[0] }
           );
           console.log(contractInstance);
-          history.push(`/opensea?address=${accounts[0]}`);
+          show_alert('Detect ethereum address successfully.', 'success')
+          await rewardAddingEth(accounts[0])
         } else if (card_type === "redeem") {
           console.log("contractInstance");
           console.log(accounts[0]);
@@ -128,6 +139,11 @@ function RegisterContent() {
   
   return (
     <RegisterContentContainer>
+      <AlertArea
+        showMessage={showAlert}
+        variant={alertVariant}
+        message={errEmessage}
+      ></AlertArea>
       <Container>
         <div className="register-content-wrapper">
           <div className="register-content">
