@@ -15,20 +15,28 @@ const DataContextContainer = (props) => {
   const [contents, setContents] = useState([]);
 
   useEffect( () => {
-    let saveData = localStorage.getItem('info')
-    if(saveData) {
-      let information = JSON.parse(saveData)
-    }
-
-  }, [addressEth, keyAr, openSeas, addressAr, keyAr, balanceKoi, balanceAr])
+    let saveData = {}
+    if(addressEth) saveData.addressEth = addressEth
+    if(addressAr) saveData.addressAr = addressAr
+    if(keyAr) saveData.keyAr = keyAr
+    if(balanceKoi) saveData.balanceKoi = balanceKoi
+    if(balanceAr) saveData.balanceAr = balanceAr
+    console.log("here : save data ********* ")
+    console.log(saveData)
+    localStorage.setItem('info', JSON.stringify(saveData))
+  }, [addressEth, addressAr, keyAr, openSeas, balanceKoi, balanceAr])
 
   useEffect( () => {
     let saveData = localStorage.getItem('info')
     if(saveData) {
       let information = JSON.parse(saveData)
-      if(information) {
-
-      }
+      console.log("here : load data ********* ")
+      console.log(information)
+      if(information['addressEth']) setAddressEth(information['addressEth']) 
+      if(information['addressAr']) setAddressAr(information['addressAr']) 
+      if(information['keyAr']) setKeyAr(information['keyAr']) 
+      if(information['balanceKoi']) setBalanceKoi(information['balanceKoi']) 
+      if(information['balanceAr']) setBalanceAr(information['balanceAr']) 
     }
   }, [])
 
