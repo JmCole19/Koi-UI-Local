@@ -180,9 +180,9 @@ function ContentDetail() {
                         <p className="text-left">Registered {detail.created_at || "Jan. 01, 2021"}</p>
                         {/* <p className="mb-0">{detail.description}</p> */}
                         {isExpanded || detail.description?.length < 300 ? (
-                          <p className="mb-0">{detail.description}</p>
+                          <p className="mb-0 text-left">{detail.description}</p>
                         ) : (
-                          <p className="mb-0">
+                          <p className="mb-0 text-left">
                             {detail.description &&
                               detail.description.substr(0, 300) + "..."}
                           </p>
