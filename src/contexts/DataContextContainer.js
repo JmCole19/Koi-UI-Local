@@ -15,8 +15,22 @@ const DataContextContainer = (props) => {
   const [contents, setContents] = useState([]);
 
   useEffect( () => {
+    let saveData = localStorage.getItem('info')
+    if(saveData) {
+      let information = JSON.parse(saveData)
+    }
 
-  }, [addressEth, keyAr])
+  }, [addressEth, keyAr, openSeas, addressAr, keyAr, balanceKoi, balanceAr])
+
+  useEffect( () => {
+    let saveData = localStorage.getItem('info')
+    if(saveData) {
+      let information = JSON.parse(saveData)
+      if(information) {
+
+      }
+    }
+  }, [])
 
   return (
     <DataContext.Provider
