@@ -4,8 +4,7 @@ import {
   Logo,
   IconArweave,
   IconEthereum,
-  IconFish,
-  IconEyes,
+  IconFish
 } from "assets/images";
 import React, { useContext, useEffect, useState, useRef } from "react";
 import { Navbar, Nav, Image, Overlay, Tooltip } from "react-bootstrap";
@@ -129,7 +128,7 @@ function Topbar() {
             </Space>
           ) : (
             <Space size={12} className="btns-connect cursor" onClick={() => setShow(!show)}>
-              <span className="text-blue mb-0 text-bold">{show_digit_number(show_fixed_number(balanceKoi, 4))}</span>
+              <span className="text-blue mb-0 text-bold">{show_digit_number(balanceKoi)}</span>
               <Image
                 ref={target}
                 src={IconFish}
@@ -165,7 +164,7 @@ function Topbar() {
                 arrowProps={{ style: { display: "none" } }}
               >
                 <div className="overlay-header">
-                  <p className="text-left text-bold">See my content</p>
+                  <p onClick={() => history.replace('/my-content') } className="text-left text-bold cursor">See my content</p>
                 </div>
                 <div className="overlay-body">
                   <div className="overlay-body-row">

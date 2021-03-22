@@ -43,10 +43,8 @@ const show_digit_number = (val, digit = 0) => {
   if(typeof val !== 'number'){
     return ''
   }
-  return val.toLocaleString('en-US', {
-    // minimumIntegerDigits: digit,
-    // useGrouping: false
-  })
+  console.log({val})
+  return val.toLocaleString('en-US')
 }
 
 const convertArBalance = (str_number) => {
