@@ -14,8 +14,9 @@ import { RegisterContentContainer } from "./style";
 import { abi } from "assets/abi";
 import { DataContext } from "contexts/DataContextContainer";
 import { show_notification } from "service/utils";
-import { Col, notification, Row } from "antd";
+import { Col, notification, Row, Spin } from "antd";
 import AlertArea from "components/Sections/AlertArea";
+import customAxios from "service/customAxios";
 
 // const arweave = Arweave.init();
 const cards = [
@@ -63,6 +64,7 @@ function RegisterContent() {
   const [showAlert, setShowAlert] = useState(false);
   const [alertVariant, setAlertVariant] = useState('error');
   const [errEmessage, setErrMessage] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const show_alert = (message = '', type = 'error') => {
     setShowAlert(true)
@@ -84,12 +86,28 @@ function RegisterContent() {
     }
   };
 
-  const rewardAddingEth = async (address) => {
+  const rewardAddingEth = async (address = '') => {
     if(!address) {
       show_notification('There is an error to detecting Ethereum address form Metamask. Please check metamask extension again.')
       return false
     }
-    show_alert('You’ll earn 1 KOI until 3 minutes.', 'success')
+    setLoading(true)
+    let { ok, data: {data} } = await customAxios.post(`/saveEth`, {
+      address
+    });
+    console.log({data})
+    if (ok) {
+      setLoading(false)
+      // show_notification(data.message)
+      // console.log(data.posted)
+      // console.log(data.duplicate)
+      // console.log(data.freeKoi)
+      // await getKoi()
+      show_alert('You’ll earn 1 KOI until 3 minutes.', 'success')
+    } else {
+      setLoading(false)
+      show_notification("Not posted on twitter!");
+    }
   };
 
   const openMetaMask = (card_type) => {
@@ -104,11 +122,12 @@ function RegisterContent() {
             { from: accounts[0] }
           );
           console.log(contractInstance);
-          show_alert('Detect ethereum address successfully.', 'success')
-          await rewardAddingEth(accounts[0])
+          history.push(`/opensea?address=${accounts[0]}`);
         } else if (card_type === "redeem") {
           console.log("contractInstance");
           console.log(accounts[0]);
+          show_alert('Detect ethereum address successfully.', 'success')
+          await rewardAddingEth(accounts[0])
         } else {
           notification.success({
             message: "Success",
@@ -138,73 +157,76 @@ function RegisterContent() {
   };
   
   return (
-    <RegisterContentContainer>
+    <>
       <AlertArea
         showMessage={showAlert}
         variant={alertVariant}
         message={errEmessage}
       ></AlertArea>
-      <Container>
-        <div className="register-content-wrapper">
-          <div className="register-content">
-            <h1 className="text-blue register-title">Register your content.</h1>
-            <h4 className="register-description">
-              There are 3 ways to register on the Koi Network. Earn rewards
-              today.
-            </h4>
-            <Row
-              className="register-cards"
-              justify="space-between"
-              gutter={[
-                { xs: 15, sm: 15, lg: 55 },
-                { sm: 15, lg: 0 },
-              ]}
-            >
-              {cards.map((_card, _i) => (
-                <Col xs={12} lg={6} key={_i}>
-                  <div
-                    key={_i}
-                    className={`register-card cursor ${
-                      _card.comingSoon ? "disable" : ""
-                    }`}
-                    onClick={() => !_card.comingSoon && onClickCard(_card)}
-                  >
-                    {_card.comingSoon && (
-                      <div className="coming-soon">Coming soon</div>
-                    )}
-                    <div className="card-img">
-                      <Image src={_card.img} />
-                    </div>
-                    <div className="card-content">
-                      <h5>{_card.title}</h5>
-                      <p className="mb-1">{_card.subtitle1}</p>
-                      {_card.subtitle2 && (
-                        <p className="mb-0">{_card.subtitle2}</p>
-                      )}
-                    </div>
-                  </div>
-                </Col>
-              ))}
-            </Row>
-            <div className="btn-back-wrapper">
-              <Button
-                className="btn-back btn-blueDark"
-                onClick={() => history.push("/contents")}
+      <RegisterContentContainer>
+        <Container>
+          <div className="register-content-wrapper">
+            <div className="register-content">
+              <h1 className="text-blue register-title">Register your content.</h1>
+              <h4 className="register-description">
+                There are 3 ways to register on the Koi Network. Earn rewards
+                today.
+              </h4>
+              <Row
+                className="register-cards"
+                justify="space-between"
+                gutter={[
+                  { xs: 15, sm: 15, lg: 55 },
+                  { sm: 15, lg: 0 },
+                ]}
               >
-                Back to Leaderboard
-              </Button>
+                {cards.map((_card, _i) => (
+                  <Col xs={12} lg={6} key={_i}>
+                    <div
+                      key={_i}
+                      className={`register-card cursor ${
+                        _card.comingSoon ? "disable" : ""
+                      }`}
+                      onClick={() => !_card.comingSoon && onClickCard(_card)}
+                    >
+                      {_card.comingSoon && (
+                        <div className="coming-soon">Coming soon</div>
+                      )}
+                      <div className="card-img">
+                        <Image src={_card.img} />
+                      </div>
+                      <div className="card-content">
+                        <h5>{_card.title}</h5>
+                        <p className="mb-1">{_card.subtitle1}</p>
+                        {_card.subtitle2 && (
+                          <p className="mb-0">{_card.subtitle2}</p>
+                        )}
+                      </div>
+                    </div>
+                  </Col>
+                ))}
+              </Row>
+              <div className="btn-back-wrapper">
+                <Button
+                  className="btn-back btn-blueDark"
+                  onClick={() => history.push("/contents")}
+                >
+                  Back to Leaderboard
+                </Button>
+              </div>
+              {loading && <div className='text-center w-100'><Spin size="large" /></div>}
+              <p className="bottom-description text-blue text-center">
+                Got a voucher?{" "}
+                <span className="span-link" onClick={onRedeemVoucher}>
+                  Redeem an NFT voucher
+                </span>{" "}
+                from Ethereum to claim your Atomic NFT.
+              </p>
             </div>
-            <p className="bottom-description text-blue text-center">
-              Got a voucher?{" "}
-              <span className="span-link" onClick={onRedeemVoucher}>
-                Redeem an NFT voucher
-              </span>{" "}
-              from Ethereum to claim your Atomic NFT.
-            </p>
           </div>
-        </div>
-      </Container>
-    </RegisterContentContainer>
+        </Container>
+      </RegisterContentContainer>
+    </>
   );
 }
 
