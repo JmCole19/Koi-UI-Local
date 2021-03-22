@@ -44,7 +44,10 @@ const show_digit_number = (val, digit = 0) => {
     return ''
   }
   console.log({val})
-  return val.toLocaleString('en-US')
+  if(val)
+    return val.toLocaleString('en-US')
+  else
+    return 0
 }
 
 const convertArBalance = (str_number) => {

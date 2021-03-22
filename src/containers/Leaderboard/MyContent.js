@@ -67,7 +67,9 @@ function MyContent() {
     // if (contents.length === 0) {
     //   console.log("here2")
     // }
+    walletAddress = walletAddress || addressAr || ''
     console.log({walletAddress})
+    console.log({addressAr})
     if(walletAddress) {
       setIsLoading(true);
       console.log("here3 : ", walletAddress)
@@ -99,8 +101,9 @@ function MyContent() {
   };
 
   useEffect(() => {
-    console.log("here1")
-    getContents(addressAr);
+    setTimeout(() => {
+      getContents();
+    }, 200)
   }, [history.location.pathname]);
 
   useEffect(() => {
@@ -117,7 +120,6 @@ function MyContent() {
 
   const detectArweaveWallet = async () => {
     try {
-      console.log("here4")
       let addr = await arweave.wallets.getAddress();
       console.log("detected arweave wallet address : ", addr);
       if (addr) {
