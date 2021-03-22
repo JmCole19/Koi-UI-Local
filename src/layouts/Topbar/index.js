@@ -20,12 +20,13 @@ const arweave = Arweave.init();
 
 function Topbar() {
   const history = useHistory();
-  const { balanceKoi,
-          balanceAr,
-          setAddressAr,
-          addressEth,
-          setAddressEth, 
-        } = useContext(DataContext);
+  const {
+    balanceKoi,
+    balanceAr,
+    setAddressAr,
+    addressEth,
+    setAddressEth,
+  } = useContext(DataContext);
   const [show, setShow] = useState(false);
   const target = useRef(null);
   const [detectorAr, setDetectorAr] = useState(false);
@@ -38,13 +39,16 @@ function Topbar() {
 
   const activeEthereum = async () => {
     if (window.ethereum) {
-      try{
-        const accounts = await window.ethereum.enable()
+      try {
+        const accounts = await window.ethereum.enable();
         setAddressEth(accounts[0]);
-        show_notification("Imported your ethereum account.", "KOI", 'success');
-      }catch(err) {
-        console.log(err)
-        show_notification("There is an error to import your ethereum account", "KOI");
+        show_notification("Imported your ethereum account.", "KOI", "success");
+      } catch (err) {
+        console.log(err);
+        show_notification(
+          "There is an error to import your ethereum account",
+          "KOI"
+        );
       }
     } else {
       // metamask extension didn't install
@@ -56,13 +60,13 @@ function Topbar() {
     }
   };
   const activeKoi = async () => {
-    if(!addressEth){
-      await activeEthereum()
-      activeArweave()
-    }else{
-      activeArweave()
+    if (!addressEth) {
+      await activeEthereum();
+      activeArweave();
+    } else {
+      activeArweave();
     }
-  }
+  };
 
   useEffect(() => {
     if (detectorAr) {
@@ -79,7 +83,7 @@ function Topbar() {
       console.log("detected arweave wallet address : ", addr);
       if (addr) {
         setAddressAr(addr);
-        history.push('/wallet-key')
+        history.push("/wallet-key");
       } else {
         // show alert
         show_notification(
@@ -114,21 +118,21 @@ function Topbar() {
             OpenKoi
           </a>
           {balanceKoi === null ? (
-            <Space size={12} className="btns-connect cursor" onClick={activeKoi}>
+            <Space
+              size={12}
+              className="btns-connect cursor"
+              onClick={activeKoi}
+            >
               <p className="text-blue mb-0 text-bold">Connect Wallet</p>
-              <Image
-                src={IconArweave}
-                className="cursor"
-                width={18}
-              />
-              <Image
-                src={IconEthereum}
-                className="cursor"
-                width={18}
-              />
+              <Image src={IconArweave} className="cursor" width={18} />
+              <Image src={IconEthereum} className="cursor" width={18} />
             </Space>
           ) : (
-            <Space size={12} className="btns-connect cursor" onClick={() => setShow(!show)}>
+            <Space
+              size={12}
+              className="btns-connect cursor"
+              onClick={() => setShow(!show)}
+            >
               <span className="text-blue mb-0 text-bold">{balanceKoi}</span>
               <Image
                 ref={target}
@@ -139,7 +143,7 @@ function Topbar() {
               <span className="text-blue mb-0 text-bold">{balanceAr}</span>
               <Image
                 ref={target}
-                src={IconEyes}
+                src={IconArweave}
                 className="cursor"
                 width={18}
               />
