@@ -4,8 +4,7 @@ import {
   Logo,
   IconArweave,
   IconEthereum,
-  IconFish,
-  IconEyes,
+  IconFish
 } from "assets/images";
 import React, { useContext, useEffect, useState, useRef } from "react";
 import { Navbar, Nav, Image, Overlay, Tooltip } from "react-bootstrap";
@@ -13,7 +12,7 @@ import { useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { DataContext } from "contexts/DataContextContainer";
 import { TopbarContainer } from "./style";
-import { show_notification } from "service/utils";
+import { show_notification, show_ar_balance, show_digit_number } from "service/utils";
 import Arweave from "arweave";
 
 const arweave = Arweave.init();
@@ -128,19 +127,15 @@ function Topbar() {
               <Image src={IconEthereum} className="cursor" width={18} />
             </Space>
           ) : (
-            <Space
-              size={12}
-              className="btns-connect cursor"
-              onClick={() => setShow(!show)}
-            >
-              <span className="text-blue mb-0 text-bold">{balanceKoi}</span>
+            <Space size={12} className="btns-connect cursor" onClick={() => setShow(!show)}>
+              <span className="text-blue mb-0 text-bold">{show_digit_number(balanceKoi)}</span>
               <Image
                 ref={target}
                 src={IconFish}
                 className="cursor"
                 width={18}
               />
-              <span className="text-blue mb-0 text-bold">{balanceAr}</span>
+              <span className="text-blue mb-0 text-bold">{show_ar_balance(balanceAr)}</span>
               <Image
                 ref={target}
                 src={IconArweave}
@@ -169,25 +164,25 @@ function Topbar() {
                 arrowProps={{ style: { display: "none" } }}
               >
                 <div className="overlay-header">
-                  <p className="text-left text-bold">See my content</p>
+                  <p onClick={() => history.replace('/my-content') } className="text-left text-bold cursor">See my content</p>
                 </div>
                 <div className="overlay-body">
                   <div className="overlay-body-row">
                     <p className="text-bold">Account summary</p>
                   </div>
-                  <div className="overlay-body-row">
+                  {/* <div className="overlay-body-row">
                     <p>Total views</p>
                     <p className="overlay-value">7,124</p>
                     <Image src={IconEyes} className="ml-2" />
-                  </div>
+                  </div> */}
                   <div className="overlay-body-row">
-                    <p>KOI balance </p>
-                    <p className="overlay-value">{balanceKoi}</p>
+                    <p>KOI </p>
+                    <p className="overlay-value">{show_digit_number(balanceKoi)}</p>
                     <Image src={IconFish} className="ml-2" />
                   </div>
                   <div className="overlay-body-row">
-                    <p>AR balance </p>
-                    <p className="overlay-value">{balanceAr}</p>
+                    <p>AR </p>
+                    <p className="overlay-value">{show_ar_balance(balanceAr)}</p>
                     <Image src={IconArweave} className="ml-2" />
                   </div>
                 </div>
