@@ -13,7 +13,7 @@ import { useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { DataContext } from "contexts/DataContextContainer";
 import { TopbarContainer } from "./style";
-import { show_notification } from "service/utils";
+import { show_notification, show_fixed_number, show_digit_number } from "service/utils";
 import Arweave from "arweave";
 
 const arweave = Arweave.init();
@@ -129,14 +129,14 @@ function Topbar() {
             </Space>
           ) : (
             <Space size={12} className="btns-connect cursor" onClick={() => setShow(!show)}>
-              <span className="text-blue mb-0 text-bold">{balanceKoi}</span>
+              <span className="text-blue mb-0 text-bold">{show_digit_number(show_fixed_number(balanceKoi, 4))}</span>
               <Image
                 ref={target}
                 src={IconFish}
                 className="cursor"
                 width={18}
               />
-              <span className="text-blue mb-0 text-bold">{balanceAr}</span>
+              <span className="text-blue mb-0 text-bold">{show_digit_number(show_fixed_number(balanceAr, 4))}</span>
               <Image
                 ref={target}
                 src={IconEyes}
@@ -171,18 +171,18 @@ function Topbar() {
                   <div className="overlay-body-row">
                     <p className="text-bold">Account summary</p>
                   </div>
-                  <div className="overlay-body-row">
+                  {/* <div className="overlay-body-row">
                     <p>Total views</p>
                     <p className="overlay-value">7,124</p>
                     <Image src={IconEyes} className="ml-2" />
-                  </div>
+                  </div> */}
                   <div className="overlay-body-row">
-                    <p>KOI balance </p>
+                    <p>KOI </p>
                     <p className="overlay-value">{balanceKoi}</p>
                     <Image src={IconFish} className="ml-2" />
                   </div>
                   <div className="overlay-body-row">
-                    <p>AR balance </p>
+                    <p>AR </p>
                     <p className="overlay-value">{balanceAr}</p>
                     <Image src={IconArweave} className="ml-2" />
                   </div>
