@@ -133,7 +133,7 @@ function RegisterContent() {
               ]}
             >
               {cards.map((_card, _i) => (
-                <Col xs={12} lg={6}>
+                <Col xs={12} lg={6} key={_i}>
                   <div
                     key={_i}
                     className={`register-card cursor ${
