@@ -13,11 +13,20 @@ import {
   FiMessageCircle,
   FiTwitter,
 } from "react-icons/fi";
+import {
+  FacebookShareButton,
+  TwitterShareButton,
+  InstapaperShareButton,
+  LinkedinShareButton,
+  EmailShareButton,
+  WhatsappShareButton,
+  TelegramShareButton,
+} from "react-share";
 import { IoLogoTiktok } from "react-icons/io5";
 import { HiOutlineMail } from "react-icons/hi";
 import { colors } from "theme";
 
-import { preUrl } from "config"
+import { preUrl } from "config";
 
 // const contents = [
 //   {
@@ -35,46 +44,6 @@ import { preUrl } from "config"
 // ];
 // const description =
 //   "José Delbo sent me his striking pencil sketch and powerful inked work, which I then interpreted in oil on canvas. I wanted to create a very painterly piece with obvious brush marks etc, but I was also aiming for a nostalgic feel, a kind of 1980’s superhero comic book look, the kind I grew up with. My goal with this animation was to try to recreate, in part, the creative process that both artists went through with the visual information I had. I was able to showcase my painting process more accurately as I could take photographs of my progress throughout. Consecutive images could then be layered like brush strokes over José’s drawing to create the impression that this was one continuous artwork from pencil, to ink, to completed painting. The representation of the line sketch at the beginning, then pencil/ink and lastly the paint layers being applied demonstrate both artists’ struggle for the right lines, tone, form, and colour until the work is finally completed. As the oil was still wet with each photograph the glare of my studio lights can be seen in the brush strokes. Eventually, the figure emerges and as it does, our hero comes to life, looking directly at the viewer -- but is he grimacing in approval or disgust? We will never know for sure as just before he can say anything, white paint is brushed across the canvas entirely and the process begins again. Only the bat is quick enough to escape.";
-const shareSocial = [
-  {
-    icon: <FiTwitter size={24} color={colors.greenDark} />,
-    title: "twitter",
-  },
-  {
-    icon: <FaInstagram size={24} color={colors.greenDark} />,
-    title: "instagram",
-  },
-  {
-    icon: <FiFacebook size={24} color={colors.greenDark} />,
-    title: "facebook",
-  },
-  {
-    icon: <FiLinkedin size={24} color={colors.greenDark} />,
-    title: "linkedin",
-  },
-  {
-    icon: <IoLogoTiktok size={24} color={colors.greenDark} />,
-    title: "tiktok",
-  },
-];
-const shareDirect = [
-  {
-    icon: <FiMessageCircle size={24} color={colors.greenDark} />,
-    title: "text",
-  },
-  {
-    icon: <HiOutlineMail size={24} color={colors.greenDark} />,
-    title: "email",
-  },
-  {
-    icon: <FaWhatsapp size={24} color={colors.greenDark} />,
-    title: "whatsapp",
-  },
-  {
-    icon: <FaTelegramPlane size={24} color={colors.greenDark} />,
-    title: "telegram",
-  },
-];
 
 function ModalContent({
   type = "share",
@@ -83,13 +52,79 @@ function ModalContent({
   onHide = () => {},
   onSwitchModal = () => {},
 }) {
-
   const [copiedLink, setCopiedLink] = useState(false);
   const [copiedCode, setCopiedCode] = useState(false);
 
   const currentUrl = `${window.location.hostname}/content-detail/${detail.txIdContent}`;
   const embedUrl = `${window.location.hostname}/embed/${detail.txIdContent}`;
-
+  const shareSocial = [
+    {
+      icon: (
+        <TwitterShareButton url={currentUrl}>
+          <FiTwitter size={24} color={colors.greenDark} />
+        </TwitterShareButton>
+      ),
+      title: "twitter",
+    },
+    {
+      icon: (
+        <InstapaperShareButton url={currentUrl}>
+          <FaInstagram size={24} color={colors.greenDark} />
+        </InstapaperShareButton>
+      ),
+      title: "instagram",
+    },
+    {
+      icon: (
+        <FacebookShareButton url={currentUrl}>
+          <FiFacebook size={24} color={colors.greenDark} />
+        </FacebookShareButton>
+      ),
+      title: "facebook",
+    },
+    {
+      icon: (
+        <LinkedinShareButton url={currentUrl}>
+          <FiLinkedin size={24} color={colors.greenDark} />
+        </LinkedinShareButton>
+      ),
+      title: "linkedin",
+    },
+    {
+      icon: <IoLogoTiktok size={24} color={colors.greenDark} />,
+      title: "tiktok",
+    },
+  ];
+  const shareDirect = [
+    {
+      icon: <FiMessageCircle size={24} color={colors.greenDark} />,
+      title: "text",
+    },
+    {
+      icon: (
+        <EmailShareButton url={currentUrl}>
+          <HiOutlineMail size={24} color={colors.greenDark} />
+        </EmailShareButton>
+      ),
+      title: "email",
+    },
+    {
+      icon: (
+        <WhatsappShareButton url={currentUrl}>
+          <FaWhatsapp size={24} color={colors.greenDark} />
+        </WhatsappShareButton>
+      ),
+      title: "whatsapp",
+    },
+    {
+      icon: (
+        <TelegramShareButton url={currentUrl}>
+          <FaTelegramPlane size={24} color={colors.greenDark} />
+        </TelegramShareButton>
+      ),
+      title: "telegram",
+    },
+  ];
   const onCopyLink = () => {
     navigator.clipboard.writeText(currentUrl);
     setCopiedLink(true);
