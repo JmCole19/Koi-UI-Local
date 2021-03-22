@@ -70,6 +70,18 @@ function RegisterContent() {
     }
   };
 
+  const onClickTweet = async () => {
+    const text = encodeURI("I just joined the @open_koi web3 economy. PayAttention with us, the future is now. "); // 
+    window.open(
+      `https://twitter.com/intent/tweet?text=${text}${address || addressAr}`,
+      "twitpostpopup",
+      `left=${window.screenX + 100}, top=${
+        window.screenY + 100
+      }, width=500, height=448, toolbar=no`
+    );
+    history.push(`/faucet?step=3&address=${address}`);
+  };
+
   const openMetaMask = (card_type) => {
     const web3 = new Web3(Web3.givenProvider || "http://localhost:8545");
     if (window.ethereum) {
@@ -113,7 +125,7 @@ function RegisterContent() {
   const onRedeemVoucher = () => {
     openMetaMask("redeem");
   };
-  console.log({ address: addressEth });
+  
   return (
     <RegisterContentContainer>
       <Container>
