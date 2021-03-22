@@ -30,7 +30,7 @@ function UploadArweave() {
   const [form] = useForm();
   const location = useLocation();
   const { step } = queryString.parse(location.search);
-  const { setAddressArweave } = useContext(DataContext);
+  const { setAddressAr } = useContext(DataContext);
   const [uploading] = useState(false);
 
   const onCompleteStep1 = () => {
@@ -66,7 +66,7 @@ function UploadArweave() {
         let addressResult = await arweave.wallets.jwkToAddress(
           JSON.parse(e.target.result)
         );
-        setAddressArweave(addressResult);
+        setAddressAr(addressResult);
         notification.success({
           message: "Success!",
           description: `Set address successfully.`,

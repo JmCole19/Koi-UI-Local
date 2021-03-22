@@ -49,8 +49,8 @@ function ConfirmOpenseas() {
   const {
     openSeas,
     setOpenSeas,
-    addressArweave,
-    setAddressArweave,
+    addressAr,
+    setAddressAr,
   } = useContext(DataContext);
   const [form] = useForm();
   const location = useLocation();
@@ -270,7 +270,7 @@ function ConfirmOpenseas() {
       console.log("addressResult : ", addressResult);
       console.log("detect address: ", addr);
       if (addr) {
-        setAddressArweave(addr);
+        setAddressAr(addr);
         setMode("uploading");
         // uploading process
         let tpUpdatingProcess = updatingProcess;
@@ -278,7 +278,7 @@ function ConfirmOpenseas() {
           try {
             let res = await exportNFT(
               arweave,
-              addressArweave,
+              addressAr,
               content,
               content.thumb,
               null,
@@ -356,7 +356,7 @@ function ConfirmOpenseas() {
                   Your NFTs are stored forever.
                 </h1>
               )}
-              {mode !== modes.complete && (
+              {/* {mode !== modes.complete && (
                 <Button
                   className="back-wrapper btn-orange"
                   onClick={() => history.push(`/opensea?address=${address}`)}
@@ -364,7 +364,7 @@ function ConfirmOpenseas() {
                   <FaArrowLeft size={20} color={colors.blueDark} />
                   <h6 className="mb-0 text-blue text-bold ml-2">Leaderboard</h6>
                 </Button>
-              )}
+              )} */}
             </div>
             {/* <h1 className="upload-title text-blue">Register your content.</h1> */}
             <div className="upload-wrapper">

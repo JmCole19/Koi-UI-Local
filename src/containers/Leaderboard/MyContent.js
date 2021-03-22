@@ -22,7 +22,7 @@ const ktools = new koi_tools();
 
 function MyContent() {
   const history = useHistory();
-  const { addressArweave, setAddressArweave } = useContext(DataContext);
+  const { addressAr, setAddressAr } = useContext(DataContext);
   const [contents, setContents] = useState([]);
   const [isExpanded, setIsExpanded] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -64,45 +64,43 @@ function MyContent() {
   };
 
   const getContents = async (walletAddress = '') => {
-    if (contents.length === 0) {
-      console.log("here2")
-      if(walletAddress) {
-        setIsLoading(true);
-        console.log("here3 : ", walletAddress)
-        ktools.myContent(walletAddress).then((res) => {
-          if(res.length === 0) {
-            show_notification("There is no contents.")  
-          }else{
-            setContents(res);
-          }
-          console.log({ res });
-        }).catch(err => {
-          console.log(err)
-          show_notification("There is an error to getting NFT contents.")
-        }).finally( () => {
-          console.log("finally")
-          setIsLoading(false);
-        });
-      }else{
-        if(!detectorAr){
-          console.log("here --1")
-          setTimeout(() => {
-            setDetectorAr(true)
-          }, 100)
+    // if (contents.length === 0) {
+    //   console.log("here2")
+    // }
+    console.log({walletAddress})
+    if(walletAddress) {
+      setIsLoading(true);
+      console.log("here3 : ", walletAddress)
+      ktools.myContent(walletAddress).then((res) => {
+        if(res.length === 0) {
+          show_notification("There is no contents.")  
         }else{
-          // show alert
-          show_alert('There is a problem to get your arwallet address. Please install arconnect extension and try again.1111')
+          setContents(res);
         }
+        console.log({ res });
+      }).catch(err => {
+        console.log(err)
+        show_alert("There is an error to getting NFT contents.")
+      }).finally( () => {
+        console.log("finally")
+        setIsLoading(false);
+      });
+    }else{
+      if(!detectorAr){
+        console.log("here --1")
+        setTimeout(() => {
+          setDetectorAr(true)
+        }, 100)
+      }else{
+        // show alert
+        show_alert('There is a problem to get your arwallet address. Please install arconnect extension and try again.1111')
       }
     }
   };
 
   useEffect(() => {
     console.log("here1")
-    getContents(addressArweave);
-    // if(addressArweave) {
-    //   getContents()
-    // }
+    getContents(addressAr);
   }, [history.location.pathname]);
 
   useEffect(() => {
@@ -124,14 +122,14 @@ function MyContent() {
       console.log("detected arweave wallet address : ", addr);
       if (addr) {
         getContents(addr)
-        setAddressArweave(addr);
+        setAddressAr(addr);
       } else {
         // show alert
         show_alert('There is a problem to get your arwallet address. Please install arconnect extension and try again.')
       }
     } catch (err) {
-      // console.log(err);
-      show_alert('Error on detectomg Arweave wallet address')
+      console.log(err);
+      show_alert('Error on detectimg Arweave wallet address')
     }
   };
 

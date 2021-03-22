@@ -22,7 +22,7 @@ function Topbar() {
   const history = useHistory();
   const { balanceKoi,
           balanceAr,
-          setAddressArweave,
+          setAddressAr,
           addressEth,
           setAddressEth, 
         } = useContext(DataContext);
@@ -78,7 +78,7 @@ function Topbar() {
       let addr = await arweave.wallets.getAddress();
       console.log("detected arweave wallet address : ", addr);
       if (addr) {
-        setAddressArweave(addr);
+        setAddressAr(addr);
         history.push('/wallet-key')
       } else {
         // show alert

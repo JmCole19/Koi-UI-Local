@@ -58,66 +58,17 @@ function RegisterContent() {
   const {
     addressEth,
     setAddressEth,
-    // addressArweave,
-    // setAddressArweave,
   } = useContext(DataContext);
-  // const [detectorAr, setDetectorAr] = useState(false);
 
   const onClickCard = (card) => {
     if (card.id === "opensea") {
       openMetaMask(card.id);
     } else if (card.id === "arweave") {
       history.push(card.link);
-      // if (addressArweave) {
-      //   history.push(card.link);
-      // } else {
-      //   setDetectorAr(true);
-      // }
     } else {
       history.push(card.link);
     }
   };
-
-  // useEffect(() => {
-  //   if (detectorAr) {
-  //     // console.log("here2 ", detectorAr)
-  //     window.addEventListener("arweaveWalletLoaded", detectArweaveWallet());
-  //     window.addEventListener("walletSwitch", (e) =>
-  //       detectSwitchArweaveWallet(e)
-  //     );
-  //     return () => {
-  //       window.removeEventListener(
-  //         "arweaveWalletLoaded",
-  //         detectArweaveWallet()
-  //       );
-  //       window.removeEventListener("walletSwitch", (e) =>
-  //         detectSwitchArweaveWallet(e)
-  //       );
-  //     };
-  //   }
-  // }, [detectorAr]);
-
-  // const detectArweaveWallet = async () => {
-  //   try {
-  //     let addr = await arweave.wallets.getAddress();
-  //     console.log("detected arweave wallet address : ", addr);
-  //     if (addr) {
-  //       setAddressArweave(addr);
-  //       history.push(`/upload/arweave?step=1`);
-  //     } else {
-  //       history.push(`/upload/arweave?step=1`);
-  //     }
-  //   } catch (err) {
-  //     console.log(err);
-  //     history.push(`/upload/arweave?step=1`);
-  //   }
-  // };
-
-  // const detectSwitchArweaveWallet = async (e) => {
-  //   console.log(e);
-  //   // let addr = "e.detail.address";
-  //   // console.log("detected switch arweave wallet address : ", addr)
-  // };
 
   const openMetaMask = (card_type) => {
     const web3 = new Web3(Web3.givenProvider || "http://localhost:8545");
@@ -182,7 +133,7 @@ function RegisterContent() {
               ]}
             >
               {cards.map((_card, _i) => (
-                <Col xs={12} lg={6}>
+                <Col xs={12} lg={6} key={_i}>
                   <div
                     key={_i}
                     className={`register-card cursor ${

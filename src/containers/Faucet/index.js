@@ -26,8 +26,8 @@ function Faucet() {
   const [loading, setLoading] = useState(false);
   const [uploading] = useState(false);
   const {
-    addressArweave,
-    setAddressArweave,
+    addressAr,
+    setAddressAr,
     keyAr,
     setKeyAr,
     balanceKoi,
@@ -51,21 +51,21 @@ function Faucet() {
       return false
     }
     setCurStep(2);
-    setAddressArweave(address);
+    setAddressAr(address);
     history.push(`/faucet?step=1&address=${address}`);
   };
 
   const onClickGetWallet = async () => {
-    if(addressArweave) {
+    if(addressAr) {
       show_notification('You already have an Araweave address')
       setTimeout( () => {
         if(keyAr){
           setCurStep(2);
-          history.push(`/faucet?step=2&address=${addressArweave}`);
+          history.push(`/faucet?step=2&address=${addressAr}`);
         }
         else{
           setCurStep(1);
-          history.push(`/faucet?step=1&address=${addressArweave}`);
+          history.push(`/faucet?step=1&address=${addressAr}`);
         }
       })
     }else if( !detectorAr ){
@@ -82,7 +82,7 @@ function Faucet() {
       fileDownload(data, "arweaveWallet.json");
       let addressResult = await arweave.wallets.jwkToAddress(keyData);
       setAddress(addressResult);
-      setAddressArweave(addressResult);
+      setAddressAr(addressResult);
       setKeyAr(keyData)
       setCurStep(2);
       history.push(`/faucet?step=2&address=${addressResult}`);
@@ -92,7 +92,7 @@ function Faucet() {
   const onClickTweet = async () => {
     const text = encodeURI("I just joined the @open_koi web3 economy. PayAttention with us, the future is now. "); // 
     window.open(
-      `https://twitter.com/intent/tweet?text=${text}${address || addressArweave}`,
+      `https://twitter.com/intent/tweet?text=${text}${address || addressAr}`,
       "twitpostpopup",
       `left=${window.screenX + 100}, top=${
         window.screenY + 100
@@ -119,7 +119,7 @@ function Faucet() {
       setBalanceAr(convertArBalance(arBalance))
       setLoading(false)
       setCurStep(4);
-      history.push(`/faucet?step=4&address=${addressArweave}`);
+      history.push(`/faucet?step=4&address=${addressAr}`);
     }catch(err) {
       setLoading(false)
       console.log("get koi balance err")
@@ -185,7 +185,7 @@ function Faucet() {
         const arweave = Arweave.init();
         let addressResult = await getArWalletAddressFromJson(arweave, arJson);
         setKeyAr(arJson)
-        setAddressArweave(addressResult)
+        setAddressAr(addressResult)
         history.push(`/faucet?step=2&address=${addressResult}`);
       };
       reader.readAsText(file);
@@ -215,7 +215,7 @@ function Faucet() {
       let addr = await arweave.wallets.getAddress();
       console.log("detected arweave wallet address : ", addr);
       if (addr) {
-        setAddressArweave(addr);
+        setAddressAr(addr);
         setCurStep(1);
         history.push(`/faucet?step=1&address=${addr}`);
       } else {
