@@ -43,9 +43,23 @@ const show_digit_number = (val, digit = 0) => {
   if(typeof val !== 'number'){
     return ''
   }
-  console.log({val})
-  if(val)
+  if(val) {
+    console.log({val})
     return val.toLocaleString('en-US')
+  }
+  else
+    return 0
+}
+
+const show_ar_balance = (val) => {
+  if(typeof val !== 'number'){
+    return ''
+  }
+  if(val) {
+    let bigger = parseInt(Math.floor(val))
+    let lower = val % 1
+    return bigger.toLocaleString('en-US') + "." + lower.toFixed(4) * 10000
+  }
   else
     return 0
 }
@@ -61,6 +75,7 @@ export {
   show_message,
   show_digit_number,
   show_fixed_number,
+  show_ar_balance,
   getBase64,
   convertArBalance,
 }

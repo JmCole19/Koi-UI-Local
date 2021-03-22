@@ -12,7 +12,7 @@ import { useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { DataContext } from "contexts/DataContextContainer";
 import { TopbarContainer } from "./style";
-import { show_notification, show_fixed_number, show_digit_number } from "service/utils";
+import { show_notification, show_ar_balance, show_digit_number } from "service/utils";
 import Arweave from "arweave";
 
 const arweave = Arweave.init();
@@ -135,7 +135,7 @@ function Topbar() {
                 className="cursor"
                 width={18}
               />
-              <span className="text-blue mb-0 text-bold">{show_digit_number(show_fixed_number(balanceAr, 4))}</span>
+              <span className="text-blue mb-0 text-bold">{show_ar_balance(2235.032659)}</span>
               <Image
                 ref={target}
                 src={IconArweave}
