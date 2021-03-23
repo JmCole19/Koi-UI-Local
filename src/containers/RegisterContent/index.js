@@ -13,7 +13,7 @@ import { useHistory } from "react-router-dom";
 import { RegisterContentContainer } from "./style";
 import { abi } from "assets/abi";
 import { DataContext } from "contexts/DataContextContainer";
-import { show_notification } from "service/utils";
+import { convertArBalance, show_notification } from "service/utils";
 import { Col, notification, Row, Spin } from "antd";
 import AlertArea from "components/Sections/AlertArea";
 import customAxios from "service/customAxios";
@@ -65,7 +65,10 @@ function RegisterContent() {
   const {
     addressAr,
     setAddressAr,
+    keyAr,
     setAddressEth,
+    setBalanceKoi,
+    setBalanceAr,
   } = useContext(DataContext);
   const [showAlert, setShowAlert] = useState(false);
   const [alertVariant, setAlertVariant] = useState('error');
@@ -73,7 +76,7 @@ function RegisterContent() {
   const [loading, setLoading] = useState(false);
   const [detectorAr, setDetectorAr] = useState(false);
 
-  const show_alert = (message = '', type = 'error') => {
+  const show_alert = (message = '', type = 'danger') => {
     setShowAlert(true)
     setAlertVariant(type)
     setErrMessage(message)
@@ -107,13 +110,17 @@ function RegisterContent() {
       if (ok) {
         show_alert(data.message, 'success')
         let balance = await getKoi(keyAr)
+        setLoading(false)
+        setBalanceKoi(Number(balance.koiBalance))
+        setBalanceAr(convertArBalance(balance.arBalance))
         // show_alert('You’ll earn 3 KOI until 3 minutes.', 'success')
       } else {
         setLoading(false)
         show_notification("There is an error to receive free KOI");
       }
-    }catch{
+    }catch(err) {
       setLoading(false)
+      show_notification(err.message);
     }
     
   };
@@ -161,7 +168,7 @@ function RegisterContent() {
     }
   };
   const onRedeemVoucher = () => {
-    if(!addressAr) {
+    if(!keyAr) {
       setDetectorAr(true);
     }else{
       openMetaMask("redeem");
@@ -183,22 +190,29 @@ function RegisterContent() {
       console.log("detected arweave wallet address : ", addr);
       if (addr) {
         setAddressAr(addr);
-        openMetaMask("redeem");
+        if(keyAr)
+          openMetaMask("redeem");
+        else{
+          show_alert(
+            "There is a problem to get your arwallet balance. Please upload arweave key."
+          );
+          setTimeout( () => {
+            history.push("/wallet-key");
+          }, 4000)  
+        }
       } else {
         // show alert
-        show_notification(
-          "There is a problem to get your arwallet address. Please install arconnect extension and try again."
-        );
+        show_alert("Error on detectimg Arweave wallet address");
         setTimeout( () => {
           history.push("/wallet-key");
-        }, 3000)
+        }, 4000)  
       }
     } catch (err) {
       // console.log(err);
-      show_notification("Error on detectimg Arweave wallet address");
+      show_alert("Error on detectimg Arweave wallet address");
       setTimeout( () => {
         history.push("/wallet-key");
-      }, 3000)
+      }, 4000)  
     }
   };
   
