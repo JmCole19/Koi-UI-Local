@@ -44,7 +44,6 @@ const show_digit_number = (val, digit = 0) => {
     return ''
   }
   if(val) {
-    console.log({val})
     return val.toLocaleString('en-US')
   }
   else

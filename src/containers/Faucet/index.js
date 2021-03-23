@@ -149,7 +149,6 @@ function Faucet() {
         show_notification("Not posted on twitter!");
       }
     } else {
-      setLoading(false)
       show_notification("You don't have an address yet!")
     }
   };
