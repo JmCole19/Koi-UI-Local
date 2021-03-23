@@ -58,10 +58,10 @@ function Faucet() {
   const onClickSubmitAddress = () => {
     // validation
     if(!address) {
-      show_notification('Please input wallet address')
+      show_alert('Please input wallet address')
       return false
     }else if(!keyAr) {
-      show_notification('Please upload JSON keyfile')
+      show_alert('Please upload JSON keyfile')
       return false
     }
     setCurStep(2);
@@ -71,7 +71,7 @@ function Faucet() {
 
   const onClickGetWallet = async () => {
     if(addressAr) {
-      show_notification('You already have an Araweave address')
+      show_alert('You already have an Araweave address')
       setTimeout( () => {
         if(keyAr){
           setCurStep(2);
@@ -163,7 +163,7 @@ function Faucet() {
         show_notification("Not posted on twitter!");
       }
     } else {
-      show_notification("You don't have an address yet!")
+      show_alert("You don't have an address yet!")
     }
   };
   
@@ -232,7 +232,7 @@ function Faucet() {
         setCurStep(1);
         history.push(`/faucet?step=1&address=${addr}`);
       } else {
-        show_notification("Error on detectimg Arweave wallet address");
+        show_alert("Error on detectimg Arweave wallet address");
       }
     } catch (err) {
       console.log(err);
