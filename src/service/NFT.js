@@ -100,17 +100,7 @@ const exportNFT = async (arweave, ownerAddress, content, imageUrl = '', imageBlo
     // console.log(" wallet : ", wallet);
 
     let uploader = await arweave.transactions.getUploader(tx)
-    // pay via KOI
-    try{
-      let ktools = new koi_tools();
-      await ktools.loadWallet(wallet)
-      await ktools.registerData(tx.id);
-    }catch(err){
-      console.log("err-koi_tools", err)
-      return false
-    }
-    // end koi
-
+    
     while (!uploader.isComplete) {
       await uploader.uploadChunk()
       console.log(
@@ -118,6 +108,21 @@ const exportNFT = async (arweave, ownerAddress, content, imageUrl = '', imageBlo
         uploader.uploadedChunks + '/' + uploader.totalChunks
       )
     }
+
+    /**/
+    // pay via KOI
+    try{
+      let ktools = new koi_tools();
+      console.log("here1")
+      await ktools.loadWallet(wallet)
+      console.log("here2", ktools.wallet)
+      await ktools.registerData(tx.id, ownerAddress);
+    }catch(err){
+      console.log("err-koi_tools", err)
+      return false
+    }
+    // end koi
+
     console.log(tx.id);
     return tx.id
   } catch (err) {
