@@ -83,7 +83,7 @@ function ConfirmOpenseas() {
     setTimeout( () => {
       setShowAlert(false)
       setErrMessage('')
-    }, 24000)
+    }, 4000)
   }
 
   const handleBack = () => {
