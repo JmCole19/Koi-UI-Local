@@ -18,6 +18,8 @@ import { Col, notification, Row, Spin } from "antd";
 import AlertArea from "components/Sections/AlertArea";
 import customAxios from "service/customAxios";
 import Arweave from "arweave";
+import { IoGitNetworkOutline } from "react-icons/io5";
+import { getKoi } from "service/KOI";
 
 const arweave = Arweave.init();
 
@@ -96,23 +98,24 @@ function RegisterContent() {
       show_notification('There is an error to detecting Ethereum address form Metamask. Please check metamask extension again.')
       return false
     }
-    setLoading(true)
-    let { ok, data: {data} } = await customAxios.post(`/addEthAddress`, {
-      address, targetAddress: addressAr
-    });
-    console.log({data})
-    if (ok) {
+    try{
+      setLoading(true)
+      let { ok, data: {data} } = await customAxios.post(`/addEthAddress`, {
+        address, targetAddress: addressAr
+      });
+      console.log({data})
+      if (ok) {
+        show_alert(data.message, 'success')
+        let balance = await getKoi(keyAr)
+        // show_alert('You’ll earn 3 KOI until 3 minutes.', 'success')
+      } else {
+        setLoading(false)
+        show_notification("There is an error to receive free KOI");
+      }
+    }catch{
       setLoading(false)
-      // show_notification(data.message)
-      // console.log(data.posted)
-      // console.log(data.duplicate)
-      // console.log(data.freeKoi)
-      // await getKoi()
-      show_alert('You’ll earn 1 KOI until 3 minutes.', 'success')
-    } else {
-      setLoading(false)
-      show_notification("Not posted on twitter!");
     }
+    
   };
 
   const openMetaMask = (card_type) => {
@@ -180,16 +183,22 @@ function RegisterContent() {
       console.log("detected arweave wallet address : ", addr);
       if (addr) {
         setAddressAr(addr);
-        history.push("/wallet-key");
+        openMetaMask("redeem");
       } else {
         // show alert
         show_notification(
           "There is a problem to get your arwallet address. Please install arconnect extension and try again."
         );
+        setTimeout( () => {
+          history.push("/wallet-key");
+        }, 3000)
       }
     } catch (err) {
       // console.log(err);
       show_notification("Error on detectimg Arweave wallet address");
+      setTimeout( () => {
+        history.push("/wallet-key");
+      }, 3000)
     }
   };
   
