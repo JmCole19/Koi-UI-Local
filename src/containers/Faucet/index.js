@@ -71,7 +71,7 @@ function Faucet() {
 
   const onClickGetWallet = async () => {
     if(addressAr) {
-      show_alert('You already have an Araweave address')
+      show_alert('You already have an Araweave address', 'success')
       setTimeout( () => {
         if(keyAr){
           setCurStep(2);
