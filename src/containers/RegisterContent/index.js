@@ -5,7 +5,7 @@ import {
   IconUpload,
   IconOpenSea,
 } from "assets/images";
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import Web3 from "web3";
 // import Arweave from "arweave";
 import { Button, Container, Image } from "react-bootstrap";
@@ -17,6 +17,9 @@ import { show_notification } from "service/utils";
 import { Col, notification, Row, Spin } from "antd";
 import AlertArea from "components/Sections/AlertArea";
 import customAxios from "service/customAxios";
+import Arweave from "arweave";
+
+const arweave = Arweave.init();
 
 // const arweave = Arweave.init();
 const cards = [
@@ -58,13 +61,15 @@ const cards = [
 function RegisterContent() {
   const history = useHistory();
   const {
-    addressEth,
+    addressAr,
+    setAddressAr,
     setAddressEth,
   } = useContext(DataContext);
   const [showAlert, setShowAlert] = useState(false);
   const [alertVariant, setAlertVariant] = useState('error');
   const [errEmessage, setErrMessage] = useState('');
   const [loading, setLoading] = useState(false);
+  const [detectorAr, setDetectorAr] = useState(false);
 
   const show_alert = (message = '', type = 'error') => {
     setShowAlert(true)
@@ -92,8 +97,8 @@ function RegisterContent() {
       return false
     }
     setLoading(true)
-    let { ok, data: {data} } = await customAxios.post(`/saveEth`, {
-      address
+    let { ok, data: {data} } = await customAxios.post(`/addEthAddress`, {
+      address, targetAddress: addressAr
     });
     console.log({data})
     if (ok) {
@@ -153,7 +158,39 @@ function RegisterContent() {
     }
   };
   const onRedeemVoucher = () => {
-    openMetaMask("redeem");
+    if(!addressAr) {
+      setDetectorAr(true);
+    }else{
+      openMetaMask("redeem");
+    }
+  };
+
+  useEffect(() => {
+    if (detectorAr) {
+      window.addEventListener("arweaveWalletLoaded", detectArweaveWallet());
+      return () => {
+        window.removeEventListener("arweaveWalletLoaded", () => {});
+      };
+    }
+  }, [detectorAr]);
+
+  const detectArweaveWallet = async () => {
+    try {
+      let addr = await arweave.wallets.getAddress();
+      console.log("detected arweave wallet address : ", addr);
+      if (addr) {
+        setAddressAr(addr);
+        history.push("/wallet-key");
+      } else {
+        // show alert
+        show_notification(
+          "There is a problem to get your arwallet address. Please install arconnect extension and try again."
+        );
+      }
+    } catch (err) {
+      // console.log(err);
+      show_notification("Error on detectimg Arweave wallet address");
+    }
   };
   
   return (
