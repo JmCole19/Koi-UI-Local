@@ -18,11 +18,12 @@ function AlertArea({
     return (
         <CustomAlertContainer>
             <Alert className="custom-alert" transition show={showMessage} variant={variant}>
-                <p className="text-blue text-center mb-0">
-                    {message} 
-                    <br />
+                <div className="text-blue text-center mb-0" dangerouslySetInnerHTML={{__html: message}} >
+                    {/* {message}  */}
+                </div>
+                <div className="text-blue text-center mb-0">
                     {children}
-                </p>
+                </div>
             </Alert>
         </CustomAlertContainer>
     );
