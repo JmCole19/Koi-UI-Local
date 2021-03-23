@@ -72,6 +72,16 @@ function ConfirmOpenseas() {
   const [walletKey, setWalletKey] = useState(null);
   const [updatingProcess, setUploadingProcess] = useState(0);
 
+  const show_alert = (message = '', type = 'danger') => {
+    setShowAlert(true)
+    setAlertVariant(type)
+    setErrMessage(message)
+    setTimeout( () => {
+      setShowAlert(false)
+      setErrMessage('')
+    }, 4000)
+  }
+  
   const handleBack = () => {
     switch (
       mode // change | confirm | uploadKey | uploading | complete
@@ -100,11 +110,20 @@ function ConfirmOpenseas() {
     }
   };
 
+  const formValidation = () => {
+    if(!activeOpenSea.title) {
+      show_al
+    }
+  }
+
   const onClickConfirm = () => {
     switch (
       mode // change | confirm | uploadKey | uploading | complete
     ) {
       case modes.change:
+        if(!formValidation()){
+          break;
+        }
         if (activeStep === uploadContens.length) {
           setMode("confirm");
           setShowModal(true);
