@@ -1,5 +1,6 @@
 // import Arweave from "arweave";
 // const arweave = Arweave.init()
+import { koi_tools } from "koi_tools"
 
 const getArWalletAddressFromJson = async (arweave, keyData) => {
   let addressResult = await arweave.wallets.jwkToAddress(keyData);
@@ -99,6 +100,11 @@ const exportNFT = async (arweave, ownerAddress, content, imageUrl = '', imageBlo
     // console.log(" wallet : ", wallet);
 
     let uploader = await arweave.transactions.getUploader(tx)
+    // pay via KOI
+    let ktools = new koi_tools();
+    await ktools.loadWallet(wallet)
+    await ktools.registerData(tx.id);
+    // end koi
 
     while (!uploader.isComplete) {
       await uploader.uploadChunk()
