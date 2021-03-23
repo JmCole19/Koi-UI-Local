@@ -90,7 +90,7 @@ function Faucet() {
   };
 
   const onClickTweet = async () => {
-    const text = encodeURI("I just joined the @open_koi web3 economy. PayAttention with us, the future is now. KOI"); // 
+    const text = encodeURI("I just joined the @open_koi web3 economy. Pay attention with us, the future is now. KOI"); // 
     window.open(
       `https://twitter.com/intent/tweet?text=${text}${address || addressAr}`,
       "twitpostpopup",
