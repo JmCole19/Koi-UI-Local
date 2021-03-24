@@ -17,6 +17,7 @@ import { colors } from "theme";
 import { FaArrowLeft } from "react-icons/fa";
 import { DataContext } from "contexts/DataContextContainer";
 import AlertArea from "components/Sections/AlertArea";
+import { alertTimeout } from "config";
 
 const { TextArea } = Input;
 const { Dragger } = Upload;
@@ -113,7 +114,7 @@ function UploadManual() {
     setTimeout( () => {
       setShowAlert(false)
       setErrMessage('')
-    }, 4000)
+    }, alertTimeout)
   }
 
   const uploadContent = async (arJson) => {

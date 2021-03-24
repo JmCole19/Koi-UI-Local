@@ -21,7 +21,7 @@ import ModalContent from "components/Elements/ModalContent";
 import { show_notification } from "service/utils";
 import axios from "axios";
 import AlertArea from "components/Sections/AlertArea";
-import { preUrl } from "config"
+import { preUrl, alertTimeout } from "config"
 
 // const ktools = new koi_tools();
 
@@ -82,7 +82,7 @@ function ContentDetail() {
     setTimeout( () => {
       setShowAlert(false)
       setErrMessage('')
-    }, 4000)
+    }, alertTimeout)
   }
 
   const onClickShowMore = () => {

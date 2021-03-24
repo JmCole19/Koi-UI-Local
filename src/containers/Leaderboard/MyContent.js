@@ -13,6 +13,7 @@ import ModalContent from "components/Elements/ModalContent";
 import { show_notification } from "service/utils";
 import AlertArea from "components/Sections/AlertArea";
 import Arweave from "arweave";
+import { alertTimeout } from "config";
 
 const arweave = Arweave.init();
 const { Panel } = Collapse;
@@ -141,7 +142,7 @@ function MyContent() {
     setTimeout( () => {
       setShowAlert(false)
       setErrMessage('')
-    }, 4000)
+    }, alertTimeout)
   }
 
   return (
