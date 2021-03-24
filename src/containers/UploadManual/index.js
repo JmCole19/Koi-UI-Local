@@ -43,6 +43,7 @@ function UploadManual() {
   const [imageUrl, setImageUrl] = useState(null);
   const [imageBlob, setImageBlob] = useState(null);
   const [showAlert, setShowAlert] = useState(false);
+  const [alertVariant, setAlertVariant] = useState('danger');
   const [errEmessage, setErrMessage] = useState('');
   const [activeContent, setActiveContent] = useState({
     title: "",
@@ -64,7 +65,7 @@ function UploadManual() {
     ) {
       history.push(`/upload/manual?step=3`);
     } else {
-      show_notification("Please fill out all fields.", "Error");
+      show_alert("Please fill out all fields.", "danger");
     }
   };
 
@@ -105,8 +106,9 @@ function UploadManual() {
     // }
   };
 
-  const show_alert = (message = '') => {
+  const show_alert = (message = '', type = 'danger') => {
     setShowAlert(true)
+    setAlertVariant(type)
     setErrMessage(message)
     setTimeout( () => {
       setShowAlert(false)
@@ -127,7 +129,7 @@ function UploadManual() {
         arJson
       );
       if (res) {
-        show_alert("Your transaction id is " + res + ". Upload successfully")
+        show_alert("Your transaction id is " + res + ". Upload successfully", 'success')
         // show_notification(
         //   "Your transaction id is " + res + ". Upload successfully",
         //   "NFT uploading",
@@ -249,7 +251,7 @@ function UploadManual() {
     <>
       <AlertArea
         showMessage={showAlert}
-        variant='success'
+        variant={alertVariant}
         message={errEmessage}
       ></AlertArea>
       <UploadUploadContainer>
@@ -363,6 +365,9 @@ function UploadManual() {
                               Confirm the information for your upload.
                             </h6>
                           </div>
+                          <div className="icon-back cursor" onClick={handleBack}>
+                            <i className="fal fa-arrow-circle-left"></i>
+                          </div>
                         </div>
                         <div className="upload-content-form">
                           <div className="content-img-wrapper">
@@ -471,6 +476,9 @@ function UploadManual() {
                                 .
                               </p>
                             </div>
+                          </div>
+                          <div className="icon-back cursor" onClick={handleBack}>
+                            <i className="fal fa-arrow-circle-left"></i>
                           </div>
                         </div>
                         <div className="upload-content-form d-flex justify-content-center"></div>
