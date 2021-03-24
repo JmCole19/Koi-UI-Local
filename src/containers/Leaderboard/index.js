@@ -12,6 +12,8 @@ import { DataContext } from "contexts/DataContextContainer";
 import ModalContent from "components/Elements/ModalContent";
 import axios from "axios";
 import { show_notification } from "service/utils";
+import AlertArea from "components/Sections/AlertArea";
+import { alertTimeout } from "config";
 
 const { Panel } = Collapse;
 const options = ["24h", "1w", "1m", "1y", "all"];
@@ -26,6 +28,19 @@ function Leaderboard() {
   const [showModal, setShowModal] = useState(false);
   const [modalType, setModalType] = useState("share");
   const [selectedContent, setSelectedContent] = useState([]);
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertVariant, setAlertVariant] = useState('danger');
+  const [errEmessage, setErrMessage] = useState('');
+
+  const show_alert = (message = '', type = 'danger') => {
+    setShowAlert(true)
+    setAlertVariant(type)
+    setErrMessage(message)
+    setTimeout( () => {
+      setShowAlert(false)
+      setErrMessage('')
+    }, alertTimeout)
+  }
 
   const onClickItem = (item, type) => {
     if (type === "view") {
@@ -78,7 +93,7 @@ function Leaderboard() {
         const data = res.data
         // console.log({ data });
         if(data === 0) {
-          show_notification("There is no contents.")  
+          show_alert("There is no contents.")  
         }else{
           setContents(data);
         }

@@ -76,14 +76,14 @@ function MyContent() {
       console.log("here3 : ", walletAddress)
       ktools.myContent(walletAddress).then((res) => {
         if(res.length === 0) {
-          show_notification("There is no contents.")  
+          show_alert("There is no contents.")  
         }else{
           setContents(res);
         }
         console.log({ res });
       }).catch(err => {
         console.log(err)
-        show_alert("There is an error to getting NFT contents.")
+        show_notification("There is an error to getting NFT contents.")
       }).finally( () => {
         console.log("finally")
         setIsLoading(false);
