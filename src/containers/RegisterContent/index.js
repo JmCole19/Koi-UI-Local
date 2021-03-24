@@ -19,6 +19,7 @@ import AlertArea from "components/Sections/AlertArea";
 import customAxios from "service/customAxios";
 import Arweave from "arweave";
 import { getKoi } from "service/KOI";
+import { alertTimeout } from "config";
 
 const arweave = Arweave.init();
 
@@ -82,7 +83,7 @@ function RegisterContent() {
     setTimeout( () => {
       setShowAlert(false)
       setErrMessage('')
-    }, 4000)
+    }, alertTimeout)
   }
 
   const onClickCard = (card) => {

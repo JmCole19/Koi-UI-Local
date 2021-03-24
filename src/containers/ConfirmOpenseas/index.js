@@ -23,6 +23,7 @@ import Arweave from "arweave";
 import { show_notification, show_fixed_number } from "service/utils";
 import { getArWalletAddressFromJson, exportNFT } from "service/NFT";
 import AlertArea from "components/Sections/AlertArea";
+import {alertTimeout} from 'config'
 
 const arweave = Arweave.init();
 const { TextArea } = Input;
@@ -83,7 +84,7 @@ function ConfirmOpenseas() {
     setTimeout( () => {
       setShowAlert(false)
       setErrMessage('')
-    }, 4000)
+    }, alertTimeout)
   }
 
   const handleBack = () => {

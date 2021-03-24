@@ -14,6 +14,7 @@ import { show_notification, convertArBalance, show_digit_number } from "service/
 import { getArWalletAddressFromJson } from "service/NFT";
 import { koi_tools } from "koi_tools"
 import AlertArea from "components/Sections/AlertArea";
+import { alertTimeout } from "config";
 
 const { Dragger } = Upload;
 
@@ -47,7 +48,7 @@ function Faucet() {
     setTimeout( () => {
       setShowAlert(false)
       setErrMessage('')
-    }, 4000)
+    }, alertTimeout)
   }
   
   const onSkipGetWallet = () => {
