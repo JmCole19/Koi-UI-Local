@@ -82,29 +82,6 @@ function UploadManual() {
 
   const handleBack = () => {
     history.goBack()
-    // switch (
-    //   step // change | confirm | uploadKey | uploading | complete
-    // ) {
-    //   case "1":
-    //     history.goBack()
-    //     break;
-    //   case "confirm":
-    //     // setActiveStep(activeStep)
-    //     setMode(modes.change);
-    //     break;
-    //   case "uploadKey":
-    //     setMode(modes.change);
-    //     break;
-    //   case "uploading":
-    //     setMode(modes.change);
-    //     break;
-    //   case "complete":
-    //     setMode(modes.change);
-    //     break;
-    //   default:
-    //     setMode(modes.change);
-    //     break;
-    // }
   };
 
   const show_alert = (message = '', type = 'danger') => {
