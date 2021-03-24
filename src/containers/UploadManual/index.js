@@ -78,6 +78,33 @@ function UploadManual() {
     setActiveContent(tpContent);
   };
 
+  const handleBack = () => {
+    history.goBack()
+    // switch (
+    //   step // change | confirm | uploadKey | uploading | complete
+    // ) {
+    //   case "1":
+    //     history.goBack()
+    //     break;
+    //   case "confirm":
+    //     // setActiveStep(activeStep)
+    //     setMode(modes.change);
+    //     break;
+    //   case "uploadKey":
+    //     setMode(modes.change);
+    //     break;
+    //   case "uploading":
+    //     setMode(modes.change);
+    //     break;
+    //   case "complete":
+    //     setMode(modes.change);
+    //     break;
+    //   default:
+    //     setMode(modes.change);
+    //     break;
+    // }
+  };
+
   const show_alert = (message = '') => {
     setShowAlert(true)
     setErrMessage(message)
@@ -262,6 +289,9 @@ function UploadManual() {
                             <h6 className="mb-0 text-blue ml-2">
                               Select a file to upload to the permaweb.
                             </h6>
+                          </div>
+                          <div className="icon-back cursor" onClick={handleBack}>
+                            <i className="fal fa-arrow-circle-left"></i>
                           </div>
                         </div>
                         <div className="upload-image-form">

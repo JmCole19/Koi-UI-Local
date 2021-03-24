@@ -107,6 +107,17 @@ export const UploadUploadContainer = styled.div`
                 }
               }
             }
+            .icon-back {
+              position: absolute;
+              top: 12px;
+              right: 12px;
+              cursor: pointer;
+              z-index: 1;
+              i {
+                font-size: 24px;
+                color: ${colors.blueDark};
+              }
+            }
           }
           .upload-image-form {
             .upload-content-row {
