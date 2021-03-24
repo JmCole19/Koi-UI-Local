@@ -70,7 +70,7 @@ function RegisterContent() {
     setBalanceAr,
   } = useContext(DataContext);
   const [showAlert, setShowAlert] = useState(false);
-  const [alertVariant, setAlertVariant] = useState('error');
+  const [alertVariant, setAlertVariant] = useState('danger');
   const [errEmessage, setErrMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const [detectorAr, setDetectorAr] = useState(false);

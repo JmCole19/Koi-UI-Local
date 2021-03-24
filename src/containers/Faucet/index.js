@@ -13,6 +13,7 @@ import { DataContext } from "contexts/DataContextContainer";
 import { show_notification, convertArBalance, show_digit_number } from "service/utils";
 import { getArWalletAddressFromJson } from "service/NFT";
 import { koi_tools } from "koi_tools"
+import AlertArea from "components/Sections/AlertArea";
 
 const { Dragger } = Upload;
 
@@ -35,6 +36,19 @@ function Faucet() {
     setBalanceAr,
   } = useContext(DataContext);
   const [detectorAr, setDetectorAr] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertVariant, setAlertVariant] = useState('danger');
+  const [errEmessage, setErrMessage] = useState('');
+
+  const show_alert = (message = '', type = 'danger') => {
+    setShowAlert(true)
+    setAlertVariant(type)
+    setErrMessage(message)
+    setTimeout( () => {
+      setShowAlert(false)
+      setErrMessage('')
+    }, 4000)
+  }
   
   const onSkipGetWallet = () => {
     setCurStep(1);
@@ -44,10 +58,10 @@ function Faucet() {
   const onClickSubmitAddress = () => {
     // validation
     if(!address) {
-      show_notification('Please input wallet address')
+      show_alert('Please input wallet address')
       return false
     }else if(!keyAr) {
-      show_notification('Please upload JSON keyfile')
+      show_alert('Please upload JSON keyfile')
       return false
     }
     setCurStep(2);
@@ -57,7 +71,7 @@ function Faucet() {
 
   const onClickGetWallet = async () => {
     if(addressAr) {
-      show_notification('You already have an Araweave address')
+      show_alert('You already have an Araweave address', 'success')
       setTimeout( () => {
         if(keyAr){
           setCurStep(2);
@@ -149,7 +163,7 @@ function Faucet() {
         show_notification("Not posted on twitter!");
       }
     } else {
-      show_notification("You don't have an address yet!")
+      show_alert("You don't have an address yet!")
     }
   };
   
@@ -218,7 +232,7 @@ function Faucet() {
         setCurStep(1);
         history.push(`/faucet?step=1&address=${addr}`);
       } else {
-        show_notification("Error on detectimg Arweave wallet address");
+        show_alert("Error on detectimg Arweave wallet address");
       }
     } catch (err) {
       console.log(err);
@@ -227,202 +241,209 @@ function Faucet() {
   };
 
   return (
-    <FaucetContainer>
-      <Container>
-        <div className="faucet-wrapper">
-          <h1 className="f-32 text-blue">Want to earn attention rewards?</h1>
-          <h6 className="faucet-description text-blue">
-            Get free KOI here so you can upload to the network. Just follow the
-            steps below.
-          </h6>
-          <Carousel
-            className="faucet-cards-wrapper"
-            pause="hover"
-            nextIcon={null}
-            prevIcon={null}
-            indicators={null}
-            activeIndex={curStep}
-          >
-            <Carousel.Item>
-              <div className="faucet-step-card">
-                <h1 className="f-32 text-blue">1</h1>
-                <div className="step-content">
-                  <h6 className="step-title text-blue">
-                    Get an Arweave wallet.
-                  </h6>
-                  <h6 className="text-blue">
-                    Already have an Arweave wallet?{" "}
-                    <b className="cursor" onClick={onSkipGetWallet}>
-                      Skip ahead
-                    </b>
-                    .
-                  </h6>
-                  <Button
-                    className="btn-step-card mt-auto mx-auto"
-                    onClick={onClickGetWallet}
-                  >
-                    Get a Wallet
-                  </Button>
-                  <p className="text-blue">
-                    This button downloads a .JSON wallet file. You don’t need to
-                    do anything with it yet.
-                  </p>
-                </div>
-              </div>
-            </Carousel.Item>
-            <Carousel.Item>
-              <div className="faucet-step-card">
-                <div className="icon-back" onClick={() => onClickBackTo(0)}>
-                  <i className="fal fa-arrow-circle-left"></i>
-                </div>
-                <h1 className="f-32 text-blue">1</h1>
-                <div className="step-content has-wallet">
-                  <h6 className="step-title text-blue mb-4">
-                    Connect a wallet
-                  </h6>
-                  <h6 className="text-blue">
-                    Paste your Arweave wallet address here.
-                  </h6>
-                  <div className="submit-wrapper mt-2">
-                    <Input
-                      className="input-address"
-                      placeholder="1234567890123456789012345678901234567890123"
-                      value={address}
-                      onChange={(e) => setAddress(e.target.value)}
-                    />
-                    {/* <Button
-                      className="btn-step-card"
-                      onClick={onClickSubmitAddress}
+    <>
+      <AlertArea
+        showMessage={showAlert}
+        variant={alertVariant}
+        message={errEmessage}
+      ></AlertArea>
+      <FaucetContainer>
+        <Container>
+          <div className="faucet-wrapper">
+            <h1 className="f-32 text-blue">Want to earn attention rewards?</h1>
+            <h6 className="faucet-description text-blue">
+              Get free KOI here so you can upload to the network. Just follow the
+              steps below.
+            </h6>
+            <Carousel
+              className="faucet-cards-wrapper"
+              pause="hover"
+              nextIcon={null}
+              prevIcon={null}
+              indicators={null}
+              activeIndex={curStep}
+            >
+              <Carousel.Item>
+                <div className="faucet-step-card">
+                  <h1 className="f-32 text-blue">1</h1>
+                  <div className="step-content">
+                    <h6 className="step-title text-blue">
+                      Get an Arweave wallet.
+                    </h6>
+                    <h6 className="text-blue">
+                      Already have an Arweave wallet?{" "}
+                      <b className="cursor" onClick={onSkipGetWallet}>
+                        Skip ahead
+                      </b>
+                      .
+                    </h6>
+                    <Button
+                      className="btn-step-card mt-auto mx-auto"
+                      onClick={onClickGetWallet}
                     >
-                      Submit Address
-                    </Button> */}
+                      Get a Wallet
+                    </Button>
+                    <p className="text-blue">
+                      This button downloads a .JSON wallet file. You don’t need to
+                      do anything with it yet.
+                    </p>
                   </div>
-                  <div className="w-100">
-                    <div className="upload-cards-wrapper">
-                      <div className="single-ant-file-upload">
-                        <Dragger
-                          name="file"
-                          accept="application/JSON"
-                          multiple={false}
-                          listType="picture"
-                          beforeUpload={beforeJsonUpload}
-                          fileList={false}
-                          showUploadList={false}
-                        >
-                          <div className="uploader-container">
-                            {uploading ? (
-                              <Spin size="large" />
-                            ) : (
-                              <>
-                                <div className="uploader-icon d-flex justify-content-center align-items-center">
-                                  <Image src={IconUpload} />
-                                </div>
-                                <p className="text-blue mb-0">
-                                  Drag & Drop your Arweave keyfile here.
-                                </p>
-                              </>
-                            )}
-                          </div>
-                        </Dragger>
+                </div>
+              </Carousel.Item>
+              <Carousel.Item>
+                <div className="faucet-step-card">
+                  <div className="icon-back" onClick={() => onClickBackTo(0)}>
+                    <i className="fal fa-arrow-circle-left"></i>
+                  </div>
+                  <h1 className="f-32 text-blue">1</h1>
+                  <div className="step-content has-wallet">
+                    <h6 className="step-title text-blue mb-4">
+                      Connect a wallet
+                    </h6>
+                    <h6 className="text-blue">
+                      Paste your Arweave wallet address here.
+                    </h6>
+                    <div className="submit-wrapper mt-2">
+                      <Input
+                        className="input-address"
+                        placeholder="1234567890123456789012345678901234567890123"
+                        value={address}
+                        onChange={(e) => setAddress(e.target.value)}
+                      />
+                      {/* <Button
+                        className="btn-step-card"
+                        onClick={onClickSubmitAddress}
+                      >
+                        Submit Address
+                      </Button> */}
+                    </div>
+                    <div className="w-100">
+                      <div className="upload-cards-wrapper">
+                        <div className="single-ant-file-upload">
+                          <Dragger
+                            name="file"
+                            accept="application/JSON"
+                            multiple={false}
+                            listType="picture"
+                            beforeUpload={beforeJsonUpload}
+                            fileList={false}
+                            showUploadList={false}
+                          >
+                            <div className="uploader-container">
+                              {uploading ? (
+                                <Spin size="large" />
+                              ) : (
+                                <>
+                                  <div className="uploader-icon d-flex justify-content-center align-items-center">
+                                    <Image src={IconUpload} />
+                                  </div>
+                                  <p className="text-blue mb-0">
+                                    Drag & Drop your Arweave keyfile here.
+                                  </p>
+                                </>
+                              )}
+                            </div>
+                          </Dragger>
+                        </div>
                       </div>
                     </div>
+                    <div className="w-100 text-center">
+                      <Button
+                        className="btn-step-card"
+                        onClick={onClickSubmitAddress}
+                      >
+                        Submit Address
+                      </Button>
+                    </div>
                   </div>
-                  <div className="w-100 text-center">
+                </div>
+              </Carousel.Item>
+              <Carousel.Item>
+                <div className="faucet-step-card">
+                  <div className="icon-back" onClick={() => onClickBackTo(0)}>
+                    <i className="fal fa-arrow-circle-left"></i>
+                  </div>
+                  <h1 className="f-32 text-blue">2</h1>
+                  <div className="step-content">
+                    <h6 className="step-title text-blue">Verify with a Tweet.</h6>
+                    <h6 className="text-blue">
+                      We need to make sure you’re a real person and not a bot.
+                      Posting on Twitter with an active account is the easiest way
+                      to do that.
+                    </h6>
                     <Button
-                      className="btn-step-card"
-                      onClick={onClickSubmitAddress}
+                      className="btn-step-card mt-auto mx-auto"
+                      onClick={onClickTweet}
+                      disabled={!address}
                     >
-                      Submit Address
+                      Tweet to Verify
                     </Button>
+                    <p className="text-blue">
+                      We will generate the tweet for you. All you need to do is
+                      log in and click “Tweet.”
+                    </p>
                   </div>
                 </div>
-              </div>
-            </Carousel.Item>
-            <Carousel.Item>
-              <div className="faucet-step-card">
-                <div className="icon-back" onClick={() => onClickBackTo(0)}>
-                  <i className="fal fa-arrow-circle-left"></i>
+              </Carousel.Item>
+              <Carousel.Item>
+                <div className="faucet-step-card">
+                  <div className="icon-back" onClick={() => onClickBackTo(2)}>
+                    <i className="fal fa-arrow-circle-left"></i>
+                  </div>
+                  <h1 className="f-32 text-blue">3</h1>
+                  <div className="step-content">
+                    <h6 className="step-title text-blue">Get KOI</h6>
+                    <h6 className="text-blue">
+                      After you’ve tweeted, click here to claim your free KOI!
+                    </h6>
+                    {loading && <div className='text-center w-100'><Spin size="large" /></div>}
+                    <Button
+                      className="btn-step-card mt-auto mx-auto"
+                      onClick={onClickGetKoi}
+                    >
+                      Get KOI
+                    </Button>
+                    <p className="text-blue">
+                      We will generate the tweet for you. All you need to do is
+                      log in and click “Tweet.”
+                    </p>
+                  </div>
                 </div>
-                <h1 className="f-32 text-blue">2</h1>
-                <div className="step-content">
-                  <h6 className="step-title text-blue">Verify with a Tweet.</h6>
-                  <h6 className="text-blue">
-                    We need to make sure you’re a real person and not a bot.
-                    Posting on Twitter with an active account is the easiest way
-                    to do that.
-                  </h6>
-                  <Button
-                    className="btn-step-card mt-auto mx-auto"
-                    onClick={onClickTweet}
-                    disabled={!address}
-                  >
-                    Tweet to Verify
-                  </Button>
-                  <p className="text-blue">
-                    We will generate the tweet for you. All you need to do is
-                    log in and click “Tweet.”
-                  </p>
+              </Carousel.Item>
+              <Carousel.Item>
+                <div className="faucet-step-card">
+                  <div className="icon-back" onClick={() => onClickBackTo(3)}>
+                    <i className="fal fa-arrow-circle-left"></i>
+                  </div>
+                  {/* <h1 className="f-32 text-blue">4</h1> */}
+                  <div className="step-content congratulation">
+                    <h6 className="step-title text-blue text-center">
+                      {twMessage}
+                    </h6>
+                    <h6 className="step-title text-blue">
+                      Your KOI balance: {show_digit_number(balanceKoi)}
+                    </h6>
+                    <h6 className="text-blue text-center">
+                      In 3 minutes, you’ll be able to upload content, earn
+                      rewards, and much more.
+                    </h6>
+                    <Button
+                      className="btn-step-card mt-auto mx-auto"
+                      onClick={onClickUpload}
+                    >
+                      Upload Content
+                    </Button>
+                    <p className="text-blue">
+                      Head back to uploading your content and start earning.
+                    </p>
+                  </div>
                 </div>
-              </div>
-            </Carousel.Item>
-            <Carousel.Item>
-              <div className="faucet-step-card">
-                <div className="icon-back" onClick={() => onClickBackTo(2)}>
-                  <i className="fal fa-arrow-circle-left"></i>
-                </div>
-                <h1 className="f-32 text-blue">3</h1>
-                <div className="step-content">
-                  <h6 className="step-title text-blue">Get KOI</h6>
-                  <h6 className="text-blue">
-                    After you’ve tweeted, click here to claim your free KOI!
-                  </h6>
-                  {loading && <div className='text-center w-100'><Spin size="large" /></div>}
-                  <Button
-                    className="btn-step-card mt-auto mx-auto"
-                    onClick={onClickGetKoi}
-                  >
-                    Get KOI
-                  </Button>
-                  <p className="text-blue">
-                    We will generate the tweet for you. All you need to do is
-                    log in and click “Tweet.”
-                  </p>
-                </div>
-              </div>
-            </Carousel.Item>
-            <Carousel.Item>
-              <div className="faucet-step-card">
-                <div className="icon-back" onClick={() => onClickBackTo(3)}>
-                  <i className="fal fa-arrow-circle-left"></i>
-                </div>
-                {/* <h1 className="f-32 text-blue">4</h1> */}
-                <div className="step-content congratulation">
-                  <h6 className="step-title text-blue text-center">
-                    {twMessage}
-                  </h6>
-                  <h6 className="step-title text-blue">
-                    Your KOI balance: {show_digit_number(balanceKoi)}
-                  </h6>
-                  <h6 className="text-blue text-center">
-                    In 3 minutes, you’ll be able to upload content, earn
-                    rewards, and much more.
-                  </h6>
-                  <Button
-                    className="btn-step-card mt-auto mx-auto"
-                    onClick={onClickUpload}
-                  >
-                    Upload Content
-                  </Button>
-                  <p className="text-blue">
-                    Head back to uploading your content and start earning.
-                  </p>
-                </div>
-              </div>
-            </Carousel.Item>
-          </Carousel>
-        </div>
-      </Container>
-    </FaucetContainer>
+              </Carousel.Item>
+            </Carousel>
+          </div>
+        </Container>
+      </FaucetContainer>
+    </>
   );
 }
 
