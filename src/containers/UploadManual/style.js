@@ -39,6 +39,7 @@ export const UploadUploadContainer = styled.div`
             img {
               width: 62px;
               height: 62px;
+              object-fit: contain;
             }
             i {
               font-size: 20px;
