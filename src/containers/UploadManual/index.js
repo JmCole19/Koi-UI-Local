@@ -42,6 +42,7 @@ function UploadManual() {
   } = useContext(DataContext);
   const [uploading] = useState(false);
   const [imageUrl, setImageUrl] = useState(null);
+  const [imagePath, setImagePath] = useState('');
   const [imageBlob, setImageBlob] = useState(null);
   const [showAlert, setShowAlert] = useState(false);
   const [alertVariant, setAlertVariant] = useState('danger');
@@ -82,29 +83,6 @@ function UploadManual() {
 
   const handleBack = () => {
     history.goBack()
-    // switch (
-    //   step // change | confirm | uploadKey | uploading | complete
-    // ) {
-    //   case "1":
-    //     history.goBack()
-    //     break;
-    //   case "confirm":
-    //     // setActiveStep(activeStep)
-    //     setMode(modes.change);
-    //     break;
-    //   case "uploadKey":
-    //     setMode(modes.change);
-    //     break;
-    //   case "uploading":
-    //     setMode(modes.change);
-    //     break;
-    //   case "complete":
-    //     setMode(modes.change);
-    //     break;
-    //   default:
-    //     setMode(modes.change);
-    //     break;
-    // }
   };
 
   const show_alert = (message = '', type = 'danger') => {
@@ -131,16 +109,11 @@ function UploadManual() {
       );
       if (res) {
         show_alert("Your transaction id is " + res + ". Upload successfully", 'success')
-        // show_notification(
-        //   "Your transaction id is " + res + ". Upload successfully",
-        //   "NFT uploading",
-        //   "success"
-        // );
         setTimeout(() => {
           history.push("/contents");
         }, 4000);
       } else {
-        show_notification("Something error", "NFT uploading");
+        show_alert("Something error in NFT uploading", "danger");
       }
     } catch (err) {
       console.log("here1");
@@ -172,6 +145,8 @@ function UploadManual() {
     return isJson && isLt1M;
   };
   const beforeUpload = (file) => {
+    console.log("herererere")
+    console.log(file)
     const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";
     if (!isJpgOrPng) {
       show_notification("You can only upload JPG/PNG file!");
@@ -183,6 +158,7 @@ function UploadManual() {
     if (isJpgOrPng && isLt2M) {
       const reader = new FileReader();
       reader.onload = (e) => {
+        setImagePath(file.name)
         setImageUrl(e.target.result);
         fetch(e.target.result)
           .then(function (response) {
@@ -315,12 +291,11 @@ function UploadManual() {
                                   <>
                                     <div className="uploader-container">
                                       <div className="uploader-icon d-flex justify-content-center align-items-center">
-                                        <Image src={IconUpload} />
+                                        {imageUrl ? <Image src={imageUrl} /> : <Image src={IconUpload} />}
                                       </div>
-                                      <p className="text-blue mb-0">
-                                        Drag & Drop or click to browse your
-                                        computer.
-                                      </p>
+                                      {imagePath ? 
+                                      <p className="text-blue mt-1"><b>{imagePath}</b></p> 
+                                      : <p className="text-blue mb-0">Drag & Drop or click to browse your computer.</p>}
                                     </div>
                                   </>
                                 )}
