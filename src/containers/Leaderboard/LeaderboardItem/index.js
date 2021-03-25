@@ -25,7 +25,8 @@ function LeaderboardItem({
   onClickEmbed = () => {},
 }) {
 
-  const shareUrl = `${window.location.hostname}/content-detail/${item.txIdContent}?type=view`;
+  // const shareUrl = `${window.location.hostname}/content-detail/${item.txIdContent}?type=view`;
+  const shareUrl = `${window.location.protocol}://${window.location.hostname}/content-detail/${item.txIdContent}?type=view`;
 
   return (
     <LeaderboardItemContainer>

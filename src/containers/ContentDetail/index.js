@@ -18,7 +18,7 @@ import { ContentDetailContainer } from "./style";
 import { DataContext } from "contexts/DataContextContainer";
 import { ScaleLoader } from "react-spinners";
 import ModalContent from "components/Elements/ModalContent";
-import { show_notification } from "service/utils";
+import { show_ar_balance, show_digit_number, show_notification } from "service/utils";
 import axios from "axios";
 import AlertArea from "components/Sections/AlertArea";
 import { preUrl, alertTimeout } from "config"
@@ -28,7 +28,8 @@ import { preUrl, alertTimeout } from "config"
 function ContentDetail() {
   const history = useHistory();
   const { id } = useParams();
-  const currentUrl = `${window.location.hostname}${history.location.pathname}`;
+  // const currentUrl = `${window.location.hostname}${history.location.pathname}`;
+  const currentUrl = `${window.location.protocol}://${window.location.hostname}/content-detail/${id}`;
   const { contents, setContents } = useContext(DataContext);
   const [isLoading, setIsLoading] = useState(false);
   const [detail, setDetail] = useState(null);
@@ -199,11 +200,11 @@ function ContentDetail() {
                         )}
                         <div className="views-wrapper">
                           <div className="view-row">
-                            <h5 className="total-value text-left">{detail.totalViews}</h5>
+                            <h5 className="total-value text-left">{show_digit_number(detail.totalViews)}</h5>
                             <h5 className="total-views">total views</h5>
                           </div>
                           <div className="view-row">
-                            <h5 className="total-value text-left">{detail.totalReward}</h5>
+                            <h5 className="total-value text-left">{show_ar_balance(detail.totalReward)}{" "}</h5>
                             <h5 className="total-views">total KOI rewards</h5>
                           </div>
                         </div>
