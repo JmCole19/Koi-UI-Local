@@ -27,6 +27,7 @@ function LeaderboardItem({
 
   // const shareUrl = `${window.location.hostname}/content-detail/${item.txIdContent}?type=view`;
   const shareUrl = `${window.location.protocol}//${window.location.hostname}/content-detail/${item.txIdContent}?type=view`;
+  const smsUrl = `sms://+19024021271?body=${window.location.protocol}//${window.location.hostname}/content-detail/${item.txIdContent}?type=view`;
   
 
   return (
