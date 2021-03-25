@@ -29,7 +29,8 @@ function ContentDetail() {
   const history = useHistory();
   const { id } = useParams();
   // const currentUrl = `${window.location.hostname}${history.location.pathname}`;
-  const currentUrl = `${window.location.protocol}://${window.location.hostname}/content-detail/${id}`;
+  const currentUrl = `${window.location.protocol}//${window.location.hostname}/content-detail/${id}`;
+  console.log(currentUrl)
   const { contents, setContents } = useContext(DataContext);
   const [isLoading, setIsLoading] = useState(false);
   const [detail, setDetail] = useState(null);
