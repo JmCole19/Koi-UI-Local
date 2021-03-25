@@ -18,7 +18,6 @@
     "js-file-download": "^0.4.12",
     "koi_tools": "^2.0.1",
     "moment": "^2.29.1",
-    "npm": "^7.6.0",
     "prop-types": "^15.7.2",
     "query-string": "^6.14.1",
     "react": "^16.13.1",
