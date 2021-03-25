@@ -26,6 +26,7 @@ function LeaderboardItem({
 }) {
 
   const shareUrl = `${window.location.hostname}/content-detail/${item.txIdContent}?type=view`;
+  const smsUrl = `sms:+11234567890&body=${window.location.hostname}/content-detail/${item.txIdContent}?type=view`;
 
   return (
     <LeaderboardItemContainer>
@@ -91,7 +92,7 @@ function LeaderboardItem({
           <FacebookShareButton url={shareUrl}>
             <FiFacebook size={24} color={colors.greenDark} />
           </FacebookShareButton>
-          <FiMessageCircle size={24} color={colors.greenDark} />
+          <a href={smsUrl}><FiMessageCircle size={24} color={colors.greenDark} /></a>
           <EmailShareButton url={shareUrl}>
             <HiOutlineMail size={24} color={colors.greenDark} />
           </EmailShareButton>
