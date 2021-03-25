@@ -30,7 +30,8 @@ function ContentDetail() {
   const { id } = useParams();
   // const currentUrl = `${window.location.hostname}${history.location.pathname}`;
   const currentUrl = `${window.location.protocol}//${window.location.hostname}/content-detail/${id}`;
-  console.log(currentUrl)
+  const smsUrl = `sms://+19024021271?body=${window.location.protocol}//${window.location.hostname}/content-detail/${id}?type=view`;
+  // console.log(currentUrl)
   const { contents, setContents } = useContext(DataContext);
   const [isLoading, setIsLoading] = useState(false);
   const [detail, setDetail] = useState(null);
@@ -241,7 +242,7 @@ function ContentDetail() {
                           <FacebookShareButton url={currentUrl}>
                             <FiFacebook size={24} color={colors.greenDark} />
                           </FacebookShareButton>
-                          <FiMessageCircle size={24} color={colors.greenDark} />
+                          <a href={smsUrl}><FiMessageCircle size={24} color={colors.greenDark} /></a>
                           <EmailShareButton url={currentUrl}>
                             <HiOutlineMail size={24} color={colors.greenDark} />
                           </EmailShareButton>
