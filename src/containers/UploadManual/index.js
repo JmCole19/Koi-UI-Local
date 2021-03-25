@@ -282,7 +282,7 @@ function UploadManual() {
                                 multiple={false}
                                 listType="picture"
                                 beforeUpload={beforeUpload}
-                                fileList={false}
+                                // fileList={false}
                                 showUploadList={false}
                               >
                                 {uploading ? (
@@ -468,7 +468,7 @@ function UploadManual() {
                           multiple={false}
                           listType="picture"
                           beforeUpload={beforeJsonUpload}
-                          fileList={false}
+                          // fileList={false}
                           showUploadList={false}
                         >
                           <div className="uploader-container">

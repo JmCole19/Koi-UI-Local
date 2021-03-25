@@ -55,8 +55,10 @@ function ModalContent({
   const [copiedLink, setCopiedLink] = useState(false);
   const [copiedCode, setCopiedCode] = useState(false);
 
-  const currentUrl = `${window.location.hostname}/content-detail/${detail.txIdContent}`;
-  const embedUrl = `${window.location.hostname}/embed/${detail.txIdContent}`;
+  const currentUrl = `${window.location.protocol}//${window.location.hostname}/content-detail/${detail.txIdContent}`;
+  const embedUrl = `${window.location.protocol}//${window.location.hostname}/embed/${detail.txIdContent}`;
+  // console.log(currentUrl)
+  // console.log(embedUrl)
   const shareSocial = [
     {
       icon: (
@@ -68,7 +70,7 @@ function ModalContent({
     },
     {
       icon: (
-        <InstapaperShareButton url={currentUrl}>
+        <InstapaperShareButton url={currentUrl} title="KOI leaderboard">
           <FaInstagram size={24} color={colors.greenDark} />
         </InstapaperShareButton>
       ),

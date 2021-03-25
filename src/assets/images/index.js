@@ -1,4 +1,5 @@
-export { default as Logo } from "./logo.png";
+export { default as Logo } from "./logo.svg";
+// export { default as Logo } from "./logo.png";
 export { default as ItemTemp } from "./item-temp.png";
 export { default as ItemTempModal } from "./ItemTemp.svg";
 export { default as Crown } from "./Crown.svg";
@@ -9,7 +10,8 @@ export { default as IconEthereum } from "./IconEthereum.png";
 export { default as IconUpload } from "./IconUpload.png";
 export { default as IconLeft } from "./IconLeft.png";
 export { default as IconEyes } from "./IconEyes.png";
-export { default as IconFish } from "./IconFish.png";
+export { default as IconFish } from "./IconFish.svg";
+// export { default as IconFish } from "./IconFish.png";
 export { default as IconHtml } from "./IconHtml.png";
 export { default as IconShare } from "./IconShare.png";
 export { default as IconArConnect } from "./IconArConnect.png";
