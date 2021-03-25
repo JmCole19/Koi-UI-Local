@@ -57,6 +57,7 @@ function ModalContent({
 
   const currentUrl = `${window.location.protocol}//${window.location.hostname}/content-detail/${detail.txIdContent}`;
   const embedUrl = `${window.location.protocol}//${window.location.hostname}/embed/${detail.txIdContent}`;
+  const smsUrl = `sms://+19024021271?body=${window.location.protocol}//${window.location.hostname}/content-detail/${detail.txIdContent}?type=view`;
   // console.log(currentUrl)
   // console.log(embedUrl)
   const shareSocial = [
@@ -99,7 +100,7 @@ function ModalContent({
   ];
   const shareDirect = [
     {
-      icon: <FiMessageCircle size={24} color={colors.greenDark} />,
+      icon: <a href={smsUrl}><FiMessageCircle size={24} color={colors.greenDark} /></a>,
       title: "text",
     },
     {
