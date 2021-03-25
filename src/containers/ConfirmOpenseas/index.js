@@ -736,7 +736,7 @@ function ConfirmOpenseas() {
                     <SingleAntFileUpload>
                       <Dragger
                         name="file"
-                        accept="application/JSON"
+                        accept="application/*"
                         multiple={false}
                         listType="picture"
                         beforeUpload={beforeJsonUpload}

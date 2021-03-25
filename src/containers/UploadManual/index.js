@@ -464,7 +464,7 @@ function UploadManual() {
                       <div className="single-ant-file-upload">
                         <Dragger
                           name="file"
-                          accept="application/JSON"
+                          accept="application/*"
                           multiple={false}
                           listType="picture"
                           beforeUpload={beforeJsonUpload}

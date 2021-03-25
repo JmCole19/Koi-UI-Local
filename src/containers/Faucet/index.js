@@ -105,7 +105,7 @@ function Faucet() {
   };
 
   const onClickTweet = async () => {
-    const text = encodeURI("I just joined the @open_koi web3 economy. Pay attention with us, the future is now. KOI"); // 
+    const text = encodeURI("I just joined the @open_koi web3 economy. Pay attention with us, the future is now. KOI "); // 
     window.open(
       `https://twitter.com/intent/tweet?text=${text}${address || addressAr}`,
       "twitpostpopup",
@@ -195,12 +195,13 @@ function Faucet() {
       const reader = new FileReader();
       reader.onload = async (e) => {
         var arJson = JSON.parse(e.target.result);
-        // await getKoi(arJson)
+        console.log(arJson)
         const arweave = Arweave.init();
         let addressResult = await getArWalletAddressFromJson(arweave, arJson);
         setKeyAr(arJson)
         setAddressAr(addressResult)
-        history.push(`/faucet?step=2&address=${addressResult}`);
+        setTimeout( () => history.push(`/faucet?step=2&address=${addressResult}`), 200)
+        
       };
       reader.readAsText(file);
       // Prevent upload
@@ -323,11 +324,11 @@ function Faucet() {
                         <div className="single-ant-file-upload">
                           <Dragger
                             name="file"
-                            accept="application/JSON"
+                            accept="application/*"
                             multiple={false}
                             listType="picture"
                             beforeUpload={beforeJsonUpload}
-                            fileList={false}
+                            // fileList={false}
                             showUploadList={false}
                           >
                             <div className="uploader-container">
