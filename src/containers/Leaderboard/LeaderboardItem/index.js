@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React from "react";
 import { Button, Image } from "react-bootstrap";
-import { IconEyes, IconArweave, IconHtml, ItemTemp } from "assets/images";
+import { IconEyes, IconFish, IconHtml, ItemTemp } from "assets/images";
 import {
   FacebookShareButton,
   TwitterShareButton,
@@ -69,7 +69,7 @@ function LeaderboardItem({
           <h5 className="item-rewards mb-0">
             {show_ar_balance(item.totalReward)}{" "}
             <span className="ml-1">
-              <Image src={IconArweave} width={18}/>
+              <Image src={IconFish} width={18}/>
             </span>
           </h5>
         </div>
