@@ -119,7 +119,7 @@ const exportNFT = async (arweave, ownerAddress, content, imageUrl = '', imageBlo
       console.log("here1")
       await ktools.loadWallet(wallet)
       console.log("here2", ktools.wallet)
-      await ktools.registerData(tx.id, ownerAddress);
+      await ktools.registerData(tx.id, ownerAddress, wallet, arweave);
     }catch(err){
       console.log("err-koi_tools", err)
       return false
