@@ -205,3 +205,6 @@ export const StyledThumb = styled.div`
     outline: none;
   }
 `;
+export const LinkNftUpload = styled.div`
+  padding: 25px;
+`;

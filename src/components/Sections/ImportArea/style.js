@@ -11,11 +11,9 @@ export const ImportAreaContainer = styled.div`
     .sub-import-area{
         border-radius: 4px;
         border: 1px dashed ${colors.blueDark};
-        padding: 25px;
+        padding: 10px;
     }
     @media (max-width: ${mixins.md}px) {
-        .sub-import-area{
-            padding: 10px;
-        }
+     
     }
 `;

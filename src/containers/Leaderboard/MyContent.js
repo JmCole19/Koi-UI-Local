@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import { koi_tools } from "koi_tools";
 import { ScaleLoader } from "react-spinners";
-import { LeaderboardContainer, StyledThumb } from "./style";
+import { LeaderboardContainer, StyledThumb, LinkNftUpload } from "./style";
 import { Collapse } from "antd";
 import ReactSlider from "react-slider";
 import { useHistory } from "react-router-dom";
@@ -190,14 +190,14 @@ function MyContent() {
           </Button>
         </div>
         <ImportArea>
-          <div className="link-nft-upload">
+          <LinkNftUpload>
             <div className="font-n-1">You haven't permanently stored any content yet.</div>
             <div className="font-n-1"><b>Let's fix that.</b></div>
             <div className="text-center mt-4 mb-4">
               <div className='font-s-1'><b>Click to upload an image</b> or connect your OpenSea account</div>
             </div>
             <div className='font-s-1'>What are you waiting for? <b>Start earning KOI.</b></div>
-          </div>
+          </LinkNftUpload>
         </ImportArea>
         <AlertArea
           showMessage={showAlert}
