@@ -15,6 +15,7 @@ export const colors = {
   grayDark: '#555876',
   grayGreen: '#BDD7D6',
   greenLight: '#9BE7C4',
+  greenLight2: '#BEF0ED',
   green: '#49CE8B',
   greenDark: '#237B75',
   errorBackground: '#FFA6A6',

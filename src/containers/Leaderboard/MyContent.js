@@ -14,6 +14,7 @@ import { show_notification } from "service/utils";
 import AlertArea from "components/Sections/AlertArea";
 import Arweave from "arweave";
 import { alertTimeout } from "config";
+import ImportArea from "components/Sections/ImportArea";
 
 const arweave = Arweave.init();
 const { Panel } = Collapse;
@@ -147,10 +148,6 @@ function MyContent() {
   return (
     <LeaderboardContainer>
       <div className="leaderboard">
-        <AlertArea
-          showMessage={showAlert}
-          message={errEmessage}
-        ></AlertArea>
         <div className="leaderboard-header">
           <h2 className="text-blue mb-0">
             My Content
@@ -192,6 +189,13 @@ function MyContent() {
             <i className="fas fa-plus"></i>
           </Button>
         </div>
+        <ImportArea>
+          <p>test</p>
+        </ImportArea>
+        <AlertArea
+          showMessage={showAlert}
+          message={errEmessage}
+        ></AlertArea>
         <div className="leaderboard-items">
           {isLoading ? (
             <div className="loading-container">
