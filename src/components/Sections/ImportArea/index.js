@@ -7,7 +7,9 @@ function ImportArea({
 }) {
     return (
         <ImportAreaContainer>
-            {children}
+            <div className="sub-import-area">
+                {children}
+            </div>
         </ImportAreaContainer>
     );
 }
