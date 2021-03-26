@@ -58,12 +58,24 @@ const GlobalStyle = createGlobalStyle`
     }
     .br-4{ border-radius: 4px; }
     .span-link{
-      color: #171753;
+      color: ${colors.blueDark};
       font-weight: 600;
       text-decoration: underline;
       letter-spacing: 0.03em;
       touch-action: manipulation;
       cursor: pointer;
+    }
+    .font-s-1{
+      color: ${colors.blueDark};
+      font-size: 18px;
+      line-height: 24px;
+      letter-spacing: 0.03em;
+    }
+    .font-n-1{
+      color: ${colors.blueDark};
+      font-size: 24px;
+      line-height: 32px;
+      letter-spacing: 0.03em;
     }
     h1,
     h2,

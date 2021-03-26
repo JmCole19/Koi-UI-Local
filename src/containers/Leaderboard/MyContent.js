@@ -190,7 +190,14 @@ function MyContent() {
           </Button>
         </div>
         <ImportArea>
-          <p>test</p>
+          <div className="link-nft-upload">
+            <div className="font-n-1">You haven't permanently stored any content yet.</div>
+            <div className="font-n-1"><b>Let's fix that.</b></div>
+            <div className="text-center mt-4 mb-4">
+              <div className='font-s-1'><b>Click to upload an image</b> or connect your OpenSea account</div>
+            </div>
+            <div className='font-s-1'>What are you waiting for? <b>Start earning KOI.</b></div>
+          </div>
         </ImportArea>
         <AlertArea
           showMessage={showAlert}
