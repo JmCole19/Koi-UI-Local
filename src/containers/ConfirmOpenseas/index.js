@@ -58,7 +58,10 @@ function ConfirmOpenseas() {
   const location = useLocation();
   const { step = "1", selected, address } = queryString.parse(location.search);
   const [uploading] = useState(false);
-  const [mode, setMode] = useState("change"); // change | confirm | uploadKey | uploading | complete
+  const [showShareModal, setShowShareModal] = useState(false);
+  const [modalType, setModalType] = useState("share");
+  const [selectedContent, setSelectedContent] = useState([]);
+  const [mode, setMode] = useState("complete"); // change | confirm | uploadKey | uploading | complete
   const [activeOpenSea, setActiveOpenSea] = useState({
     id: 0,
     thumb: "",
@@ -86,6 +89,16 @@ function ConfirmOpenseas() {
       setErrMessage('')
     }, alertTimeout)
   }
+
+  const onClickItem = (item, type) => {
+    if (type === "view") {
+      history.push(`/content-detail/${item.txIdContent}?type=view`);
+    } else {
+      setSelectedContent(item);
+      setModalType(type);
+      setShowModal(true);
+    }
+  };
 
   const handleBack = () => {
     switch (
@@ -351,6 +364,7 @@ function ConfirmOpenseas() {
         setTimeout(() => {
           setMode("complete");
         }, 2000);
+        tempUploadContents = tempUploadContents.filter( uc => uc.txId !== '')
         setUploadContents(tempUploadContents)
       } else {
         show_notification(
@@ -605,16 +619,13 @@ function ConfirmOpenseas() {
                       </Col>
                     </Row>
                     <div className="uploaded-cards-wrapper">
-                      {openSeas.length > 0 &&
-                        openSeas
-                          .filter((_openSea) =>
-                            selectedIds.includes(_openSea.id.toString())
-                          )
+                      {uploadContents.length > 0 &&
+                        uploadContents
                           .map((_selected, _i) => (
                             <div key={_i} className="uploaded-card">
                               <div className="card-content-wrapper">
-                                <Image src={_selected.image_thumbnail_url} />
-                                <p className="text-blue">{_selected.name}</p>
+                                <Image src={_selected.thumb} />
+                                <p className="text-blue">{_selected.title}</p>
                               </div>
                               <div className="uploaded-card-btns d-none d-md-flex">
                                 <Button className="btn-blueDark">
@@ -666,6 +677,13 @@ function ConfirmOpenseas() {
               </div>
             </div>
           </div>
+          <ModalContent
+            type={modalType}
+            show={showShareModal}
+            detail={selectedContent}
+            onHide={() => setShowModal(false)}
+            onSwitchModal={onSwitchModal}
+          />
           <Modal
             show={showModal}
             centered
