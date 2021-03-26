@@ -198,10 +198,12 @@ export const ConfirmOpenseasContainer = styled.div`
               align-items: center;
               .card-content-wrapper {
                 text-align: center;
+                img{border-radius: 4px;}
                 p {
                   text-align: center;
                   margin-top: 20px;
                   font-weight: 600;
+                  max-width: 140px;
                 }
               }
               .uploaded-card-btns {
@@ -304,8 +306,9 @@ export const ConfirmOpenseasContainer = styled.div`
                 max-width: 100%;
                 width: 100%;
                 flex-direction: row;
-                align-items: flex-start;
                 margin: 20px 0;
+                align-items: center;
+                justify-content: space-around;
                 .uploaded-card-btns-sm {
                   margin-top: 0;
                   flex-direction: column;

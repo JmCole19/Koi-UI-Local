@@ -24,6 +24,7 @@ import { show_notification, show_fixed_number } from "service/utils";
 import { getArWalletAddressFromJson, exportNFT } from "service/NFT";
 import AlertArea from "components/Sections/AlertArea";
 import {alertTimeout} from 'config'
+import ModalContent from "components/Elements/ModalContent";
 
 const arweave = Arweave.init();
 const { TextArea } = Input;
@@ -58,6 +59,9 @@ function ConfirmOpenseas() {
   const location = useLocation();
   const { step = "1", selected, address } = queryString.parse(location.search);
   const [uploading] = useState(false);
+  const [showShareModal, setShowShareModal] = useState(false);
+  const [modalType, setModalType] = useState("share");
+  const [selectedContent, setSelectedContent] = useState([]);
   const [mode, setMode] = useState("change"); // change | confirm | uploadKey | uploading | complete
   const [activeOpenSea, setActiveOpenSea] = useState({
     id: 0,
@@ -67,7 +71,7 @@ function ConfirmOpenseas() {
     description: "",
   });
   const [activeStep, setActiveStep] = useState(1);
-  const [uploadContens, setUploadContents] = useState([]);
+  const [uploadContents, setUploadContents] = useState([]);
   const [showModal, setShowModal] = useState(false);
   var selectedIds = selected.split("_");
   const [detectorAr, setDetectorAr] = useState(false);
@@ -87,13 +91,27 @@ function ConfirmOpenseas() {
     }, alertTimeout)
   }
 
+  const onSwitchModal = () => {
+    setModalType(modalType === "share" ? "embed" : "share");
+  };
+
+  const onClickContent = (t_item, type) => {
+    let item = {
+      txIdContent: t_item.txId,
+      name: t_item.title
+    }
+    setSelectedContent(item);
+    setModalType(type);
+    setShowShareModal(true);
+  };
+
   const handleBack = () => {
     switch (
       mode // change | confirm | uploadKey | uploading | complete
     ) {
       case modes.change:
         let newStep = activeStep - 1;
-        setActiveOpenSea(uploadContens[newStep - 1]);
+        setActiveOpenSea(uploadContents[newStep - 1]);
         setActiveStep(newStep);
         break;
       case "confirm":
@@ -129,12 +147,12 @@ function ConfirmOpenseas() {
         if(!formValidation()){
           break;
         }
-        if (activeStep === uploadContens.length) {
+        if (activeStep === uploadContents.length) {
           setMode("confirm");
           setShowModal(true);
         } else {
           setActiveStep(activeStep + 1);
-          setActiveOpenSea(uploadContens[activeStep]);
+          setActiveOpenSea(uploadContents[activeStep]);
         }
         break;
       case "confirm":
@@ -158,7 +176,7 @@ function ConfirmOpenseas() {
   };
 
   const onClickEditLater = () => {
-    let tpContents = cloneDeep(uploadContens);
+    let tpContents = cloneDeep(uploadContents);
     tpContents.splice(activeStep - 1, 1);
     if (tpContents.length) {
       if (activeStep >= tpContents.length) {
@@ -216,6 +234,7 @@ function ConfirmOpenseas() {
           title: tempOpenSea?.name || "",
           owner: tempOpenSea?.owner?.user?.username || "",
           description: tempOpenSea?.description || "",
+          txId: ''
         });
       }
     });
@@ -298,7 +317,8 @@ function ConfirmOpenseas() {
         setMode("uploading");
         // uploading process
         let tpUpdatingProcess = updatingProcess;
-        for (let content of uploadContens) {
+        let tempUploadContents = uploadContents
+        for (let content of uploadContents) {
           try {
             let res = await exportNFT(
               arweave,
@@ -310,14 +330,15 @@ function ConfirmOpenseas() {
             );
             console.log(res);
             tpUpdatingProcess++;
-            // console.log("test1", JSON.stringify(tpUpdatingProcess))
-            // tpUpdatingProcess = tpUpdatingProcess*1 + 1
-            // console.log("test2", JSON.stringify(tpUpdatingProcess))
+
             if (res) {
-              console.log("log1" + tpUpdatingProcess);
               setUploadingProcess(tpUpdatingProcess);
+              
+              let t_i_CT = tempUploadContents.findIndex((_tc) => _tc.id === content.id);
+              if (tempUploadContents[t_i_CT]) {
+                tempUploadContents[t_i_CT].txId = res
+              }
             } else {
-              console.log("log2" + tpUpdatingProcess);
               setUploadingProcess(tpUpdatingProcess);
               show_notification(
                 "There is an error to upload content title '" +
@@ -325,19 +346,31 @@ function ConfirmOpenseas() {
                   "' "
               );
             }
-            if (tpUpdatingProcess + 1 === uploadContens.length) {
+            /*
+            if (tpUpdatingProcess + 1 === uploadContents.length) {
               // close modal
               setShowModal(false);
-              show_notification("Upload successfully", "KOI", "success");
+              show_notification("Upload finished", "KOI", "success");
               // show complete section
               setTimeout(() => {
                 setMode("complete");
               }, 2000);
             }
+            */
           } catch (err) {
             console.log("error - exportNFT", err);
+            show_notification("There is an error to uploading NFT content", "KOI", "error");
           }
         }
+        // close modal
+        setShowModal(false);
+        show_notification("Upload finished", "KOI", "success");
+        // show complete section
+        setTimeout(() => {
+          setMode("complete");
+        }, 2000);
+        tempUploadContents = tempUploadContents.filter( uc => uc.txId !== '')
+        setUploadContents(tempUploadContents)
       } else {
         show_notification(
           "can\t detect ArWallet address. Please check install ArConnect extension or create a wallet."
@@ -364,7 +397,7 @@ function ConfirmOpenseas() {
             className="d-md-none progress-sm"
             strokeColor={colors.green}
             trailColor={colors.white}
-            percent={(activeStep * 100) / uploadContens.length}
+            percent={(activeStep * 100) / uploadContents.length}
             status="active"
             showInfo={false}
           />
@@ -591,16 +624,13 @@ function ConfirmOpenseas() {
                       </Col>
                     </Row>
                     <div className="uploaded-cards-wrapper">
-                      {openSeas.length > 0 &&
-                        openSeas
-                          .filter((_openSea) =>
-                            selectedIds.includes(_openSea.id.toString())
-                          )
+                      {uploadContents.length > 0 &&
+                        uploadContents
                           .map((_selected, _i) => (
                             <div key={_i} className="uploaded-card">
                               <div className="card-content-wrapper">
-                                <Image src={_selected.image_thumbnail_url} />
-                                <p className="text-blue">{_selected.name}</p>
+                                <Image src={_selected.thumb} />
+                                <p className="text-blue">{_selected.title}</p>
                               </div>
                               <div className="uploaded-card-btns d-none d-md-flex">
                                 <Button className="btn-blueDark">
@@ -611,7 +641,7 @@ function ConfirmOpenseas() {
                                 </Button>
                               </div>
                               <div className="uploaded-card-btns-sm d-md-none">
-                                <Button className="btn-blueDark">
+                                <Button className="btn-blueDark" onClick={() => onClickContent(_selected, "share")}>
                                   <Image
                                     src={IconShare}
                                     className="mr-2"
@@ -619,7 +649,7 @@ function ConfirmOpenseas() {
                                   />
                                   Share
                                 </Button>
-                                <Button className="btn-white btn-html">
+                                <Button className="btn-white btn-html" onClick={() => onClickContent(_selected, "embed")}>
                                   <Image
                                     src={IconHtml}
                                     className="mr-2"
@@ -644,7 +674,7 @@ function ConfirmOpenseas() {
                     className="d-none d-md-block"
                     strokeColor={colors.blueDark}
                     trailColor={colors.blueLight}
-                    percent={(activeStep * 100) / uploadContens.length}
+                    percent={(activeStep * 100) / uploadContents.length}
                     status="active"
                     showInfo={false}
                   />
@@ -652,6 +682,13 @@ function ConfirmOpenseas() {
               </div>
             </div>
           </div>
+          <ModalContent
+            type={modalType}
+            show={showShareModal}
+            detail={selectedContent}
+            onHide={() => setShowShareModal(false)}
+            onSwitchModal={onSwitchModal}
+          />
           <Modal
             show={showModal}
             centered
@@ -677,7 +714,7 @@ function ConfirmOpenseas() {
               )}
               <div className="imgs-wrapper">
                 <Space size={28}>
-                  {uploadContens.map((c, key) => (
+                  {uploadContents.map((c, key) => (
                     <Image
                       className="br-4"
                       src={c.thumb || ItemTemp}
@@ -697,7 +734,7 @@ function ConfirmOpenseas() {
                     </div>
                     <div className="modal-row-right">
                       <p className="text-blue mb-0">
-                        x {uploadContens.length} uploads
+                        x {uploadContents.length} uploads
                       </p>
                     </div>
                   </div>
@@ -709,7 +746,7 @@ function ConfirmOpenseas() {
                     </div>
                     <div className="modal-row-right">
                       <p className="text-blue mb-0">
-                        x {uploadContens.length} uploads
+                        x {uploadContents.length} uploads
                       </p>
                     </div>
                   </div>
@@ -717,10 +754,10 @@ function ConfirmOpenseas() {
                     <b>Estimated Total</b>
                   </h6>
                   <h6 className="text-blue">
-                    {show_fixed_number(uploadContens.length * 0.0002, 4)} AR
+                    {show_fixed_number(uploadContents.length * 0.0002, 4)} AR
                   </h6>
                   <h6 className="text-blue">
-                    {show_fixed_number(uploadContens.length * 1, 1)} KOI
+                    {show_fixed_number(uploadContents.length * 1, 1)} KOI
                   </h6>
                   <Button
                     className="btn-blueDark btn-connect"
@@ -781,7 +818,7 @@ function ConfirmOpenseas() {
                   <Progress
                     strokeColor={colors.blueDark}
                     trailColor={colors.blueLight}
-                    percent={(updatingProcess * 100) / uploadContens.length}
+                    percent={(updatingProcess * 100) / uploadContents.length}
                     status="active"
                     showInfo={false}
                   />
