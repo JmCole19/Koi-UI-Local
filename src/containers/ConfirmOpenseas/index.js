@@ -310,14 +310,10 @@ function ConfirmOpenseas() {
             );
             console.log(res);
             tpUpdatingProcess++;
-            // console.log("test1", JSON.stringify(tpUpdatingProcess))
-            // tpUpdatingProcess = tpUpdatingProcess*1 + 1
-            // console.log("test2", JSON.stringify(tpUpdatingProcess))
+
             if (res) {
-              console.log("log1" + tpUpdatingProcess);
               setUploadingProcess(tpUpdatingProcess);
             } else {
-              console.log("log2" + tpUpdatingProcess);
               setUploadingProcess(tpUpdatingProcess);
               show_notification(
                 "There is an error to upload content title '" +
@@ -336,6 +332,7 @@ function ConfirmOpenseas() {
             }
           } catch (err) {
             console.log("error - exportNFT", err);
+            show_notification("There is an error to uploading NFT content", "KOI", "error");
           }
         }
       } else {
