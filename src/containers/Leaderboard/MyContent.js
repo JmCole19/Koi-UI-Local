@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useContext, useEffect, useState } from "react";
-import { Button } from "react-bootstrap";
+import { Button, Image } from "react-bootstrap";
 import { koi_tools } from "koi_tools";
 import { ScaleLoader } from "react-spinners";
 import { LeaderboardContainer, StyledThumb, LinkNftUpload } from "./style";
@@ -15,6 +15,8 @@ import AlertArea from "components/Sections/AlertArea";
 import Arweave from "arweave";
 import { alertTimeout } from "config";
 import ImportArea from "components/Sections/ImportArea";
+import { IconUpload, IconOpenSea } from "assets/images";
+import { useScrollPosition } from '@n8tb1t/use-scroll-position'
 
 const arweave = Arweave.init();
 const { Panel } = Collapse;
@@ -34,6 +36,7 @@ function MyContent() {
   const [detectorAr, setDetectorAr] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [errEmessage, setErrMessage] = useState('');
+  const [hideOnScroll, setHideOnScroll] = useState(true)
 
   const onClickItem = (item, type) => {
     if (type === "view") {
@@ -101,10 +104,15 @@ function MyContent() {
     }
   };
 
+  useScrollPosition(({ prevPos, currPos }) => {
+    console.log(currPos)
+    console.log(prevPos)
+    const isShow = currPos.y > prevPos.y
+    if (isShow !== hideOnScroll) setHideOnScroll(isShow)
+  }, [hideOnScroll])
+  
   useEffect(() => {
-    setTimeout(() => {
-      getContents();
-    }, 200)
+    getContents();
   }, [history.location.pathname]);
 
   useEffect(() => {
@@ -190,11 +198,16 @@ function MyContent() {
           </Button>
         </div>
         <ImportArea>
-          <LinkNftUpload>
+          <LinkNftUpload className={`test ${hideOnScroll ? 'fixedArea' : 'blockArea'}`}>
             <div className="font-n-1">You haven't permanently stored any content yet.</div>
             <div className="font-n-1"><b>Let's fix that.</b></div>
-            <div className="text-center mt-4 mb-4">
-              <div className='font-s-1'><b>Click to upload an image</b> or connect your OpenSea account</div>
+            <div className="text-center mt-4 mb-4 cursor" onClick={() => history.push('/register-content')}>
+              <div className='font-s-1'>
+                <span>
+                  <Image src={IconUpload} width={32} className="overlay-opensea" />
+                  <Image src={IconOpenSea} width={32} />
+                </span>
+                <b>&nbsp;&nbsp;&nbsp; Click to upload an image</b> or connect your OpenSea account</div>
             </div>
             <div className='font-s-1'>What are you waiting for? <b>Start earning KOI.</b></div>
           </LinkNftUpload>
