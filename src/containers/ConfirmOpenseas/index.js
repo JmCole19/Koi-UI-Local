@@ -67,7 +67,7 @@ function ConfirmOpenseas() {
     description: "",
   });
   const [activeStep, setActiveStep] = useState(1);
-  const [uploadContens, setUploadContents] = useState([]);
+  const [uploadContents, setUploadContents] = useState([]);
   const [showModal, setShowModal] = useState(false);
   var selectedIds = selected.split("_");
   const [detectorAr, setDetectorAr] = useState(false);
@@ -93,7 +93,7 @@ function ConfirmOpenseas() {
     ) {
       case modes.change:
         let newStep = activeStep - 1;
-        setActiveOpenSea(uploadContens[newStep - 1]);
+        setActiveOpenSea(uploadContents[newStep - 1]);
         setActiveStep(newStep);
         break;
       case "confirm":
@@ -129,12 +129,12 @@ function ConfirmOpenseas() {
         if(!formValidation()){
           break;
         }
-        if (activeStep === uploadContens.length) {
+        if (activeStep === uploadContents.length) {
           setMode("confirm");
           setShowModal(true);
         } else {
           setActiveStep(activeStep + 1);
-          setActiveOpenSea(uploadContens[activeStep]);
+          setActiveOpenSea(uploadContents[activeStep]);
         }
         break;
       case "confirm":
@@ -158,7 +158,7 @@ function ConfirmOpenseas() {
   };
 
   const onClickEditLater = () => {
-    let tpContents = cloneDeep(uploadContens);
+    let tpContents = cloneDeep(uploadContents);
     tpContents.splice(activeStep - 1, 1);
     if (tpContents.length) {
       if (activeStep >= tpContents.length) {
@@ -216,6 +216,7 @@ function ConfirmOpenseas() {
           title: tempOpenSea?.name || "",
           owner: tempOpenSea?.owner?.user?.username || "",
           description: tempOpenSea?.description || "",
+          txId: ''
         });
       }
     });
@@ -298,7 +299,8 @@ function ConfirmOpenseas() {
         setMode("uploading");
         // uploading process
         let tpUpdatingProcess = updatingProcess;
-        for (let content of uploadContens) {
+        let tempUploadContents = uploadContents
+        for (let content of uploadContents) {
           try {
             let res = await exportNFT(
               arweave,
@@ -313,6 +315,11 @@ function ConfirmOpenseas() {
 
             if (res) {
               setUploadingProcess(tpUpdatingProcess);
+              
+              let t_i_CT = tempUploadContents.findIndex((_tc) => _tc.id === content.id);
+              if (tempUploadContents[t_i_CT]) {
+                tempUploadContents[t_i_CT].txId = res
+              }
             } else {
               setUploadingProcess(tpUpdatingProcess);
               show_notification(
@@ -321,20 +328,30 @@ function ConfirmOpenseas() {
                   "' "
               );
             }
-            if (tpUpdatingProcess + 1 === uploadContens.length) {
+            /*
+            if (tpUpdatingProcess + 1 === uploadContents.length) {
               // close modal
               setShowModal(false);
-              show_notification("Upload successfully", "KOI", "success");
+              show_notification("Upload finished", "KOI", "success");
               // show complete section
               setTimeout(() => {
                 setMode("complete");
               }, 2000);
             }
+            */
           } catch (err) {
             console.log("error - exportNFT", err);
             show_notification("There is an error to uploading NFT content", "KOI", "error");
           }
         }
+        // close modal
+        setShowModal(false);
+        show_notification("Upload finished", "KOI", "success");
+        // show complete section
+        setTimeout(() => {
+          setMode("complete");
+        }, 2000);
+        setUploadContents(tempUploadContents)
       } else {
         show_notification(
           "can\t detect ArWallet address. Please check install ArConnect extension or create a wallet."
@@ -361,7 +378,7 @@ function ConfirmOpenseas() {
             className="d-md-none progress-sm"
             strokeColor={colors.green}
             trailColor={colors.white}
-            percent={(activeStep * 100) / uploadContens.length}
+            percent={(activeStep * 100) / uploadContents.length}
             status="active"
             showInfo={false}
           />
@@ -641,7 +658,7 @@ function ConfirmOpenseas() {
                     className="d-none d-md-block"
                     strokeColor={colors.blueDark}
                     trailColor={colors.blueLight}
-                    percent={(activeStep * 100) / uploadContens.length}
+                    percent={(activeStep * 100) / uploadContents.length}
                     status="active"
                     showInfo={false}
                   />
@@ -674,7 +691,7 @@ function ConfirmOpenseas() {
               )}
               <div className="imgs-wrapper">
                 <Space size={28}>
-                  {uploadContens.map((c, key) => (
+                  {uploadContents.map((c, key) => (
                     <Image
                       className="br-4"
                       src={c.thumb || ItemTemp}
@@ -694,7 +711,7 @@ function ConfirmOpenseas() {
                     </div>
                     <div className="modal-row-right">
                       <p className="text-blue mb-0">
-                        x {uploadContens.length} uploads
+                        x {uploadContents.length} uploads
                       </p>
                     </div>
                   </div>
@@ -706,7 +723,7 @@ function ConfirmOpenseas() {
                     </div>
                     <div className="modal-row-right">
                       <p className="text-blue mb-0">
-                        x {uploadContens.length} uploads
+                        x {uploadContents.length} uploads
                       </p>
                     </div>
                   </div>
@@ -714,10 +731,10 @@ function ConfirmOpenseas() {
                     <b>Estimated Total</b>
                   </h6>
                   <h6 className="text-blue">
-                    {show_fixed_number(uploadContens.length * 0.0002, 4)} AR
+                    {show_fixed_number(uploadContents.length * 0.0002, 4)} AR
                   </h6>
                   <h6 className="text-blue">
-                    {show_fixed_number(uploadContens.length * 1, 1)} KOI
+                    {show_fixed_number(uploadContents.length * 1, 1)} KOI
                   </h6>
                   <Button
                     className="btn-blueDark btn-connect"
@@ -778,7 +795,7 @@ function ConfirmOpenseas() {
                   <Progress
                     strokeColor={colors.blueDark}
                     trailColor={colors.blueLight}
-                    percent={(updatingProcess * 100) / uploadContens.length}
+                    percent={(updatingProcess * 100) / uploadContents.length}
                     status="active"
                     showInfo={false}
                   />
