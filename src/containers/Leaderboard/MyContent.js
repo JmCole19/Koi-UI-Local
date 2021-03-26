@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useRef } from "react";
 import { Button, Image } from "react-bootstrap";
 import { koi_tools } from "koi_tools";
 import { ScaleLoader } from "react-spinners";
@@ -36,6 +36,22 @@ function MyContent() {
   const [showAlert, setShowAlert] = useState(false);
   const [errEmessage, setErrMessage] = useState('');
   const [fixedArea, setFixedArea] = useState(false);
+  const [scrollY, setScrollY] = useState(0);
+
+  // function logit() {
+  //   setScrollY(window.pageYOffset);
+  //   console.log(new Date().getTime(), scrollY);
+  // }
+
+  // useEffect(() => {
+  //   function watchScroll() {
+  //     window.addEventListener("scroll", logit, {capture: true});
+  //   }
+  //   watchScroll();
+  //   return () => {
+  //     window.removeEventListener("scroll", logit);
+  //   };
+  // });
 
   const onClickItem = (item, type) => {
     if (type === "view") {
@@ -103,43 +119,45 @@ function MyContent() {
     }
   };
 
-  const listenScrollEvent = () => {
-    console.log("scroll : ",window.scrollY)
-    if (window.scrollY > 40) {
-      setFixedArea(true)
-    } else {
-      setFixedArea(false)
-    }
-  }
-  useEffect(() => {
-    window.addEventListener("mousewheel", listenScrollEvent());
-      return () => {
-        window.removeEventListener("mousewheel", listenScrollEvent());
-    };
-  }, []);
-  useEffect(function subscribeToWheelEvent() {
-    const updateScroll = function(e) {
-      if(!!e.deltaY) {
-        console.log("cusor: ",e)
-        console.log("cusor: ",e.offsetY)
-        console.log("cusor: ",e.y)
-        console.log("cusor: ",e.screenY)
-        console.log("cusor: ",e.pageY)
-        // setState((currentState)=>{
-        //      const delta = Math.sign(e.deltaY) * 10.0;
-        //      const val = Math.max(0, currentState.scrollTop + delta);
-        //      return {scrollTop:val}   
-        // })            
-      } else {
-        console.log('zero', e.deltaY);
-      }
-    }
-    window.addEventListener('mousewheel', updateScroll);
-    console.log('subscribed to wheelEvent')
-    return function () {
-      window.removeEventListener('mousewheel', updateScroll);
-    }
-  }, []);
+  // useEffect(() => {
+  //   const listenScrollEvent = (e) => {
+  //     console.log("scroll : ", e, window.scrollY)
+  //     console.log("scroll : ", e.offsetY, e.y - e.offsetY)
+  //     if (e.offsetY > 40) {
+  //       setFixedArea(true)
+  //     } else {
+  //       setFixedArea(false)
+  //     }
+  //   }
+  //   window.addEventListener("scroll", listenScrollEvent, { passive: true });
+  //     return () => {
+  //       window.removeEventListener("scroll", listenScrollEvent);
+  //   };
+  // }, [fixedArea]);
+  // useEffect(function subscribeToWheelEvent() {
+  //   const updateScroll = function(e) {
+  //     if(!!e.deltaY) {
+  //       console.log("cusor: ",e.offsetY)
+  //       if (e.scrollY > 40) {
+  //         setFixedArea(true)
+  //       } else {
+  //         setFixedArea(false)
+  //       }
+  //       // setState((currentState)=>{
+  //       //      const delta = Math.sign(e.deltaY) * 10.0;
+  //       //      const val = Math.max(0, currentState.scrollTop + delta);
+  //       //      return {scrollTop:val}   
+  //       // })            
+  //     } else {
+  //       console.log('zero', e.deltaY);
+  //     }
+  //   }
+  //   window.addEventListener('mousewheel', updateScroll);
+  //   console.log('subscribed to wheelEvent')
+  //   return function () {
+  //     window.removeEventListener('mousewheel', updateScroll);
+  //   }
+  // }, []);
   useEffect(() => {
     getContents();
   }, [history.location.pathname]);
@@ -184,8 +202,7 @@ function MyContent() {
 
   return (
     <LeaderboardContainer>
-      <div className="leaderboard">
-        <div className="leaderboard-header">
+      <div className="leaderboard-header">
           <h2 className="text-blue mb-0">
             My Content
           </h2>
@@ -241,6 +258,7 @@ function MyContent() {
             <div className='font-s-1'>What are you waiting for? <b>Start earning KOI.</b></div>
           </LinkNftUpload>
         </ImportArea>
+      <div className="leaderboard">
         <AlertArea
           showMessage={showAlert}
           message={errEmessage}

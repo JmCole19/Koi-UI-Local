@@ -2,12 +2,16 @@ import styled from "styled-components";
 import { colors, mixins } from "theme";
 
 export const ImportAreaContainer = styled.div`
-    position: relative;
-    flex: 1;
-    margin: 25px 50px;
-    padding: 5px;
-    border-radius: 4px;
-    background-color: ${colors.greenLight2};
+    // position: relative;
+    position: fixed;
+    margin-top: 61px;
+    .import-area{
+        flex: 1;
+        margin: 25px 50px;
+        padding: 5px;
+        border-radius: 4px;
+        background-color: ${colors.greenLight2};
+    }
     .sub-import-area{
         border-radius: 4px;
         border: 1px dashed ${colors.blueDark};
