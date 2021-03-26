@@ -90,7 +90,6 @@ function MyContent() {
       });
     }else{
       if(!detectorAr){
-        console.log("here --1")
         setTimeout(() => {
           setDetectorAr(true)
         }, 100)
