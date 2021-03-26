@@ -24,6 +24,7 @@ import { show_notification, show_fixed_number } from "service/utils";
 import { getArWalletAddressFromJson, exportNFT } from "service/NFT";
 import AlertArea from "components/Sections/AlertArea";
 import {alertTimeout} from 'config'
+import ModalContent from "components/Elements/ModalContent";
 
 const arweave = Arweave.init();
 const { TextArea } = Input;
@@ -61,7 +62,7 @@ function ConfirmOpenseas() {
   const [showShareModal, setShowShareModal] = useState(false);
   const [modalType, setModalType] = useState("share");
   const [selectedContent, setSelectedContent] = useState([]);
-  const [mode, setMode] = useState("complete"); // change | confirm | uploadKey | uploading | complete
+  const [mode, setMode] = useState("change"); // change | confirm | uploadKey | uploading | complete
   const [activeOpenSea, setActiveOpenSea] = useState({
     id: 0,
     thumb: "",
@@ -90,14 +91,18 @@ function ConfirmOpenseas() {
     }, alertTimeout)
   }
 
-  const onClickItem = (item, type) => {
-    if (type === "view") {
-      history.push(`/content-detail/${item.txIdContent}?type=view`);
-    } else {
-      setSelectedContent(item);
-      setModalType(type);
-      setShowModal(true);
+  const onSwitchModal = () => {
+    setModalType(modalType === "share" ? "embed" : "share");
+  };
+
+  const onClickContent = (t_item, type) => {
+    let item = {
+      txIdContent: t_item.txId,
+      name: t_item.title
     }
+    setSelectedContent(item);
+    setModalType(type);
+    setShowShareModal(true);
   };
 
   const handleBack = () => {
@@ -636,7 +641,7 @@ function ConfirmOpenseas() {
                                 </Button>
                               </div>
                               <div className="uploaded-card-btns-sm d-md-none">
-                                <Button className="btn-blueDark">
+                                <Button className="btn-blueDark" onClick={() => onClickContent(_selected, "share")}>
                                   <Image
                                     src={IconShare}
                                     className="mr-2"
@@ -644,7 +649,7 @@ function ConfirmOpenseas() {
                                   />
                                   Share
                                 </Button>
-                                <Button className="btn-white btn-html">
+                                <Button className="btn-white btn-html" onClick={() => onClickContent(_selected, "embed")}>
                                   <Image
                                     src={IconHtml}
                                     className="mr-2"
@@ -681,7 +686,7 @@ function ConfirmOpenseas() {
             type={modalType}
             show={showShareModal}
             detail={selectedContent}
-            onHide={() => setShowModal(false)}
+            onHide={() => setShowShareModal(false)}
             onSwitchModal={onSwitchModal}
           />
           <Modal
