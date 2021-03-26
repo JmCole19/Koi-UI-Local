@@ -16,7 +16,6 @@ import Arweave from "arweave";
 import { alertTimeout } from "config";
 import ImportArea from "components/Sections/ImportArea";
 import { IconUpload, IconOpenSea } from "assets/images";
-import { useScrollPosition } from '@n8tb1t/use-scroll-position'
 
 const arweave = Arweave.init();
 const { Panel } = Collapse;
@@ -36,7 +35,7 @@ function MyContent() {
   const [detectorAr, setDetectorAr] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [errEmessage, setErrMessage] = useState('');
-  const [hideOnScroll, setHideOnScroll] = useState(true)
+  const [fixedArea, setFixedArea] = useState(false);
 
   const onClickItem = (item, type) => {
     if (type === "view") {
@@ -104,13 +103,43 @@ function MyContent() {
     }
   };
 
-  useScrollPosition(({ prevPos, currPos }) => {
-    console.log(currPos)
-    console.log(prevPos)
-    const isShow = currPos.y > prevPos.y
-    if (isShow !== hideOnScroll) setHideOnScroll(isShow)
-  }, [hideOnScroll])
-  
+  const listenScrollEvent = () => {
+    console.log("scroll : ",window.scrollY)
+    if (window.scrollY > 40) {
+      setFixedArea(true)
+    } else {
+      setFixedArea(false)
+    }
+  }
+  useEffect(() => {
+    window.addEventListener("mousewheel", listenScrollEvent());
+      return () => {
+        window.removeEventListener("mousewheel", listenScrollEvent());
+    };
+  }, []);
+  useEffect(function subscribeToWheelEvent() {
+    const updateScroll = function(e) {
+      if(!!e.deltaY) {
+        console.log("cusor: ",e)
+        console.log("cusor: ",e.offsetY)
+        console.log("cusor: ",e.y)
+        console.log("cusor: ",e.screenY)
+        console.log("cusor: ",e.pageY)
+        // setState((currentState)=>{
+        //      const delta = Math.sign(e.deltaY) * 10.0;
+        //      const val = Math.max(0, currentState.scrollTop + delta);
+        //      return {scrollTop:val}   
+        // })            
+      } else {
+        console.log('zero', e.deltaY);
+      }
+    }
+    window.addEventListener('mousewheel', updateScroll);
+    console.log('subscribed to wheelEvent')
+    return function () {
+      window.removeEventListener('mousewheel', updateScroll);
+    }
+  }, []);
   useEffect(() => {
     getContents();
   }, [history.location.pathname]);
@@ -198,7 +227,7 @@ function MyContent() {
           </Button>
         </div>
         <ImportArea>
-          <LinkNftUpload className={`test ${hideOnScroll ? 'fixedArea' : 'blockArea'}`}>
+          <LinkNftUpload className={`test ${fixedArea ? 'fixedArea' : 'blockArea'}`}>
             <div className="font-n-1">You haven't permanently stored any content yet.</div>
             <div className="font-n-1"><b>Let's fix that.</b></div>
             <div className="text-center mt-4 mb-4 cursor" onClick={() => history.push('/register-content')}>
