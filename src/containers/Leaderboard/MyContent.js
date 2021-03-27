@@ -202,7 +202,8 @@ function MyContent() {
 
   return (
     <LeaderboardContainer>
-      <div className="leaderboard-header">
+      <div className="leaderboard">
+        <div className="leaderboard-header">
           <h2 className="text-blue mb-0">
             My Content
           </h2>
@@ -258,7 +259,6 @@ function MyContent() {
             <div className='font-s-1'>What are you waiting for? <b>Start earning KOI.</b></div>
           </LinkNftUpload>
         </ImportArea>
-      <div className="leaderboard">
         <AlertArea
           showMessage={showAlert}
           message={errEmessage}

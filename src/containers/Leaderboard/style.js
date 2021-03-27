@@ -14,7 +14,8 @@ export const LeaderboardContainer = styled.div`
     align-items: center;
     justify-content: space-between;
     padding: 13px 55px;
-    position: fixed;
+    position: sticky;
+    top: 80px;
     width: 100%;
     .filter-options {
       margin-left: 95px;
@@ -208,5 +209,6 @@ export const StyledThumb = styled.div`
   }
 `;
 export const LinkNftUpload = styled.div`
-  padding: 25px;
+  padding: 10px;
+  &.big{ padding: 25px; }
 `;

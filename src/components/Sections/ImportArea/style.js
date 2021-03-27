@@ -3,8 +3,8 @@ import { colors, mixins } from "theme";
 
 export const ImportAreaContainer = styled.div`
     // position: relative;
-    position: fixed;
-    margin-top: 61px;
+    position: sticky;
+    top: 141px;
     .import-area{
         flex: 1;
         margin: 25px 50px;
