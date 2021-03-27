@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useContext, useEffect, useState, useRef } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Button, Image } from "react-bootstrap";
 import { koi_tools } from "koi_tools";
 import { ScaleLoader } from "react-spinners";
@@ -35,8 +35,8 @@ function MyContent() {
   const [detectorAr, setDetectorAr] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [errEmessage, setErrMessage] = useState('');
-  const [fixedArea, setFixedArea] = useState(false);
-  const [scrollY, setScrollY] = useState(0);
+  // const [fixedArea, setFixedArea] = useState(false);
+  // const [scrollY, setScrollY] = useState(0);
 
   // function logit() {
   //   setScrollY(window.pageYOffset);
@@ -245,7 +245,7 @@ function MyContent() {
           </Button>
         </div>
         <ImportArea>
-          <LinkNftUpload className={`test ${fixedArea ? 'fixedArea' : 'blockArea'}`}>
+          <LinkNftUpload className={`big`}>
             <div className="font-n-1">You haven't permanently stored any content yet.</div>
             <div className="font-n-1"><b>Let's fix that.</b></div>
             <div className="text-center mt-4 mb-4 cursor" onClick={() => history.push('/register-content')}>

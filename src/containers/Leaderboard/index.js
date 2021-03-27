@@ -116,11 +116,6 @@ function Leaderboard() {
 
   return (
     <>
-      <AlertArea
-        showMessage={showAlert}
-        variant={alertVariant}
-        message={errEmessage}
-      ></AlertArea>
       <LeaderboardContainer>
         <div className="leaderboard">
           <div className="leaderboard-header">
@@ -178,6 +173,11 @@ function Leaderboard() {
               </div>
             </LinkNftUpload>
           </ImportArea>
+          <AlertArea
+            showMessage={showAlert}
+            variant={alertVariant}
+            message={errEmessage}
+          ></AlertArea>
           <div className="leaderboard-items">
             {isLoading ? (
               <div className="loading-container">
