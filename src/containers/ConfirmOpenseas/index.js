@@ -537,6 +537,11 @@ function ConfirmOpenseas() {
                                 rows={5}
                               />
                             </Form.Item>
+                            <div className="text-center">
+                              {loading && (
+                                <Spin size="large" tip="get KOI balance" />
+                              )}
+                            </div>
                             <Form.Item>
                               <div className="left" />
                               <Button
