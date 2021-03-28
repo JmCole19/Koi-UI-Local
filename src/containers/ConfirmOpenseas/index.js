@@ -87,7 +87,7 @@ function ConfirmOpenseas() {
   const [updatingProcess, setUploadingProcess] = useState(0);
   const [showAlert, setShowAlert] = useState(false);
   const [alertVariant, setAlertVariant] = useState('danger');
-  const [errEmessage, setErrMessage] = useState('');
+  const [errMessage, setErrMessage] = useState('');
 
   const show_alert = (message = '', type = 'danger') => {
     setShowAlert(true)
@@ -151,15 +151,13 @@ function ConfirmOpenseas() {
   }
 
   const enoughBalance = async () => {
-    let cur = new Date()
-    console.log('here', cur.getTime())
     console.log("koi balance : ", Number(balanceKoi))
     console.log("ar balance : ", Number(balanceAr))
     if(Number(balanceKoi) < uploadContents.length ) {
-      show_notification('Your koi balance is not enough to upload.')
+      setErrMessage('Your koi balance is not enough to upload.')
       return false
     }else if(Number(balanceAr) < Number(uploadContents.length * 0.0002) ) {
-      show_notification('Your ar balance is not enough to upload.')
+      setErrMessage('Your ar balance is not enough to upload.')
       return false
     }else{
       await uploadNFTContents()
@@ -167,15 +165,13 @@ function ConfirmOpenseas() {
   }
 
   const checkUpload = async () => {
-    console.log('hhh')
+    console.log('checkUpload', keyAr)
     if(!keyAr) {
       show_notification('Please upload key json file.')
-      setTimeout(() => {
-        setMode("uploadKey");
-      }, 2000)
+      setMode("uploadKey");
     }else {
       if(mode !== modes.confirm) setMode("confirm")
-      if(balanceKoi && balanceKoi) {
+      if(balanceKoi !== null && balanceKoi !== null) {
         enoughBalance()
       }else {
         setLoading(true)
@@ -183,8 +179,6 @@ function ConfirmOpenseas() {
         setLoading(false)
         setBalanceKoi(Number(balance.koiBalance))
         setBalanceAr(convertArBalance(balance.arBalance))
-        let d = new Date()
-        console.log('here', d.getTime())
         setTimeout( () => enoughBalance(), 100)
       }
     }
@@ -374,7 +368,7 @@ function ConfirmOpenseas() {
         var arJson = JSON.parse(e.target.result);
         // setWalletKey(arJson);
         setKeyAr(arJson);
-        setTimeout( () => checkUpload(), 100)
+        setMode("confirm")
         // setDetectorAr(true);
       };
       reader.readAsText(file);
@@ -446,7 +440,7 @@ function ConfirmOpenseas() {
       <AlertArea
         showMessage={showAlert}
         variant={alertVariant}
-        message={errEmessage}
+        message={errMessage}
       ></AlertArea>
       <ConfirmOpenseasContainer>
         {mode !== modes.complete && (
@@ -821,6 +815,7 @@ function ConfirmOpenseas() {
                       <Spin size="large" tip="get KOI balance" />
                     )}
                   </div>
+                  {errMessage && <p className='text-center text-danger'>{errMessage}</p>}
                   <Button
                     className="btn-blueDark btn-connect"
                     onClick={onConnectWallet}

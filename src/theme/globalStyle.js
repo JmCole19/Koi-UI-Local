@@ -92,7 +92,7 @@ const GlobalStyle = createGlobalStyle`
         font-family: ${fonts.main};
         letter-spacing: 0.03em;
     }
-
+    .ant-spin-text { color: ${colors.blueDark}; }
     .f-32 {
         font-size: 32px !important;
     }
