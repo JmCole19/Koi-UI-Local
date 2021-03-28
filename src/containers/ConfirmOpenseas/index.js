@@ -20,11 +20,12 @@ import { colors } from "theme";
 import { DataContext } from "contexts/DataContextContainer";
 import { FaTimes } from "react-icons/fa";
 import Arweave from "arweave";
-import { show_notification, show_fixed_number } from "service/utils";
+import { show_notification, show_fixed_number, convertArBalance } from "service/utils";
 import { getArWalletAddressFromJson, exportNFT } from "service/NFT";
 import AlertArea from "components/Sections/AlertArea";
 import {alertTimeout} from 'config'
 import ModalContent from "components/Elements/ModalContent";
+import { getKoi } from "service/KOI";
 
 const arweave = Arweave.init();
 const { TextArea } = Input;
@@ -54,6 +55,12 @@ function ConfirmOpenseas() {
     setOpenSeas,
     addressAr,
     setAddressAr,
+    keyAr,
+    setKeyAr,
+    balanceKoi,
+    setBalanceKoi,
+    balanceAr,
+    setBalanceAr,
   } = useContext(DataContext);
   const [form] = useForm();
   const location = useLocation();
@@ -70,16 +77,17 @@ function ConfirmOpenseas() {
     owner: "",
     description: "",
   });
+  const [loading, setLoading] = useState(false);
   const [activeStep, setActiveStep] = useState(1);
   const [uploadContents, setUploadContents] = useState([]);
   const [showModal, setShowModal] = useState(false);
   var selectedIds = selected.split("_");
-  const [detectorAr, setDetectorAr] = useState(false);
-  const [walletKey, setWalletKey] = useState(null);
+  const [detectorAr] = useState(false);
+  // const [walletKey, setWalletKey] = useState(null);
   const [updatingProcess, setUploadingProcess] = useState(0);
   const [showAlert, setShowAlert] = useState(false);
   const [alertVariant, setAlertVariant] = useState('danger');
-  const [errEmessage, setErrMessage] = useState('');
+  const [errMessage, setErrMessage] = useState('');
 
   const show_alert = (message = '', type = 'danger') => {
     setShowAlert(true)
@@ -135,28 +143,127 @@ function ConfirmOpenseas() {
 
   const formValidation = () => {
     if(!activeOpenSea.title || !activeOpenSea.owner || !activeOpenSea.description) {
+      console.log("234")
       show_alert("We couldn't find any details about this NFT on the blockchain. <br> Please enter the information in order to collect KOI.")
+      return false
+    }
+    return true
+  }
+
+  const enoughBalance = async () => {
+    console.log("koi balance : ", Number(balanceKoi))
+    console.log("ar balance : ", Number(balanceAr))
+    if(Number(balanceKoi) < uploadContents.length ) {
+      setErrMessage('Your koi balance is not enough to upload.')
+      return false
+    }else if(Number(balanceAr) < Number(uploadContents.length * 0.0002) ) {
+      setErrMessage('Your ar balance is not enough to upload.')
+      return false
+    }else{
+      await uploadNFTContents()
     }
   }
 
+  const checkUpload = async () => {
+    console.log('checkUpload', keyAr)
+    if(!keyAr) {
+      show_notification('Please upload key json file.')
+      setMode("uploadKey");
+    }else {
+      if(mode !== modes.confirm) setMode("confirm")
+      if(balanceKoi !== null && balanceKoi !== null) {
+        enoughBalance()
+      }else {
+        setLoading(true)
+        let balance = await getKoi(keyAr)
+        setLoading(false)
+        setBalanceKoi(Number(balance.koiBalance))
+        setBalanceAr(convertArBalance(balance.arBalance))
+        setTimeout( () => enoughBalance(), 100)
+      }
+    }
+  }
+
+  const uploadNFTContents = async () => {
+    setMode("uploading");
+    // uploading process
+    let tpUpdatingProcess = updatingProcess;
+    let tempUploadContents = uploadContents
+    for (let content of uploadContents) {
+      try {
+        let res = await exportNFT(
+          arweave,
+          addressAr,
+          content,
+          content.thumb,
+          null,
+          keyAr
+        );
+        console.log(res);
+        tpUpdatingProcess++;
+
+        if (res) {
+          setUploadingProcess(tpUpdatingProcess);
+          
+          let t_i_CT = tempUploadContents.findIndex((_tc) => _tc.id === content.id);
+          if (tempUploadContents[t_i_CT]) {
+            tempUploadContents[t_i_CT].txId = res
+          }
+        } else {
+          setUploadingProcess(tpUpdatingProcess);
+          show_notification(
+            "There is an error to upload content title '" +
+              content.title +
+              "' "
+          );
+        }
+        /*
+        if (tpUpdatingProcess + 1 === uploadContents.length) {
+          // close modal
+          setShowModal(false);
+          show_notification("Upload finished", "KOI", "success");
+          // show complete section
+          setTimeout(() => {
+            setMode("complete");
+          }, 2000);
+        }
+        */
+      } catch (err) {
+        console.log("error - exportNFT", err);
+        show_notification("There is an error to uploading NFT content", "KOI", "error");
+      }
+    }
+    // close modal
+    setShowModal(false);
+    show_notification("Upload finished", "KOI", "success");
+    // show complete section
+    setTimeout(() => {
+      setMode("complete");
+    }, 2000);
+    tempUploadContents = tempUploadContents.filter( uc => uc.txId !== '')
+    setUploadContents(tempUploadContents)
+  }
   const onClickConfirm = () => {
     switch (
       mode // change | confirm | uploadKey | uploading | complete
     ) {
       case modes.change:
+        console.log("here1", activeStep, uploadContents.length)
         if(!formValidation()){
           break;
         }
         if (activeStep === uploadContents.length) {
+          console.log("here2")
           setMode("confirm");
           setShowModal(true);
         } else {
+          console.log("here1.2")
           setActiveStep(activeStep + 1);
           setActiveOpenSea(uploadContents[activeStep]);
         }
         break;
       case "confirm":
-        setMode("uploadKey");
+        checkUpload()
         // setDetectorAr(true)
         break;
       // case 'uploadKey':
@@ -212,9 +319,8 @@ function ConfirmOpenseas() {
   };
 
   const onConnectWallet = () => {
-    // setRequiredKey(true)
-    setMode("uploadKey");
-    // setDetectorAr(true)
+    checkUpload()
+    // setMode("uploadKey");
   };
 
   const updateContent = (key, value) => {
@@ -250,7 +356,7 @@ function ConfirmOpenseas() {
     // console.log('file type : ', file)
     const isJson = file.type === "application/json";
     if (!isJson) {
-      show_notification("You can only upload JPG/PNG file!");
+      show_notification("You can only upload JSON file!");
     }
     const isLt1M = file.size / 1024 < 512;
     if (!isLt1M) {
@@ -260,8 +366,10 @@ function ConfirmOpenseas() {
       const reader = new FileReader();
       reader.onload = async (e) => {
         var arJson = JSON.parse(e.target.result);
-        setWalletKey(arJson);
-        setDetectorAr(true);
+        // setWalletKey(arJson);
+        setKeyAr(arJson);
+        setMode("confirm")
+        // setDetectorAr(true);
       };
       reader.readAsText(file);
       // Prevent upload
@@ -309,68 +417,11 @@ function ConfirmOpenseas() {
   const detectArweaveWallet = async () => {
     try {
       let addr = await arweave.wallets.getAddress();
-      let addressResult = await getArWalletAddressFromJson(arweave, walletKey);
+      let addressResult = await getArWalletAddressFromJson(arweave, keyAr);
       console.log("addressResult : ", addressResult);
       console.log("detect address: ", addr);
       if (addr) {
         setAddressAr(addr);
-        setMode("uploading");
-        // uploading process
-        let tpUpdatingProcess = updatingProcess;
-        let tempUploadContents = uploadContents
-        for (let content of uploadContents) {
-          try {
-            let res = await exportNFT(
-              arweave,
-              addressAr,
-              content,
-              content.thumb,
-              null,
-              walletKey
-            );
-            console.log(res);
-            tpUpdatingProcess++;
-
-            if (res) {
-              setUploadingProcess(tpUpdatingProcess);
-              
-              let t_i_CT = tempUploadContents.findIndex((_tc) => _tc.id === content.id);
-              if (tempUploadContents[t_i_CT]) {
-                tempUploadContents[t_i_CT].txId = res
-              }
-            } else {
-              setUploadingProcess(tpUpdatingProcess);
-              show_notification(
-                "There is an error to upload content title '" +
-                  content.title +
-                  "' "
-              );
-            }
-            /*
-            if (tpUpdatingProcess + 1 === uploadContents.length) {
-              // close modal
-              setShowModal(false);
-              show_notification("Upload finished", "KOI", "success");
-              // show complete section
-              setTimeout(() => {
-                setMode("complete");
-              }, 2000);
-            }
-            */
-          } catch (err) {
-            console.log("error - exportNFT", err);
-            show_notification("There is an error to uploading NFT content", "KOI", "error");
-          }
-        }
-        // close modal
-        setShowModal(false);
-        show_notification("Upload finished", "KOI", "success");
-        // show complete section
-        setTimeout(() => {
-          setMode("complete");
-        }, 2000);
-        tempUploadContents = tempUploadContents.filter( uc => uc.txId !== '')
-        setUploadContents(tempUploadContents)
       } else {
         show_notification(
           "can\t detect ArWallet address. Please check install ArConnect extension or create a wallet."
@@ -389,7 +440,7 @@ function ConfirmOpenseas() {
       <AlertArea
         showMessage={showAlert}
         variant={alertVariant}
-        message={errEmessage}
+        message={errMessage}
       ></AlertArea>
       <ConfirmOpenseasContainer>
         {mode !== modes.complete && (
@@ -759,6 +810,12 @@ function ConfirmOpenseas() {
                   <h6 className="text-blue">
                     {show_fixed_number(uploadContents.length * 1, 1)} KOI
                   </h6>
+                  <div className="text-center">
+                    {loading && (
+                      <Spin size="large" tip="get KOI balance" />
+                    )}
+                  </div>
+                  {errMessage && <p className='text-center text-danger'>{errMessage}</p>}
                   <Button
                     className="btn-blueDark btn-connect"
                     onClick={onConnectWallet}
