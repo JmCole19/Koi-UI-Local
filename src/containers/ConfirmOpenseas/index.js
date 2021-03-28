@@ -81,7 +81,7 @@ function ConfirmOpenseas() {
   const [uploadContents, setUploadContents] = useState([]);
   const [showModal, setShowModal] = useState(false);
   var selectedIds = selected.split("_");
-  const [detectorAr, setDetectorAr] = useState(false);
+  const [detectorAr] = useState(false);
   const [walletKey, setWalletKey] = useState(null);
   const [updatingProcess, setUploadingProcess] = useState(0);
   const [showAlert, setShowAlert] = useState(false);
@@ -142,8 +142,11 @@ function ConfirmOpenseas() {
 
   const formValidation = () => {
     if(!activeOpenSea.title || !activeOpenSea.owner || !activeOpenSea.description) {
+      console.log("234")
       show_alert("We couldn't find any details about this NFT on the blockchain. <br> Please enter the information in order to collect KOI.")
+      return false
     }
+    return true
   }
 
   const checkUpload = async () => {
@@ -151,16 +154,17 @@ function ConfirmOpenseas() {
       show_notification('Please upload key json file.')
       setTimeout(() => {
         setMode("uploadKey");
-      }, 3000)
+      }, 2000)
     }else {
       if(balanceKoi && balanceKoi) {
         console.log("koi balance : ", Number(balanceKoi))
         console.log("ar balance : ", Number(balanceAr))
         if(Number(balanceKoi) < uploadContents.length ) {
           show_notification('Your koi balance is not enough to upload.')
-        }
-        if(Number(balanceAr) < Number(uploadContents.length * 0.0002) ) {
+        }else if(Number(balanceAr) < Number(uploadContents.length * 0.0002) ) {
           show_notification('Your ar balance is not enough to upload.')
+        }else{
+          await uploadNFTContents()
         }
       }else {
         setLoading(true)
@@ -168,21 +172,85 @@ function ConfirmOpenseas() {
         setLoading(false)
         setBalanceKoi(Number(balance.koiBalance))
         setBalanceAr(convertArBalance(balance.arBalance))
+        checkUpload()
       }
     }
+  }
+
+  const uploadNFTContents = async () => {
+    setMode("uploading");
+    // uploading process
+    let tpUpdatingProcess = updatingProcess;
+    let tempUploadContents = uploadContents
+    for (let content of uploadContents) {
+      try {
+        let res = await exportNFT(
+          arweave,
+          addressAr,
+          content,
+          content.thumb,
+          null,
+          walletKey
+        );
+        console.log(res);
+        tpUpdatingProcess++;
+
+        if (res) {
+          setUploadingProcess(tpUpdatingProcess);
+          
+          let t_i_CT = tempUploadContents.findIndex((_tc) => _tc.id === content.id);
+          if (tempUploadContents[t_i_CT]) {
+            tempUploadContents[t_i_CT].txId = res
+          }
+        } else {
+          setUploadingProcess(tpUpdatingProcess);
+          show_notification(
+            "There is an error to upload content title '" +
+              content.title +
+              "' "
+          );
+        }
+        /*
+        if (tpUpdatingProcess + 1 === uploadContents.length) {
+          // close modal
+          setShowModal(false);
+          show_notification("Upload finished", "KOI", "success");
+          // show complete section
+          setTimeout(() => {
+            setMode("complete");
+          }, 2000);
+        }
+        */
+      } catch (err) {
+        console.log("error - exportNFT", err);
+        show_notification("There is an error to uploading NFT content", "KOI", "error");
+      }
+    }
+    // close modal
+    setShowModal(false);
+    show_notification("Upload finished", "KOI", "success");
+    // show complete section
+    setTimeout(() => {
+      setMode("complete");
+    }, 2000);
+    tempUploadContents = tempUploadContents.filter( uc => uc.txId !== '')
+    setUploadContents(tempUploadContents)
   }
   const onClickConfirm = () => {
     switch (
       mode // change | confirm | uploadKey | uploading | complete
     ) {
       case modes.change:
+        console.log("here1", activeStep, uploadContents.length)
         if(!formValidation()){
           break;
         }
         if (activeStep === uploadContents.length) {
+          console.log("here2")
           setMode("confirm");
           setShowModal(true);
         } else {
+          console.log("here1.2")
           setActiveStep(activeStep + 1);
           setActiveOpenSea(uploadContents[activeStep]);
         }
@@ -244,9 +312,8 @@ function ConfirmOpenseas() {
   };
 
   const onConnectWallet = () => {
-    // setRequiredKey(true)
-    setMode("uploadKey");
-    // setDetectorAr(true)
+    checkUpload()
+    // setMode("uploadKey");
   };
 
   const updateContent = (key, value) => {
@@ -293,6 +360,7 @@ function ConfirmOpenseas() {
       reader.onload = async (e) => {
         var arJson = JSON.parse(e.target.result);
         setWalletKey(arJson);
+        checkUpload(arJson)
         // setDetectorAr(true);
       };
       reader.readAsText(file);
@@ -346,63 +414,6 @@ function ConfirmOpenseas() {
       console.log("detect address: ", addr);
       if (addr) {
         setAddressAr(addr);
-        setMode("uploading");
-        // uploading process
-        let tpUpdatingProcess = updatingProcess;
-        let tempUploadContents = uploadContents
-        for (let content of uploadContents) {
-          try {
-            let res = await exportNFT(
-              arweave,
-              addressAr,
-              content,
-              content.thumb,
-              null,
-              walletKey
-            );
-            console.log(res);
-            tpUpdatingProcess++;
-
-            if (res) {
-              setUploadingProcess(tpUpdatingProcess);
-              
-              let t_i_CT = tempUploadContents.findIndex((_tc) => _tc.id === content.id);
-              if (tempUploadContents[t_i_CT]) {
-                tempUploadContents[t_i_CT].txId = res
-              }
-            } else {
-              setUploadingProcess(tpUpdatingProcess);
-              show_notification(
-                "There is an error to upload content title '" +
-                  content.title +
-                  "' "
-              );
-            }
-            /*
-            if (tpUpdatingProcess + 1 === uploadContents.length) {
-              // close modal
-              setShowModal(false);
-              show_notification("Upload finished", "KOI", "success");
-              // show complete section
-              setTimeout(() => {
-                setMode("complete");
-              }, 2000);
-            }
-            */
-          } catch (err) {
-            console.log("error - exportNFT", err);
-            show_notification("There is an error to uploading NFT content", "KOI", "error");
-          }
-        }
-        // close modal
-        setShowModal(false);
-        show_notification("Upload finished", "KOI", "success");
-        // show complete section
-        setTimeout(() => {
-          setMode("complete");
-        }, 2000);
-        tempUploadContents = tempUploadContents.filter( uc => uc.txId !== '')
-        setUploadContents(tempUploadContents)
       } else {
         show_notification(
           "can\t detect ArWallet address. Please check install ArConnect extension or create a wallet."
@@ -537,11 +548,6 @@ function ConfirmOpenseas() {
                                 rows={5}
                               />
                             </Form.Item>
-                            <div className="text-center">
-                              {loading && (
-                                <Spin size="large" tip="get KOI balance" />
-                              )}
-                            </div>
                             <Form.Item>
                               <div className="left" />
                               <Button
@@ -796,6 +802,11 @@ function ConfirmOpenseas() {
                   <h6 className="text-blue">
                     {show_fixed_number(uploadContents.length * 1, 1)} KOI
                   </h6>
+                  <div className="text-center">
+                    {loading && (
+                      <Spin size="large" tip="get KOI balance" />
+                    )}
+                  </div>
                   <Button
                     className="btn-blueDark btn-connect"
                     onClick={onConnectWallet}
