@@ -20,11 +20,12 @@ import { colors } from "theme";
 import { DataContext } from "contexts/DataContextContainer";
 import { FaTimes } from "react-icons/fa";
 import Arweave from "arweave";
-import { show_notification, show_fixed_number } from "service/utils";
+import { show_notification, show_fixed_number, convertArBalance } from "service/utils";
 import { getArWalletAddressFromJson, exportNFT } from "service/NFT";
 import AlertArea from "components/Sections/AlertArea";
 import {alertTimeout} from 'config'
 import ModalContent from "components/Elements/ModalContent";
+import { getKoi } from "service/KOI";
 
 const arweave = Arweave.init();
 const { TextArea } = Input;
@@ -56,7 +57,9 @@ function ConfirmOpenseas() {
     setAddressAr,
     keyAr,
     balanceKoi,
+    setBalanceKoi,
     balanceAr,
+    setBalanceAr,
   } = useContext(DataContext);
   const [form] = useForm();
   const location = useLocation();
@@ -73,6 +76,7 @@ function ConfirmOpenseas() {
     owner: "",
     description: "",
   });
+  const [loading, setLoading] = useState(false);
   const [activeStep, setActiveStep] = useState(1);
   const [uploadContents, setUploadContents] = useState([]);
   const [showModal, setShowModal] = useState(false);
@@ -142,6 +146,31 @@ function ConfirmOpenseas() {
     }
   }
 
+  const checkUpload = async () => {
+    if(!keyAr) {
+      show_notification('Please upload key json file.')
+      setTimeout(() => {
+        setMode("uploadKey");
+      }, 3000)
+    }else {
+      if(balanceKoi && balanceKoi) {
+        console.log("koi balance : ", Number(balanceKoi))
+        console.log("ar balance : ", Number(balanceAr))
+        if(Number(balanceKoi) < uploadContents.length ) {
+          show_notification('Your koi balance is not enough to upload.')
+        }
+        if(Number(balanceAr) < Number(uploadContents.length * 0.0002) ) {
+          show_notification('Your ar balance is not enough to upload.')
+        }
+      }else {
+        setLoading(true)
+        let balance = await getKoi(keyAr)
+        setLoading(false)
+        setBalanceKoi(Number(balance.koiBalance))
+        setBalanceAr(convertArBalance(balance.arBalance))
+      }
+    }
+  }
   const onClickConfirm = () => {
     switch (
       mode // change | confirm | uploadKey | uploading | complete
@@ -159,23 +188,7 @@ function ConfirmOpenseas() {
         }
         break;
       case "confirm":
-        if(!keyAr) {
-          show_notification('Please upload key json file.')
-          setTimeout(() => {
-            setMode("uploadKey");
-          }, 3000)
-        }else {
-          if(balanceKoi && balanceKoi) {
-            console.log("koi balance : ", Number(balanceKoi))
-            console.log("ar balance : ", Number(balanceAr))
-            if(Number(balanceKoi) < uploadContents.length ) {
-              show_notification('Your koi balance is not enough to upload.')
-            }
-            if(Number(balanceAr) < Number(uploadContents.length * 0.0002) ) {
-              show_notification('Your ar balance is not enough to upload.')
-            }
-          }
-        }
+        checkUpload()
         // setDetectorAr(true)
         break;
       // case 'uploadKey':
@@ -269,7 +282,7 @@ function ConfirmOpenseas() {
     // console.log('file type : ', file)
     const isJson = file.type === "application/json";
     if (!isJson) {
-      show_notification("You can only upload JPG/PNG file!");
+      show_notification("You can only upload JSON file!");
     }
     const isLt1M = file.size / 1024 < 512;
     if (!isLt1M) {
@@ -280,7 +293,7 @@ function ConfirmOpenseas() {
       reader.onload = async (e) => {
         var arJson = JSON.parse(e.target.result);
         setWalletKey(arJson);
-        setDetectorAr(true);
+        // setDetectorAr(true);
       };
       reader.readAsText(file);
       // Prevent upload
