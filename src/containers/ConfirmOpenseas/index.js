@@ -54,6 +54,9 @@ function ConfirmOpenseas() {
     setOpenSeas,
     addressAr,
     setAddressAr,
+    keyAr,
+    balanceKoi,
+    balanceAr,
   } = useContext(DataContext);
   const [form] = useForm();
   const location = useLocation();
@@ -156,7 +159,23 @@ function ConfirmOpenseas() {
         }
         break;
       case "confirm":
-        setMode("uploadKey");
+        if(!keyAr) {
+          show_notification('Please upload key json file.')
+          setTimeout(() => {
+            setMode("uploadKey");
+          }, 3000)
+        }else {
+          if(balanceKoi && balanceKoi) {
+            console.log("koi balance : ", Number(balanceKoi))
+            console.log("ar balance : ", Number(balanceAr))
+            if(Number(balanceKoi) < uploadContents.length ) {
+              show_notification('Your koi balance is not enough to upload.')
+            }
+            if(Number(balanceAr) < Number(uploadContents.length * 0.0002) ) {
+              show_notification('Your ar balance is not enough to upload.')
+            }
+          }
+        }
         // setDetectorAr(true)
         break;
       // case 'uploadKey':
