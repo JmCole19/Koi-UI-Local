@@ -10,7 +10,7 @@ import cloneDeep from "clone-deep";
 import { useHistory, useLocation } from "react-router-dom";
 import MyProgress from "components/Elements/MyProgress";
 import ArconnectCard from "components/Elements/ArconnectCard";
-import { show_notification } from "service/utils";
+import { convertArBalance, show_notification } from "service/utils";
 import Arweave from "arweave";
 import { getArWalletAddressFromJson, exportNFT } from "service/NFT";
 import { colors } from "theme";
@@ -18,7 +18,9 @@ import { FaArrowLeft } from "react-icons/fa";
 import { DataContext } from "contexts/DataContextContainer";
 import AlertArea from "components/Sections/AlertArea";
 import { alertTimeout } from "config";
+import { getKoi } from "service/KOI";
 
+const arweave = Arweave.init();
 const { TextArea } = Input;
 const { Dragger } = Upload;
 
@@ -37,10 +39,17 @@ function UploadManual() {
   const location = useLocation();
   const { step } = queryString.parse(location.search);
   const {
+    addressAr,
     setAddressAr,
     keyAr,
+    setKeyAr,
+    balanceKoi,
+    setBalanceKoi,
+    balanceAr,
+    setBalanceAr,
   } = useContext(DataContext);
   const [uploading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [imageUrl, setImageUrl] = useState(null);
   const [imagePath, setImagePath] = useState('');
   const [imageBlob, setImageBlob] = useState(null);
@@ -95,17 +104,15 @@ function UploadManual() {
     }, alertTimeout)
   }
 
-  const uploadContent = async (arJson) => {
-    const arweave = Arweave.init();
-    let addressResult = await getArWalletAddressFromJson(arweave, arJson);
+  const uploadNFTContents = async () => {
     try {
       let res = await exportNFT(
         arweave,
-        addressResult,
+        addressAr,
         activeContent,
         "",
         imageBlob,
-        arJson
+        keyAr
       );
       if (res) {
         show_alert("Your transaction id is " + res + ". Upload successfully", 'success')
@@ -118,7 +125,35 @@ function UploadManual() {
     } catch (err) {
       console.log("here1");
       console.log(err);
-      show_notification("Something error", "NFT uploading");
+      show_alert("Something error on NFT uploading");
+    }
+  }
+
+  const enoughBalance = async () => {
+    console.log("koi balance : ", Number(balanceKoi))
+    console.log("ar balance : ", Number(balanceAr))
+    if(Number(balanceKoi) < 1 ) {
+      show_alert('Your koi balance is not enough to upload.')
+      return false
+    }else if(Number(balanceAr) < Number(1 * 0.0002) ) {
+      show_alert('Your ar balance is not enough to upload.')
+      return false
+    }else{
+      await uploadNFTContents()
+    }
+  }
+
+  const checkUpload = async (arJson) => {
+    if(balanceKoi !== null && balanceKoi !== null) {
+      enoughBalance()
+    }else {
+      setLoading(true)
+      if(!keyAr) setKeyAr(arJson)
+      let balance = await getKoi(keyAr || arJson)
+      setLoading(false)
+      setBalanceKoi(Number(balance.koiBalance))
+      setBalanceAr(convertArBalance(balance.arBalance))
+      setTimeout( () => enoughBalance(), 100)
     }
   }
 
@@ -136,7 +171,10 @@ function UploadManual() {
       const reader = new FileReader();
       reader.onload = async (e) => {
         var arJson = JSON.parse(e.target.result);
-        await uploadContent(arJson)
+        let addressResult = await getArWalletAddressFromJson(arweave, arJson);
+        console.log({addressResult})
+        setAddressAr(addressResult)
+        await checkUpload(arJson)
       };
       reader.readAsText(file);
       // Prevent upload
@@ -205,16 +243,16 @@ function UploadManual() {
       if (addr) {
         setAddressAr(addr);
         if(keyAr) {
-          await uploadContent(keyAr)
+          await checkUpload(keyAr)
         }else{
-          show_notification('Please upload your wallet key json file')
+          show_alert('Please upload your wallet key json file')
         }
       } else {
-        show_notification("Error on detectimg Arweave wallet address");
+        show_alert("Error on detectimg Arweave wallet address");
       }
     } catch (err) {
       console.log(err);
-      show_notification("Error on detectimg Arweave wallet address");
+      show_alert("Error on detectimg Arweave wallet address");
     }
   };
 
@@ -488,6 +526,11 @@ function UploadManual() {
                         </Dragger>
                       </div>
                       <ArconnectCard openArConnect={onOpenArConnect} />
+                    </div>
+                    <div className="text-center">
+                      {loading && (
+                        <Spin size="large" tip="get KOI balance" />
+                      )}
                     </div>
                   </Form>
                   <p className="footer-description text-blue">
