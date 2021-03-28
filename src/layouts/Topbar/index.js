@@ -41,13 +41,13 @@ function Topbar() {
       try {
         const accounts = await window.ethereum.enable();
         setAddressEth(accounts[0]);
-        show_notification("Imported your ethereum account.", "KOI", "success");
+        // show_notification("Imported your ethereum account.", "KOI", "success");
       } catch (err) {
         console.log(err);
-        show_notification(
-          "There is an error to import your ethereum account",
-          "KOI"
-        );
+        // show_notification(
+        //   "There is an error to import your ethereum account",
+        //   "KOI"
+        // );
       }
     } else {
       // metamask extension didn't install
