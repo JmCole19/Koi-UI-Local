@@ -56,6 +56,7 @@ function ConfirmOpenseas() {
     addressAr,
     setAddressAr,
     keyAr,
+    setKeyAr,
     balanceKoi,
     setBalanceKoi,
     balanceAr,
@@ -82,7 +83,7 @@ function ConfirmOpenseas() {
   const [showModal, setShowModal] = useState(false);
   var selectedIds = selected.split("_");
   const [detectorAr] = useState(false);
-  const [walletKey, setWalletKey] = useState(null);
+  // const [walletKey, setWalletKey] = useState(null);
   const [updatingProcess, setUploadingProcess] = useState(0);
   const [showAlert, setShowAlert] = useState(false);
   const [alertVariant, setAlertVariant] = useState('danger');
@@ -149,30 +150,42 @@ function ConfirmOpenseas() {
     return true
   }
 
+  const enoughBalance = async () => {
+    let cur = new Date()
+    console.log('here', cur.getTime())
+    console.log("koi balance : ", Number(balanceKoi))
+    console.log("ar balance : ", Number(balanceAr))
+    if(Number(balanceKoi) < uploadContents.length ) {
+      show_notification('Your koi balance is not enough to upload.')
+      return false
+    }else if(Number(balanceAr) < Number(uploadContents.length * 0.0002) ) {
+      show_notification('Your ar balance is not enough to upload.')
+      return false
+    }else{
+      await uploadNFTContents()
+    }
+  }
+
   const checkUpload = async () => {
+    console.log('hhh')
     if(!keyAr) {
       show_notification('Please upload key json file.')
       setTimeout(() => {
         setMode("uploadKey");
       }, 2000)
     }else {
+      if(mode !== modes.confirm) setMode("confirm")
       if(balanceKoi && balanceKoi) {
-        console.log("koi balance : ", Number(balanceKoi))
-        console.log("ar balance : ", Number(balanceAr))
-        if(Number(balanceKoi) < uploadContents.length ) {
-          show_notification('Your koi balance is not enough to upload.')
-        }else if(Number(balanceAr) < Number(uploadContents.length * 0.0002) ) {
-          show_notification('Your ar balance is not enough to upload.')
-        }else{
-          await uploadNFTContents()
-        }
+        enoughBalance()
       }else {
         setLoading(true)
         let balance = await getKoi(keyAr)
         setLoading(false)
         setBalanceKoi(Number(balance.koiBalance))
         setBalanceAr(convertArBalance(balance.arBalance))
-        checkUpload()
+        let d = new Date()
+        console.log('here', d.getTime())
+        setTimeout( () => enoughBalance(), 100)
       }
     }
   }
@@ -190,7 +203,7 @@ function ConfirmOpenseas() {
           content,
           content.thumb,
           null,
-          walletKey
+          keyAr
         );
         console.log(res);
         tpUpdatingProcess++;
@@ -359,8 +372,9 @@ function ConfirmOpenseas() {
       const reader = new FileReader();
       reader.onload = async (e) => {
         var arJson = JSON.parse(e.target.result);
-        setWalletKey(arJson);
-        checkUpload(arJson)
+        // setWalletKey(arJson);
+        setKeyAr(arJson);
+        setTimeout( () => checkUpload(), 100)
         // setDetectorAr(true);
       };
       reader.readAsText(file);
@@ -409,7 +423,7 @@ function ConfirmOpenseas() {
   const detectArweaveWallet = async () => {
     try {
       let addr = await arweave.wallets.getAddress();
-      let addressResult = await getArWalletAddressFromJson(arweave, walletKey);
+      let addressResult = await getArWalletAddressFromJson(arweave, keyAr);
       console.log("addressResult : ", addressResult);
       console.log("detect address: ", addr);
       if (addr) {
