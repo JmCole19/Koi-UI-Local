@@ -10,7 +10,7 @@ import { useHistory } from "react-router-dom";
 import LeaderboardItem from "./LeaderboardItem";
 import { DataContext } from "contexts/DataContextContainer";
 import ModalContent from "components/Elements/ModalContent";
-import { show_notification } from "service/utils";
+// import { show_notification } from "service/utils";
 import AlertArea from "components/Sections/AlertArea";
 import Arweave from "arweave";
 import { alertTimeout } from "config";
@@ -102,7 +102,7 @@ function MyContent() {
         console.log({ res });
       }).catch(err => {
         console.log(err)
-        show_notification("There is an error to getting NFT contents.")
+        show_alert("There is an error to getting NFT contents.")
       }).finally( () => {
         console.log("finally")
         setIsLoading(false);

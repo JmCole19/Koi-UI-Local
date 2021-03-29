@@ -23,7 +23,7 @@ function Embed() {
 
   return (
     <EmbedContainer>
-      <Image src={`${preUrl}${id}`} width="auto" height="100%" />
+      <Image src={`${preUrl}${id}?t=${Math.random()*999999}`} width="auto" height="100%" />
     </EmbedContainer>
   );
 }

@@ -37,7 +37,7 @@ function LeaderboardItem({
         </div>
         <div className="item-img-wrapper item-col">
           <Image
-            src={item.txIdContent ? `${preUrl}${item.txIdContent}` : ItemTemp}
+            src={item.txIdContent ? `${preUrl}${item.txIdContent}?t=${Math.random()*999999}` : ItemTemp}
             className="cursor"
             onClick={onClickItem}
           />

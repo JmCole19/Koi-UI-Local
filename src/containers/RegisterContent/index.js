@@ -98,7 +98,7 @@ function RegisterContent() {
 
   const rewardAddingEth = async (address = '') => {
     if(!address) {
-      show_notification('There is an error to detecting Ethereum address form Metamask. Please check metamask extension again.')
+      show_alert('There is an error to detecting Ethereum address form Metamask. Please check metamask extension again.')
       return false
     }
     try{
@@ -116,7 +116,7 @@ function RegisterContent() {
         // show_alert('You’ll earn 3 KOI until 3 minutes.', 'success')
       } else {
         setLoading(false)
-        show_notification("There is an error to receive free KOI");
+        show_alert("There is an error to receive free KOI");
       }
     }catch(err) {
       setLoading(false)
