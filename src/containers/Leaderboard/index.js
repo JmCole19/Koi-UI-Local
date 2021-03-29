@@ -11,7 +11,7 @@ import LeaderboardItem from "./LeaderboardItem";
 import { DataContext } from "contexts/DataContextContainer";
 import ModalContent from "components/Elements/ModalContent";
 import axios from "axios";
-import { show_notification } from "service/utils";
+// import { show_notification } from "service/utils";
 import AlertArea from "components/Sections/AlertArea";
 import { alertTimeout } from "config";
 import ImportArea from "components/Sections/ImportArea";
@@ -101,7 +101,7 @@ function Leaderboard() {
         }
       }).catch( err => {
         console.log(err)
-        show_notification('There is an error')
+        show_alert('There is an error')
       }).finally( () => setIsLoading(false));
       // ktools.retrieveTopContent().then((res) => {
       //   setContents(res);

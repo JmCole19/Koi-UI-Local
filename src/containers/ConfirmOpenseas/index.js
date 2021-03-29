@@ -230,12 +230,12 @@ function ConfirmOpenseas() {
         */
       } catch (err) {
         console.log("error - exportNFT", err);
-        show_notification("There is an error to uploading NFT content", "KOI", "error");
+        show_alert("There is an error to uploading NFT content", "KOI", "error");
       }
     }
     // close modal
     setShowModal(false);
-    show_notification("Upload finished", "KOI", "success");
+    show_alert("Upload finished", "KOI", "success");
     // show complete section
     setTimeout(() => {
       setMode("complete");
