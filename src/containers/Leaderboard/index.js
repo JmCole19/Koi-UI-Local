@@ -90,7 +90,7 @@ function Leaderboard() {
   const getContents = async () => {
     if (contents.length === 0) {
       setIsLoading(true);
-      axios.get('https://bundler.openkoi.com/state/getTopContent/')
+      axios.get('https://bundler.openkoi.com:8888/state/getTopContent/')
       .then((res) => {
         const data = res.data
         // console.log({ data });
