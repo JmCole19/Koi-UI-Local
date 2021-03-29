@@ -177,7 +177,7 @@ function ModalContent({
         {type === "share" ? (
           <div className="content-wrapper content-share">
             <div className="modal-left">
-              <Image src={`${preUrl}${detail.txIdContent}`} />
+              <Image src={`${preUrl}${detail.txIdContent}?t=${Math.random()*999999}`} />
               <h6 className="text-blue mb-0 text-bold">{detail.name}</h6>
             </div>
             <div className="modal-right">
@@ -232,7 +232,7 @@ function ModalContent({
         ) : (
           <div className="content-wrapper content-embed">
             <div className="modal-left">
-              <Image src={`${preUrl}${detail.txIdContent}`} />
+              <Image src={`${preUrl}${detail.txIdContent}?t=${Math.random()*999999}`} />
               <h6 className="text-blue mb-0 text-bold">{detail.name}</h6>
             </div>
             <div className="modal-right">
