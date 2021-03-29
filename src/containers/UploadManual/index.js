@@ -13,8 +13,8 @@ import ArconnectCard from "components/Elements/ArconnectCard";
 import { convertArBalance, show_notification } from "service/utils";
 import Arweave from "arweave";
 import { getArWalletAddressFromJson, exportNFT } from "service/NFT";
-import { colors } from "theme";
-import { FaArrowLeft } from "react-icons/fa";
+// import { colors } from "theme";
+// import { FaArrowLeft } from "react-icons/fa";
 import { DataContext } from "contexts/DataContextContainer";
 import AlertArea from "components/Sections/AlertArea";
 import { alertTimeout } from "config";
@@ -196,7 +196,10 @@ function UploadManual() {
     if (isJpgOrPng && isLt2M) {
       const reader = new FileReader();
       reader.onload = (e) => {
-        setImagePath(file.name)
+        let ex = file.name.split('.').pop();
+        let filename = file.name.split('.').slice(0, -1).join('.')
+        if(filename.length > 20) filename = filename.substr(0, 18) + '~.'
+        setImagePath(filename + ex)
         setImageUrl(e.target.result);
         fetch(e.target.result)
           .then(function (response) {
@@ -275,13 +278,13 @@ function UploadManual() {
             <div className="upload-content">
               <div className="title-wrapper">
                 <h1 className="text-blue upload-title">Register your content.</h1>
-                <Button
+                {/* <Button
                   className="back-wrapper btn-orange"
                   onClick={() => history.replace("/register-content")}
                 >
                   <FaArrowLeft size={20} color={colors.blueDark} />
                   <h6 className="mb-0 text-blue text-bold ml-2">Leaderboard</h6>
-                </Button>
+                </Button> */}
               </div>
               {step === "1" && (
                 <div className="upload-body">

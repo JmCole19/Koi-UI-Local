@@ -85,13 +85,15 @@ function Topbar() {
         history.push("/wallet-key");
       } else {
         // show alert
-        show_notification(
-          "There is a problem to get your arwallet address. Please install arconnect extension and try again."
-        );
+        history.push("/wallet-key");
+        // show_notification(
+        //   "There is a problem to get your arwallet address. Please install arconnect extension and try again."
+        // );
       }
     } catch (err) {
       // console.log(err);
-      show_notification("Error on detectimg Arweave wallet address");
+      history.push("/wallet-key");
+      // show_notification("Error on detectimg Arweave wallet address");
     }
   };
 
