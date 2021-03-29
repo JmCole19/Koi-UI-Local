@@ -172,7 +172,7 @@ function ContentDetail() {
                   <Row>
                     <Col className="col-md-6">
                       <Image
-                        src={`${preUrl}${detail.txIdContent}`}
+                        src={`${preUrl}${detail.txIdContent}?t=${Math.random()*999999}`}
                         className="detail-img"
                       />
                     </Col>
