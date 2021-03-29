@@ -57,6 +57,7 @@ function ModalContent({
 
   const currentUrl = `${window.location.protocol}//${window.location.hostname}/content-detail/${detail.txIdContent}`;
   const embedUrl = `${window.location.protocol}//${window.location.hostname}/embed/${detail.txIdContent}`;
+  const embedContent = `<iframe width="100%" src="${embedUrl}" title="Koi NFT image" frameborder="0" allowfullscreen></iframe>`;
   const smsUrl = `sms://+19024021271?body=${window.location.protocol}//${window.location.hostname}/content-detail/${detail.txIdContent}?type=view`;
   // console.log(currentUrl)
   // console.log(embedUrl)
@@ -133,7 +134,7 @@ function ModalContent({
     setCopiedLink(true);
   };
   const onCopyCode = () => {
-    navigator.clipboard.writeText(embedUrl);
+    navigator.clipboard.writeText(embedContent);
     setCopiedCode(true);
   };
 
