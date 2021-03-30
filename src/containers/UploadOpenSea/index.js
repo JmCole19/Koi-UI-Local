@@ -75,13 +75,13 @@ function UploadOpenSea() {
         .then(async (data) => {
           console.log({ data });
           if(data.assets.length === 0) {
-            show_alert('There is no contents')
+            show_alert(`Our school of koi couldn't find anything on OpenSea NFTs associated with that wallet[${address}].`)
           }
           setOpenSeas(data.assets);
         })
         .catch(err => {
           console.log(err)
-          show_alert('There is no contents')
+          show_alert(`Our school of koi couldn't find anything on OpenSea NFTs associated with that wallet[${address}].`)
         })
         .finally(() =>{
           setIsLoading(false);

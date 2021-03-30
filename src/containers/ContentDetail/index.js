@@ -253,7 +253,7 @@ function ContentDetail() {
                 </Container>
               </div>
             </div>
-          ) : <h4 className="text-center mt-4">'There is no content'</h4>} 
+          ) : <h4 className="text-center mt-4">There is no content</h4>} 
         </div>
         {detail && <ModalContent
           type={modalType}

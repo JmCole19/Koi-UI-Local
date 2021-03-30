@@ -68,18 +68,6 @@ function Leaderboard() {
 
   const onClickMyContent = () => {
     history.push('/my-content')
-    // setIsFiltered(!isFiltered);
-    // setIsLoading(true);
-    // ktools.retrieveTopContent().then((res) => {
-    //   setContents(res);
-    //   setIsLoading(false);
-    //   console.log({ res });
-    //   if (isFiltered) {
-    //     setContents(res);
-    //   } else {
-    //     setContents(res.filter((_item) => _item.name === "Kayla"));
-    //   }
-    // });
   };
 
   const onClickUsername = (item) => {
@@ -162,7 +150,7 @@ function Leaderboard() {
             </Button>
           </div>
           <ImportArea>
-            <LinkNftUpload>
+            <LinkNftUpload onClick={() => history.push('/register-content')}>
               <div className="cursor" onClick={() => history.push('/register-content')}>
                 <div className='font-s-1'>
                   <span>
