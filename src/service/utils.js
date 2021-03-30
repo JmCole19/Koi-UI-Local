@@ -69,6 +69,14 @@ const convertArBalance = (str_number) => {
 
 }
 
+const validEmail = (str) => {
+  if (/^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/.test(str)) { 
+    return true
+  }else{
+    return false
+  }
+}
+
 export {
   show_notification,
   show_message,
@@ -77,4 +85,5 @@ export {
   show_ar_balance,
   getBase64,
   convertArBalance,
+  validEmail
 }

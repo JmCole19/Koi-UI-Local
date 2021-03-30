@@ -1,5 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { Spin } from "antd";
+import customAxios from "service/customAxios";
+import { show_notification, validEmail } from "service/utils";
 import { FooterContainer } from "./style";
 
 const items = [
@@ -85,6 +88,32 @@ const items = [
   },
 ];
 function Footer() {
+
+  const [loading, setLoading] = useState(false);
+  const [email, setEmail] = useState('');
+  const onClickSubscribe = async () => {
+    if(!email) {
+      show_notification('Please input an email address')
+      return false
+    }else if(!validEmail(email)){
+      show_notification('Please input valid email address')
+      return false
+    }else {
+      setLoading(true)
+      let { ok, data: {data} } = await customAxios.post(`/subscription`, {
+        email,
+      });
+      if (ok) {
+        setLoading(false)
+        setEmail('')
+        show_notification('Your email successfully added.', 'KOI', 'success')
+      } else {
+        setLoading(false)
+        let errMessage = data.message || 'There is an error.'
+        show_notification(errMessage);
+      }
+    }
+  }
   return (
     <FooterContainer className="w-100">
       <div className="container">
@@ -98,13 +127,15 @@ function Footer() {
             <p className="field-label">Email address</p>
             <div className="input-group">
               <input
-                type="text"
+                type="email"
                 className="form-control"
                 placeholder="name@example.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
               <span className="input-group-btn">
-                <button className="btn btn-orange" type="button">
-                  Sign up
+                <button className="btn btn-orange" type="button" onClick={onClickSubscribe}>
+                {loading ? <Spin size="small" style={{marginTop: 5}} /> : 'Sign up'}
                 </button>
               </span>
             </div>
