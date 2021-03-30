@@ -143,7 +143,6 @@ function ConfirmOpenseas() {
 
   const formValidation = () => {
     if(!activeOpenSea.title || !activeOpenSea.owner || !activeOpenSea.description) {
-      console.log("234")
       show_alert("We couldn't find any details about this NFT on the blockchain. <br> Please enter the information in order to collect KOI.")
       return false
     }
@@ -154,7 +153,8 @@ function ConfirmOpenseas() {
     console.log("koi balance : ", Number(balanceKoi))
     console.log("ar balance : ", Number(balanceAr))
     if(Number(balanceKoi) < uploadContents.length ) {
-      setErrMessage('Your koi balance is not enough to upload.')
+      // setErrMessage('Your koi balance is not enough to upload.')
+      show_alert('You don’t have any KOI in your wallet. <br> Hop on over to the <a href="/faucet">KOI Faucet</a> to get some for free!')
       return false
     }else if(Number(balanceAr) < Number(uploadContents.length * 0.0002) ) {
       setErrMessage('Your ar balance is not enough to upload.')
