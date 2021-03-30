@@ -15,7 +15,7 @@ import {
 import { ConfirmOpenseasContainer, SingleAntFileUpload } from "./style";
 import { Col, Form, Input, Row, Upload, Spin, Progress, Space } from "antd";
 import { useForm } from "antd/lib/form/Form";
-import { useHistory, useLocation } from "react-router-dom";
+import { useHistory, useLocation, Link } from "react-router-dom";
 import { colors } from "theme";
 import { DataContext } from "contexts/DataContextContainer";
 import { FaTimes } from "react-icons/fa";
@@ -143,8 +143,8 @@ function ConfirmOpenseas() {
 
   const formValidation = () => {
     if(!activeOpenSea.title || !activeOpenSea.owner || !activeOpenSea.description) {
-      console.log("234")
-      show_alert("We couldn't find any details about this NFT on the blockchain. <br> Please enter the information in order to collect KOI.")
+      show_alert('You don’t have any KOI in your wallet. <br> Hop on over to the <Link to="/faucet">KOI Faucet</Link> to get some for free!')
+      // show_alert("We couldn't find any details about this NFT on the blockchain. <br> Please enter the information in order to collect KOI.")
       return false
     }
     return true
@@ -155,6 +155,7 @@ function ConfirmOpenseas() {
     console.log("ar balance : ", Number(balanceAr))
     if(Number(balanceKoi) < uploadContents.length ) {
       setErrMessage('Your koi balance is not enough to upload.')
+      show_alert('You don’t have any KOI in your wallet. <br> Hop on over to the <Link to="/faucet">KOI Faucet</Link> to get some for free!')
       return false
     }else if(Number(balanceAr) < Number(uploadContents.length * 0.0002) ) {
       setErrMessage('Your ar balance is not enough to upload.')
