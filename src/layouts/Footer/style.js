@@ -31,6 +31,9 @@ export const FooterContainer = styled.footer`
           font-size: 15px;
           border-radius: 0 4px 4px 0;
           transform: unset;
+          &:hover{
+            background-color: ${colors.orange} !important;
+          }
         }
       }
     }
