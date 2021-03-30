@@ -68,7 +68,6 @@ function UploadManual() {
   };
 
   const onCompleteStep2 = () => {
-    console.log(activeContent);
     if (
       activeContent.title &&
       activeContent.owner &&
@@ -130,8 +129,6 @@ function UploadManual() {
   }
 
   const enoughBalance = async () => {
-    console.log("koi balance : ", Number(balanceKoi))
-    console.log("ar balance : ", Number(balanceAr))
     if(Number(balanceKoi) < 1 ) {
       // show_alert('Your koi balance is not enough to upload.')
       show_alert('You don’t have any KOI in your wallet. <br> Hop on over to the <a href="/faucet">KOI Faucet</a> to get some for free!')
@@ -184,7 +181,6 @@ function UploadManual() {
     return isJson && isLt1M;
   };
   const beforeUpload = (file) => {
-    console.log("herererere")
     console.log(file)
     const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";
     if (!isJpgOrPng) {
@@ -529,7 +525,7 @@ function UploadManual() {
                           </div>
                         </Dragger>
                       </div>
-                      <ArconnectCard openArConnect={onOpenArConnect} />
+                      {!addressAr && <ArconnectCard openArConnect={onOpenArConnect} />}
                     </div>
                     <div className="text-center">
                       {loading && (

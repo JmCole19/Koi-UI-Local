@@ -7,7 +7,7 @@ import fileDownload from "js-file-download";
 import { IconUpload } from "assets/images";
 import { Carousel, Container, Image } from "react-bootstrap";
 import { FaucetContainer } from "./style";
-import { Button, Input, Spin, Upload } from "antd";
+import { Button, Spin, Upload } from "antd";
 import { useHistory } from "react-router-dom";
 import { DataContext } from "contexts/DataContextContainer";
 import { show_notification, convertArBalance, show_digit_number } from "service/utils";
@@ -355,7 +355,7 @@ function Faucet() {
                         className="btn-step-card"
                         onClick={onClickSubmitAddress}
                       >
-                        Submit Address
+                        Submit
                       </Button>
                     </div>
                   </div>
