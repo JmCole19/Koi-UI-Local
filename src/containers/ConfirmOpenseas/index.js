@@ -15,7 +15,7 @@ import {
 import { ConfirmOpenseasContainer, SingleAntFileUpload } from "./style";
 import { Col, Form, Input, Row, Upload, Spin, Progress, Space } from "antd";
 import { useForm } from "antd/lib/form/Form";
-import { useHistory, useLocation, Link } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import { colors } from "theme";
 import { DataContext } from "contexts/DataContextContainer";
 import { FaTimes } from "react-icons/fa";
