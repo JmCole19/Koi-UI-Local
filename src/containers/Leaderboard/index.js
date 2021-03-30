@@ -68,18 +68,6 @@ function Leaderboard() {
 
   const onClickMyContent = () => {
     history.push('/my-content')
-    // setIsFiltered(!isFiltered);
-    // setIsLoading(true);
-    // ktools.retrieveTopContent().then((res) => {
-    //   setContents(res);
-    //   setIsLoading(false);
-    //   console.log({ res });
-    //   if (isFiltered) {
-    //     setContents(res);
-    //   } else {
-    //     setContents(res.filter((_item) => _item.name === "Kayla"));
-    //   }
-    // });
   };
 
   const onClickUsername = (item) => {

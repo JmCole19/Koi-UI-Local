@@ -171,8 +171,7 @@ function ModalContent({
         </h2>
         {type === "embed" && (
           <h6 className="modal-description text-blue">
-            Every time someone visits a site with your embedded NFTs, you’ll
-            earn KOI.
+            Every time someone visits a site with your embedded NFTs, you’ll earn KOI.
           </h6>
         )}
         {type === "share" ? (
