@@ -14,7 +14,7 @@ import { HiOutlineMail } from "react-icons/hi";
 import { LeaderboardItemContainer } from "./style";
 import { colors } from "theme";
 import { preUrl } from "config"
-import { show_ar_balance, show_digit_number } from "service/utils";
+import { show_digit_number } from "service/utils";
 
 function LeaderboardItem({
   item = {},
@@ -69,7 +69,7 @@ function LeaderboardItem({
             </span>
           </h5>
           <h5 className="item-rewards mb-0">
-            {show_ar_balance(item.totalReward)}{" "}
+            {show_digit_number(item.totalReward)}{" "}
             <span className="ml-1">
               <Image src={IconFish} width={18}/>
             </span>
