@@ -150,7 +150,7 @@ function Leaderboard() {
             </Button>
           </div>
           <ImportArea>
-            <LinkNftUpload>
+            <LinkNftUpload onClick={() => history.push('/register-content')}>
               <div className="cursor" onClick={() => history.push('/register-content')}>
                 <div className='font-s-1'>
                   <span>

@@ -95,7 +95,7 @@ function MyContent() {
       console.log("here3 : ", walletAddress)
       ktools.myContent(walletAddress).then((res) => {
         if(res.length === 0) {
-          show_alert("There is no contents.")  
+          show_alert(`Our school of koi couldn't find anything on that wallet[${walletAddress}].`)  
         }else{
           setContents(res);
         }
@@ -245,10 +245,10 @@ function MyContent() {
           </Button>
         </div>
         <ImportArea>
-          <LinkNftUpload className={`big`}>
+          <LinkNftUpload className={`big`} onClick={() => history.push('/register-content')}>
             <div className="font-n-1">You haven't permanently stored any content yet.</div>
             <div className="font-n-1"><b>Let's fix that.</b></div>
-            <div className="text-center mt-4 mb-4 cursor" onClick={() => history.push('/register-content')}>
+            <div className="text-center mt-4 mb-4 cursor">
               <div className='font-s-1'>
                 <span>
                   <Image src={IconUpload} width={32} className="overlay-opensea" />
