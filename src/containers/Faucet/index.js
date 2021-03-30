@@ -58,10 +58,11 @@ function Faucet() {
 
   const onClickSubmitAddress = () => {
     // validation
-    if(!address) {
-      show_alert('Please input wallet address')
-      return false
-    }else if(!keyAr) {
+    // if(!address) {
+    //   show_alert('Please input wallet address')
+    //   return false
+    // }
+    if(!keyAr) {
       show_alert('Please upload JSON keyfile')
       return false
     }
@@ -302,16 +303,16 @@ function Faucet() {
                     <h6 className="step-title text-blue mb-4">
                       Connect a wallet
                     </h6>
-                    <h6 className="text-blue">
+                    {/* <h6 className="text-blue">
                       Paste your Arweave wallet address here.
-                    </h6>
+                    </h6> */}
                     <div className="submit-wrapper mt-2">
-                      <Input
+                      {/* <Input
                         className="input-address"
                         placeholder="1234567890123456789012345678901234567890123"
                         value={address}
                         onChange={(e) => setAddress(e.target.value)}
-                      />
+                      /> */}
                       {/* <Button
                         className="btn-step-card"
                         onClick={onClickSubmitAddress}
