@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { FooterContainer } from "./style";
 
@@ -85,6 +85,12 @@ const items = [
   },
 ];
 function Footer() {
+
+  const [loading, setLoading] = useState(false);
+  const [email, setEmail] = useState('');
+  const onClickSubscribe = () => {
+
+  }
   return (
     <FooterContainer className="w-100">
       <div className="container">
@@ -101,9 +107,11 @@ function Footer() {
                 type="text"
                 className="form-control"
                 placeholder="name@example.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
               <span className="input-group-btn">
-                <button className="btn btn-orange" type="button">
+                <button className="btn btn-orange" type="button" onClick={onClickSubscribe}>
                   Sign up
                 </button>
               </span>
