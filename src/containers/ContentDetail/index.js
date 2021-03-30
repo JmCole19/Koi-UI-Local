@@ -253,7 +253,7 @@ function ContentDetail() {
                 </Container>
               </div>
             </div>
-          ) : <h4 className="text-center mt-4">'There is no content'</h4>} 
+          ) : <h4 className="text-center mt-4">Our school of koi couldn't find anything on OpenSea NFTs associated with that wallet[{addressAr}].</h4>} 
         </div>
         {detail && <ModalContent
           type={modalType}
