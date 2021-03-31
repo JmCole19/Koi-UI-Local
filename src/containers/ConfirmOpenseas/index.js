@@ -618,7 +618,6 @@ function ConfirmOpenseas() {
                           multiple={false}
                           listType="picture"
                           // beforeUpload={beforeUpload}
-                          fileList={false}
                         >
                           <div className="uploader-container">
                             {uploading ? (
@@ -834,7 +833,6 @@ function ConfirmOpenseas() {
                         multiple={false}
                         listType="picture"
                         beforeUpload={beforeJsonUpload}
-                        fileList={false}
                         showUploadList={false}
                       >
                         <div className="uploader-container">

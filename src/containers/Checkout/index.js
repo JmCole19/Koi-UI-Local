@@ -78,7 +78,6 @@ function Checkout() {
                     multiple={false}
                     listType="picture"
                     // beforeUpload={beforeUpload}
-                    fileList={false}
                   >
                     <div className="uploader-container">
                       {uploading ? (

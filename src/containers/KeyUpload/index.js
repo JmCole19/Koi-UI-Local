@@ -157,7 +157,6 @@ function KeyUpload() {
                       multiple={false}
                       listType="picture"
                       beforeUpload={beforeJsonUpload}
-                      fileList={false}
                       showUploadList={false}
                     >
                       <div className="uploader-container">
