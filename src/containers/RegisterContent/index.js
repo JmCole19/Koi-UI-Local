@@ -14,7 +14,7 @@ import { RegisterContentContainer } from "./style";
 import { abi } from "assets/abi";
 import { DataContext } from "contexts/DataContextContainer";
 import { convertArBalance, show_notification } from "service/utils";
-import { Col, notification, Row, Spin } from "antd";
+import { Col, Row, Spin } from "antd";
 import AlertArea from "components/Sections/AlertArea";
 import customAxios from "service/customAxios";
 import Arweave from "arweave";

@@ -241,7 +241,6 @@ function UploadArweave() {
                       // previewFile={false}
                       showUploadList={false}
                       beforeUpload={beforeUpload}
-                      fileList={false}
                     >
                       <div className="uploader-container">
                         {uploading ? (
