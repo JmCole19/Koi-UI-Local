@@ -37,6 +37,16 @@ export const TopbarContainer = styled(Navbar)`
           color: ${colors.white};
         }
       }
+      .btn-nav {
+        color: ${colors.white};
+        font-weight: 700;
+        font-size: 16px;
+        align-self: center;
+        margin-right: 48px;
+        background: transparent;
+        border-radius: 4px;
+        color: ${colors.white};
+      }
     }
     .btns-connect {
       background: #ffffff;
