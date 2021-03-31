@@ -14,9 +14,16 @@ export const TopbarContainer = styled(Navbar)`
     color: ${colors.white};
     .version-beta{
       position: absolute;
-      top: -2px;
-      right: 3px;
-      background-color: ${colors.greenLight}
+      top: 15px;
+      right: -20px;
+      background-color: ${colors.greenLight};
+      color: ${colors.blueDark};
+      font-weight: bold;
+      font-size: 12px;
+      line-height: 11px;
+      z-index: -1;
+      padding: 3px;
+      border-radius: 2px;
     }    
   }
   .navbar-toggler {

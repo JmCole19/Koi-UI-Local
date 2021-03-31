@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Space, Modal } from "antd";
+import { Space } from "antd";
 import {
   Logo,
   IconArweave,
@@ -7,7 +7,7 @@ import {
   IconFish
 } from "assets/images";
 import React, { useContext, useEffect, useState, useRef } from "react";
-import { Navbar, Nav, Image, Overlay, Tooltip } from "react-bootstrap";
+import { Navbar, Nav, Image, Overlay, Tooltip, Modal } from "react-bootstrap";
 import { FaTimes } from "react-icons/fa";
 import { useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
@@ -103,8 +103,8 @@ function Topbar() {
   return (
     <TopbarContainer collapseOnSelect expand="md" fixed="top">
       <Link to="/" className="navbar-brand">
-        <Image src={Logo} />
         <span className="version-beta">BETA</span>
+        <Image src={Logo} />
       </Link>
       <Navbar.Toggle aria-controls="responsive-navbar-nav">
         <i className="fas fa-bars"></i>
@@ -213,7 +213,7 @@ function Topbar() {
             size={24}
             onClick={() => setShowModal(false)}
           />
-          <h2 className="modal-title text-blue">Welcome to the KOI beta</h2>
+          <h2 className="modal-title text-blue">Welcome to the KOI <span className='lbl-beta'>beta</span></h2>
           <div className="modal-row mb-2">
             <div className="modal-row-left">
               <p className="text-blue mb-0">

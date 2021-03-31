@@ -166,7 +166,14 @@ const GlobalStyle = createGlobalStyle`
     .cursor {
         cursor: pointer;
     }
-    
+    .lbl-beta{
+      background-color: ${colors.greenLight};
+      padding: 0px 5px;
+      line-height: 10px;
+      text-transform: uppercase;
+      font-size: 20px;
+      vertical-align: middle;
+    }
     .modal-confirm-transaction {
       .modal-content {
         display: flex;
