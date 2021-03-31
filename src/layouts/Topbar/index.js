@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Space } from "antd";
+import { Space, Modal } from "antd";
 import {
   Logo,
   IconArweave,
@@ -194,6 +194,148 @@ function Topbar() {
           </Overlay>
         </Nav>
       </Navbar.Collapse>
+      <Modal
+        show={showModal}
+        centered
+        dialogClassName="modal-confirm-transaction"
+        onHide={confirmModalHide}
+      >
+        <Modal.Body>
+          {mode === modes.confirm && (
+            <FaTimes
+              className="icon-close cursor"
+              color={colors.blueDark}
+              size={24}
+              onClick={onClickCloseConfirmModal}
+            />
+          )}
+          {mode === modes.confirm && (
+            <h2 className="modal-title text-blue">Confirm transaction</h2>
+          )}
+          {mode === modes.uploading && (
+            <h2 className="modal-title text-blue">
+              Your NFTs are uploading...
+            </h2>
+          )}
+          <div className="imgs-wrapper">
+            <Space size={28}>
+              {uploadContents.map((c, key) => (
+                <Image
+                  className="br-4"
+                  src={c.thumb || ItemTemp}
+                  width={40}
+                  key={key}
+                />
+              ))}
+            </Space>
+          </div>
+          {mode === modes.confirm && (
+            <>
+              <div className="modal-row mb-2">
+                <div className="modal-row-left">
+                  <p className="text-blue mb-0">
+                    AR to upload: <b>0.0002 AR</b> / NFT{" "}
+                  </p>
+                </div>
+                <div className="modal-row-right">
+                  <p className="text-blue mb-0">
+                    x {uploadContents.length} uploads
+                  </p>
+                </div>
+              </div>
+              <div className="modal-row mb-4">
+                <div className="modal-row-left">
+                  <p className="text-blue mb-0">
+                    KOI to upload: <b>1.0 KOI</b> / NFT{" "}
+                  </p>
+                </div>
+                <div className="modal-row-right">
+                  <p className="text-blue mb-0">
+                    x {uploadContents.length} uploads
+                  </p>
+                </div>
+              </div>
+              <h6 className="text-blue">
+                <b>Estimated Total</b>
+              </h6>
+              <h6 className="text-blue">
+                {show_fixed_number(uploadContents.length * 0.0002, 4)} AR
+              </h6>
+              <h6 className="text-blue">
+                {show_fixed_number(uploadContents.length * 1, 1)} KOI
+              </h6>
+              <div className="text-center">
+                {loading && (
+                  <Spin size="large" tip="get KOI balance" />
+                )}
+              </div>
+              {errMessage && <p className='text-center text-danger'>{errMessage}</p>}
+              <Button
+                className="btn-blueDark btn-connect"
+                onClick={onConnectWallet}
+              >
+                Confirm & Upload
+              </Button>
+            </>
+          )}
+          {mode === modes.uploadKey && (
+            <>
+              <div className="upload-cards-wrapper">
+                <SingleAntFileUpload>
+                  <Dragger
+                    name="file"
+                    accept="application/*"
+                    multiple={false}
+                    listType="picture"
+                    beforeUpload={beforeJsonUpload}
+                    showUploadList={false}
+                  >
+                    <div className="uploader-container">
+                      {uploading ? (
+                        <Spin size="large" />
+                      ) : (
+                        <>
+                          <div className="uploader-icon d-flex justify-content-center align-items-center">
+                            <Image src={IconUpload} />
+                          </div>
+                          <p className="text-blue mb-0">
+                            Drag & Drop your Arweave keyfile here.
+                          </p>
+                        </>
+                      )}
+                    </div>
+                  </Dragger>
+                </SingleAntFileUpload>
+              </div>
+            </>
+          )}
+          {mode === modes.uploading && (
+            <>
+              <div className="modal-row mb-2 text-center">
+                <div className="modal-row-center custom-pd">
+                  <p className="text-blue mb-0">
+                    Don’t navigate away from this page or close your browser
+                    tab. It can disrupt the uploading process.
+                  </p>
+                  <p className="text-blue mb-2">
+                    Storing them forever should only take a few minutes.
+                  </p>
+                </div>
+              </div>
+              <h6 className="text-blue">
+                <b>Loading</b>
+              </h6>
+              <Progress
+                strokeColor={colors.blueDark}
+                trailColor={colors.blueLight}
+                percent={(updatingProcess * 100) / uploadContents.length}
+                status="active"
+                showInfo={false}
+              />
+            </>
+          )}
+        </Modal.Body>
+      </Modal>
     </TopbarContainer>
   );
 }
