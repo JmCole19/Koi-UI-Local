@@ -60,7 +60,7 @@ const exportNFT = async (arweave, ownerAddress, content, imageUrl = '', imageBlo
     const initialState = {
       "owner": metadata.owner,
       "name": metadata.name,
-      "description": metadata.description + ' created: ' + d.toUTCString(),
+      "description": metadata.description,
       "ticker": metadata.ticker,
       "balances": balances,
       "createdAt": createdAt
