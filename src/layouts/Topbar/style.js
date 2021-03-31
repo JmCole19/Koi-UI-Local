@@ -10,7 +10,14 @@ export const TopbarContainer = styled(Navbar)`
   filter: drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.16));
   box-shadow: 0px 3px 6px #00000029;
   .navbar-brand {
+    position: relative;
     color: ${colors.white};
+    .version-beta{
+      position: absolute;
+      top: -2px;
+      right: 3px;
+      background-color: ${colors.greenLight}
+    }    
   }
   .navbar-toggler {
     border-color: transparent;

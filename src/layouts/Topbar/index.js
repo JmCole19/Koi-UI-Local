@@ -101,6 +101,7 @@ function Topbar() {
     <TopbarContainer collapseOnSelect expand="md" fixed="top">
       <Link to="/" className="navbar-brand">
         <Image src={Logo} />
+        <span className="version-beta">BETA</span>
       </Link>
       <Navbar.Toggle aria-controls="responsive-navbar-nav">
         <i className="fas fa-bars"></i>
