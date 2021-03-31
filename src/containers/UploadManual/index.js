@@ -9,7 +9,7 @@ import { useForm } from "antd/lib/form/Form";
 import cloneDeep from "clone-deep";
 import { useHistory, useLocation } from "react-router-dom";
 import MyProgress from "components/Elements/MyProgress";
-import ArconnectCard from "components/Elements/ArconnectCard";
+// import ArconnectCard from "components/Elements/ArconnectCard";
 import { convertArBalance, show_notification } from "service/utils";
 import Arweave from "arweave";
 import { getArWalletAddressFromJson, exportNFT } from "service/NFT";
@@ -61,7 +61,7 @@ function UploadManual() {
     owner: "",
     description: "",
   });
-  const [detectorAr, setDetectorAr] = useState(false);
+  const [detectorAr] = useState(false); //, setDetectorAr
 
   const onCompleteStep1 = () => {
     history.push(`/upload/manual?step=2`);
@@ -221,10 +221,9 @@ function UploadManual() {
     // }
   };
 
-  const onOpenArConnect = () => {
-    setDetectorAr(true)
-    // show_notification("ArConnection will be integrated soon", "KOI", "error");
-  };
+  // const onOpenArConnect = () => {
+  //   setDetectorAr(true)
+  // };
 
   useEffect(() => {
     if (detectorAr) {
@@ -525,7 +524,7 @@ function UploadManual() {
                           </div>
                         </Dragger>
                       </div>
-                      {!addressAr && <ArconnectCard openArConnect={onOpenArConnect} />}
+                      {/* {!addressAr && <ArconnectCard openArConnect={onOpenArConnect} />} */}
                     </div>
                     <div className="text-center">
                       {loading && (
