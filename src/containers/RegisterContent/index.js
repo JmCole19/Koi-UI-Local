@@ -144,19 +144,8 @@ function RegisterContent() {
           show_alert('Detect ethereum address successfully.', 'success')
           await rewardAddingEth(accounts[0])
         } else {
-          notification.success({
-            message: "Success",
-            description: "Set Ethereum address successfully!",
-            placement: "topRight",
-            onClick: () => {
-              console.log("Notification Clicked!");
-            },
-            onClose: () => {
-              history.push(`/contents`);
-            },
-          });
+          show_notification("Set Ethereum address successfully!", 'KOI', 'success')
         }
-        // let contentOwnerAddress = accounts[0];
       });
     } else {
       // metamask extension didn't install
@@ -196,6 +185,7 @@ function RegisterContent() {
           show_alert(
             "There is a problem to get your arwallet balance. Please upload arweave key."
           );
+          show_notification("There is a problem to get your arwallet balance. Please upload arweave key.")
           setTimeout( () => {
             history.push("/wallet-key");
           }, 4000)  

@@ -79,6 +79,7 @@ function KeyUpload() {
         let addressResult = await getArWalletAddressFromJson(arweave, arJson);
         setKeyAr(arJson)
         setAddressAr(addressResult)
+        show_notification('Your wallet key file uploaded successfuly. Please check your balance.', 'KOI', 'success')
       };
       reader.readAsText(file);
       // Prevent upload
