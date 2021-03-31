@@ -45,6 +45,7 @@ function KeyUpload() {
       setBalanceKoi(Number(koiBalance))
       setBalanceAr(convertArBalance(arBalance))
       setLoading(false)
+      show_notification('Please check your wallet balance in top right', 'KOI', 'success')
     } catch (err) {
       setLoading(false)
       console.log("get koi balance err")
