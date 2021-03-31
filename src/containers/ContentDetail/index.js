@@ -30,7 +30,8 @@ function ContentDetail() {
   const { id } = useParams();
   // const currentUrl = `${window.location.hostname}${history.location.pathname}`;
   const currentUrl = `${window.location.protocol}//${window.location.hostname}/content-detail/${id}?t=${Math.random()*999999}`;
-  const smsUrl = `sms://+19024021271?body=${window.location.protocol}//${window.location.hostname}/content-detail/${id}?type=view&t=${Math.random()*999999}`;
+  const smsUrl = `sms:+19024021271&body=${window.location.protocol}//${window.location.hostname}/content-detail/${id}&type=view&t=${Math.random()*999999}`;
+  
   // console.log(currentUrl)
   const { contents, setContents } = useContext(DataContext);
   const [isLoading, setIsLoading] = useState(false);

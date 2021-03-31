@@ -58,7 +58,7 @@ function ModalContent({
   const currentUrl = `${window.location.protocol}//${window.location.hostname}/content-detail/${detail.txIdContent}?t=${Math.random()*999999}`;
   const embedUrl = `${window.location.protocol}//${window.location.hostname}/embed/${detail.txIdContent}?t=${Math.random()*999999}`;
   const embedContent = `<iframe width="100%" src="${embedUrl}" title="Koi NFT image" frameborder="0" allowfullscreen></iframe>`;
-  const smsUrl = `sms://+19024021271?body=${window.location.protocol}//${window.location.hostname}/content-detail/${detail.txIdContent}?type=view&t=${Math.random()*999999}`;
+  const smsUrl = `sms:+19024021271&body=${window.location.protocol}//${window.location.hostname}/content-detail/${detail.txIdContent}&type=view`;
   // console.log(currentUrl)
   // console.log(embedUrl)
   const shareSocial = [
