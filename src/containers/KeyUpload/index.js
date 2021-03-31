@@ -45,6 +45,7 @@ function KeyUpload() {
       setBalanceKoi(Number(koiBalance))
       setBalanceAr(convertArBalance(arBalance))
       setLoading(false)
+      show_notification('Please check your wallet balance in top right', 'KOI', 'success')
     } catch (err) {
       setLoading(false)
       console.log("get koi balance err")
@@ -79,6 +80,7 @@ function KeyUpload() {
         let addressResult = await getArWalletAddressFromJson(arweave, arJson);
         setKeyAr(arJson)
         setAddressAr(addressResult)
+        show_notification('Your wallet key file uploaded successfuly. Please check your balance.', 'KOI', 'success')
       };
       reader.readAsText(file);
       // Prevent upload
