@@ -18,6 +18,10 @@ import Arweave from "arweave";
 import { colors } from "theme";
 
 const arweave = Arweave.init();
+let versionUpContent = '<p>Koi is currently in BETA. We are building decentralized web services, and sometimes things break unexpectantly. </p>';
+versionUpContent += '<p><b>03/21/2021</b> - When you use a Koi portal, nodes in the Koi network serve your requests, and store data for you in permanent decentralized storage on the Arweave network.</p>'
+versionUpContent += '<p><b>03/28/2021</b> - We’re working to make it possible to tip artists fee-lessly, as well as pay them by viewing their content, but please bear with us as we work out the kinks!</p>'
+versionUpContent += '<p>If you want to talk more about what we’re doing or make suggestions to improve the interface, hit us up on our <a href="https://discord.gg/dRsAJ6kAcP" target="_blank">Discord</a>.</p>'
 
 function Topbar() {
   const history = useHistory();
@@ -216,9 +220,8 @@ function Topbar() {
           <h2 className="modal-title text-blue">Welcome to the KOI <span className='lbl-beta'>beta</span></h2>
           <div className="modal-row mb-2">
             <div className="modal-row-left">
-              <p className="text-blue mb-0">
-                AR to upload: <b>0.0002 AR</b> / NFT{" "}
-              </p>
+              <div className="text-blue mb-4 ml-4 mr-4 mt-4 text-center" 
+               dangerouslySetInnerHTML={{__html: versionUpContent}}></div>
             </div>
           </div>
         </Modal.Body>
