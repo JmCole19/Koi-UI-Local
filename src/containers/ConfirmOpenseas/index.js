@@ -92,6 +92,7 @@ function ConfirmOpenseas() {
   const [alertVariant, setAlertVariant] = useState('danger');
   const [errMessage, setErrMessage] = useState('');
   const updatedBalanceKoi = useDebounce(balanceKoi, 500);
+  const [confirmMessage, setConfirmMessage] = useState(true);
 
   const show_alert = (message = '', type = 'danger') => {
     setShowAlert(true)
@@ -336,6 +337,11 @@ function ConfirmOpenseas() {
     setActiveOpenSea(tpContent);
   };
 
+  const checkConfirmMessage = () => {
+    console.log('click confirm cancel message')
+    setConfirmMessage(false)
+  };
+
   useEffect(() => {
     let contentsOS = [];
     selectedIds.forEach((tId) => {
@@ -359,11 +365,6 @@ function ConfirmOpenseas() {
     setUploadContents(contentsOS);
   }, [step, openSeas]);
 
-  // useEffect(() => {
-  //   if(mode === modes.confirm){
-  //     enoughBalance()
-  //   }
-  // }, balanceKoi)
   useEffect(() => {
     if(mode === modes.confirm){
       console.log("here is focus")
@@ -463,9 +464,10 @@ function ConfirmOpenseas() {
       ></AlertArea>
       {mode === modes.complete && (
         <AlertArea
-          showMessage={true}
+          showMessage={confirmMessage}
           variant="success"
           message={successCompleteMessage}
+          cancel={checkConfirmMessage}
         ></AlertArea>
       )}
       <ConfirmOpenseasContainer>

@@ -245,7 +245,7 @@ function MyContent() {
           </Button>
         </div>
         <ImportArea>
-          <LinkNftUpload className={`big`} onClick={() => history.push('/register-content')}>
+          <LinkNftUpload className={`big cursor`} onClick={() => history.push('/register-content')}>
             <div className="font-n-1">You haven't permanently stored any content yet.</div>
             <div className="font-n-1"><b>Let's fix that.</b></div>
             <div className="text-center mt-4 mb-4 cursor">
