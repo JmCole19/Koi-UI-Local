@@ -13,4 +13,9 @@ export const CustomAlertContainer = styled.div`
   p {
     margin-top: 0px;
   }
+  .icon-close{
+    position: absolute;
+    right: 20px;
+    top: 10px;
+  }
 `;

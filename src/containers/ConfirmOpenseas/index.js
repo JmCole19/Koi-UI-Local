@@ -468,6 +468,7 @@ function ConfirmOpenseas() {
           variant="success"
           message={successCompleteMessage}
           cancel={checkConfirmMessage}
+          showCancel={true}
         ></AlertArea>
       )}
       <ConfirmOpenseasContainer>

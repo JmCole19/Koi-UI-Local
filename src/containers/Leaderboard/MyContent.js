@@ -262,6 +262,8 @@ function MyContent() {
         <AlertArea
           showMessage={showAlert}
           message={errEmessage}
+          cancel={()=>setShowAlert(false)}
+          showCancel={true}
         ></AlertArea>
         <div className="leaderboard-items">
           {isLoading ? (
