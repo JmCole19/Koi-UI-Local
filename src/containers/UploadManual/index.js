@@ -52,7 +52,7 @@ function UploadManual() {
   const [loading, setLoading] = useState(false);
   const [imageUrl, setImageUrl] = useState(null);
   const [imagePath, setImagePath] = useState('');
-  const [imageBlob, setImageBlob] = useState(null);
+  // const [imageBlob, setImageBlob] = useState(null);
   const [showAlert, setShowAlert] = useState(false);
   const [alertVariant, setAlertVariant] = useState('danger');
   const [errEmessage, setErrMessage] = useState('');
@@ -109,8 +109,8 @@ function UploadManual() {
         arweave,
         addressAr,
         activeContent,
-        "",
-        imageBlob,
+        imageUrl,
+        null,
         keyAr
       );
       if (res) {
@@ -198,13 +198,13 @@ function UploadManual() {
         if(filename.length > 20) filename = filename.substr(0, 18) + '~.'
         setImagePath(filename + ex)
         setImageUrl(e.target.result);
-        fetch(e.target.result)
-          .then(function (response) {
-            return response.blob();
-          })
-          .then(function (blob) {
-            setImageBlob(blob);
-          });
+        // fetch(e.target.result)
+        //   .then(function (response) {
+        //     return response.blob();
+        //   })
+        //   .then(function (blob) {
+        //     setImageBlob(blob);
+        //   });
       };
       // setImageBlob(file)
       reader.readAsDataURL(file);

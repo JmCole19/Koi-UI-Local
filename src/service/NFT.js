@@ -29,15 +29,22 @@ const exportNFT = async (arweave, ownerAddress, content, imageUrl = '', imageBlo
     // var wallet = await window.arweaveWallet.connect()
     const contractSrc = process.env.REACT_APP_CONTRACT_SRC
     let nftData
+    let imgContentBuffer
+    let imgContentType
     if (imageUrl) {
       console.log({ imageUrl })
       nftData = await getDataBlob(imageUrl)
+      imgContentBuffer = nftData.data
+      imgContentType = nftData.contentType
     } else {
       console.log({ imageBlob })
       nftData = imageBlob
+      imgContentBuffer = nftData.data
+      imgContentType = nftData.type
     }
 
     console.log("image buffer blob : ", nftData)
+    console.log("image type : ", imgContentType)
 
     let metadata = {
       // owner: 'l2Fe-SdzRD-fPvlkrxlrnu0IC3uQlVeXIkHWde8Z0Qg', // This is Al's test wallet for Koi server
@@ -75,8 +82,8 @@ const exportNFT = async (arweave, ownerAddress, content, imageUrl = '', imageBlo
     try {
       tx = await arweave.createTransaction({
         // eslint-disable-next-line no-undef
-        // data: nftData.data
-        data: JSON.stringify(metadata)
+        data: imgContentBuffer
+        // data: JSON.stringify(metadata)
       }, wallet);
     } catch (err) {
       console.log("create transaction error")
@@ -84,7 +91,7 @@ const exportNFT = async (arweave, ownerAddress, content, imageUrl = '', imageBlo
       return false
     }
 
-    tx.addTag('Content-Type', 'image/png')
+    tx.addTag('Content-Type', imgContentType)
     tx.addTag('Network', 'Koi')
     tx.addTag('Action', 'marketplace/Create')
     tx.addTag('App-Name', 'SmartWeaveContract')
