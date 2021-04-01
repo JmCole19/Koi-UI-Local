@@ -26,6 +26,7 @@ import AlertArea from "components/Sections/AlertArea";
 import {alertTimeout} from 'config'
 import ModalContent from "components/Elements/ModalContent";
 import { getKoi } from "service/KOI";
+import useDebounce from 'components/Utils/useDebounce'
 
 const arweave = Arweave.init();
 const { TextArea } = Input;
@@ -47,6 +48,8 @@ const formItemLayout = {
   //   span: 14,
   // },
 };
+
+const successCompleteMessage = 'We are experimenting with the bundler nodes so it may take a few minutes before your NFT is displayed. Make some coffee then come back to check it out.';
 
 function ConfirmOpenseas() {
   const history = useHistory();
@@ -88,6 +91,7 @@ function ConfirmOpenseas() {
   const [showAlert, setShowAlert] = useState(false);
   const [alertVariant, setAlertVariant] = useState('danger');
   const [errMessage, setErrMessage] = useState('');
+  const updatedBalanceKoi = useDebounce(balanceKoi, 500);
 
   const show_alert = (message = '', type = 'danger') => {
     setShowAlert(true)
@@ -108,6 +112,9 @@ function ConfirmOpenseas() {
       txIdContent: t_item.txId,
       name: t_item.title
     }
+    console.log("sharing item")
+    console.log(t_item)
+    console.log(item)
     setSelectedContent(item);
     setModalType(type);
     setShowShareModal(true);
@@ -179,7 +186,7 @@ function ConfirmOpenseas() {
         setLoading(false)
         setBalanceKoi(Number(balance.koiBalance))
         setBalanceAr(convertArBalance(balance.arBalance))
-        setTimeout( () => enoughBalance(), 100)
+        // setTimeout( () => enoughBalance(), 100)
       }
     }
   }
@@ -352,6 +359,13 @@ function ConfirmOpenseas() {
     setUploadContents(contentsOS);
   }, [step, openSeas]);
 
+  useEffect(() => {
+    enoughBalance()
+  }, balanceKoi)
+  // useEffect(() => {
+  //   enoughBalance()
+  // }, updatedBalanceKoi)
+
   const beforeJsonUpload = (file) => {
     // console.log('file type : ', file)
     const isJson = file.type === "application/json";
@@ -442,6 +456,13 @@ function ConfirmOpenseas() {
         variant={alertVariant}
         message={errMessage}
       ></AlertArea>
+      {mode === modes.complete && (
+        <AlertArea
+          showMessage={true}
+          variant="success"
+          message={successCompleteMessage}
+        ></AlertArea>
+      )}
       <ConfirmOpenseasContainer>
         {mode !== modes.complete && (
           <Progress
@@ -664,8 +685,7 @@ function ConfirmOpenseas() {
                                 Congratulations!
                               </h6>
                               <p className="mb-0 text-blue ml-2">
-                                You’ll start earning KOI as soon as someone views
-                                your content.
+                                You’ll start earning KOI as soon as someone views your content.
                               </p>
                             </div>
                           </div>
@@ -683,10 +703,10 @@ function ConfirmOpenseas() {
                                 <p className="text-blue">{_selected.title}</p>
                               </div>
                               <div className="uploaded-card-btns d-none d-md-flex">
-                                <Button className="btn-blueDark">
+                                <Button className="btn-blueDark" onClick={() => onClickContent(_selected, "share")} >
                                   <Image src={IconShare} width={17} />
                                 </Button>
-                                <Button className="btn-white btn-html">
+                                <Button className="btn-white btn-html" onClick={() => onClickContent(_selected, "embed")}>
                                   <Image src={IconHtml} width={17} />
                                 </Button>
                               </div>

@@ -114,7 +114,7 @@ function MyContent() {
         }, 100)
       }else{
         // show alert
-        show_alert('There is a problem to get your arwallet address. Please install arconnect extension and try again.1111')
+        show_alert('There is a problem to get your arwallet address. Please install arconnect extension and try again.')
       }
     }
   };
