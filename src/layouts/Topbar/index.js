@@ -7,15 +7,21 @@ import {
   IconFish
 } from "assets/images";
 import React, { useContext, useEffect, useState, useRef } from "react";
-import { Navbar, Nav, Image, Overlay, Tooltip } from "react-bootstrap";
+import { Navbar, Nav, Image, Overlay, Tooltip, Modal } from "react-bootstrap";
+import { FaTimes } from "react-icons/fa";
 import { useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { DataContext } from "contexts/DataContextContainer";
 import { TopbarContainer } from "./style";
 import { show_notification, show_ar_balance, show_digit_number } from "service/utils";
 import Arweave from "arweave";
+import { colors } from "theme";
 
 const arweave = Arweave.init();
+let versionUpContent = '<p>Koi is currently in BETA. We are building decentralized web services, and sometimes things break unexpectantly. </p>';
+versionUpContent += '<p><b>03/21/2021</b> - When you use a Koi portal, nodes in the Koi network serve your requests, and store data for you in permanent decentralized storage on the Arweave network.</p>'
+versionUpContent += '<p><b>03/28/2021</b> - We’re working to make it possible to tip artists fee-lessly, as well as pay them by viewing their content, but please bear with us as we work out the kinks!</p>'
+versionUpContent += '<p>If you want to talk more about what we’re doing or make suggestions to improve the interface, hit us up on our <a href="https://discord.gg/dRsAJ6kAcP" target="_blank">Discord</a>.</p>'
 
 function Topbar() {
   const history = useHistory();
@@ -29,6 +35,7 @@ function Topbar() {
   const [show, setShow] = useState(false);
   const target = useRef(null);
   const [detectorAr, setDetectorAr] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   const activeArweave = () => {
     setDetectorAr(true);
@@ -100,6 +107,7 @@ function Topbar() {
   return (
     <TopbarContainer collapseOnSelect expand="md" fixed="top">
       <Link to="/" className="navbar-brand">
+        <span className="version-beta">BETA</span>
         <Image src={Logo} />
       </Link>
       <Navbar.Toggle aria-controls="responsive-navbar-nav">
@@ -107,6 +115,9 @@ function Topbar() {
       </Navbar.Toggle>
       <Navbar.Collapse id="responsive-navbar-nav">
         <Nav className="ml-auto">
+          <span className="btn-nav cursor" onClick={() => setShowModal(true)}>
+            BETA
+          </span>
           <Link to="/faucet?step=0" className="btn-nav">
             Faucet
           </Link>
@@ -193,6 +204,28 @@ function Topbar() {
           </Overlay>
         </Nav>
       </Navbar.Collapse>
+      <Modal
+        show={showModal}
+        centered
+        dialogClassName="modal-confirm-transaction"
+        onHide={() => setShowModal(false)}
+      >
+        <Modal.Body>
+          <FaTimes
+            className="icon-close cursor"
+            color={colors.blueDark}
+            size={24}
+            onClick={() => setShowModal(false)}
+          />
+          <h2 className="modal-title text-blue">Welcome to the KOI <span className='lbl-beta'>beta</span></h2>
+          <div className="modal-row mb-2">
+            <div className="modal-row-left">
+              <div className="text-blue mb-4 ml-4 mr-4 mt-4 text-center" 
+               dangerouslySetInnerHTML={{__html: versionUpContent}}></div>
+            </div>
+          </div>
+        </Modal.Body>
+      </Modal>
     </TopbarContainer>
   );
 }

@@ -10,7 +10,21 @@ export const TopbarContainer = styled(Navbar)`
   filter: drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.16));
   box-shadow: 0px 3px 6px #00000029;
   .navbar-brand {
+    position: relative;
     color: ${colors.white};
+    .version-beta{
+      position: absolute;
+      top: 15px;
+      right: -20px;
+      background-color: ${colors.greenLight};
+      color: ${colors.blueDark};
+      font-weight: bold;
+      font-size: 12px;
+      line-height: 11px;
+      z-index: -1;
+      padding: 3px;
+      border-radius: 2px;
+    }    
   }
   .navbar-toggler {
     border-color: transparent;
@@ -29,6 +43,16 @@ export const TopbarContainer = styled(Navbar)`
           border-radius: 4px;
           color: ${colors.white};
         }
+      }
+      .btn-nav {
+        color: ${colors.white};
+        font-weight: 700;
+        font-size: 16px;
+        align-self: center;
+        margin-right: 48px;
+        background: transparent;
+        border-radius: 4px;
+        color: ${colors.white};
       }
     }
     .btns-connect {
