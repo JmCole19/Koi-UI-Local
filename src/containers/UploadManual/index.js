@@ -19,6 +19,7 @@ import { DataContext } from "contexts/DataContextContainer";
 import AlertArea from "components/Sections/AlertArea";
 import { alertTimeout } from "config";
 import { getKoi } from "service/KOI";
+import useDebounce from "components/Utils/useDebounce";
 
 const arweave = Arweave.init();
 const { TextArea } = Input;
@@ -52,7 +53,7 @@ function UploadManual() {
   const [loading, setLoading] = useState(false);
   const [imageUrl, setImageUrl] = useState(null);
   const [imagePath, setImagePath] = useState('');
-  const [imageBlob, setImageBlob] = useState(null);
+  // const [imageBlob, setImageBlob] = useState(null);
   const [showAlert, setShowAlert] = useState(false);
   const [alertVariant, setAlertVariant] = useState('danger');
   const [errEmessage, setErrMessage] = useState('');
@@ -62,6 +63,7 @@ function UploadManual() {
     description: "",
   });
   const [detectorAr] = useState(false); //, setDetectorAr
+  const updatedBalanceKoi = useDebounce(balanceKoi, 500);
 
   const onCompleteStep1 = () => {
     history.push(`/upload/manual?step=2`);
@@ -109,8 +111,8 @@ function UploadManual() {
         arweave,
         addressAr,
         activeContent,
-        "",
-        imageBlob,
+        imageUrl,
+        null,
         keyAr
       );
       if (res) {
@@ -151,7 +153,7 @@ function UploadManual() {
       setLoading(false)
       setBalanceKoi(Number(balance.koiBalance))
       setBalanceAr(convertArBalance(balance.arBalance))
-      setTimeout( () => enoughBalance(), 100)
+      // setTimeout( () => enoughBalance(), 100)
     }
   }
 
@@ -198,13 +200,13 @@ function UploadManual() {
         if(filename.length > 20) filename = filename.substr(0, 18) + '~.'
         setImagePath(filename + ex)
         setImageUrl(e.target.result);
-        fetch(e.target.result)
-          .then(function (response) {
-            return response.blob();
-          })
-          .then(function (blob) {
-            setImageBlob(blob);
-          });
+        // fetch(e.target.result)
+        //   .then(function (response) {
+        //     return response.blob();
+        //   })
+        //   .then(function (blob) {
+        //     setImageBlob(blob);
+        //   });
       };
       // setImageBlob(file)
       reader.readAsDataURL(file);
@@ -224,6 +226,13 @@ function UploadManual() {
   // const onOpenArConnect = () => {
   //   setDetectorAr(true)
   // };
+
+  useEffect(() => {
+    if(step === "3" && balanceKoi !== null && balanceKoi !== null){
+      console.log("here is focus")
+      enoughBalance()
+    }
+  }, updatedBalanceKoi)
 
   useEffect(() => {
     if (detectorAr) {
