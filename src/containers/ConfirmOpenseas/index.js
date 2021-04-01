@@ -359,12 +359,17 @@ function ConfirmOpenseas() {
     setUploadContents(contentsOS);
   }, [step, openSeas]);
 
-  useEffect(() => {
-    enoughBalance()
-  }, balanceKoi)
   // useEffect(() => {
-  //   enoughBalance()
-  // }, updatedBalanceKoi)
+  //   if(mode === modes.confirm){
+  //     enoughBalance()
+  //   }
+  // }, balanceKoi)
+  useEffect(() => {
+    if(mode === modes.confirm){
+      console.log("here is focus")
+      enoughBalance()
+    }
+  }, updatedBalanceKoi)
 
   const beforeJsonUpload = (file) => {
     // console.log('file type : ', file)
