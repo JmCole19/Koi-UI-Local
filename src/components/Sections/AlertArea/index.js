@@ -2,6 +2,8 @@
 import React from "react";
 import { Alert } from "react-bootstrap";
 import { CustomAlertContainer } from "./style";
+import { FaTimes } from "react-icons/fa";
+import { colors } from "theme";
 
 /**
  * 
@@ -13,12 +15,20 @@ function AlertArea({
     showMessage = false,
     variant = 'danger',
     message = '',
+    showCancel = false,
+    cancel,
     children
 }) {
     return (
         <CustomAlertContainer>
             <Alert className="custom-alert" transition show={showMessage} variant={variant}>
-                <div className="text-blue text-center mb-0" dangerouslySetInnerHTML={{__html: message}} >
+                {showCancel && <FaTimes
+                  className="icon-close cursor"
+                  color={colors.blueDark}
+                  size={24}
+                  onClick={cancel}
+                />}
+                <div className="alert-message text-blue text-center mb-0" dangerouslySetInnerHTML={{__html: message}} >
                     {/* {message}  */}
                 </div>
                 <div className="text-blue text-center mb-0">
