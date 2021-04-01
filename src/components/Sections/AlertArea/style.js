@@ -13,6 +13,11 @@ export const CustomAlertContainer = styled.div`
   p {
     margin-top: 0px;
   }
+  .alert-message{
+    max-width: 800px;
+    margin: 0 auto;
+    // @media (max-width: 1024px) { max-width: 800px; }
+  }
   .icon-close{
     position: absolute;
     right: 20px;

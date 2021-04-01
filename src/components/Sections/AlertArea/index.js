@@ -28,7 +28,7 @@ function AlertArea({
                   size={24}
                   onClick={cancel}
                 />}
-                <div className="text-blue text-center mb-0" dangerouslySetInnerHTML={{__html: message}} >
+                <div className="alert-message text-blue text-center mb-0" dangerouslySetInnerHTML={{__html: message}} >
                     {/* {message}  */}
                 </div>
                 <div className="text-blue text-center mb-0">
