@@ -106,11 +106,11 @@ function KeyUpload() {
       if (addr) {
         setAddressAr(addr);
       } else {
-        show_notification("Error on detectimg Arweave wallet address");
+        show_notification("Error on detecting Arweave wallet address");
       }
     } catch (err) {
       console.log(err);
-      show_notification("Error on detectimg Arweave wallet address");
+      show_notification("Error on detecting Arweave wallet address");
     }
   };
 

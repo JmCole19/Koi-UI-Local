@@ -100,7 +100,7 @@ function Topbar() {
     } catch (err) {
       // console.log(err);
       history.push("/wallet-key");
-      // show_notification("Error on detectimg Arweave wallet address");
+      // show_notification("Error on detecting Arweave wallet address");
     }
   };
 

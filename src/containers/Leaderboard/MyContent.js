@@ -187,7 +187,7 @@ function MyContent() {
       }
     } catch (err) {
       console.log(err);
-      show_alert('Error on detectimg Arweave wallet address')
+      show_alert('Error on detecting Arweave wallet address')
     }
   };
 

@@ -235,11 +235,11 @@ function Faucet() {
         setCurStep(1);
         history.push(`/faucet?step=1&address=${addr}`);
       } else {
-        show_alert("Error on detectimg Arweave wallet address");
+        show_alert("Error on detecting Arweave wallet address");
       }
     } catch (err) {
       console.log(err);
-      show_notification("Error on detectimg Arweave wallet address");
+      show_notification("Error on detecting Arweave wallet address");
     }
   };
 

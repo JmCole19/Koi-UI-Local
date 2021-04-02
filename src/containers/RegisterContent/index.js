@@ -192,14 +192,14 @@ function RegisterContent() {
         }
       } else {
         // show alert
-        show_alert("Error on detectimg Arweave wallet address");
+        show_alert("Error on detecting Arweave wallet address");
         setTimeout( () => {
           history.push("/wallet-key");
         }, 4000)  
       }
     } catch (err) {
       // console.log(err);
-      show_alert("Error on detectimg Arweave wallet address");
+      show_alert("Error on detecting Arweave wallet address");
       setTimeout( () => {
         history.push("/wallet-key");
       }, 4000)  
