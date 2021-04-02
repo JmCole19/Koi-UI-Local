@@ -12,12 +12,10 @@ import { DataContext } from "contexts/DataContextContainer";
 import ModalContent from "components/Elements/ModalContent";
 // import { show_notification } from "service/utils";
 import AlertArea from "components/Sections/AlertArea";
-import Arweave from "arweave";
 import { alertTimeout } from "config";
 import ImportArea from "components/Sections/ImportArea";
 import { IconUpload, IconOpenSea } from "assets/images";
 
-const arweave = Arweave.init();
 const { Panel } = Collapse;
 const options = ["24h", "1w", "1m", "1y", "all"];
 
@@ -25,33 +23,15 @@ const ktools = new koi_tools();
 
 function MyContent() {
   const history = useHistory();
-  const { addressAr, setAddressAr } = useContext(DataContext);
+  const { keyAr, addressAr } = useContext(DataContext);
   const [contents, setContents] = useState([]);
   const [isExpanded, setIsExpanded] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [modalType, setModalType] = useState("share");
   const [selectedContent, setSelectedContent] = useState([]);
-  const [detectorAr, setDetectorAr] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [errEmessage, setErrMessage] = useState('');
-  // const [fixedArea, setFixedArea] = useState(false);
-  // const [scrollY, setScrollY] = useState(0);
-
-  // function logit() {
-  //   setScrollY(window.pageYOffset);
-  //   console.log(new Date().getTime(), scrollY);
-  // }
-
-  // useEffect(() => {
-  //   function watchScroll() {
-  //     window.addEventListener("scroll", logit, {capture: true});
-  //   }
-  //   watchScroll();
-  //   return () => {
-  //     window.removeEventListener("scroll", logit);
-  //   };
-  // });
 
   const onClickItem = (item, type) => {
     if (type === "view") {
@@ -84,20 +64,22 @@ function MyContent() {
   };
 
   const getContents = async (walletAddress = '') => {
-    // if (contents.length === 0) {
-    //   console.log("here2")
-    // }
-    walletAddress = walletAddress || addressAr || ''
-    console.log({walletAddress})
-    console.log({addressAr})
-    if(walletAddress) {
+    if(keyAr) {
       setIsLoading(true);
-      console.log("here3 : ", walletAddress)
-      ktools.myContent(walletAddress).then((res) => {
+      await ktools.loadWallet(keyAr)
+      ktools.myContent(addressAr).then((res) => {
         if(res.length === 0) {
-          show_alert(`Our school of koi couldn't find anything on that wallet[${walletAddress}].`)  
+          show_alert(`Our school of koi couldn't find anything on that wallet[${addressAr}].`)  
         }else{
-          setContents(res);
+          let res_data = []
+          res.forEach(element => {
+            let str_created_at = element.createdAt || "1609500000"
+            let created_at = Number(str_created_at) * 1000
+            element.created_at = created_at
+            res_data.push(element)
+          });
+          console.log(res_data)
+          setContents(res_data);
         }
         console.log({ res });
       }).catch(err => {
@@ -108,88 +90,13 @@ function MyContent() {
         setIsLoading(false);
       });
     }else{
-      if(!detectorAr){
-        setTimeout(() => {
-          setDetectorAr(true)
-        }, 100)
-      }else{
-        // show alert
-        show_alert('There is a problem to get your arwallet address. Please install arconnect extension and try again.')
-      }
+      show_alert('Please upload your wallet key file.')
+      setTimeout(()=> history.push('/wallet-key'), 4000)
     }
   };
-
-  // useEffect(() => {
-  //   const listenScrollEvent = (e) => {
-  //     console.log("scroll : ", e, window.scrollY)
-  //     console.log("scroll : ", e.offsetY, e.y - e.offsetY)
-  //     if (e.offsetY > 40) {
-  //       setFixedArea(true)
-  //     } else {
-  //       setFixedArea(false)
-  //     }
-  //   }
-  //   window.addEventListener("scroll", listenScrollEvent, { passive: true });
-  //     return () => {
-  //       window.removeEventListener("scroll", listenScrollEvent);
-  //   };
-  // }, [fixedArea]);
-  // useEffect(function subscribeToWheelEvent() {
-  //   const updateScroll = function(e) {
-  //     if(!!e.deltaY) {
-  //       console.log("cusor: ",e.offsetY)
-  //       if (e.scrollY > 40) {
-  //         setFixedArea(true)
-  //       } else {
-  //         setFixedArea(false)
-  //       }
-  //       // setState((currentState)=>{
-  //       //      const delta = Math.sign(e.deltaY) * 10.0;
-  //       //      const val = Math.max(0, currentState.scrollTop + delta);
-  //       //      return {scrollTop:val}   
-  //       // })            
-  //     } else {
-  //       console.log('zero', e.deltaY);
-  //     }
-  //   }
-  //   window.addEventListener('mousewheel', updateScroll);
-  //   console.log('subscribed to wheelEvent')
-  //   return function () {
-  //     window.removeEventListener('mousewheel', updateScroll);
-  //   }
-  // }, []);
   useEffect(() => {
     getContents();
   }, [history.location.pathname]);
-
-  useEffect(() => {
-    if (detectorAr) {
-      window.addEventListener("arweaveWalletLoaded", detectArweaveWallet());
-      return () => {
-        window.removeEventListener(
-          "arweaveWalletLoaded",
-          () => {}
-        );
-      };
-    }
-  }, [detectorAr]);
-
-  const detectArweaveWallet = async () => {
-    try {
-      let addr = await arweave.wallets.getAddress();
-      console.log("detected arweave wallet address : ", addr);
-      if (addr) {
-        getContents(addr)
-        setAddressAr(addr);
-      } else {
-        // show alert
-        show_alert('There is a problem to get your arwallet address. Please install arconnect extension and try again.')
-      }
-    } catch (err) {
-      console.log(err);
-      show_alert('Error on detecting Arweave wallet address')
-    }
-  };
 
   const show_alert = (message = '') => {
     setShowAlert(true)

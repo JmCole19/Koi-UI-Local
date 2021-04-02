@@ -386,6 +386,19 @@ const GlobalStyle = createGlobalStyle`
                     img {
                         max-width: 20px;
                     }
+                    .btn-disconnect{
+                      height: 32px;
+                      background: #fff;
+                      letter-spacing: 0.03em;
+                      color: ${colors.blueDark};
+                      box-sizing: border-box;
+                      border-radius: 4px;
+                      font-style: normal;
+                      font-weight: 600;
+                      font-size: 16px;
+                      line-height: 15px;
+                      text-align: center;
+                    }
                 }
             }
         }
