@@ -7,7 +7,7 @@ import {
   IconFish
 } from "assets/images";
 import React, { useContext, useEffect, useState, useRef } from "react";
-import { Navbar, Nav, Image, Overlay, Tooltip, Modal } from "react-bootstrap";
+import { Navbar, Nav, Image, Overlay, Tooltip, Modal, Button } from "react-bootstrap";
 import { FaTimes } from "react-icons/fa";
 import { useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
@@ -129,7 +129,7 @@ function Topbar() {
           >
             OpenKoi
           </a>
-          {balanceKoi === null ? (
+          {balanceKoi !== null ? (
             <Space
               size={12}
               className="btns-connect cursor"
@@ -197,6 +197,14 @@ function Topbar() {
                     <p>AR </p>
                     <p className="overlay-value">{show_ar_balance(balanceAr)}</p>
                     <Image src={IconArweave} className="ml-2" />
+                  </div>
+                  <div className="overlay-body-row mt-3">
+                    <Button
+                      className="btn-step-card mt-auto mx-auto"
+                      onClick={onClickGetKoi}
+                    >
+                      Get Balance
+                    </Button>
                   </div>
                 </div>
               </Tooltip>
