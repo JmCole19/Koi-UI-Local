@@ -37,6 +37,21 @@ export const FooterContainer = styled.footer`
         }
       }
     }
+    .email-list{
+      width: 100%;
+      background: ${colors.greenLight};
+      border-radius: .25rem;
+      border: 1px solid #ced4da;
+      padding: 3px;
+      .lbl-email-list{
+        margin: 0 auto;
+        display: table;
+        font-size: 16px;
+        line-height: 24px;
+        letter-spacing: 0.03em;
+        color: ${colors.blueDark};
+      }
+    }
     .footer-options-wrapper {
       margin-top: 32px;
       margin-bottom: 47px;
