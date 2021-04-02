@@ -741,7 +741,7 @@ function ConfirmOpenseas() {
                     </div>
                     <Button
                       className="btn-blueDark btn-see-contents mx-auto"
-                      onClick={() => history.replace("/contents")}
+                      onClick={() => history.replace("/my-content")}
                     >
                       See My Content
                     </Button>

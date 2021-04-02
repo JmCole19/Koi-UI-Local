@@ -16,6 +16,7 @@ import AlertArea from "components/Sections/AlertArea";
 import { alertTimeout } from "config";
 import ImportArea from "components/Sections/ImportArea";
 import { IconUpload, IconOpenSea } from "assets/images";
+import cloneDeep from "clone-deep";
 
 const { Panel } = Collapse;
 const options = ["24h", "1w", "1m", "1y", "all"];
@@ -24,6 +25,7 @@ const options = ["24h", "1w", "1m", "1y", "all"];
 function Leaderboard() {
   const history = useHistory();
   const { contents, setContents } = useContext(DataContext);
+  const [ showContents, setShowContents ] = useState([]);
   const [isExpanded, setIsExpanded] = useState(false);
   // const [isFiltered, setIsFiltered] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -72,8 +74,41 @@ function Leaderboard() {
 
   const onClickUsername = (item) => {
     // setIsFiltered(true);
-    setContents(contents.filter((_item) => _item.name === item.name));
+    setShowContents(contents.filter((_item) => _item.name === item.name));
   };
+
+  const onSliderChange = (newVal) => {
+    // const options = ["24h", "1w", "1m", "1y", "all"];
+    console.log({newVal})
+    let offset = 0
+    switch(options[newVal]) {
+      case "24h":
+        offset = 3600 * 24
+        break;
+      case "1w":
+        offset = 3600 * 24 * 7
+        break;
+      case "1m":
+        offset = 3600 * 24 * 30
+        break;
+      case "1y":
+        offset = 3600 * 24 * 365
+        break;
+      case "all":
+        offset = 0
+        break;
+      default :
+        offset = 0
+        break;
+    }
+    if(offset === 0) {
+      setShowContents(contents)
+    }else{
+      const cur = new Date()
+      const timestamp = Number(cur.getTime() - offset*1000)
+      setShowContents(contents.filter((_item) => _item.created_at > timestamp))
+    }
+  }
 
   const getContents = async () => {
     if (contents.length === 0) {
@@ -94,6 +129,7 @@ function Leaderboard() {
           });
           console.log(res_data)
           setContents(res_data);
+          setShowContents(res_data)
         }
       }).catch( err => {
         console.log(err)
@@ -125,6 +161,7 @@ function Leaderboard() {
               markClassName="example-mark"
               min={0}
               max={4}
+              onChange={(v) => onSliderChange(v)}
               trackClassName="example-track"
               renderMark={(props) => (
                 <span key={props.key} className="example-mark">
@@ -180,7 +217,7 @@ function Leaderboard() {
                 <ScaleLoader size={15} color={"#2a58ad"} />
               </div>
             ) : (
-              contents
+              showContents
                 .filter((_item, _i) => _i < 5)
                 .map((_item, _i) => (
                   <LeaderboardItem
@@ -200,7 +237,7 @@ function Leaderboard() {
               expandIcon={() => <div />}
             >
               <Panel header={null} key="1">
-                {contents
+                {showContents
                   .filter((_item, _i) => _i >= 5)
                   .map((_item, _i) => (
                     <LeaderboardItem
@@ -215,7 +252,7 @@ function Leaderboard() {
                   ))}
               </Panel>
             </Collapse>
-            {contents.length > 5 && (
+            {showContents.length > 5 && (
               <div className="btn-show-more-wrapper">
                 <Button className="btn-show-more" onClick={onClickShowMore}>
                   {isExpanded ? "Show Less" : "Show More"}
