@@ -119,8 +119,8 @@ function UploadManual() {
         show_alert("Your transaction id is " + res + ". Upload successfully", 'success')
         show_notification("Your transaction id is " + res + ". Upload successfully", 'Manual uploading','success')
         setTimeout(() => {
-          history.push("/contents");
-        }, 4000);
+          history.push("/my-content");
+        }, 8000);
       } else {
         show_alert("Something error in NFT uploading", "danger");
         show_notification("Something error in NFT uploading");
