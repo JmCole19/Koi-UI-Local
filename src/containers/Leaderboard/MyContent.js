@@ -12,12 +12,10 @@ import { DataContext } from "contexts/DataContextContainer";
 import ModalContent from "components/Elements/ModalContent";
 // import { show_notification } from "service/utils";
 import AlertArea from "components/Sections/AlertArea";
-import Arweave from "arweave";
 import { alertTimeout } from "config";
 import ImportArea from "components/Sections/ImportArea";
 import { IconUpload, IconOpenSea } from "assets/images";
 
-const arweave = Arweave.init();
 const { Panel } = Collapse;
 const options = ["24h", "1w", "1m", "1y", "all"];
 
@@ -25,7 +23,7 @@ const ktools = new koi_tools();
 
 function MyContent() {
   const history = useHistory();
-  const { keyAr, addressAr, setAddressAr } = useContext(DataContext);
+  const { keyAr, addressAr } = useContext(DataContext);
   const [contents, setContents] = useState([]);
   const [isExpanded, setIsExpanded] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -66,21 +64,22 @@ function MyContent() {
   };
 
   const getContents = async (walletAddress = '') => {
-    // if (contents.length === 0) {
-    //   console.log("here2")
-    // }
-    walletAddress = walletAddress || addressAr || ''
-    console.log({walletAddress})
-    console.log({addressAr})
     if(keyAr) {
       setIsLoading(true);
-      console.log("here3 : ", walletAddress)
-      ktools.loadWallet(keyAr)
-      ktools.myContent(walletAddress).then((res) => {
+      await ktools.loadWallet(keyAr)
+      ktools.myContent(addressAr).then((res) => {
         if(res.length === 0) {
-          show_alert(`Our school of koi couldn't find anything on that wallet[${walletAddress}].`)  
+          show_alert(`Our school of koi couldn't find anything on that wallet[${addressAr}].`)  
         }else{
-          setContents(res);
+          let res_data = []
+          res.forEach(element => {
+            let str_created_at = element.createdAt || "1609500000"
+            let created_at = Number(str_created_at) * 1000
+            element.created_at = created_at
+            res_data.push(element)
+          });
+          console.log(res_data)
+          setContents(res_data);
         }
         console.log({ res });
       }).catch(err => {
@@ -92,7 +91,7 @@ function MyContent() {
       });
     }else{
       show_alert('Please upload your wallet key file.')
-      setTimeout(()=> history.push('/wallet-key'))
+      setTimeout(()=> history.push('/wallet-key'), 4000)
     }
   };
   useEffect(() => {
