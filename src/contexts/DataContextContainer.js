@@ -1,14 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import { getKoi } from "service/KOI";
 import { convertArBalance } from "service/utils";
-import useInterval from "components/Utils/useInterval"
 
 const DataContext = React.createContext(null);
 
 export { DataContext };
 
-const DataContextContainer = (props) => {
+function DataContextContainer(props){
   const [addressEth, setAddressEth] = useState(null);
   const [openSeas, setOpenSeas] = useState([]);
   const [addressAr, setAddressAr] = useState(null);
@@ -68,8 +67,9 @@ const DataContextContainer = (props) => {
       }
     }
 
-    useInterval( () => getKoiBalance, 6000);
   }, [])
+  
+  useInterval( () => getKoiBalance(), 120000);
 
   return (
     <DataContext.Provider
@@ -94,7 +94,22 @@ const DataContextContainer = (props) => {
     </DataContext.Provider>
   );
 };
+function useInterval(callback, delay) {
+  const savedCallback = useRef();
 
+  // remember the latet callback.
+  useEffect(() => {
+    savedCallback.current = callback
+  }, [callback]);
+
+  // set up the interval.
+  useEffect(() => {
+    let id = setInterval( () => {
+      savedCallback.current()
+    }, [delay])
+    return () => clearInterval(id)
+  }, [delay]);
+}
 DataContextContainer.propTypes = {
   children: PropTypes.node.isRequired,
 };
