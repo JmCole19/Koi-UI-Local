@@ -91,6 +91,7 @@ function Footer() {
 
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState('');
+  const [onList, setOnList] = useState(false);
   const onClickSubscribe = async () => {
     if(!email) {
       show_notification('Please input an email address')
@@ -107,8 +108,10 @@ function Footer() {
         setLoading(false)
         setEmail('')
         if(data.isExisting) {
-          show_notification('You\'re on the list!', 'KOI', 'success')
+          setOnList(true)
+          show_notification('You\'re already on the list!', 'KOI', 'success')
         }else{
+          setOnList(true)
           show_notification('Your email successfully added.', 'KOI', 'success')
         }
       } else {
@@ -129,6 +132,11 @@ function Footer() {
           <div className="col-sm-6">
             <h6 className="text-white">Stay up to date</h6>
             <p className="field-label">Email address</p>
+            {onList ? <div className="email-list">
+              <span className="lbl-email-list">
+                You're on the list!
+              </span>
+            </div> :
             <div className="input-group">
               <input
                 type="email"
@@ -143,6 +151,7 @@ function Footer() {
                 </button>
               </span>
             </div>
+            }
           </div>
         </div>
         <div className="row footer-options-wrapper">
