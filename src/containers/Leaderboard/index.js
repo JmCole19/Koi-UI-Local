@@ -26,6 +26,7 @@ function Leaderboard() {
   const { contents, setContents } = useContext(DataContext);
   const [ showContents, setShowContents ] = useState([]);
   const [isExpanded, setIsExpanded] = useState(false);
+  const [sliderValue, setSliderValue] = useState(2);
   // const [isFiltered, setIsFiltered] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -78,6 +79,7 @@ function Leaderboard() {
 
   const onSliderChange = (newVal) => {
     // const options = ["24h", "1w", "1m", "1y", "all"];
+    setSliderValue(newVal)
     console.log({newVal})
     let offset = 0
     switch(options[newVal]) {
@@ -128,16 +130,14 @@ function Leaderboard() {
           });
           console.log(res_data)
           setContents(res_data);
-          setShowContents(res_data)
+          let d = new Date()
+          let ts = d.getTime() - 3600*24*30*1000
+          setShowContents(res_data.filter((_item) => _item.created_at > ts))
         }
       }).catch( err => {
         console.log(err)
         show_alert('There is an error')
       }).finally( () => setIsLoading(false));
-      // ktools.retrieveTopContent().then((res) => {
-      //   setContents(res);
-      //   console.log({ res });
-      // }).catch( err => console.log(err)).finally( () => setIsLoading(false));
     }
   };
 
@@ -160,6 +160,7 @@ function Leaderboard() {
               markClassName="example-mark"
               min={0}
               max={4}
+              value={sliderValue}
               onChange={(v) => onSliderChange(v)}
               trackClassName="example-track"
               renderMark={(props) => (
@@ -176,9 +177,11 @@ function Leaderboard() {
             <ReactSlider
               className="filter-options-mobile d-md-none"
               marks
-              markClassName="example-mark"
+              markCla8ssName="example-mark"
               min={0}
               max={4}
+              value={sliderValue}
+              onChange={(v) => onSliderChange(v)}
               thumbClassName="example-thumb"
               trackClassName="example-track"
               renderThumb={(props, state) => (
