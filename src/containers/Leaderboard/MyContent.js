@@ -101,6 +101,7 @@ function MyContent() {
   const getContents = async (walletAddress = '') => {
     if(keyAr) {
       setIsLoading(true);
+      console.log("my content", keyAr)
       await ktools.loadWallet(keyAr)
       ktools.myContent(addressAr).then((res) => {
         if(res.length === 0) {

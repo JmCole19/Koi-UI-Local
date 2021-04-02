@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
+import { getKoi } from "service/KOI";
+import { convertArBalance } from "service/utils";
 
 const DataContext = React.createContext(null);
 
@@ -13,6 +15,17 @@ const DataContextContainer = (props) => {
   const [balanceKoi, setBalanceKoi] = useState(null);
   const [balanceAr, setBalanceAr] = useState(null);
   const [contents, setContents] = useState([]);
+
+  const getKoiBalance = async (self) => {
+    if(self.keyAr) {
+      let balance = await getKoi(self.keyAr)
+      setBalanceKoi(Number(balance.koiBalance))
+      setBalanceAr(convertArBalance(balance.arBalance))
+    }else{
+      console.log("test key", self.keyAr)
+      console.log('ther is no key file')
+    }
+  }
 
   useEffect( () => {
     let saveData = {}
@@ -29,9 +42,10 @@ const DataContextContainer = (props) => {
       localStorage.setItem('info', JSON.stringify(saveData))
       localStorage.setItem('expired', expired.toString())
     }
+    
   }, [addressEth, addressAr, keyAr, openSeas, balanceKoi, balanceAr])
-
   useEffect( () => {
+    // console.log("test111")
     let saveData = localStorage.getItem('info')
     let str_expired = localStorage.getItem('expired')
     if(saveData && str_expired) {
@@ -52,6 +66,18 @@ const DataContextContainer = (props) => {
         if(information.hasOwnProperty('balanceAr')) setBalanceAr(information['balanceAr']) 
       }
     }
+
+    var self = this
+    setInterval( () => {
+      if(self.keyAr) {
+        // let balance = await getKoi(self.keyAr)
+        // setBalanceKoi(Number(balance.koiBalance))
+        // setBalanceAr(convertArBalance(balance.arBalance))
+      }else{
+        console.log("test key", self.keyAr)
+        console.log('ther is no key file')
+      }
+    }, 6000 )
   }, [])
 
   return (

@@ -113,7 +113,7 @@ function Topbar() {
       // show_notification("Error on detecting Arweave wallet address");
     }
   };
-
+  
   return (
     <TopbarContainer collapseOnSelect expand="md" fixed="top">
       <Link to="/" className="navbar-brand">
