@@ -106,7 +106,11 @@ function Footer() {
       if (ok) {
         setLoading(false)
         setEmail('')
-        show_notification('Your email successfully added.', 'KOI', 'success')
+        if(data.isExisting) {
+          show_notification('Your email successfully added.', 'KOI', 'success')
+        }else{
+          show_notification('Your email successfully added.', 'KOI', 'success')
+        }
       } else {
         setLoading(false)
         let errMessage = data.message || 'There is an error.'
