@@ -55,16 +55,17 @@ function ModalContent({
   const [copiedLink, setCopiedLink] = useState(false);
   const [copiedCode, setCopiedCode] = useState(false);
 
+  const shareTitle = `Check out my NFT, now stored on Koi— forever!`;
   const currentUrl = `${window.location.protocol}//${window.location.hostname}/content-detail/${detail.txIdContent}?t=${Math.random()*999999}`;
   const embedUrl = `${window.location.protocol}//${window.location.hostname}/embed/${detail.txIdContent}?t=${Math.random()*999999}`;
   const embedContent = `<iframe width="100%" src="${embedUrl}" title="Koi NFT image" frameborder="0" allowfullscreen></iframe>`;
-  const smsUrl = `sms:+19024021271&body=${window.location.protocol}//${window.location.hostname}/content-detail/${detail.txIdContent}&type=view`;
+  const smsUrl = `sms:+19024021271&body=${shareTitle} ${window.location.protocol}//${window.location.hostname}/content-detail/${detail.txIdContent}&type=view`;
   // console.log(currentUrl)
   // console.log(embedUrl)
   const shareSocial = [
     {
       icon: (
-        <TwitterShareButton url={currentUrl}>
+        <TwitterShareButton url={currentUrl} title={shareTitle}>
           <FiTwitter size={24} color={colors.greenDark} />
         </TwitterShareButton>
       ),
@@ -72,7 +73,7 @@ function ModalContent({
     },
     {
       icon: (
-        <InstapaperShareButton url={currentUrl} title="KOI leaderboard">
+        <InstapaperShareButton url={currentUrl} title={shareTitle}>
           <FaInstagram size={24} color={colors.greenDark} />
         </InstapaperShareButton>
       ),
@@ -80,7 +81,7 @@ function ModalContent({
     },
     {
       icon: (
-        <FacebookShareButton url={currentUrl}>
+        <FacebookShareButton url={currentUrl} quote={shareTitle}>
           <FiFacebook size={24} color={colors.greenDark} />
         </FacebookShareButton>
       ),
@@ -88,7 +89,7 @@ function ModalContent({
     },
     {
       icon: (
-        <LinkedinShareButton url={currentUrl}>
+        <LinkedinShareButton url={currentUrl} title={shareTitle}>
           <FiLinkedin size={24} color={colors.greenDark} />
         </LinkedinShareButton>
       ),
@@ -106,7 +107,7 @@ function ModalContent({
     },
     {
       icon: (
-        <EmailShareButton url={currentUrl}>
+        <EmailShareButton url={currentUrl} subject={shareTitle}>
           <HiOutlineMail size={24} color={colors.greenDark} />
         </EmailShareButton>
       ),
@@ -114,7 +115,7 @@ function ModalContent({
     },
     {
       icon: (
-        <WhatsappShareButton url={currentUrl}>
+        <WhatsappShareButton url={currentUrl} title={shareTitle}>
           <FaWhatsapp size={24} color={colors.greenDark} />
         </WhatsappShareButton>
       ),
@@ -122,7 +123,7 @@ function ModalContent({
     },
     {
       icon: (
-        <TelegramShareButton url={currentUrl}>
+        <TelegramShareButton url={currentUrl} title={shareTitle}>
           <FaTelegramPlane size={24} color={colors.greenDark} />
         </TelegramShareButton>
       ),
