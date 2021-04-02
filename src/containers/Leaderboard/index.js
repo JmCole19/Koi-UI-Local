@@ -112,33 +112,31 @@ function Leaderboard() {
   }
 
   const getContents = async () => {
-    if (contents.length === 0) {
-      setIsLoading(true);
-      axios.get('https://bundler.openkoi.com:8888/state/getTopContent/')
-      .then((res) => {
-        const data = res.data
-        // console.log({ data });
-        if(data === 0) {
-          show_alert("There is no contents.")  
-        }else{
-          let res_data = []
-          data.forEach(element => {
-            let str_created_at = element.createdAt || "1609500000"
-            let created_at = Number(str_created_at) * 1000
-            element.created_at = created_at
-            res_data.push(element)
-          });
-          console.log(res_data)
-          setContents(res_data);
-          let d = new Date()
-          let ts = d.getTime() - 3600*24*30*1000
-          setShowContents(res_data.filter((_item) => _item.created_at > ts))
-        }
-      }).catch( err => {
-        console.log(err)
-        show_alert('There is an error')
-      }).finally( () => setIsLoading(false));
-    }
+    setIsLoading(true);
+    axios.get('https://bundler.openkoi.com:8888/state/getTopContent/')
+    .then((res) => {
+      const data = res.data
+      // console.log({ data });
+      if(data === 0) {
+        show_alert("There is no contents.")  
+      }else{
+        let res_data = []
+        data.forEach(element => {
+          let str_created_at = element.createdAt || "1609500000"
+          let created_at = Number(str_created_at) * 1000
+          element.created_at = created_at
+          res_data.push(element)
+        });
+        console.log(res_data)
+        setContents(res_data);
+        let d = new Date()
+        let ts = d.getTime() - 3600*24*30*1000
+        setShowContents(res_data.filter((_item) => _item.created_at > ts))
+      }
+    }).catch( err => {
+      console.log(err)
+      show_alert('There is an error')
+    }).finally( () => setIsLoading(false));
   };
 
   useEffect(() => {
