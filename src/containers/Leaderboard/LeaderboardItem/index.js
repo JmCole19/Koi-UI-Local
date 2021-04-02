@@ -104,7 +104,7 @@ function LeaderboardItem({
             <a href={smsUrl}>
               <FiMessageCircle size={24} color={colors.greenDark} />
             </a>
-            <EmailShareButton url={shareUrl}>
+            <EmailShareButton url={shareUrl} subject={shareTitle}>
               <HiOutlineMail size={24} color={colors.greenDark} />
             </EmailShareButton>
           </div>

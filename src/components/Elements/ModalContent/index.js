@@ -107,7 +107,7 @@ function ModalContent({
     },
     {
       icon: (
-        <EmailShareButton url={currentUrl}>
+        <EmailShareButton url={currentUrl} subject={shareTitle}>
           <HiOutlineMail size={24} color={colors.greenDark} />
         </EmailShareButton>
       ),
@@ -115,7 +115,7 @@ function ModalContent({
     },
     {
       icon: (
-        <WhatsappShareButton url={currentUrl}>
+        <WhatsappShareButton url={currentUrl} title={shareTitle}>
           <FaWhatsapp size={24} color={colors.greenDark} />
         </WhatsappShareButton>
       ),
@@ -123,7 +123,7 @@ function ModalContent({
     },
     {
       icon: (
-        <TelegramShareButton url={currentUrl}>
+        <TelegramShareButton url={currentUrl} title={shareTitle}>
           <FaTelegramPlane size={24} color={colors.greenDark} />
         </TelegramShareButton>
       ),

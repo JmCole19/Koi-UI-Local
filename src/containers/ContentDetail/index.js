@@ -295,7 +295,7 @@ function ContentDetail() {
                               color={colors.greenDark}
                             />
                           </a>
-                          <EmailShareButton url={currentUrl}>
+                          <EmailShareButton url={currentUrl} subject={shareTitle}>
                             <HiOutlineMail size={24} color={colors.greenDark} />
                           </EmailShareButton>
                         </div>
