@@ -29,7 +29,7 @@ function LeaderboardItem({
   const shareUrl = `${window.location.protocol}//${
     window.location.hostname
   }/content-detail/${item.txIdContent}?type=view&t=${Math.random() * 999999}`;
-  const smsUrl = `sms:+19024021271&body=${window.location.protocol}//${window.location.hostname}/content-detail/${item.txIdContent}&type=view`;
+  const smsUrl = `sms:+19024021271&body=Check out my NFT, now stored on Koi— forever!${window.location.protocol}//${window.location.hostname}/content-detail/${item.txIdContent}&type=view`;
 
   return (
     <LeaderboardItemContainer>
