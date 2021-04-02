@@ -117,11 +117,13 @@ function UploadManual() {
       );
       if (res) {
         show_alert("Your transaction id is " + res + ". Upload successfully", 'success')
+        show_notification("Your transaction id is " + res + ". Upload successfully", 'Manual uploading','success')
         setTimeout(() => {
           history.push("/contents");
         }, 4000);
       } else {
         show_alert("Something error in NFT uploading", "danger");
+        show_notification("Something error in NFT uploading");
       }
     } catch (err) {
       console.log("here1");
@@ -256,11 +258,11 @@ function UploadManual() {
           show_alert('Please upload your wallet key json file')
         }
       } else {
-        show_alert("Error on detectimg Arweave wallet address");
+        show_alert("Error on detecting Arweave wallet address");
       }
     } catch (err) {
       console.log(err);
-      show_alert("Error on detectimg Arweave wallet address");
+      show_alert("Error on detecting Arweave wallet address");
     }
   };
 
