@@ -31,6 +31,9 @@ function Topbar() {
     setAddressAr,
     addressEth,
     setAddressEth,
+    setKeyAr,
+    setBalanceKoi,
+    setBalanceAr
   } = useContext(DataContext);
   const [show, setShow] = useState(false);
   const target = useRef(null);
@@ -73,6 +76,12 @@ function Topbar() {
       activeArweave();
     }
   };
+  const onClickDisconnectWallet = () => {
+    setAddressAr(null)
+    setKeyAr(null)
+    setBalanceKoi(null)
+    setBalanceAr(null)
+  }
 
   useEffect(() => {
     if (detectorAr) {
@@ -200,10 +209,10 @@ function Topbar() {
                   </div>
                   <div className="overlay-body-row mt-3">
                     <Button
-                      className="btn-step-card mt-auto mx-auto"
-                      onClick={onClickGetKoi}
+                      className="btn-disconnect mt-auto mx-auto"
+                      onClick={onClickDisconnectWallet}
                     >
-                      Get Balance
+                      Disconnect Wallet
                     </Button>
                   </div>
                 </div>
