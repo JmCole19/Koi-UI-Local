@@ -16,7 +16,6 @@ import AlertArea from "components/Sections/AlertArea";
 import { alertTimeout } from "config";
 import ImportArea from "components/Sections/ImportArea";
 import { IconUpload, IconOpenSea } from "assets/images";
-import moment from "moment";
 
 const { Panel } = Collapse;
 const options = ["24h", "1w", "1m", "1y", "all"];
@@ -94,7 +93,6 @@ function Leaderboard() {
             res_data.push(element)
           });
           console.log(res_data)
-          // moment(created_at)
           setContents(res_data);
         }
       }).catch( err => {
