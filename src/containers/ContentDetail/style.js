@@ -119,6 +119,9 @@ export const ContentDetailContainer = styled.div`
     .content-detail-wrapper {
       padding: 0px 0 30px;
       .content-detail {
+        .detail-header {
+          padding: 0 15px;
+        }
         .detail-body {
           padding-top: 24px;
           .detail-img {

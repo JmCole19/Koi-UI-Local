@@ -63,6 +63,13 @@ export const TopbarContainer = styled(Navbar)`
     }
   }
   @media (max-width: 767px) {
+    min-height: 48px;
+    padding: 0rem 15px;
+    .navbar-brand {
+      img {
+        height: 38px;
+      }
+    }
     .navbar-collapse {
       .navbar-nav {
         a {
