@@ -25,33 +25,15 @@ const ktools = new koi_tools();
 
 function MyContent() {
   const history = useHistory();
-  const { addressAr, setAddressAr } = useContext(DataContext);
+  const { keyAr, addressAr, setAddressAr } = useContext(DataContext);
   const [contents, setContents] = useState([]);
   const [isExpanded, setIsExpanded] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [modalType, setModalType] = useState("share");
   const [selectedContent, setSelectedContent] = useState([]);
-  const [detectorAr, setDetectorAr] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [errEmessage, setErrMessage] = useState('');
-  // const [fixedArea, setFixedArea] = useState(false);
-  // const [scrollY, setScrollY] = useState(0);
-
-  // function logit() {
-  //   setScrollY(window.pageYOffset);
-  //   console.log(new Date().getTime(), scrollY);
-  // }
-
-  // useEffect(() => {
-  //   function watchScroll() {
-  //     window.addEventListener("scroll", logit, {capture: true});
-  //   }
-  //   watchScroll();
-  //   return () => {
-  //     window.removeEventListener("scroll", logit);
-  //   };
-  // });
 
   const onClickItem = (item, type) => {
     if (type === "view") {
@@ -90,9 +72,10 @@ function MyContent() {
     walletAddress = walletAddress || addressAr || ''
     console.log({walletAddress})
     console.log({addressAr})
-    if(walletAddress) {
+    if(keyAr) {
       setIsLoading(true);
       console.log("here3 : ", walletAddress)
+      ktools.loadWallet(keyAr)
       ktools.myContent(walletAddress).then((res) => {
         if(res.length === 0) {
           show_alert(`Our school of koi couldn't find anything on that wallet[${walletAddress}].`)  
@@ -108,88 +91,13 @@ function MyContent() {
         setIsLoading(false);
       });
     }else{
-      if(!detectorAr){
-        setTimeout(() => {
-          setDetectorAr(true)
-        }, 100)
-      }else{
-        // show alert
-        show_alert('There is a problem to get your arwallet address. Please install arconnect extension and try again.')
-      }
+      show_alert('Please upload your wallet key file.')
+      setTimeout(()=> history.push('/wallet-key'))
     }
   };
-
-  // useEffect(() => {
-  //   const listenScrollEvent = (e) => {
-  //     console.log("scroll : ", e, window.scrollY)
-  //     console.log("scroll : ", e.offsetY, e.y - e.offsetY)
-  //     if (e.offsetY > 40) {
-  //       setFixedArea(true)
-  //     } else {
-  //       setFixedArea(false)
-  //     }
-  //   }
-  //   window.addEventListener("scroll", listenScrollEvent, { passive: true });
-  //     return () => {
-  //       window.removeEventListener("scroll", listenScrollEvent);
-  //   };
-  // }, [fixedArea]);
-  // useEffect(function subscribeToWheelEvent() {
-  //   const updateScroll = function(e) {
-  //     if(!!e.deltaY) {
-  //       console.log("cusor: ",e.offsetY)
-  //       if (e.scrollY > 40) {
-  //         setFixedArea(true)
-  //       } else {
-  //         setFixedArea(false)
-  //       }
-  //       // setState((currentState)=>{
-  //       //      const delta = Math.sign(e.deltaY) * 10.0;
-  //       //      const val = Math.max(0, currentState.scrollTop + delta);
-  //       //      return {scrollTop:val}   
-  //       // })            
-  //     } else {
-  //       console.log('zero', e.deltaY);
-  //     }
-  //   }
-  //   window.addEventListener('mousewheel', updateScroll);
-  //   console.log('subscribed to wheelEvent')
-  //   return function () {
-  //     window.removeEventListener('mousewheel', updateScroll);
-  //   }
-  // }, []);
   useEffect(() => {
     getContents();
   }, [history.location.pathname]);
-
-  useEffect(() => {
-    if (detectorAr) {
-      window.addEventListener("arweaveWalletLoaded", detectArweaveWallet());
-      return () => {
-        window.removeEventListener(
-          "arweaveWalletLoaded",
-          () => {}
-        );
-      };
-    }
-  }, [detectorAr]);
-
-  const detectArweaveWallet = async () => {
-    try {
-      let addr = await arweave.wallets.getAddress();
-      console.log("detected arweave wallet address : ", addr);
-      if (addr) {
-        getContents(addr)
-        setAddressAr(addr);
-      } else {
-        // show alert
-        show_alert('There is a problem to get your arwallet address. Please install arconnect extension and try again.')
-      }
-    } catch (err) {
-      console.log(err);
-      show_alert('Error on detecting Arweave wallet address')
-    }
-  };
 
   const show_alert = (message = '') => {
     setShowAlert(true)

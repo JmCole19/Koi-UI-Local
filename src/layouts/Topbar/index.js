@@ -81,6 +81,7 @@ function Topbar() {
     setKeyAr(null)
     setBalanceKoi(null)
     setBalanceAr(null)
+    setShow(false)
   }
 
   useEffect(() => {
@@ -138,7 +139,7 @@ function Topbar() {
           >
             OpenKoi
           </a>
-          {balanceKoi !== null ? (
+          {balanceKoi === null ? (
             <Space
               size={12}
               className="btns-connect cursor"
