@@ -182,6 +182,7 @@ export const LeaderboardContainer = styled.div`
     .leaderboard-header {
       padding: 0px 15px;
       min-height: 45px;
+      top: 48px;
       h2 {
         font-size: 15px !important;
       }
