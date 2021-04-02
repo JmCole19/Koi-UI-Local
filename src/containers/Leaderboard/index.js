@@ -16,6 +16,7 @@ import AlertArea from "components/Sections/AlertArea";
 import { alertTimeout } from "config";
 import ImportArea from "components/Sections/ImportArea";
 import { IconUpload, IconOpenSea } from "assets/images";
+import cloneDeep from "clone-deep";
 
 const { Panel } = Collapse;
 const options = ["24h", "1w", "1m", "1y", "all"];
@@ -24,6 +25,7 @@ const options = ["24h", "1w", "1m", "1y", "all"];
 function Leaderboard() {
   const history = useHistory();
   const { contents, setContents } = useContext(DataContext);
+  const [ showContents, setSh6owContents ] = useState();
   const [isExpanded, setIsExpanded] = useState(false);
   // const [isFiltered, setIsFiltered] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -75,6 +77,34 @@ function Leaderboard() {
     setContents(contents.filter((_item) => _item.name === item.name));
   };
 
+  const onSliderChange = (newVal) => {
+    // const options = ["24h", "1w", "1m", "1y", "all"];
+    console.log({newVal})
+    let offset = 3600 * 24 // 24hrs
+    switch(options[newVal]) {
+      case "24h":
+        offset = 3600 * 24
+        break;
+      case "1w":
+        offset = 3600 * 24
+        break;
+      case "1m":
+        offset = 3600 * 24
+        break;
+      case "1y":
+        offset = 3600 * 24
+        break;2
+      case "all":
+        offset = 3600 * 24
+        break;
+      default :
+        offset = 3600 * 24
+        break;
+    }
+    let tempContents = cloneDeep(contents)
+
+  }
+
   const getContents = async () => {
     if (contents.length === 0) {
       setIsLoading(true);
@@ -125,6 +155,7 @@ function Leaderboard() {
               markClassName="example-mark"
               min={0}
               max={4}
+              onChange={(v) => onSliderChange(v)}
               trackClassName="example-track"
               renderMark={(props) => (
                 <span key={props.key} className="example-mark">
