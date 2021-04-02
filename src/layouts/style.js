@@ -30,4 +30,9 @@ export const PageLayoutContainer = styled.div`
       }
     }
   }
+  @media (max-width: 767px) {
+    .page-content {
+      padding-top: 48px;
+    }
+  }
 `;

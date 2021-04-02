@@ -25,7 +25,6 @@ function LeaderboardItem({
   onClickShare = () => {},
   onClickEmbed = () => {},
 }) {
-
   const shareTitle = `Check out my NFT, now stored on Koi— forever!`;
   const shareUrl = `${window.location.protocol}//${
     window.location.hostname
@@ -41,7 +40,7 @@ function LeaderboardItem({
         <div className="item-img-wrapper item-col">
           <Image
             src={
-              item.txIdContent
+              item.txIdContent && item.owner
                 ? `${preUrl}${item.txIdContent}?t=${Math.random() * 999999}`
                 : ItemTemp
             }
