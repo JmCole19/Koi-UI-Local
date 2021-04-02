@@ -171,13 +171,13 @@ function ContentDetail() {
                 </Alert>
                 <Container>
                   <Row>
-                    <Col className="col-md-6">
+                    <Col className="col-md-6 col-xs-12 col-12">
                       <Image
                         src={`${preUrl}${detail.txIdContent}?t=${Math.random()*999999}`}
                         className="detail-img"
                       />
                     </Col>
-                    <Col className="col-md-6">
+                    <Col className="col-md-6 col-xs-12 col-12">
                       <div className="detail-body-description">
                         <h1 className="mb-0 text-blue text-left">{detail.ticker}</h1>
                         <p className="detail-username">{detail.name}</p>
