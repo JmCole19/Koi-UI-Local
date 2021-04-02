@@ -179,6 +179,16 @@ export const LeaderboardContainer = styled.div`
     }
   }
   @media (max-width: ${mixins.md}px) {
+    .leaderboard-header {
+      padding: 0px 15px;
+      min-height: 45px;
+      h2 {
+        font-size: 15px !important;
+      }
+      .btn-my-content {
+        margin-right: 5px;
+      }
+    }
   }
   @media (max-width: ${mixins.sm}px) {
   }

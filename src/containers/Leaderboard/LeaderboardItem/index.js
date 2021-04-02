@@ -13,7 +13,7 @@ import { FaInstagram } from "react-icons/fa";
 import { HiOutlineMail } from "react-icons/hi";
 import { LeaderboardItemContainer } from "./style";
 import { colors } from "theme";
-import { preUrl } from "config"
+import { preUrl } from "config";
 import { show_digit_number } from "service/utils";
 import moment from "moment";
 
@@ -25,11 +25,12 @@ function LeaderboardItem({
   onClickShare = () => {},
   onClickEmbed = () => {},
 }) {
-
   // const shareUrl = `${window.location.hostname}/content-detail/${item.txIdContent}?type=view`;
-  const shareUrl = `${window.location.protocol}//${window.location.hostname}/content-detail/${item.txIdContent}?type=view&t=${Math.random()*999999}`;
+  const shareUrl = `${window.location.protocol}//${
+    window.location.hostname
+  }/content-detail/${item.txIdContent}?type=view&t=${Math.random() * 999999}`;
   const smsUrl = `sms:+19024021271&body=${window.location.protocol}//${window.location.hostname}/content-detail/${item.txIdContent}&type=view`;
-  
+
   return (
     <LeaderboardItemContainer>
       <div className="part-left">
@@ -38,7 +39,11 @@ function LeaderboardItem({
         </div>
         <div className="item-img-wrapper item-col">
           <Image
-            src={item.txIdContent ? `${preUrl}${item.txIdContent}?t=${Math.random()*999999}` : ItemTemp}
+            src={
+              item.txIdContent
+                ? `${preUrl}${item.txIdContent}?t=${Math.random() * 999999}`
+                : ItemTemp
+            }
             className="cursor"
             onClick={onClickItem}
           />
@@ -49,7 +54,7 @@ function LeaderboardItem({
             {item.name}
           </p>
           <p className="item-created_at mb-0">
-            Registered: {moment(item.created_at).format('MMM, DD, YYYY')}
+            Registered: {moment(item.created_at).format("MMM, DD, YYYY")}
           </p>
           <a
             href={`https://viewblock.io/arweave/tx/${item.txIdContent}`}
@@ -72,32 +77,36 @@ function LeaderboardItem({
           <h5 className="item-rewards mb-0">
             {show_digit_number(item.totalReward)}{" "}
             <span className="ml-1">
-              <Image src={IconFish} width={18}/>
+              <Image src={IconFish} width={18} />
             </span>
           </h5>
         </div>
-        <div className="btns-wrapper">
-          <Button className="btn-share btn-blue" onClick={onClickShare}>
-            Share
-          </Button>
-          <Button className="btn-html" onClick={onClickEmbed}>
-            <Image src={IconHtml} />
-          </Button>
-        </div>
-        <div className="social-wrapper">
-          <TwitterShareButton url={shareUrl}>
-            <FiTwitter size={24} color={colors.greenDark} />
-          </TwitterShareButton>
-          <InstapaperShareButton url={shareUrl}>
-            <FaInstagram size={24} color={colors.greenDark} />
-          </InstapaperShareButton>
-          <FacebookShareButton url={shareUrl}>
-            <FiFacebook size={24} color={colors.greenDark} />
-          </FacebookShareButton>
-          <a href={smsUrl}><FiMessageCircle size={24} color={colors.greenDark} /></a>
-          <EmailShareButton url={shareUrl}>
-            <HiOutlineMail size={24} color={colors.greenDark} />
-          </EmailShareButton>
+        <div className="share-wrapper">
+          <div className="btns-wrapper">
+            <Button className="btn-share btn-blue" onClick={onClickShare}>
+              Share
+            </Button>
+            <Button className="btn-html" onClick={onClickEmbed}>
+              <Image src={IconHtml} />
+            </Button>
+          </div>
+          <div className="social-wrapper">
+            <TwitterShareButton url={shareUrl}>
+              <FiTwitter size={24} color={colors.greenDark} />
+            </TwitterShareButton>
+            <InstapaperShareButton url={shareUrl}>
+              <FaInstagram size={24} color={colors.greenDark} />
+            </InstapaperShareButton>
+            <FacebookShareButton url={shareUrl}>
+              <FiFacebook size={24} color={colors.greenDark} />
+            </FacebookShareButton>
+            <a href={smsUrl}>
+              <FiMessageCircle size={24} color={colors.greenDark} />
+            </a>
+            <EmailShareButton url={shareUrl}>
+              <HiOutlineMail size={24} color={colors.greenDark} />
+            </EmailShareButton>
+          </div>
         </div>
       </div>
     </LeaderboardItemContainer>

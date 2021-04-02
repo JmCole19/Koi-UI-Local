@@ -116,6 +116,40 @@ export const ContentDetailContainer = styled.div`
     }
   }
   @media (max-width: ${mixins.md}px) {
+    .content-detail-wrapper {
+      padding: 0px 0 30px;
+      .content-detail {
+        .detail-body {
+          padding-top: 24px;
+          .detail-img {
+            width: 100%;
+            height: auto;
+            max-height: unset;
+            margin-bottom: 30px;
+          }
+          .detail-body-description {
+            h1 {
+              font-size: 32px !important;
+            }
+            .btns-wrapper-sm {
+              display: flex;
+              justify-content: flex-start;
+              align-items: center;
+              margin-top: 12px;
+              margin-bottom: 24px;
+              .btn {
+                flex: 1;
+                font-size: 18px !important;
+                img {
+                  width: 24px;
+                  margin-right: 10px;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
   }
   @media (max-width: ${mixins.sm}px) {
     .content-detail-wrapper {

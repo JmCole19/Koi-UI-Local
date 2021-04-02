@@ -80,35 +80,39 @@ export const LeaderboardItemContainer = styled.div`
         }
       }
     }
-    .btns-wrapper {
+    .share-wrapper {
       display: flex;
-      justify-content: space-between;
-      margin-bottom: 14px;
-      .btn {
-        height: 40px;
-        &.btn-html {
-          margin-left: 28px;
-          width: 40px;
+      flex-direction: column;
+      .btns-wrapper {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 14px;
+        .btn {
           height: 40px;
-          background: ${colors.white};
-          box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.16);
-          border-radius: 3px;
-          color: ${colors.blueDark};
-          border: 2.5px solid ${colors.blueDark};
-        }
-        &.btn-share {
-          flex: 1;
-          background: ${colors.blueGradient};
-          box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.16);
-          border-radius: 3px;
-          font-size: 18px;
+          &.btn-html {
+            margin-left: 28px;
+            width: 40px;
+            height: 40px;
+            background: ${colors.white};
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.16);
+            border-radius: 3px;
+            color: ${colors.blueDark};
+            border: 2.5px solid ${colors.blueDark};
+          }
+          &.btn-share {
+            flex: 1;
+            background: ${colors.blueGradient};
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.16);
+            border-radius: 3px;
+            font-size: 18px;
+          }
         }
       }
-    }
-    .social-wrapper {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      .social-wrapper {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
     }
   }
   @media (max-width: ${mixins.md}px) {
@@ -142,9 +146,15 @@ export const LeaderboardItemContainer = styled.div`
       display: flex;
       justify-content: center;
       .item-col {
+        padding: 0px;
         &.item-reviews-wrapper {
           align-items: center;
+          flex: 1;
         }
+      }
+      .share-wrapper {
+        flex: 2;
+        margin-left: 15px;
       }
     }
   }

@@ -13,7 +13,7 @@ import { FaInstagram } from "react-icons/fa";
 import { FiFacebook, FiMessageCircle, FiTwitter } from "react-icons/fi";
 import { HiOutlineMail } from "react-icons/hi";
 import { useHistory, useParams } from "react-router-dom";
-import { colors } from "theme";
+import { colors, mixins } from "theme";
 import { ContentDetailContainer } from "./style";
 import { DataContext } from "contexts/DataContextContainer";
 import { ScaleLoader } from "react-spinners";
@@ -21,17 +21,23 @@ import ModalContent from "components/Elements/ModalContent";
 import { show_digit_number, show_notification } from "service/utils";
 import axios from "axios";
 import AlertArea from "components/Sections/AlertArea";
-import { preUrl, alertTimeout } from "config"
+import useMediaQuery from "use-mediaquery";
+import { preUrl, alertTimeout } from "config";
 
 // const ktools = new koi_tools();
 
 function ContentDetail() {
   const history = useHistory();
   const { id } = useParams();
+  const isMobile = useMediaQuery(`(max-width: ${mixins.md}px)`);
   // const currentUrl = `${window.location.hostname}${history.location.pathname}`;
-  const currentUrl = `${window.location.protocol}//${window.location.hostname}/content-detail/${id}?t=${Math.random()*999999}`;
-  const smsUrl = `sms:+19024021271&body=${window.location.protocol}//${window.location.hostname}/content-detail/${id}&type=view&t=${Math.random()*999999}`;
-  
+  const currentUrl = `${window.location.protocol}//${
+    window.location.hostname
+  }/content-detail/${id}?t=${Math.random() * 999999}`;
+  const smsUrl = `sms:+19024021271&body=${window.location.protocol}//${
+    window.location.hostname
+  }/content-detail/${id}&type=view&t=${Math.random() * 999999}`;
+
   // console.log(currentUrl)
   const { contents, setContents } = useContext(DataContext);
   const [isLoading, setIsLoading] = useState(false);
@@ -41,7 +47,7 @@ function ContentDetail() {
   const [isExpanded, setIsExpanded] = useState(false);
   const [modalType, setModalType] = useState("share");
   const [showAlert, setShowAlert] = useState(false);
-  const [errEmessage, setErrMessage] = useState('');
+  const [errEmessage, setErrMessage] = useState("");
 
   const onSwitchModal = () => {
     setModalType(modalType === "share" ? "embed" : "share");
@@ -51,26 +57,29 @@ function ContentDetail() {
     // setContents(temp_contents)
     if (contents.length === 0) {
       setIsLoading(true);
-      axios.get('https://bundler.openkoi.com:8888/state/getTopContent/')
-      .then((res) => {
-        const data = res.data
-        // console.log({ data });
-        if(data === 0) {
-          show_alert("There is no contents.")  
-        }else{
-          setContents(data);
-          const item = data.find((_content) => _content.txIdContent === id)
-          if(item) {
-            console.log(item)
-            setDetail(item);
-          }else{
-            show_notification("There is no matching contents.")  
+      axios
+        .get("https://bundler.openkoi.com:8888/state/getTopContent/")
+        .then((res) => {
+          const data = res.data;
+          // console.log({ data });
+          if (data === 0) {
+            show_alert("There is no contents.");
+          } else {
+            setContents(data);
+            const item = data.find((_content) => _content.txIdContent === id);
+            if (item) {
+              console.log(item);
+              setDetail(item);
+            } else {
+              show_notification("There is no matching contents.");
+            }
           }
-        }
-      }).catch( err => {
-        console.log(err)
-        show_alert('There is an error')
-      }).finally( () => setIsLoading(false));
+        })
+        .catch((err) => {
+          console.log(err);
+          show_alert("There is an error");
+        })
+        .finally(() => setIsLoading(false));
       // ktools.retrieveTopContent().then((res) => {
       //   setContents(res);
       //   setDetail(res.find((_content) => _content.txIdContent === id));
@@ -80,14 +89,14 @@ function ContentDetail() {
     }
   };
 
-  const show_alert = (message = '') => {
-    setShowAlert(true)
-    setErrMessage(message)
-    setTimeout( () => {
-      setShowAlert(false)
-      setErrMessage('')
-    }, alertTimeout)
-  }
+  const show_alert = (message = "") => {
+    setShowAlert(true);
+    setErrMessage(message);
+    setTimeout(() => {
+      setShowAlert(false);
+      setErrMessage("");
+    }, alertTimeout);
+  };
 
   const onClickShowMore = () => {
     setIsExpanded(!isExpanded);
@@ -96,13 +105,15 @@ function ContentDetail() {
   const onClickBuyIt = (contract_ID) => {
     let url = "https://space.verto.exchange/asset/" + contract_ID;
     window.open(url, "_blank");
-  }
+  };
   useEffect(() => {
-    console.log(contents)
-    if( contents.length > 0 ){
-      const findContent = contents.find((_content) => _content.txIdContent === id)
-      if(findContent) {
-        console.log(findContent)
+    console.log(contents);
+    if (contents.length > 0) {
+      const findContent = contents.find(
+        (_content) => _content.txIdContent === id
+      );
+      if (findContent) {
+        console.log(findContent);
         setDetail(findContent);
       }
     }
@@ -115,7 +126,7 @@ function ContentDetail() {
     if (!localStorage.getItem("visited")) {
       let timer = setTimeout(() => {
         setShowMessage(true);
-        localStorage.setItem("visited", 'yes')
+        localStorage.setItem("visited", "yes");
       }, 1000);
       return () => {
         clearTimeout(timer);
@@ -126,10 +137,7 @@ function ContentDetail() {
   console.log({ detail });
   return (
     <>
-      <AlertArea
-        showMessage={showAlert}
-        message={errEmessage}
-      ></AlertArea>
+      <AlertArea showMessage={showAlert} message={errEmessage}></AlertArea>
       <ContentDetailContainer>
         <div className="content-detail-wrapper text-center">
           {isLoading && (
@@ -137,7 +145,7 @@ function ContentDetail() {
               <ScaleLoader size={15} color={"#2a58ad"} />
             </div>
           )}
-          { (!isLoading && detail) ? (
+          {!isLoading && detail ? (
             <div className="content-detail">
               <div className="detail-header">
                 <div
@@ -147,7 +155,12 @@ function ContentDetail() {
                   <i className="fal fa-arrow-circle-left"></i>
                 </div>
                 <h2 className="text-blue mb-0">{detail.ticker}</h2>
-                <Button onClick={() => onClickBuyIt(detail.txIdContent)} className="btn-orange ml-auto">Buy It</Button>
+                <Button
+                  onClick={() => onClickBuyIt(detail.txIdContent)}
+                  className="btn-orange ml-auto"
+                >
+                  Buy It
+                </Button>
                 <Button
                   className="btn-green btn-plus"
                   onClick={() => history.push("/register-content")}
@@ -171,17 +184,45 @@ function ContentDetail() {
                 </Alert>
                 <Container>
                   <Row>
-                    <Col className="col-md-6">
+                    <Col className="col-md-6 col-xs-12 col-12">
                       <Image
-                        src={`${preUrl}${detail.txIdContent}?t=${Math.random()*999999}`}
+                        src={`${preUrl}${detail.txIdContent}?t=${
+                          Math.random() * 999999
+                        }`}
                         className="detail-img"
                       />
                     </Col>
-                    <Col className="col-md-6">
+                    <Col className="col-md-6 col-xs-12 col-12">
                       <div className="detail-body-description">
-                        <h1 className="mb-0 text-blue text-left">{detail.ticker}</h1>
+                        <h1 className="mb-0 text-blue text-left">
+                          {detail.ticker}
+                        </h1>
                         <p className="detail-username">{detail.name}</p>
-                        <p className="text-left">Registered {detail.created_at || "Jan. 01, 2021"}</p>
+                        <p className="text-left">
+                          Registered {detail.created_at || "Jan. 01, 2021"}
+                        </p>
+                        <div className="btns-wrapper-sm d-md-none">
+                          <Button
+                            className="btn-share btn-blueDark"
+                            onClick={() => {
+                              setModalType("share");
+                              setShowModal(true);
+                            }}
+                          >
+                            <Image src={IconShare} />
+                            {isMobile ? "Share" : "Share NFT"}
+                          </Button>
+                          <Button
+                            className="btn-html btn-white ml-3"
+                            onClick={() => {
+                              setModalType("embed");
+                              setShowModal(true);
+                            }}
+                          >
+                            <Image src={IconHtml} />
+                            {isMobile ? "Embed" : "Embed to Earn"}
+                          </Button>
+                        </div>
                         {/* <p className="mb-0">{detail.description}</p> */}
                         {isExpanded || detail.description?.length < 300 ? (
                           <p className="mb-0 text-left">{detail.description}</p>
@@ -203,15 +244,19 @@ function ContentDetail() {
                         )}
                         <div className="views-wrapper">
                           <div className="view-row">
-                            <h5 className="total-value text-left">{show_digit_number(detail.totalViews)}</h5>
+                            <h5 className="total-value text-left">
+                              {show_digit_number(detail.totalViews)}
+                            </h5>
                             <h5 className="total-views">total views</h5>
                           </div>
                           <div className="view-row">
-                            <h5 className="total-value text-left">{show_digit_number(detail.totalReward)}{" "}</h5>
+                            <h5 className="total-value text-left">
+                              {show_digit_number(detail.totalReward)}{" "}
+                            </h5>
                             <h5 className="total-views">total KOI rewards</h5>
                           </div>
                         </div>
-                        <div className="btns-wrapper">
+                        <div className="btns-wrapper d-none d-md-flex">
                           <Button
                             className="btn-share btn-blueDark"
                             onClick={() => {
@@ -243,7 +288,12 @@ function ContentDetail() {
                           <FacebookShareButton url={currentUrl}>
                             <FiFacebook size={24} color={colors.greenDark} />
                           </FacebookShareButton>
-                          <a href={smsUrl}><FiMessageCircle size={24} color={colors.greenDark} /></a>
+                          <a href={smsUrl}>
+                            <FiMessageCircle
+                              size={24}
+                              color={colors.greenDark}
+                            />
+                          </a>
                           <EmailShareButton url={currentUrl}>
                             <HiOutlineMail size={24} color={colors.greenDark} />
                           </EmailShareButton>
@@ -254,15 +304,19 @@ function ContentDetail() {
                 </Container>
               </div>
             </div>
-          ) : <h4 className="text-center mt-4">There is no content</h4>} 
+          ) : (
+            <h4 className="text-center mt-4">There is no content</h4>
+          )}
         </div>
-        {detail && <ModalContent
-          type={modalType}
-          show={showModal}
-          detail={detail}
-          onHide={() => setShowModal(false)}
-          onSwitchModal={onSwitchModal}
-        />}
+        {detail && (
+          <ModalContent
+            type={modalType}
+            show={showModal}
+            detail={detail}
+            onHide={() => setShowModal(false)}
+            onSwitchModal={onSwitchModal}
+          />
+        )}
       </ContentDetailContainer>
     </>
   );
