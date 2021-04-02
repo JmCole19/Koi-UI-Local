@@ -182,6 +182,28 @@ function ContentDetail() {
                         <h1 className="mb-0 text-blue text-left">{detail.ticker}</h1>
                         <p className="detail-username">{detail.name}</p>
                         <p className="text-left">Registered {detail.created_at || "Jan. 01, 2021"}</p>
+                        <div className="btns-wrapper-sm d-md-none">
+                          <Button
+                            className="btn-share btn-blueDark"
+                            onClick={() => {
+                              setModalType("share");
+                              setShowModal(true);
+                            }}
+                          >
+                            <Image src={IconShare} />
+                            Share NFT
+                          </Button>
+                          <Button
+                            className="btn-html btn-white ml-3"
+                            onClick={() => {
+                              setModalType("embed");
+                              setShowModal(true);
+                            }}
+                          >
+                            <Image src={IconHtml} />
+                            Embed to Earn
+                          </Button>
+                        </div>
                         {/* <p className="mb-0">{detail.description}</p> */}
                         {isExpanded || detail.description?.length < 300 ? (
                           <p className="mb-0 text-left">{detail.description}</p>
@@ -211,7 +233,7 @@ function ContentDetail() {
                             <h5 className="total-views">total KOI rewards</h5>
                           </div>
                         </div>
-                        <div className="btns-wrapper">
+                        <div className="btns-wrapper d-none d-md-flex">
                           <Button
                             className="btn-share btn-blueDark"
                             onClick={() => {
