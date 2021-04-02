@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
+import { getKoi } from "service/KOI";
+import { convertArBalance } from "service/utils";
 
 const DataContext = React.createContext(null);
 
 export { DataContext };
 
-const DataContextContainer = (props) => {
+function DataContextContainer(props){
   const [addressEth, setAddressEth] = useState(null);
   const [openSeas, setOpenSeas] = useState([]);
   const [addressAr, setAddressAr] = useState(null);
@@ -13,6 +15,17 @@ const DataContextContainer = (props) => {
   const [balanceKoi, setBalanceKoi] = useState(null);
   const [balanceAr, setBalanceAr] = useState(null);
   const [contents, setContents] = useState([]);
+
+  const getKoiBalance = async () => {
+    if(keyAr) {
+      let balance = await getKoi(keyAr)
+      setBalanceKoi(Number(balance.koiBalance))
+      setBalanceAr(convertArBalance(balance.arBalance))
+    }else{
+      console.log("test key", keyAr)
+      console.log('ther is no key file')
+    }
+  }
 
   useEffect( () => {
     let saveData = {}
@@ -29,9 +42,10 @@ const DataContextContainer = (props) => {
       localStorage.setItem('info', JSON.stringify(saveData))
       localStorage.setItem('expired', expired.toString())
     }
+    
   }, [addressEth, addressAr, keyAr, openSeas, balanceKoi, balanceAr])
-
   useEffect( () => {
+    // console.log("test111")
     let saveData = localStorage.getItem('info')
     let str_expired = localStorage.getItem('expired')
     if(saveData && str_expired) {
@@ -52,7 +66,10 @@ const DataContextContainer = (props) => {
         if(information.hasOwnProperty('balanceAr')) setBalanceAr(information['balanceAr']) 
       }
     }
+
   }, [])
+  
+  useInterval( () => getKoiBalance(), 120000);
 
   return (
     <DataContext.Provider
@@ -77,7 +94,22 @@ const DataContextContainer = (props) => {
     </DataContext.Provider>
   );
 };
+function useInterval(callback, delay) {
+  const savedCallback = useRef();
 
+  // remember the latet callback.
+  useEffect(() => {
+    savedCallback.current = callback
+  }, [callback]);
+
+  // set up the interval.
+  useEffect(() => {
+    let id = setInterval( () => {
+      savedCallback.current()
+    }, [delay])
+    return () => clearInterval(id)
+  }, [delay]);
+}
 DataContextContainer.propTypes = {
   children: PropTypes.node.isRequired,
 };
