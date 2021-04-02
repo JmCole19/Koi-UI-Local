@@ -25,6 +25,7 @@ function MyContent() {
   const history = useHistory();
   const { keyAr, addressAr } = useContext(DataContext);
   const [contents, setContents] = useState([]);
+  const [sliderValue, setSliderValue] = useState(4);
   const [isExpanded, setIsExpanded] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -62,6 +63,40 @@ function MyContent() {
   const onClickUsername = (item) => {
     setContents(contents.filter((_item) => _item.name === item.name));
   };
+
+  const onSliderChange = (newVal) => {
+    // const options = ["24h", "1w", "1m", "1y", "all"];
+    setSliderValue(newVal)
+    console.log({newVal})
+    let offset = 0
+    switch(options[newVal]) {
+      case "24h":
+        offset = 3600 * 24
+        break;
+      case "1w":
+        offset = 3600 * 24 * 7
+        break;
+      case "1m":
+        offset = 3600 * 24 * 30
+        break;
+      case "1y":
+        offset = 3600 * 24 * 365
+        break;
+      case "all":
+        offset = 0
+        break;
+      default :
+        offset = 0
+        break;
+    }
+    if(offset === 0) {
+      setContents(contents)
+    }else{
+      const cur = new Date()
+      const timestamp = Number(cur.getTime() - offset*1000)
+      setContents(contents.filter((_item) => _item.created_at > timestamp))
+    }
+  }
 
   const getContents = async (walletAddress = '') => {
     if(keyAr) {
@@ -120,6 +155,8 @@ function MyContent() {
             markClassName="example-mark"
             min={0}
             max={4}
+            value={sliderValue}
+            onChange={(v) => onSliderChange(v)}
             trackClassName="example-track"
             renderMark={(props) => (
               <span key={props.key} className="example-mark">
@@ -138,6 +175,8 @@ function MyContent() {
             markClassName="example-mark"
             min={0}
             max={4}
+            value={sliderValue}
+            onChange={(v) => onSliderChange(v)}
             thumbClassName="example-thumb"
             trackClassName="example-track"
             renderThumb={(props, state) => (
