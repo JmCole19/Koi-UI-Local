@@ -107,7 +107,7 @@ function Footer() {
         setLoading(false)
         setEmail('')
         if(data.isExisting) {
-          show_notification('Your email successfully added.', 'KOI', 'success')
+          show_notification('You\'re on the list!', 'KOI', 'success')
         }else{
           show_notification('Your email successfully added.', 'KOI', 'success')
         }
