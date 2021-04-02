@@ -30,11 +30,12 @@ function ContentDetail() {
   const history = useHistory();
   const { id } = useParams();
   const isMobile = useMediaQuery(`(max-width: ${mixins.md}px)`);
-  // const currentUrl = `${window.location.hostname}${history.location.pathname}`;
+  
+  const shareTitle = `Check out my NFT, now stored on Koi— forever!`;
   const currentUrl = `${window.location.protocol}//${
     window.location.hostname
   }/content-detail/${id}?t=${Math.random() * 999999}`;
-  const smsUrl = `sms:+19024021271&body=${window.location.protocol}//${
+  const smsUrl = `sms:+19024021271&body=${shareTitle} ${window.location.protocol}//${
     window.location.hostname
   }/content-detail/${id}&type=view&t=${Math.random() * 999999}`;
 
@@ -279,13 +280,13 @@ function ContentDetail() {
                           </Button>
                         </div>
                         <div className="social-wrapper">
-                          <TwitterShareButton url={currentUrl}>
+                          <TwitterShareButton url={currentUrl} title={shareTitle}>
                             <FiTwitter size={24} color={colors.greenDark} />
                           </TwitterShareButton>
-                          <InstapaperShareButton url={currentUrl}>
+                          <InstapaperShareButton url={currentUrl} title={shareTitle}>
                             <FaInstagram size={24} color={colors.greenDark} />
                           </InstapaperShareButton>
-                          <FacebookShareButton url={currentUrl}>
+                          <FacebookShareButton url={currentUrl} quote={shareTitle}>
                             <FiFacebook size={24} color={colors.greenDark} />
                           </FacebookShareButton>
                           <a href={smsUrl}>
@@ -294,7 +295,7 @@ function ContentDetail() {
                               color={colors.greenDark}
                             />
                           </a>
-                          <EmailShareButton url={currentUrl}>
+                          <EmailShareButton url={currentUrl} subject={shareTitle}>
                             <HiOutlineMail size={24} color={colors.greenDark} />
                           </EmailShareButton>
                         </div>
