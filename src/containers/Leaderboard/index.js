@@ -16,6 +16,7 @@ import AlertArea from "components/Sections/AlertArea";
 import { alertTimeout } from "config";
 import ImportArea from "components/Sections/ImportArea";
 import { IconUpload, IconOpenSea } from "assets/images";
+import moment from "moment";
 
 const { Panel } = Collapse;
 const options = ["24h", "1w", "1m", "1y", "all"];
@@ -85,7 +86,16 @@ function Leaderboard() {
         if(data === 0) {
           show_alert("There is no contents.")  
         }else{
-          setContents(data);
+          let res_data = []
+          data.forEach(element => {
+            let str_created_at = element.createdAt || "1609500000"
+            let created_at = Number(str_created_at) * 1000
+            element.created_at = created_at
+            res_data.push(element)
+          });
+          console.log(res_data)
+          // moment(created_at)
+          setContents(res_data);
         }
       }).catch( err => {
         console.log(err)
