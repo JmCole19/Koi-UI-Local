@@ -25,11 +25,12 @@ function LeaderboardItem({
   onClickShare = () => {},
   onClickEmbed = () => {},
 }) {
-  // const shareUrl = `${window.location.hostname}/content-detail/${item.txIdContent}?type=view`;
+
+  const shareTitle = `Check out my NFT, now stored on Koi— forever!`;
   const shareUrl = `${window.location.protocol}//${
     window.location.hostname
   }/content-detail/${item.txIdContent}?type=view&t=${Math.random() * 999999}`;
-  const smsUrl = `sms:+19024021271&body=Check out my NFT, now stored on Koi— forever!${window.location.protocol}//${window.location.hostname}/content-detail/${item.txIdContent}&type=view`;
+  const smsUrl = `sms:+19024021271&body=${shareTitle} ${window.location.protocol}//${window.location.hostname}/content-detail/${item.txIdContent}&type=view`;
 
   return (
     <LeaderboardItemContainer>
@@ -97,7 +98,7 @@ function LeaderboardItem({
             <InstapaperShareButton url={shareUrl}>
               <FaInstagram size={24} color={colors.greenDark} />
             </InstapaperShareButton>
-            <FacebookShareButton url={shareUrl}>
+            <FacebookShareButton url={shareUrl} quote={shareTitle}>
               <FiFacebook size={24} color={colors.greenDark} />
             </FacebookShareButton>
             <a href={smsUrl}>

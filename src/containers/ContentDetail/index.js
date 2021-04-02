@@ -34,7 +34,7 @@ function ContentDetail() {
   const currentUrl = `${window.location.protocol}//${
     window.location.hostname
   }/content-detail/${id}?t=${Math.random() * 999999}`;
-  const smsUrl = `sms:+19024021271&body=Check out my NFT, now stored on Koi— forever!${window.location.protocol}//${
+  const smsUrl = `sms:+19024021271&body=Check out my NFT, now stored on Koi— forever! ${window.location.protocol}//${
     window.location.hostname
   }/content-detail/${id}&type=view&t=${Math.random() * 999999}`;
 

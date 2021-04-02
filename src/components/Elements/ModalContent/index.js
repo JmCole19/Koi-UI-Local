@@ -55,10 +55,11 @@ function ModalContent({
   const [copiedLink, setCopiedLink] = useState(false);
   const [copiedCode, setCopiedCode] = useState(false);
 
+  const shareTitle = `Check out my NFT, now stored on Koi— forever!`;
   const currentUrl = `${window.location.protocol}//${window.location.hostname}/content-detail/${detail.txIdContent}?t=${Math.random()*999999}`;
   const embedUrl = `${window.location.protocol}//${window.location.hostname}/embed/${detail.txIdContent}?t=${Math.random()*999999}`;
   const embedContent = `<iframe width="100%" src="${embedUrl}" title="Koi NFT image" frameborder="0" allowfullscreen></iframe>`;
-  const smsUrl = `sms:+19024021271&body=Check out my NFT, now stored on Koi— forever!${window.location.protocol}//${window.location.hostname}/content-detail/${detail.txIdContent}&type=view`;
+  const smsUrl = `sms:+19024021271&body=${shareTitle} ${window.location.protocol}//${window.location.hostname}/content-detail/${detail.txIdContent}&type=view`;
   // console.log(currentUrl)
   // console.log(embedUrl)
   const shareSocial = [
