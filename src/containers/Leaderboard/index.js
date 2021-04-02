@@ -88,9 +88,10 @@ function Leaderboard() {
         }else{
           let res_data = []
           data.forEach(element => {
-            let str_created_at = element.created_at || "1609464000"
-            let created_at = Number(str_created_at)
-            res_data.push([...element, ...created_at])
+            let str_created_at = element.createdAt || "1609500000"
+            let created_at = Number(str_created_at) * 1000
+            element.created_at = created_at
+            res_data.push(element)
           });
           console.log(res_data)
           // moment(created_at)

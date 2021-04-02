@@ -15,6 +15,7 @@ import { LeaderboardItemContainer } from "./style";
 import { colors } from "theme";
 import { preUrl } from "config"
 import { show_digit_number } from "service/utils";
+import moment from "moment";
 
 function LeaderboardItem({
   item = {},
@@ -48,7 +49,7 @@ function LeaderboardItem({
             {item.name}
           </p>
           <p className="item-created_at mb-0">
-            Registered: {item.created_at || "Jan, 01, 2021"}
+            Registered: {moment(item.created_at).format('MMM, DD, YYYY')}
           </p>
           <a
             href={`https://viewblock.io/arweave/tx/${item.txIdContent}`}
