@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { getKoi } from "service/KOI";
 import { convertArBalance } from "service/utils";
+import useInterval from "components/Utils/useInterval"
 
 const DataContext = React.createContext(null);
 
@@ -16,13 +17,13 @@ const DataContextContainer = (props) => {
   const [balanceAr, setBalanceAr] = useState(null);
   const [contents, setContents] = useState([]);
 
-  const getKoiBalance = async (self) => {
-    if(self.keyAr) {
-      let balance = await getKoi(self.keyAr)
+  const getKoiBalance = async () => {
+    if(keyAr) {
+      let balance = await getKoi(keyAr)
       setBalanceKoi(Number(balance.koiBalance))
       setBalanceAr(convertArBalance(balance.arBalance))
     }else{
-      console.log("test key", self.keyAr)
+      console.log("test key", keyAr)
       console.log('ther is no key file')
     }
   }
@@ -67,17 +68,7 @@ const DataContextContainer = (props) => {
       }
     }
 
-    var self = this
-    setInterval( () => {
-      if(self.keyAr) {
-        // let balance = await getKoi(self.keyAr)
-        // setBalanceKoi(Number(balance.koiBalance))
-        // setBalanceAr(convertArBalance(balance.arBalance))
-      }else{
-        console.log("test key", self.keyAr)
-        console.log('ther is no key file')
-      }
-    }, 6000 )
+    useInterval( () => getKoiBalance, 6000);
   }, [])
 
   return (
