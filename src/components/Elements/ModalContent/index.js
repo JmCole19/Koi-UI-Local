@@ -65,7 +65,7 @@ function ModalContent({
   const shareSocial = [
     {
       icon: (
-        <TwitterShareButton url={currentUrl}>
+        <TwitterShareButton url={currentUrl} title={shareTitle}>
           <FiTwitter size={24} color={colors.greenDark} />
         </TwitterShareButton>
       ),
@@ -73,7 +73,7 @@ function ModalContent({
     },
     {
       icon: (
-        <InstapaperShareButton url={currentUrl} title="KOI leaderboard">
+        <InstapaperShareButton url={currentUrl} title={shareTitle}>
           <FaInstagram size={24} color={colors.greenDark} />
         </InstapaperShareButton>
       ),
@@ -81,7 +81,7 @@ function ModalContent({
     },
     {
       icon: (
-        <FacebookShareButton url={currentUrl}>
+        <FacebookShareButton url={currentUrl} quote={shareTitle}>
           <FiFacebook size={24} color={colors.greenDark} />
         </FacebookShareButton>
       ),
@@ -89,7 +89,7 @@ function ModalContent({
     },
     {
       icon: (
-        <LinkedinShareButton url={currentUrl}>
+        <LinkedinShareButton url={currentUrl} title={shareTitle}>
           <FiLinkedin size={24} color={colors.greenDark} />
         </LinkedinShareButton>
       ),

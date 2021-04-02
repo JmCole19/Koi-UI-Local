@@ -92,10 +92,10 @@ function LeaderboardItem({
             </Button>
           </div>
           <div className="social-wrapper">
-            <TwitterShareButton url={shareUrl}>
+            <TwitterShareButton url={shareUrl} title={shareTitle}>
               <FiTwitter size={24} color={colors.greenDark} />
             </TwitterShareButton>
-            <InstapaperShareButton url={shareUrl}>
+            <InstapaperShareButton url={shareUrl} title={shareTitle}>
               <FaInstagram size={24} color={colors.greenDark} />
             </InstapaperShareButton>
             <FacebookShareButton url={shareUrl} quote={shareTitle}>
