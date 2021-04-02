@@ -1,6 +1,6 @@
 export { default as Logo } from "./logo.svg";
 // export { default as Logo } from "./logo.png";
-export { default as ItemTemp } from "./item-temp.png";
+export { default as ItemTemp } from "./item-temp.jpg";
 export { default as ItemTempModal } from "./ItemTemp.svg";
 export { default as Crown } from "./Crown.svg";
 export { default as DefaultUser } from "./DefaultUser.svg";
