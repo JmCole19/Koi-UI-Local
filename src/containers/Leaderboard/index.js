@@ -129,8 +129,9 @@ function Leaderboard() {
         });
         console.log(res_data)
         setContents(res_data);
-        let d = new Date()
-        let ts = d.getTime() - 3600*24*30*1000
+        // let d = new Date()
+        // let ts = d.getTime() - 3600*24*30*1000
+        let ts = 0;
         setShowContents(res_data.filter((_item) => _item.created_at > ts))
       }
     }).catch( err => {
