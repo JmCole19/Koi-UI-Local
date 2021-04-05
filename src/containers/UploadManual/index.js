@@ -146,7 +146,7 @@ function UploadManual() {
   }
 
   const checkUpload = async (arJson) => {
-    if(balanceKoi !== null && balanceKoi !== null) {
+    if(balanceKoi !== null && balanceAr !== null) {
       enoughBalance()
     }else {
       setLoading(true)
@@ -229,12 +229,12 @@ function UploadManual() {
   //   setDetectorAr(true)
   // };
 
-  useEffect(() => {
-    if(step === "3" && balanceKoi !== null && balanceKoi !== null){
-      console.log("here is focus")
-      enoughBalance()
-    }
-  }, updatedBalanceKoi)
+  // useEffect(() => {
+  //   if(step === "3" && balanceKoi !== null && balanceAr !== null){
+  //     console.log("here is focus")
+  //     enoughBalance()
+  //   }
+  // }, updatedBalanceKoi)
 
   useEffect(() => {
     if (detectorAr) {
