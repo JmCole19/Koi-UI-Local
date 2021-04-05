@@ -229,6 +229,8 @@ function UploadManual() {
   //   setDetectorAr(true)
   // };
 
+  // this calls enoughBalance which uploads NFT contents
+  // potentially we want to check the wallet and update balance with an effect hook
   // useEffect(() => {
   //   if(step === "3" && balanceKoi !== null && balanceAr !== null){
   //     console.log("here is focus")
