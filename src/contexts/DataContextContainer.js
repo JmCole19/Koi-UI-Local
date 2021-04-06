@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import { getKoi } from "service/KOI";
 import { convertArBalance } from "service/utils";
+import { useLocalStorage } from "hooks"
 
 const DataContext = React.createContext(null);
 
