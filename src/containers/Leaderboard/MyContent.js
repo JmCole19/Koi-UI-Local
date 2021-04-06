@@ -99,7 +99,7 @@ function MyContent() {
   }
 
   const getContents = async (walletAddress = '') => {
-    console.log("keyAr" , JSON.stringify(keyAr))
+    // console.log("keyAr" , JSON.stringify(keyAr))
     if(keyAr) {
       setIsLoading(true);
       console.log("my content", keyAr)
