@@ -99,6 +99,7 @@ function MyContent() {
   }
 
   const getContents = async (walletAddress = '') => {
+    console.log("keyAr" , JSON.stringify(keyAr))
     if(keyAr) {
       setIsLoading(true);
       console.log("my content", keyAr)
@@ -131,7 +132,7 @@ function MyContent() {
     }
   };
   useEffect(() => {
-    getContents();
+    setTimeout( () => getContents(), 1000);
   }, [history.location.pathname]);
 
   const show_alert = (message = '') => {
