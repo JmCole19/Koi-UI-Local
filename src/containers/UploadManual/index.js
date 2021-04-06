@@ -52,7 +52,6 @@ function UploadManual() {
     setBalanceAr,
   } = useContext(DataContext);
   const [uploading, setUploading] = useState(false);
-  const [uploaded, setUploaded] = useState(false);
   const [loading, setLoading] = useState(false);
   const [imageUrl, setImageUrl] = useState(null);
   const [imagePath, setImagePath] = useState('');
@@ -128,22 +127,18 @@ function UploadManual() {
     try {
       setUploading(true)
 
-      await wait(2000)
+      let res = await exportNFT(
+        arweave,
+        addressAr,
+        activeContent,
+        imageUrl,
+        null,
+        keyAr
+      );
 
-      // let res = await exportNFT(
-      //   arweave,
-      //   addressAr,
-      //   activeContent,
-      //   imageUrl,
-      //   null,
-      //   keyAr
-      // );
-
-      if (true) {
+      if (res) {
         setUploading(false)
-        setUploaded(true)
-        show_confirm_alert("Your transaction id is " + "testtestttest" + ". Upload successfully", 'success')
-        await wait(4000)
+        show_notification("Uploaded successfully. Your transaction ID is " + res + ".", "Success", 'success')
         setShowModal(false)
         history.push("/my-content");
       } else {
@@ -661,7 +656,6 @@ function UploadManual() {
                   <Button
                     className="btn-blueDark btn-connect"
                     onClick={checkUpload}
-                    disabled={uploaded}
                   >
                     Confirm & Upload
                   </Button>
