@@ -10,12 +10,12 @@ export { DataContext };
 
 function DataContextContainer(props){
   const [addressEth, setAddressEth] = useLocalStorage('koi-addressEth', null);
-  const [openSeas, setOpenSeas] = useLocalStorage('koi-openSeas', []);
+  const [openSeas, setOpenSeas] = useState([]);
   const [addressAr, setAddressAr] = useLocalStorage('koi-addressAr', null);
   const [keyAr, setKeyAr] = useLocalStorage('koi-keyAr', null);
   const [balanceKoi, setBalanceKoi] = useLocalStorage('koi-balanceKoi', null);
   const [balanceAr, setBalanceAr] = useLocalStorage('koi-balanceAr', null);
-  const [contents, setContents] = useLocalStorage('koi-contents', []);
+  const [contents, setContents] = useState([]);
 
   const getKoiBalance = async () => {
     if(keyAr) {
