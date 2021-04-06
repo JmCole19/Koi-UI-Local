@@ -77,6 +77,14 @@ const validEmail = (str) => {
   }
 }
 
+
+const wait = async (ms) => {
+  return new Promise(resolve => {
+    setTimeout(resolve, ms);
+  });
+}
+
+
 export {
   show_notification,
   show_message,
@@ -85,5 +93,6 @@ export {
   show_ar_balance,
   getBase64,
   convertArBalance,
-  validEmail
+  validEmail,
+  wait
 }

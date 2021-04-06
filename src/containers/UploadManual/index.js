@@ -10,7 +10,7 @@ import cloneDeep from "clone-deep";
 import { useHistory, useLocation } from "react-router-dom";
 import MyProgress from "components/Elements/MyProgress";
 // import ArconnectCard from "components/Elements/ArconnectCard";
-import { convertArBalance, show_notification, show_fixed_number } from "service/utils";
+import { convertArBalance, show_notification, show_fixed_number, wait } from "service/utils";
 import Arweave from "arweave";
 import { getArWalletAddressFromJson, exportNFT } from "service/NFT";
 // import { colors } from "theme";
@@ -51,16 +51,19 @@ function UploadManual() {
     balanceAr,
     setBalanceAr,
   } = useContext(DataContext);
-  const [uploading] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const [uploaded, setUploaded] = useState(false);
   const [loading, setLoading] = useState(false);
   const [imageUrl, setImageUrl] = useState(null);
   const [imagePath, setImagePath] = useState('');
   // const [imageBlob, setImageBlob] = useState(null);
   const [showAlert, setShowAlert] = useState(false);
+  const [showConfirmAlert, setShowConfirmAlert] = useState(false);
   const [alertVariant, setAlertVariant] = useState('danger');
+  const [confirmAlertVariant, setConfirmAlertVariant] = useState('danger');
   const [errMessage, setErrMessage] = useState('');
+  const [confirmMessage, setConfirmMessage] = useState('');
   const [showModal, setShowModal] = useState(false);
-  const [updatingProcess, setUploadingProcess] = useState(0);
   
   const [activeContent, setActiveContent] = useState({
     title: "",
@@ -111,43 +114,54 @@ function UploadManual() {
     }, alertTimeout)
   }
 
+  const show_confirm_alert = (message = '', type = 'danger') => {
+    setShowConfirmAlert(true)
+    setConfirmAlertVariant(type)
+    setConfirmMessage(message)
+    setTimeout( () => {
+      setShowConfirmAlert(false)
+      setConfirmMessage('')
+    }, alertTimeout)
+  }
+  
   const uploadNFTContents = async () => {
     try {
-      setUploadingProcess(0)
-      let res = await exportNFT(
-        arweave,
-        addressAr,
-        activeContent,
-        imageUrl,
-        null,
-        keyAr
-      );
-      setUploadingProcess(100)
-      if (res) {
+      setUploading(true)
+
+      await wait(2000)
+
+      // let res = await exportNFT(
+      //   arweave,
+      //   addressAr,
+      //   activeContent,
+      //   imageUrl,
+      //   null,
+      //   keyAr
+      // );
+
+      if (true) {
+        setUploading(false)
+        setUploaded(true)
+        show_confirm_alert("Your transaction id is " + "testtestttest" + ". Upload successfully", 'success')
+        await wait(4000)
         setShowModal(false)
-        setLoading(false)
-        show_alert("Your transaction id is " + res + ". Upload successfully", 'success')
-        setTimeout(() => {
-          history.push("/my-content");
-        }, 8000);
+        history.push("/my-content");
       } else {
-        show_alert("Something error in NFT uploading", "danger");
-        show_notification("Something error in NFT uploading");
+        show_confirm_alert("Something error in NFT uploading", "danger");
       }
     } catch (err) {
-      setUploadingProcess(100)
       console.log("here1");
       console.log(err);
-      show_alert("Something error on NFT uploading");
+      show_confirm_alert("Something error on NFT uploading");
     }
   }
 
   const enoughBalance = async () => {
     if(Number(balanceKoi) < 1 ) {
-      show_alert('You don’t have any KOI in your wallet. <br> Hop on over to the <a href="/faucet">KOI Faucet</a> to get some for free!')
+      show_confirm_alert('You don’t have any KOI in your wallet. <br> Hop on over to the <a href="/faucet">KOI Faucet</a> to get some for free!')
       return false
     }else if(Number(balanceAr) < Number(1 * 0.0002) ) {
-      show_alert('Your ar balance is not enough to upload.')
+      show_confirm_alert('Your ar balance is not enough to upload.')
       return false
     }else{
       await uploadNFTContents()
@@ -638,11 +652,16 @@ function UploadManual() {
                 <h6 className="text-blue">
                   {show_fixed_number(1 * 1, 1)} KOI
                 </h6>
-                {errMessage && errMessage}
+                <AlertArea
+                  showMessage={showConfirmAlert}
+                  variant={confirmAlertVariant}
+                  message={confirmMessage}
+                ></AlertArea>
                 {!uploading && (
                   <Button
                     className="btn-blueDark btn-connect"
                     onClick={checkUpload}
+                    disabled={uploaded}
                   >
                     Confirm & Upload
                   </Button>
