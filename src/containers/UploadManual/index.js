@@ -1,16 +1,16 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect, useContext } from "react";
-import { Container, Image, Button } from "react-bootstrap";
+import { Container, Image, Button, Modal } from "react-bootstrap";
 import queryString from "query-string";
 import { IconUpload } from "assets/images";
 import { UploadUploadContainer } from "./style";
-import { Col, Form, Input, Row, Upload, Spin } from "antd";
+import { Col, Form, Input, Row, Upload, Spin, Space, Progress } from "antd";
 import { useForm } from "antd/lib/form/Form";
 import cloneDeep from "clone-deep";
 import { useHistory, useLocation } from "react-router-dom";
 import MyProgress from "components/Elements/MyProgress";
 // import ArconnectCard from "components/Elements/ArconnectCard";
-import { convertArBalance, show_notification } from "service/utils";
+import { convertArBalance, show_notification, show_fixed_number } from "service/utils";
 import Arweave from "arweave";
 import { getArWalletAddressFromJson, exportNFT } from "service/NFT";
 // import { colors } from "theme";
@@ -20,6 +20,8 @@ import AlertArea from "components/Sections/AlertArea";
 import { alertTimeout } from "config";
 import { getKoi } from "service/KOI";
 import useDebounce from "components/Utils/useDebounce";
+import { FaTimes } from "react-icons/fa";
+import { colors } from "theme";
 
 const arweave = Arweave.init();
 const { TextArea } = Input;
@@ -56,7 +58,10 @@ function UploadManual() {
   // const [imageBlob, setImageBlob] = useState(null);
   const [showAlert, setShowAlert] = useState(false);
   const [alertVariant, setAlertVariant] = useState('danger');
-  const [errEmessage, setErrMessage] = useState('');
+  const [errMessage, setErrMessage] = useState('');
+  const [showModal, setShowModal] = useState(false);
+  const [updatingProcess, setUploadingProcess] = useState(0);
+  
   const [activeContent, setActiveContent] = useState({
     title: "",
     owner: "",
@@ -108,6 +113,7 @@ function UploadManual() {
 
   const uploadNFTContents = async () => {
     try {
+      setUploadingProcess(0)
       let res = await exportNFT(
         arweave,
         addressAr,
@@ -116,9 +122,11 @@ function UploadManual() {
         null,
         keyAr
       );
+      setUploadingProcess(100)
       if (res) {
+        setShowModal(false)
+        setLoading(false)
         show_alert("Your transaction id is " + res + ". Upload successfully", 'success')
-        show_notification("Your transaction id is " + res + ". Upload successfully", 'Manual uploading','success')
         setTimeout(() => {
           history.push("/my-content");
         }, 8000);
@@ -127,6 +135,7 @@ function UploadManual() {
         show_notification("Something error in NFT uploading");
       }
     } catch (err) {
+      setUploadingProcess(100)
       console.log("here1");
       console.log(err);
       show_alert("Something error on NFT uploading");
@@ -145,13 +154,12 @@ function UploadManual() {
     }
   }
 
-  const checkUpload = async (arJson) => {
-    if(balanceKoi !== null && balanceKoi !== null) {
+  const checkUpload = async () => {
+    if(balanceKoi !== null && balanceAr !== null) {
       enoughBalance()
     }else {
       setLoading(true)
-      if(!keyAr) setKeyAr(arJson)
-      let balance = await getKoi(keyAr || arJson)
+      let balance = await getKoi(keyAr)
       setLoading(false)
       setBalanceKoi(Number(balance.koiBalance))
       setBalanceAr(convertArBalance(balance.arBalance))
@@ -177,8 +185,9 @@ function UploadManual() {
         let addressResult = await getArWalletAddressFromJson(arweave, arJson);
         console.log({addressResult})
         setAddressAr(addressResult)
+        setKeyAr(keyAr)
         setCanVerify(true)
-        //await checkUpload(arJson)
+        show_alert("Success! Your keyfile has been uploaded.", 'success');
       };
       reader.readAsText(file);
       // Prevent upload
@@ -231,17 +240,27 @@ function UploadManual() {
   //   setDetectorAr(true)
   // };
 
-  useEffect(() => {
-    if(step === "3" && balanceKoi !== null && balanceKoi !== null){
-      console.log("here is focus")
-      enoughBalance()
+  const onClickCloseConfirmModal = () => {
+    setShowModal(false);
+  };
+
+  const confirmModalHide = () => {
+    if (!uploading) {
+      setShowModal(false)
+    } else {
+      show_notification("You can't close this modal until NFT uploaded.");
     }
-  }, updatedBalanceKoi)
+  };
+
+  // useEffect(() => {
+  //   if(step === "3" && balanceKoi !== null && balanceKoi !== null){
+  //     console.log("here is focus")
+  //     enoughBalance()
+  //   }
+  // }, updatedBalanceKoi)
 
   const onClickVerify = () => {
-    history.push(
-      `/confirm-manual`
-    );
+    setShowModal(true)
   };
 
   useEffect(() => {
@@ -260,11 +279,11 @@ function UploadManual() {
       console.log("detected arweave wallet address : ", addr);
       if (addr) {
         setAddressAr(addr);
-        if(keyAr) {
-          await checkUpload(keyAr)
-        }else{
-          show_alert('Please upload your wallet key json file')
-        }
+        // if(keyAr) {
+        //   await checkUpload(keyAr)
+        // }else{
+        //   show_alert('Please upload your wallet key json file')
+        // }
       } else {
         show_alert("Error on detecting Arweave wallet address");
       }
@@ -285,7 +304,7 @@ function UploadManual() {
       <AlertArea
         showMessage={showAlert}
         variant={alertVariant}
-        message={errEmessage}
+        message={errMessage}
       ></AlertArea>
       <UploadUploadContainer>
         <Container>
@@ -367,7 +386,7 @@ function UploadManual() {
                         disabled={!imageUrl}
                         className="btn-blueDark mx-auto px-5"
                       >
-                        Register your NFT
+                        Add Details
                       </Button>
                     </Form.Item>
                   </Form>
@@ -452,15 +471,7 @@ function UploadManual() {
                                 type="submit"
                                 className="btn-blueDark btn-confirm"
                               >
-                                Add Details
-                              </Button>
-                              <Button
-                                onClick={() =>
-                                  history.push(`/upload/manual?step=1`)
-                                }
-                                className="btn-white btn-edit ml-3"
-                              >
-                                Add Later
+                                Upload Your Arweave Keyfile
                               </Button>
                             </Form.Item>
                           </div>
@@ -492,7 +503,7 @@ function UploadManual() {
                             </div>
                             <div className="header-description w-100">
                               <h6 className="mb-0 text-blue ml-2">
-                                Confirm your upload.
+                                Upload your arweave keyfile.
                               </h6>
                               <p className="mb-0 text-blue ml-2">
                                 Drag & Drop your Arweave keyfile or connect using
@@ -543,21 +554,20 @@ function UploadManual() {
                           </div>
                         </Dragger>
                       </div>
-                      {/* {!addressAr && <ArconnectCard openArConnect={onOpenArConnect} />} */}
                     </div>
                     <div className="text-center">
                       {loading && (
                         <Spin size="large" tip="get KOI balance" />
                       )}
                     </div>
-                    <div className="btn-verify-wrapper">
+                    <div className="upload-cards-wrapper">
                       <Button
-                        className="btn-back btn-blueDark"
-                        disabled={canVerify}
-                        onClick={onClickVerify}
-                      >
-                        Verify Details
-                      </Button>
+                          className="btn-back btn-blueDark"
+                          disabled={!canVerify}
+                          onClick={onClickVerify}
+                        >
+                          Verify
+                        </Button>
                     </div>
                   </Form>
                   <p className="footer-description text-blue">
@@ -571,6 +581,78 @@ function UploadManual() {
               )}
             </div>
           </div>
+          <Modal
+            show={showModal}
+            centered
+            dialogClassName="modal-confirm-transaction"
+            onHide={confirmModalHide}
+          >
+            <Modal.Body>
+              <FaTimes
+                className="icon-close cursor"
+                color={colors.blueDark}
+                size={24}
+                onClick={onClickCloseConfirmModal}
+              />
+              <h2 className="modal-title text-blue">Confirm transaction</h2>
+              <div className="imgs-wrapper">
+                <Space size={28}>
+                  <Image
+                      className="br-4"
+                      src={imageUrl}
+                      width={40}
+                    />
+                </Space>
+              </div>
+              <>
+                <div className="modal-row mb-2">
+                  <div className="modal-row-left">
+                    <p className="text-blue mb-0">
+                      AR to upload: <b>0.0002 AR</b> / NFT{" "}
+                    </p>
+                  </div>
+                  <div className="modal-row-right">
+                    <p className="text-blue mb-0">
+                      x {1} upload
+                    </p>
+                  </div>
+                </div>
+                <div className="modal-row mb-4">
+                  <div className="modal-row-left">
+                    <p className="text-blue mb-0">
+                      KOI to upload: <b>1.0 KOI</b> / NFT{" "}
+                    </p>
+                  </div>
+                  <div className="modal-row-right">
+                    <p className="text-blue mb-0">
+                      x {1} upload
+                    </p>
+                  </div>
+                </div>
+                <h6 className="text-blue">
+                  <b>Estimated Total</b>
+                </h6>
+                <h6 className="text-blue">
+                  {show_fixed_number(1 * 0.0002, 4)} AR
+                </h6>
+                <h6 className="text-blue">
+                  {show_fixed_number(1 * 1, 1)} KOI
+                </h6>
+                {errMessage && errMessage}
+                {!uploading && (
+                  <Button
+                    className="btn-blueDark btn-connect"
+                    onClick={checkUpload}
+                  >
+                    Confirm & Upload
+                  </Button>
+                )}
+                {uploading && (
+                  <Spin size="large" tip="uploading" />
+                )}
+              </>
+            </Modal.Body>
+          </Modal>
         </Container>
       </UploadUploadContainer>
     </>
