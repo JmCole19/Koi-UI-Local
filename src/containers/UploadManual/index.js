@@ -63,6 +63,7 @@ function UploadManual() {
     description: "",
   });
   const [detectorAr] = useState(false); //, setDetectorAr
+  const [canVerify, setCanVerify] = useState(false);
   const updatedBalanceKoi = useDebounce(balanceKoi, 500);
 
   const onCompleteStep1 = () => {
@@ -134,7 +135,6 @@ function UploadManual() {
 
   const enoughBalance = async () => {
     if(Number(balanceKoi) < 1 ) {
-      // show_alert('Your koi balance is not enough to upload.')
       show_alert('You don’t have any KOI in your wallet. <br> Hop on over to the <a href="/faucet">KOI Faucet</a> to get some for free!')
       return false
     }else if(Number(balanceAr) < Number(1 * 0.0002) ) {
@@ -155,19 +155,20 @@ function UploadManual() {
       setLoading(false)
       setBalanceKoi(Number(balance.koiBalance))
       setBalanceAr(convertArBalance(balance.arBalance))
-      // setTimeout( () => enoughBalance(), 100)
     }
   }
 
-  const beforeJsonUpload = (file) => {
+  const beforeArweaveKeyfileUpload = (file) => {
     // console.log('file type : ', file)
     const isJson = file.type === "application/json";
     if (!isJson) {
       show_notification("You can only upload JSON file!");
+      setCanVerify(false)
     }
     const isLt1M = file.size / 1024 < 512;
     if (!isLt1M) {
       show_notification("JSON must smaller than 512KB!");
+      setCanVerify(false)
     }
     if (isJson && isLt1M) {
       const reader = new FileReader();
@@ -176,7 +177,8 @@ function UploadManual() {
         let addressResult = await getArWalletAddressFromJson(arweave, arJson);
         console.log({addressResult})
         setAddressAr(addressResult)
-        await checkUpload(arJson)
+        setCanVerify(true)
+        //await checkUpload(arJson)
       };
       reader.readAsText(file);
       // Prevent upload
@@ -184,7 +186,7 @@ function UploadManual() {
     }
     return isJson && isLt1M;
   };
-  const beforeUpload = (file) => {
+  const beforeNftUpload = (file) => {
     console.log(file)
     const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";
     if (!isJpgOrPng) {
@@ -235,6 +237,12 @@ function UploadManual() {
       enoughBalance()
     }
   }, updatedBalanceKoi)
+
+  const onClickVerify = () => {
+    history.push(
+      `/confirm-manual`
+    );
+  };
 
   useEffect(() => {
     if (detectorAr) {
@@ -329,7 +337,7 @@ function UploadManual() {
                                 accept="video/*, image/*"
                                 multiple={false}
                                 listType="picture"
-                                beforeUpload={beforeUpload}
+                                beforeUpload={beforeNftUpload}
                                 // fileList={false}
                                 showUploadList={false}
                               >
@@ -515,7 +523,7 @@ function UploadManual() {
                           accept="application/*"
                           multiple={false}
                           listType="picture"
-                          beforeUpload={beforeJsonUpload}
+                          beforeUpload={beforeArweaveKeyfileUpload}
                           // fileList={false}
                           showUploadList={false}
                         >
@@ -541,6 +549,15 @@ function UploadManual() {
                       {loading && (
                         <Spin size="large" tip="get KOI balance" />
                       )}
+                    </div>
+                    <div className="btn-verify-wrapper">
+                      <Button
+                        className="btn-back btn-blueDark"
+                        disabled={canVerify}
+                        onClick={onClickVerify}
+                      >
+                        Verify Details
+                      </Button>
                     </div>
                   </Form>
                   <p className="footer-description text-blue">
