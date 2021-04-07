@@ -17,6 +17,7 @@ export const LeaderboardContainer = styled.div`
     position: sticky;
     top: 80px;
     width: 100%;
+    z-index: 9;
     .filter-options {
       margin-left: 95px;
       .filter-option {

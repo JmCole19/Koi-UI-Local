@@ -8,6 +8,7 @@ export const ImportAreaContainer = styled.div`
   width: 100%;
   padding: 25px 50px;
   background-color: white;
+  z-index: 9;
   .import-area {
     flex: 1;
     padding: 5px;
