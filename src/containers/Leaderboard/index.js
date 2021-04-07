@@ -17,6 +17,13 @@ import { alertTimeout } from "config";
 import ImportArea from "components/Sections/ImportArea";
 import { IconUpload, IconOpenSea } from "assets/images";
 
+const video_contents = [
+  'cfhKMEd_pCZHHIKeVGZAilnITonqllwkA_yhiF2PaOw',
+  'HEcP1vyyHXjLVZ8ote2rphHq7wsvcVPr7RnMyAh2ZJE',
+  '_gk1ZNumV6a0vuqhVr5v6w1RYfoi-pArn-JKpU5eWZU',
+  'kpaWOQ6Uv8EdgG3acRwyijjTpRXDGF-w_VORPzG-3bQ'
+]
+
 const { Panel } = Collapse;
 const options = ["24h", "1w", "1m", "1y", "all"];
 // const ktools = new koi_tools();
