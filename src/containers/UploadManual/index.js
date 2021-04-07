@@ -288,11 +288,11 @@ function UploadManual() {
       console.log("detected arweave wallet address : ", addr);
       if (addr) {
         setAddressAr(addr);
-        // if(keyAr) {
-        //   await checkUpload(keyAr)
-        // }else{
-        //   show_alert('Please upload your wallet key json file')
-        // }
+        if(keyAr) {
+          await checkUpload(keyAr)
+        }else{
+          show_alert('Please upload your wallet key json file')
+        }
       } else {
         show_alert("Error on detecting Arweave wallet address");
       }
