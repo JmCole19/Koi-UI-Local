@@ -21,6 +21,7 @@ import { alertTimeout } from "config";
 import { getKoi } from "service/KOI";
 import { FaTimes } from "react-icons/fa";
 import { colors } from "theme";
+import useDebounce from "components/Utils/useDebounce";
 
 const arweave = Arweave.init();
 const { TextArea } = Input;
@@ -70,6 +71,7 @@ function UploadManual() {
   });
   const [detectorAr] = useState(false); //, setDetectorAr
   const [canVerify, setCanVerify] = useState(false);
+  const updatedBalanceKoi = useDebounce(balanceKoi, 500);
 
   const onCompleteStep1 = () => {
     history.push(`/upload/manual?step=2`);
