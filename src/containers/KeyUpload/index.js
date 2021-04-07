@@ -56,7 +56,7 @@ function KeyUpload() {
 
   const onClickGetKoi = async () => {
     if(!keyAr){
-      show_notification("Please upload key json file")
+      show_notification("Connect your wallet.")
       return false
     }
     await getKoi()
@@ -106,11 +106,11 @@ function KeyUpload() {
       if (addr) {
         setAddressAr(addr);
       } else {
-        show_notification("Error on detecting Arweave wallet address");
+        show_notification("There was an error detecting your Arweave wallet address.");
       }
     } catch (err) {
       console.log(err);
-      show_notification("Error on detecting Arweave wallet address");
+      show_notification("There was an error detecting your Arweave wallet address.");
     }
   };
 

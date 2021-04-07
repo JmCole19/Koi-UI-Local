@@ -301,7 +301,7 @@ function Faucet() {
                   <h1 className="f-32 text-blue">1</h1>
                   <div className="step-content has-wallet">
                     <h6 className="step-title text-blue mb-4">
-                      Connect a wallet
+                      Connect a wallet.
                     </h6>
                     {/* <h6 className="text-blue">
                       Paste your Arweave wallet address here.
