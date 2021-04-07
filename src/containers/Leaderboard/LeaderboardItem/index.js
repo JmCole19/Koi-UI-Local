@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React from "react";
 import { Button, Image } from "react-bootstrap";
+import ResponsiveEmbed from 'react-bootstrap/ResponsiveEmbed'
 import { IconEyes, IconFish, IconHtml, ItemTemp } from "assets/images";
 import {
   FacebookShareButton,
@@ -42,15 +43,9 @@ function LeaderboardItem({
     if(video_contents.includes(item.txIdContent)) {
       // video content
       return (
-        <Image
-          src={
-            item.txIdContent && item.owner
-              ? `${preUrl}${item.txIdContent}?t=${Math.random() * 999999}`
-              : ItemTemp
-          }
-          className="cursor"
-          onClick={onClickItem}
-        />)
+        <ResponsiveEmbed aspectRatio="16by9" className="cursor" onClick={onClickItem}>
+          <iframe title="embed_video" width="100%" height="400" src={`${preUrl}${item.txIdContent}`} frameBorder="0" allowFullScreen></iframe>
+        </ResponsiveEmbed>)
     }else{
       return (
         <Image
@@ -75,7 +70,7 @@ function LeaderboardItem({
           {show_content(item)}
         </div>
         <div className="item-info-wrapper item-col">
-          <h2 className="item-title mb-1">{item.ticker}</h2>
+          <h2 className="item-title mb-1 cursor" onClick={onClickItem}>{item.ticker}</h2>
           <p className="item-username mb-3 cursor" onClick={onClickUsername}>
             {item.name}
           </p>
