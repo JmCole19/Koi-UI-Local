@@ -242,7 +242,7 @@ function ConfirmOpenseas() {
     }
     // close modal
     setShowModal(false);
-    show_alert("Upload finished.", "KOI", "success");
+    show_alert("Upload finished.", "success");
     // show complete section
     setTimeout(() => {
       setMode("complete");
