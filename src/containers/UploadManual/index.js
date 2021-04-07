@@ -142,12 +142,12 @@ function UploadManual() {
         setShowModal(false)
         history.push("/my-content");
       } else {
-        show_confirm_alert("Something error in NFT uploading", "danger");
+        show_confirm_alert("Something went wrong uploading your NFT.", "danger");
       }
     } catch (err) {
       console.log("here1");
       console.log(err);
-      show_confirm_alert("Something error on NFT uploading");
+      show_confirm_alert("Something went wrong uploading your NFT.");
     }
   }
 
@@ -157,7 +157,7 @@ function UploadManual() {
       setCanVerify(false)
       return false
     }else if(Number(balanceAr) < Number(1 * 0.0002) ) {
-      show_confirm_alert('Your ar balance is not enough to upload.')
+      show_confirm_alert('You need more AR to upload.')
       setCanVerify(false)
       return false
     }else{
@@ -186,7 +186,7 @@ function UploadManual() {
     // console.log('file type : ', file)
     const isJson = file.type === "application/json";
     if (!isJson) {
-      show_notification("You can only upload JSON file!");
+      show_notification("You can only upload a JSON file!");
     }
     const isLt1M = file.size / 1024 < 512;
     if (!isLt1M) {
@@ -216,7 +216,7 @@ function UploadManual() {
     }
     const isLt2M = file.size / 1024 / 1024 < 10;
     if (!isLt2M) {
-      show_notification("Image must smaller than 10MB!");
+      show_notification("Image must be smaller than 10MB!");
     }
     if (isJpgOrPng && isLt2M) {
       const reader = new FileReader();
@@ -261,7 +261,7 @@ function UploadManual() {
     if (!uploading) {
       setShowModal(false)
     } else {
-      show_notification("You can't close this modal until NFT uploaded.");
+      show_notification("You can't close this modal until your NFT has finished uploading.");
     }
   };
 
@@ -295,14 +295,14 @@ function UploadManual() {
         if(keyAr) {
           await checkUpload(keyAr)
         }else{
-          show_alert('Please upload your wallet key json file')
+          show_alert('Please upload your wallet key json file.')
         }
       } else {
-        show_alert("Error on detecting Arweave wallet address");
+        show_alert("Error detecting Arweave wallet address.");
       }
     } catch (err) {
       console.log(err);
-      show_alert("Error on detecting Arweave wallet address");
+      show_alert("Error detecting Arweave wallet address.");
     }
   };
 
@@ -579,7 +579,7 @@ function UploadManual() {
                           disabled={!canVerify}
                           onClick={onClickVerify}
                         >
-                          Verify
+                          Finish Upload
                         </Button>
                     </div>
                   </Form>
