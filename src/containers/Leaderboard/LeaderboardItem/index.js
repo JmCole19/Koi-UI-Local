@@ -17,6 +17,13 @@ import { preUrl } from "config";
 import { show_digit_number } from "service/utils";
 import moment from "moment";
 
+const video_contents = [
+  'cfhKMEd_pCZHHIKeVGZAilnITonqllwkA_yhiF2PaOw',
+  'HEcP1vyyHXjLVZ8ote2rphHq7wsvcVPr7RnMyAh2ZJE',
+  '_gk1ZNumV6a0vuqhVr5v6w1RYfoi-pArn-JKpU5eWZU',
+  'kpaWOQ6Uv8EdgG3acRwyijjTpRXDGF-w_VORPzG-3bQ'
+]
+
 function LeaderboardItem({
   item = {},
   order,
@@ -31,6 +38,33 @@ function LeaderboardItem({
   }/content-detail/${item.txIdContent}?type=view&t=${Math.random() * 999999}`;
   const smsUrl = `sms:+19024021271&body=${shareTitle} ${window.location.protocol}//${window.location.hostname}/content-detail/${item.txIdContent}&type=view`;
 
+  const show_content = (item) => {
+    if(video_contents.includes(item.txIdContent)) {
+      // video content
+      return (
+        <Image
+          src={
+            item.txIdContent && item.owner
+              ? `${preUrl}${item.txIdContent}?t=${Math.random() * 999999}`
+              : ItemTemp
+          }
+          className="cursor"
+          onClick={onClickItem}
+        />)
+    }else{
+      return (
+        <Image
+          src={
+            item.txIdContent && item.owner
+              ? `${preUrl}${item.txIdContent}?t=${Math.random() * 999999}`
+              : ItemTemp
+          }
+          className="cursor"
+          onClick={onClickItem}
+        />)
+    }
+  }
+
   return (
     <LeaderboardItemContainer>
       <div className="part-left">
@@ -38,15 +72,7 @@ function LeaderboardItem({
           <h3 className="item-order">{order + 1}</h3>
         </div>
         <div className="item-img-wrapper item-col">
-          <Image
-            src={
-              item.txIdContent && item.owner
-                ? `${preUrl}${item.txIdContent}?t=${Math.random() * 999999}`
-                : ItemTemp
-            }
-            className="cursor"
-            onClick={onClickItem}
-          />
+          {show_content(item)}
         </div>
         <div className="item-info-wrapper item-col">
           <h2 className="item-title mb-1">{item.ticker}</h2>
