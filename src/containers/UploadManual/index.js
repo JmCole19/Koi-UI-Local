@@ -174,11 +174,6 @@ function UploadManual() {
       setLoading(false)
       setBalanceKoi(Number(balance.koiBalance))
       setBalanceAr(convertArBalance(balance.arBalance))
-      // TODO call enough balance?
-      /*
-      if(balanceKoi !== null && balanceAr !== null) {
-        await enoughBalance()
-      } */
     }
   }
 
@@ -265,12 +260,12 @@ function UploadManual() {
     }
   };
 
-  // useEffect(() => {
-  //   if(step === "3" && balanceKoi !== null && balanceKoi !== null){
-  //     console.log("here is focus")
-  //     enoughBalance()
-  //   }
-  // }, updatedBalanceKoi)
+  useEffect(() => {
+    if(step === "3" && balanceKoi !== null && balanceAr !== null){
+      console.log("here is focus")
+      enoughBalance()
+    }
+  }, updatedBalanceKoi)
 
   const onClickVerify = () => {
     setShowModal(true)
