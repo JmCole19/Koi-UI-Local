@@ -255,7 +255,7 @@ function ContentDetail() {
                           </p>
                         )}
                         {detail.description && detail.description.length > 300 && (
-                          <div className="btn-show-more-wrapper">
+                          <div className="btn-show-more-wrapper text-left">
                             <p
                               className="see-more cursor"
                               onClick={onClickShowMore}
