@@ -4,13 +4,13 @@ import { Container, Image, Button, Modal } from "react-bootstrap";
 import queryString from "query-string";
 import { IconUpload } from "assets/images";
 import { UploadUploadContainer } from "./style";
-import { Col, Form, Input, Row, Upload, Spin, Space, Progress } from "antd";
+import { Col, Form, Input, Row, Upload, Spin, Space } from "antd";
 import { useForm } from "antd/lib/form/Form";
 import cloneDeep from "clone-deep";
 import { useHistory, useLocation } from "react-router-dom";
 import MyProgress from "components/Elements/MyProgress";
 // import ArconnectCard from "components/Elements/ArconnectCard";
-import { convertArBalance, show_notification, show_fixed_number, wait } from "service/utils";
+import { convertArBalance, show_notification, show_fixed_number } from "service/utils";
 import Arweave from "arweave";
 import { getArWalletAddressFromJson, exportNFT } from "service/NFT";
 // import { colors } from "theme";
@@ -19,9 +19,9 @@ import { DataContext } from "contexts/DataContextContainer";
 import AlertArea from "components/Sections/AlertArea";
 import { alertTimeout } from "config";
 import { getKoi } from "service/KOI";
-import useDebounce from "components/Utils/useDebounce";
 import { FaTimes } from "react-icons/fa";
 import { colors } from "theme";
+import useDebounce from "components/Utils/useDebounce";
 
 const arweave = Arweave.init();
 const { TextArea } = Input;
@@ -142,33 +142,35 @@ function UploadManual() {
         setShowModal(false)
         history.push("/my-content");
       } else {
-        show_confirm_alert("Something error in NFT uploading", "danger");
+        show_confirm_alert("Something went wrong uploading your NFT.", "danger");
       }
     } catch (err) {
       console.log("here1");
       console.log(err);
-      show_confirm_alert("Something error on NFT uploading");
+      show_confirm_alert("Something went wrong uploading your NFT.");
     }
   }
 
   const enoughBalance = async () => {
     if(Number(balanceKoi) < 1 ) {
-      show_confirm_alert('You don’t have any KOI in your wallet. <br> Hop on over to the <a href="/faucet">KOI Faucet</a> to get some for free!')
+      show_confirm_alert('You don’t have any KOI in your wallet. <br> Hop on over to the <a href="/faucet">KOI Faucet</a> to get some KOI.')
+      setCanVerify(false)
       return false
     }else if(Number(balanceAr) < Number(1 * 0.0002) ) {
-      show_confirm_alert('Your ar balance is not enough to upload.')
+      show_confirm_alert('You need more AR to upload.')
+      setCanVerify(false)
       return false
     }else{
-      await uploadNFTContents()
+      setCanVerify(true)
     }
   }
 
-  const checkUpload = async () => {
+  const checkUpload = async (keyfile) => {
     if(balanceKoi !== null && balanceAr !== null) {
-      enoughBalance()
+      await enoughBalance()
     }else {
       setLoading(true)
-      let balance = await getKoi(keyAr)
+      let balance = await getKoi(keyfile)
       setLoading(false)
       setBalanceKoi(Number(balance.koiBalance))
       setBalanceAr(convertArBalance(balance.arBalance))
@@ -179,13 +181,11 @@ function UploadManual() {
     // console.log('file type : ', file)
     const isJson = file.type === "application/json";
     if (!isJson) {
-      show_notification("You can only upload JSON file!");
-      setCanVerify(false)
+      show_notification("You can only upload a JSON file!");
     }
     const isLt1M = file.size / 1024 < 512;
     if (!isLt1M) {
       show_notification("JSON must smaller than 512KB!");
-      setCanVerify(false)
     }
     if (isJson && isLt1M) {
       const reader = new FileReader();
@@ -194,8 +194,7 @@ function UploadManual() {
         let addressResult = await getArWalletAddressFromJson(arweave, arJson);
         console.log({addressResult})
         setAddressAr(addressResult)
-        setKeyAr(keyAr)
-        setCanVerify(true)
+        await checkUpload(arJson)
         show_alert("Success! Your keyfile has been uploaded.", 'success');
       };
       reader.readAsText(file);
@@ -212,7 +211,7 @@ function UploadManual() {
     }
     const isLt2M = file.size / 1024 / 1024 < 10;
     if (!isLt2M) {
-      show_notification("Image must smaller than 10MB!");
+      show_notification("Image must be smaller than 10MB!");
     }
     if (isJpgOrPng && isLt2M) {
       const reader = new FileReader();
@@ -257,16 +256,16 @@ function UploadManual() {
     if (!uploading) {
       setShowModal(false)
     } else {
-      show_notification("You can't close this modal until NFT uploaded.");
+      show_notification("You can't close this modal until your NFT has finished uploading.");
     }
   };
 
-  // useEffect(() => {
-  //   if(step === "3" && balanceKoi !== null && balanceKoi !== null){
-  //     console.log("here is focus")
-  //     enoughBalance()
-  //   }
-  // }, updatedBalanceKoi)
+  useEffect(() => {
+    if(step === "3" && balanceKoi !== null && balanceAr !== null){
+      console.log("here is focus")
+      enoughBalance()
+    }
+  }, updatedBalanceKoi)
 
   const onClickVerify = () => {
     setShowModal(true)
@@ -288,17 +287,17 @@ function UploadManual() {
       console.log("detected arweave wallet address : ", addr);
       if (addr) {
         setAddressAr(addr);
-        // if(keyAr) {
-        //   await checkUpload(keyAr)
-        // }else{
-        //   show_alert('Please upload your wallet key json file')
-        // }
+        if(keyAr) {
+          await checkUpload(keyAr)
+        }else{
+          show_alert('Connect your wallet.')
+        }
       } else {
-        show_alert("Error on detecting Arweave wallet address");
+        show_alert("Error detecting Arweave wallet address.");
       }
     } catch (err) {
       console.log(err);
-      show_alert("Error on detecting Arweave wallet address");
+      show_alert("Error detecting Arweave wallet address.");
     }
   };
 
@@ -575,7 +574,7 @@ function UploadManual() {
                           disabled={!canVerify}
                           onClick={onClickVerify}
                         >
-                          Verify
+                          Finish Upload
                         </Button>
                     </div>
                   </Form>
@@ -655,7 +654,7 @@ function UploadManual() {
                 {!uploading && (
                   <Button
                     className="btn-blueDark btn-connect"
-                    onClick={checkUpload}
+                    onClick={uploadNFTContents}
                   >
                     Confirm & Upload
                   </Button>

@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { IconShare, IconHtml } from "assets/images";
+import { IconShare, IconHtml, ItemTemp } from "assets/images";
 import React, { useContext, useEffect, useState } from "react";
 import {
   FacebookShareButton,
@@ -9,6 +9,7 @@ import {
 } from "react-share";
 // import { koi_tools } from "koi_tools";
 import { Alert, Button, Col, Container, Image, Row } from "react-bootstrap";
+import ResponsiveEmbed from 'react-bootstrap/ResponsiveEmbed'
 import { FaInstagram } from "react-icons/fa";
 import { FiFacebook, FiMessageCircle, FiTwitter } from "react-icons/fi";
 import { HiOutlineMail } from "react-icons/hi";
@@ -23,8 +24,15 @@ import axios from "axios";
 import AlertArea from "components/Sections/AlertArea";
 import useMediaQuery from "use-mediaquery";
 import { preUrl, alertTimeout } from "config";
+import moment from "moment";
 
 // const ktools = new koi_tools();
+const video_contents = [
+  'cfhKMEd_pCZHHIKeVGZAilnITonqllwkA_yhiF2PaOw',
+  'HEcP1vyyHXjLVZ8ote2rphHq7wsvcVPr7RnMyAh2ZJE',
+  '_gk1ZNumV6a0vuqhVr5v6w1RYfoi-pArn-JKpU5eWZU',
+  'kpaWOQ6Uv8EdgG3acRwyijjTpRXDGF-w_VORPzG-3bQ'
+]
 
 function ContentDetail() {
   const history = useHistory();
@@ -53,6 +61,27 @@ function ContentDetail() {
   const onSwitchModal = () => {
     setModalType(modalType === "share" ? "embed" : "share");
   };
+
+  const show_content = (item) => {
+    if(video_contents.includes(item.txIdContent)) {
+      // video content
+      return (
+        <ResponsiveEmbed aspectRatio="16by9">
+          <iframe title="embed_video" width="100%" height="400" src={`${preUrl}${item.txIdContent}`} frameBorder="0" allowFullScreen></iframe>
+        </ResponsiveEmbed>)
+    }else{
+      return (
+        <Image
+          src={
+            item.txIdContent
+              ? `${preUrl}${item.txIdContent}?t=${Math.random() * 999999}`
+              : ItemTemp
+            }
+          onError={(ev => ev.target.src = ItemTemp)}
+          className="detail-img"
+        />)
+    }
+  }
 
   const getContents = async () => {
     // setContents(temp_contents)
@@ -172,8 +201,7 @@ function ContentDetail() {
               <div className="detail-body">
                 <Alert show={showMessage} variant="success">
                   <p className="text-blue text-center mb-0">
-                    You just voted with your attention! Since you viewed this
-                    page, the owner will be rewarded with KOI. <br />
+                  You just voted with your attention! You won’t see the traffic counter update for 24 hours because of Koi’s Gradual Consensus process. Upload something unique to start earning. <br />
                     <b
                       className="cursor"
                       onClick={() => history.push("/register-content")}
@@ -186,12 +214,7 @@ function ContentDetail() {
                 <Container>
                   <Row>
                     <Col className="col-md-6 col-xs-12 col-12">
-                      <Image
-                        src={`${preUrl}${detail.txIdContent}?t=${
-                          Math.random() * 999999
-                        }`}
-                        className="detail-img"
-                      />
+                      {show_content(detail)}
                     </Col>
                     <Col className="col-md-6 col-xs-12 col-12">
                       <div className="detail-body-description">
@@ -200,7 +223,7 @@ function ContentDetail() {
                         </h1>
                         <p className="detail-username">{detail.name}</p>
                         <p className="text-left">
-                          Registered {detail.created_at || "Jan. 01, 2021"}
+                          Registered {moment(detail.created_at).format("MMM, DD, YYYY")}
                         </p>
                         <div className="btns-wrapper-sm d-md-none">
                           <Button
@@ -234,7 +257,7 @@ function ContentDetail() {
                           </p>
                         )}
                         {detail.description && detail.description.length > 300 && (
-                          <div className="btn-show-more-wrapper">
+                          <div className="btn-show-more-wrapper text-left">
                             <p
                               className="see-more cursor"
                               onClick={onClickShowMore}
