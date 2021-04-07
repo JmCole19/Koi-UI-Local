@@ -4,13 +4,13 @@ import { Container, Image, Button, Modal } from "react-bootstrap";
 import queryString from "query-string";
 import { IconUpload } from "assets/images";
 import { UploadUploadContainer } from "./style";
-import { Col, Form, Input, Row, Upload, Spin, Space, Progress } from "antd";
+import { Col, Form, Input, Row, Upload, Spin, Space } from "antd";
 import { useForm } from "antd/lib/form/Form";
 import cloneDeep from "clone-deep";
 import { useHistory, useLocation } from "react-router-dom";
 import MyProgress from "components/Elements/MyProgress";
 // import ArconnectCard from "components/Elements/ArconnectCard";
-import { convertArBalance, show_notification, show_fixed_number, wait } from "service/utils";
+import { convertArBalance, show_notification, show_fixed_number } from "service/utils";
 import Arweave from "arweave";
 import { getArWalletAddressFromJson, exportNFT } from "service/NFT";
 // import { colors } from "theme";
@@ -19,7 +19,6 @@ import { DataContext } from "contexts/DataContextContainer";
 import AlertArea from "components/Sections/AlertArea";
 import { alertTimeout } from "config";
 import { getKoi } from "service/KOI";
-import useDebounce from "components/Utils/useDebounce";
 import { FaTimes } from "react-icons/fa";
 import { colors } from "theme";
 
@@ -71,7 +70,6 @@ function UploadManual() {
   });
   const [detectorAr] = useState(false); //, setDetectorAr
   const [canVerify, setCanVerify] = useState(false);
-  const updatedBalanceKoi = useDebounce(balanceKoi, 500);
 
   const onCompleteStep1 = () => {
     history.push(`/upload/manual?step=2`);
