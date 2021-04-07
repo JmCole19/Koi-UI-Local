@@ -67,9 +67,9 @@ function MyContent() {
   const onSliderChange = (newVal) => {
     // const options = ["24h", "1w", "1m", "1y", "all"];
     setSliderValue(newVal)
-    console.log({newVal})
+    console.log({ newVal })
     let offset = 0
-    switch(options[newVal]) {
+    switch (options[newVal]) {
       case "24h":
         offset = 3600 * 24
         break;
@@ -85,29 +85,29 @@ function MyContent() {
       case "all":
         offset = 0
         break;
-      default :
+      default:
         offset = 0
         break;
     }
-    if(offset === 0) {
+    if (offset === 0) {
       setContents(contents)
-    }else{
+    } else {
       const cur = new Date()
-      const timestamp = Number(cur.getTime() - offset*1000)
+      const timestamp = Number(cur.getTime() - offset * 1000)
       setContents(contents.filter((_item) => _item.created_at > timestamp))
     }
   }
 
   const getContents = async (walletAddress = '') => {
     // console.log("keyAr" , JSON.stringify(keyAr))
-    if(keyAr) {
+    if (keyAr) {
       setIsLoading(true);
       console.log("my content", keyAr)
       await ktools.loadWallet(keyAr)
       ktools.myContent(addressAr).then((res) => {
-        if(res.length === 0) {
-          show_alert(`Our school of koi couldn't find anything on that wallet[${addressAr}].`)  
-        }else{
+        if (res.length === 0) {
+          show_alert(`Our school of koi couldn't find anything on that wallet[${addressAr}].`)
+        } else {
           let res_data = []
           res.forEach(element => {
             let str_created_at = element.createdAt || "1609500000"
@@ -122,23 +122,22 @@ function MyContent() {
       }).catch(err => {
         console.log(err)
         show_alert("There is an error to getting NFT contents.")
-      }).finally( () => {
+      }).finally(() => {
         console.log("finally")
         setIsLoading(false);
       });
-    }else{
-      show_alert('Please upload your wallet key file.')
-      setTimeout(()=> history.push('/wallet-key'), 4000)
+    } else {
+      show_alert(`Please upload your wallet key file by selecting the "Connect Wallet" button.`)
     }
   };
   useEffect(() => {
-    setTimeout( () => getContents(), 1000);
+    setTimeout(() => getContents(), 1000);
   }, [history.location.pathname]);
 
   const show_alert = (message = '') => {
     setShowAlert(true)
     setErrMessage(message)
-    setTimeout( () => {
+    setTimeout(() => {
       setShowAlert(false)
       setErrMessage('')
     }, alertTimeout)
@@ -192,7 +191,7 @@ function MyContent() {
             <i className="fas fa-plus"></i>
           </Button>
         </div>
-        <ImportArea>
+        {!isLoading && !contents.length && <ImportArea>
           <LinkNftUpload className={`big cursor`} onClick={() => history.push('/register-content')}>
             <div className="font-n-1">You haven't permanently stored any content yet.</div>
             <div className="font-n-1"><b>Let's fix that.</b></div>
@@ -206,11 +205,11 @@ function MyContent() {
             </div>
             <div className='font-s-1'>What are you waiting for? <b>Start earning KOI.</b></div>
           </LinkNftUpload>
-        </ImportArea>
+        </ImportArea>}
         <AlertArea
           showMessage={showAlert}
           message={errEmessage}
-          cancel={()=>setShowAlert(false)}
+          cancel={() => setShowAlert(false)}
           showCancel={true}
         ></AlertArea>
         <div className="leaderboard-items">
