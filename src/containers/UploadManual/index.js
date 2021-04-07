@@ -154,24 +154,31 @@ function UploadManual() {
   const enoughBalance = async () => {
     if(Number(balanceKoi) < 1 ) {
       show_confirm_alert('You don’t have any KOI in your wallet. <br> Hop on over to the <a href="/faucet">KOI Faucet</a> to get some for free!')
+      setCanVerify(false)
       return false
     }else if(Number(balanceAr) < Number(1 * 0.0002) ) {
       show_confirm_alert('Your ar balance is not enough to upload.')
+      setCanVerify(false)
       return false
     }else{
-      await uploadNFTContents()
+      setCanVerify(true)
     }
   }
 
-  const checkUpload = async () => {
+  const checkUpload = async (keyfile) => {
     if(balanceKoi !== null && balanceAr !== null) {
-      enoughBalance()
+      await enoughBalance()
     }else {
       setLoading(true)
-      let balance = await getKoi(keyAr)
+      let balance = await getKoi(keyfile)
       setLoading(false)
       setBalanceKoi(Number(balance.koiBalance))
       setBalanceAr(convertArBalance(balance.arBalance))
+      // TODO call enough balance?
+      /*
+      if(balanceKoi !== null && balanceAr !== null) {
+        await enoughBalance()
+      } */
     }
   }
 
@@ -180,12 +187,10 @@ function UploadManual() {
     const isJson = file.type === "application/json";
     if (!isJson) {
       show_notification("You can only upload JSON file!");
-      setCanVerify(false)
     }
     const isLt1M = file.size / 1024 < 512;
     if (!isLt1M) {
       show_notification("JSON must smaller than 512KB!");
-      setCanVerify(false)
     }
     if (isJson && isLt1M) {
       const reader = new FileReader();
@@ -194,8 +199,7 @@ function UploadManual() {
         let addressResult = await getArWalletAddressFromJson(arweave, arJson);
         console.log({addressResult})
         setAddressAr(addressResult)
-        setKeyAr(keyAr)
-        setCanVerify(true)
+        await checkUpload(arJson)
         show_alert("Success! Your keyfile has been uploaded.", 'success');
       };
       reader.readAsText(file);
@@ -655,7 +659,7 @@ function UploadManual() {
                 {!uploading && (
                   <Button
                     className="btn-blueDark btn-connect"
-                    onClick={checkUpload}
+                    onClick={uploadNFTContents}
                   >
                     Confirm & Upload
                   </Button>
