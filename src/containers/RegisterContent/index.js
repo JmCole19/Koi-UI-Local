@@ -116,7 +116,7 @@ function RegisterContent() {
         // show_alert('You’ll earn 3 KOI until 3 minutes.', 'success')
       } else {
         setLoading(false)
-        show_alert("There is an error to receive free KOI");
+        show_alert("There was an error adding KOI to your wallet.");
       }
     }catch(err) {
       setLoading(false)
@@ -183,23 +183,23 @@ function RegisterContent() {
           openMetaMask("redeem");
         else{
           show_alert(
-            "There is a problem to get your arwallet balance. Please upload arweave key."
+            "There was a problem retrieving your ARwallet balance. Please upload your Arweave key."
           );
-          show_notification("There is a problem to get your arwallet balance. Please upload arweave key.")
+          show_notification("There was a problem retrieving your arwallet balance. Please upload your Arweave key.")
           setTimeout( () => {
             history.push("/wallet-key");
           }, 4000)  
         }
       } else {
         // show alert
-        show_alert("Error on detecting Arweave wallet address");
+        show_alert("There was an error detecting your Arweave wallet address.");
         setTimeout( () => {
           history.push("/wallet-key");
         }, 4000)  
       }
     } catch (err) {
       // console.log(err);
-      show_alert("Error on detecting Arweave wallet address");
+      show_alert("There was an error detecting your Arweave wallet address.");
       setTimeout( () => {
         history.push("/wallet-key");
       }, 4000)  

@@ -161,11 +161,10 @@ function ConfirmOpenseas() {
     console.log("koi balance : ", Number(balanceKoi))
     console.log("ar balance : ", Number(balanceAr))
     if(Number(balanceKoi) < uploadContents.length ) {
-      setErrMessage('Your koi balance is not enough to upload.')
-      // show_alert('You don’t have any KOI in your wallet.')
+      setErrMessage("You don't have enough KOI to upload these NFTs. Visit the KOI Faucet to get some KOI.")
       return false
     }else if(Number(balanceAr) < Number(uploadContents.length * 0.0002) ) {
-      setErrMessage('Your ar balance is not enough to upload.')
+      setErrMessage('You need more AR to upload.')
       return false
     }else{
       await uploadNFTContents()
@@ -175,7 +174,7 @@ function ConfirmOpenseas() {
   const checkUpload = async () => {
     console.log('checkUpload', keyAr)
     if(!keyAr) {
-      show_notification('Please upload key json file.')
+      show_notification('Please upload your json keyfile.')
       setMode("uploadKey");
     }else {
       if(mode !== modes.confirm) setMode("confirm")
@@ -220,7 +219,7 @@ function ConfirmOpenseas() {
         } else {
           setUploadingProcess(tpUpdatingProcess);
           show_notification(
-            "There is an error to upload content title '" +
+            "There is an error uploading '" +
               content.title +
               "' "
           );
@@ -238,12 +237,12 @@ function ConfirmOpenseas() {
         */
       } catch (err) {
         console.log("error - exportNFT", err);
-        show_alert("There is an error to uploading NFT content", "KOI", "error");
+        show_alert("Something went wrong uploading your NFT.", "KOI", "error");
       }
     }
     // close modal
     setShowModal(false);
-    show_alert("Upload finished", "KOI", "success");
+    show_alert("Upload finished.", "KOI", "success");
     // show complete section
     setTimeout(() => {
       setMode("complete");
@@ -318,7 +317,7 @@ function ConfirmOpenseas() {
       setShowModal(false);
       setMode(modes.change);
     } else {
-      show_notification("You can't close this modal until NFT uploaded.");
+      show_notification("You can't close this modal until your NFT has finished uploading.");
     }
   };
 
