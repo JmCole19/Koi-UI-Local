@@ -106,7 +106,7 @@ function MyContent() {
       await ktools.loadWallet(keyAr)
       ktools.myContent(addressAr).then((res) => {
         if(res.length === 0) {
-          show_alert(`Our school of koi couldn't find anything on that wallet[${addressAr}].`)  
+          show_alert(`Our school of KOI couldn't find anything on that wallet [${addressAr}].`)  
         }else{
           let res_data = []
           res.forEach(element => {
@@ -121,7 +121,7 @@ function MyContent() {
         console.log({ res });
       }).catch(err => {
         console.log(err)
-        show_alert("There is an error to getting NFT contents.")
+        show_alert("Unable to retrieve NFT contents.")
       }).finally( () => {
         console.log("finally")
         setIsLoading(false);

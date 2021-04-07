@@ -153,7 +153,7 @@ function UploadManual() {
 
   const enoughBalance = async () => {
     if(Number(balanceKoi) < 1 ) {
-      show_confirm_alert('You don’t have any KOI in your wallet. <br> Hop on over to the <a href="/faucet">KOI Faucet</a> to get some for free!')
+      show_confirm_alert('You don’t have any KOI in your wallet. <br> Hop on over to the <a href="/faucet">KOI Faucet</a> to get some KOI.')
       setCanVerify(false)
       return false
     }else if(Number(balanceAr) < Number(1 * 0.0002) ) {
@@ -290,7 +290,7 @@ function UploadManual() {
         if(keyAr) {
           await checkUpload(keyAr)
         }else{
-          show_alert('Please upload your wallet key json file.')
+          show_alert('Connect your wallet.')
         }
       } else {
         show_alert("Error detecting Arweave wallet address.");

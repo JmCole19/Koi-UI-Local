@@ -118,7 +118,7 @@ function Leaderboard() {
       const data = res.data
       // console.log({ data });
       if(data === 0) {
-        show_alert("There is no contents.")  
+        show_alert("There are no contents.")  
       }else{
         let res_data = []
         data.forEach(element => {
