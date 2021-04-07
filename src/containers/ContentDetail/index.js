@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { IconShare, IconHtml } from "assets/images";
+import { IconShare, IconHtml, ItemTemp } from "assets/images";
 import React, { useContext, useEffect, useState } from "react";
 import {
   FacebookShareButton,
@@ -72,9 +72,12 @@ function ContentDetail() {
     }else{
       return (
         <Image
-          src={`${preUrl}${item.txIdContent}?t=${
-            Math.random() * 999999
-          }`}
+          src={
+            item.txIdContent
+              ? `${preUrl}${item.txIdContent}?t=${Math.random() * 999999}`
+              : ItemTemp
+            }
+          onError={(ev => ev.target.src = ItemTemp)}
           className="detail-img"
         />)
     }
