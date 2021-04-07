@@ -198,8 +198,7 @@ function ContentDetail() {
               <div className="detail-body">
                 <Alert show={showMessage} variant="success">
                   <p className="text-blue text-center mb-0">
-                    You just voted with your attention! Since you viewed this
-                    page, the owner will be rewarded with KOI. <br />
+                  You just voted with your attention! You won’t see the traffic counter update for 24 hours because of Koi’s Gradual Consensus process. Upload something unique to start earning. <br />
                     <b
                       className="cursor"
                       onClick={() => history.push("/register-content")}
