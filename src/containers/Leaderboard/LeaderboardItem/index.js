@@ -54,6 +54,7 @@ function LeaderboardItem({
               ? `${preUrl}${item.txIdContent}?t=${Math.random() * 999999}`
               : ItemTemp
           }
+          onError={(ev => ev.target.src = ItemTemp)}
           className="cursor"
           onClick={onClickItem}
         />)

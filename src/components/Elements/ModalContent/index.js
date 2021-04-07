@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { Image, Modal } from "react-bootstrap";
+import { ItemTemp } from "assets/images";
 import ResponsiveEmbed from 'react-bootstrap/ResponsiveEmbed'
 import {
   FaInstagram,
@@ -148,6 +149,7 @@ function ModalContent({
           src={`${preUrl}${item.txIdContent}?t=${
             Math.random() * 999999
           }`}
+          onError={(ev => ev.target.src = ItemTemp)}
           className="detail-img"
         />)
     }
