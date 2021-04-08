@@ -178,7 +178,7 @@ function ConfirmOpenseas() {
       setMode("uploadKey");
     }else {
       if(mode !== modes.confirm) setMode("confirm")
-      if(balanceKoi !== null && balanceKoi !== null) {
+      if(balanceKoi !== null && balanceAr !== null) {
         enoughBalance()
       }else {
         setLoading(true)
