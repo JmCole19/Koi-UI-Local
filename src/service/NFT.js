@@ -28,6 +28,7 @@ const exportNFT = async (arweave, ownerAddress, content, imageUrl = '', imageBlo
 
     // var wallet = await window.arweaveWallet.connect()
     const contractSrc = process.env.REACT_APP_CONTRACT_SRC
+    console.log({contractSrc})
     let nftData
     let imgContentBuffer
     let imgContentType
@@ -66,6 +67,7 @@ const exportNFT = async (arweave, ownerAddress, content, imageUrl = '', imageBlo
     let createdAt = Math.floor(d.getTime()/1000).toString()
     const initialState = {
       "owner": metadata.owner,
+      "title": metadata.title,
       "name": metadata.name,
       "description": metadata.description,
       "ticker": metadata.ticker,
@@ -123,8 +125,10 @@ const exportNFT = async (arweave, ownerAddress, content, imageUrl = '', imageBlo
     // pay via KOI
     try{
       let ktools = new koi_tools();
-      await ktools.loadWallet(wallet)
-      await ktools.registerData(tx.id, ownerAddress, wallet, arweave);
+      let resAddress = await ktools.loadWallet(wallet)
+      console.log({resAddress})
+      let resTx = await ktools.registerData(tx.id, ownerAddress, wallet, arweave);
+      console.log({resTx})
     }catch(err){
       console.log("err-koi_tools", err)
       return false
