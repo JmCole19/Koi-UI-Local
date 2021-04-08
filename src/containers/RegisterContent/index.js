@@ -23,7 +23,6 @@ import { alertTimeout } from "config";
 
 const arweave = Arweave.init();
 
-// const arweave = Arweave.init();
 const cards = [
   {
     id: "opensea",

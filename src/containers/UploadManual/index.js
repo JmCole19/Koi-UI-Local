@@ -283,7 +283,6 @@ function UploadManual() {
   
   const detectArweaveWallet = async () => {
     try {
-      let arweave = Arweave.init()
       let addr = await arweave.wallets.getAddress();
       console.log("detected arweave wallet address : ", addr);
       if (addr) {

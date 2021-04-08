@@ -16,6 +16,7 @@ import { koi_tools } from "koi_tools"
 import AlertArea from "components/Sections/AlertArea";
 import { alertTimeout } from "config";
 
+const arweave = Arweave.init();
 const { Dragger } = Upload;
 
 function Faucet() {
@@ -196,8 +197,6 @@ function Faucet() {
       const reader = new FileReader();
       reader.onload = async (e) => {
         var arJson = JSON.parse(e.target.result);
-        console.log(arJson)
-        const arweave = Arweave.init();
         let addressResult = await getArWalletAddressFromJson(arweave, arJson);
         setKeyAr(arJson)
         setAddressAr(addressResult)
@@ -227,7 +226,6 @@ function Faucet() {
 
   const detectArweaveWallet = async () => {
     try {
-      let arweave = Arweave.init()
       let addr = await arweave.wallets.getAddress();
       console.log("detected arweave wallet address : ", addr);
       if (addr) {
