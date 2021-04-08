@@ -7,25 +7,14 @@ import { Col, Row, Upload, Spin } from "antd";
 import Arweave from "arweave";
 import { getArWalletAddressFromJson } from "service/NFT";
 import { DataContext } from "contexts/DataContextContainer";
-import { show_notification, convertArBalance } from "service/utils";
+import { show_notification, convertArBalance, get_arweave_option } from "service/utils";
 import { koi_tools } from "koi_tools"
 import { useHistory } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
 import { colors } from "theme";
 
 const { Dragger } = Upload;
-const protocol = process.env.REACT_APP_PROTOCOL
-let ar_option = {
-  host: 'arweave.net',// Hostname or IP address for a Arweave host
-  port: 443,          // Port
-  protocol: 'https',  // Network protocol http or https
-  timeout: 20000,     // Network request timeouts in milliseconds
-  logging: false,     // Enable network request logging
-}
-if(protocol !== 'HTTPS') {
-  ar_option = {}
-}
-const arweave = Arweave.init(ar_option);
+const arweave = Arweave.init(get_arweave_option);
 
 function KeyUpload() {
   const history = useHistory();

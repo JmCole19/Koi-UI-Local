@@ -12,9 +12,11 @@ import MyProgress from "components/Elements/MyProgress";
 import { DataContext } from "contexts/DataContextContainer";
 import { FaArrowLeft } from "react-icons/fa";
 import { colors } from "theme";
+import { get_arweave_option } from "service/utils";
 
 const { TextArea } = Input;
 const { Dragger } = Upload;
+const arweave = Arweave.init(get_arweave_option);
 
 const formItemLayout = {
   labelCol: {
@@ -58,11 +60,6 @@ function UploadArweave() {
       // reader.readAsDataURL(file);
       reader.readAsText(file);
       reader.onload = async (e) => {
-        const arweave = Arweave.init({
-          host: "arweave.net",
-          port: 443,
-          protocol: "https",
-        });
         let addressResult = await arweave.wallets.jwkToAddress(
           JSON.parse(e.target.result)
         );

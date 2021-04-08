@@ -13,7 +13,7 @@ import { useHistory } from "react-router-dom";
 import { RegisterContentContainer } from "./style";
 import { abi } from "assets/abi";
 import { DataContext } from "contexts/DataContextContainer";
-import { convertArBalance, show_notification } from "service/utils";
+import { convertArBalance, get_arweave_option, show_notification } from "service/utils";
 import { Col, Row, Spin } from "antd";
 import AlertArea from "components/Sections/AlertArea";
 import customAxios from "service/customAxios";
@@ -21,18 +21,7 @@ import Arweave from "arweave";
 import { getKoi } from "service/KOI";
 import { alertTimeout } from "config";
 
-const protocol = process.env.REACT_APP_PROTOCOL
-let ar_option = {
-  host: 'arweave.net',// Hostname or IP address for a Arweave host
-  port: 443,          // Port
-  protocol: 'https',  // Network protocol http or https
-  timeout: 20000,     // Network request timeouts in milliseconds
-  logging: false,     // Enable network request logging
-}
-if(protocol !== 'HTTPS') {
-  ar_option = {}
-}
-const arweave = Arweave.init(ar_option);
+const arweave = Arweave.init(get_arweave_option);
 
 const cards = [
   {
