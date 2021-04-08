@@ -14,7 +14,18 @@ import { FaArrowLeft } from "react-icons/fa";
 import { colors } from "theme";
 
 const { Dragger } = Upload;
-
+const protocol = process.env.REACT_APP_PROTOCOL
+let ar_option = {
+  host: 'arweave.net',// Hostname or IP address for a Arweave host
+  port: 443,          // Port
+  protocol: 'https',  // Network protocol http or https
+  timeout: 20000,     // Network request timeouts in milliseconds
+  logging: false,     // Enable network request logging
+}
+if(protocol !== 'HTTPS') {
+  ar_option = {}
+}
+const arweave = Arweave.init(ar_option);
 
 function KeyUpload() {
   const history = useHistory();
@@ -76,7 +87,6 @@ function KeyUpload() {
       const reader = new FileReader();
       reader.onload = async (e) => {
         var arJson = JSON.parse(e.target.result);
-        const arweave = Arweave.init();
         let addressResult = await getArWalletAddressFromJson(arweave, arJson);
         setKeyAr(arJson)
         setAddressAr(addressResult)
@@ -100,7 +110,6 @@ function KeyUpload() {
   
   const detectArweaveWallet = async () => {
     try {
-      let arweave = Arweave.init()
       let addr = await arweave.wallets.getAddress();
       console.log("detected arweave wallet address : ", addr);
       if (addr) {
