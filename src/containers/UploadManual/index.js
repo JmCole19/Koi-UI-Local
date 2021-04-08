@@ -194,6 +194,7 @@ function UploadManual() {
         let addressResult = await getArWalletAddressFromJson(arweave, arJson);
         console.log({addressResult})
         setAddressAr(addressResult)
+        setKeyAr(arJson);
         await checkUpload(arJson)
         show_alert("Success! Your keyfile has been uploaded.", 'success');
       };
