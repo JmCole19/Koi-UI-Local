@@ -10,24 +10,13 @@ import { FaucetContainer } from "./style";
 import { Button, Spin, Upload } from "antd";
 import { useHistory } from "react-router-dom";
 import { DataContext } from "contexts/DataContextContainer";
-import { show_notification, convertArBalance, show_digit_number } from "service/utils";
+import { show_notification, convertArBalance, show_digit_number, get_arweave_option } from "service/utils";
 import { getArWalletAddressFromJson } from "service/NFT";
 import { koi_tools } from "koi_tools"
 import AlertArea from "components/Sections/AlertArea";
 import { alertTimeout } from "config";
 
-const protocol = process.env.REACT_APP_PROTOCOL
-let ar_option = {
-  host: 'arweave.net',// Hostname or IP address for a Arweave host
-  port: 443,          // Port
-  protocol: 'https',  // Network protocol http or https
-  timeout: 20000,     // Network request timeouts in milliseconds
-  logging: false,     // Enable network request logging
-}
-if(protocol !== 'HTTPS') {
-  ar_option = {}
-}
-const arweave = Arweave.init(ar_option);
+const arweave = Arweave.init(get_arweave_option);
 const { Dragger } = Upload;
 
 function Faucet() {
@@ -307,7 +296,7 @@ function Faucet() {
                   <div className="icon-back" onClick={() => onClickBackTo(0)}>
                     <i className="fal fa-arrow-circle-left"></i>
                   </div>
-                  <h1 className="f-32 text-blue">1</h1>
+                  <h1 className="f-32 text-blue">2</h1>
                   <div className="step-content has-wallet">
                     <h6 className="step-title text-blue mb-4">
                       Connect a wallet.

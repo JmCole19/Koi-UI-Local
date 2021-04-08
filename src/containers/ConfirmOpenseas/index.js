@@ -20,7 +20,7 @@ import { colors } from "theme";
 import { DataContext } from "contexts/DataContextContainer";
 import { FaTimes } from "react-icons/fa";
 import Arweave from "arweave";
-import { show_notification, show_fixed_number, convertArBalance } from "service/utils";
+import { show_notification, show_fixed_number, convertArBalance, get_arweave_option } from "service/utils";
 import { getArWalletAddressFromJson, exportNFT } from "service/NFT";
 import AlertArea from "components/Sections/AlertArea";
 import {alertTimeout} from 'config'
@@ -28,18 +28,7 @@ import ModalContent from "components/Elements/ModalContent";
 import { getKoi } from "service/KOI";
 import useDebounce from 'components/Utils/useDebounce'
 
-const protocol = process.env.REACT_APP_PROTOCOL
-let ar_option = {
-  host: 'arweave.net',// Hostname or IP address for a Arweave host
-  port: 443,          // Port
-  protocol: 'https',  // Network protocol http or https
-  timeout: 20000,     // Network request timeouts in milliseconds
-  logging: false,     // Enable network request logging
-}
-if(protocol !== 'HTTPS') {
-  ar_option = {}
-}
-const arweave = Arweave.init(ar_option);
+const arweave = Arweave.init(get_arweave_option);
 const { TextArea } = Input;
 const { Dragger } = Upload;
 const modes = {
