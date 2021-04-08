@@ -17,7 +17,18 @@ import { show_notification, show_ar_balance, show_digit_number } from "service/u
 import Arweave from "arweave";
 import { colors } from "theme";
 
-const arweave = Arweave.init();
+const protocol = process.env.REACT_APP_PROTOCOL
+let ar_option = {
+  host: 'arweave.net',// Hostname or IP address for a Arweave host
+  port: 443,          // Port
+  protocol: 'https',  // Network protocol http or https
+  timeout: 20000,     // Network request timeouts in milliseconds
+  logging: false,     // Enable network request logging
+}
+if(protocol !== 'HTTPS') {
+  ar_option = {}
+}
+const arweave = Arweave.init(ar_option);
 let versionUpContent = '<p>Koi is currently in BETA. We are building decentralized web services, and sometimes things break unexpectantly. </p>';
 versionUpContent += '<p><b>03/21/2021</b> - When you use a Koi portal, nodes in the Koi network serve your requests, and store data for you in permanent decentralized storage on the Arweave network.</p>'
 versionUpContent += '<p><b>03/28/2021</b> - We’re working to make it possible to tip artists fee-lessly, as well as pay them by viewing their content, but please bear with us as we work out the kinks!</p>'

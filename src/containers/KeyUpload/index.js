@@ -14,7 +14,18 @@ import { FaArrowLeft } from "react-icons/fa";
 import { colors } from "theme";
 
 const { Dragger } = Upload;
-const arweave = Arweave.init();
+const protocol = process.env.REACT_APP_PROTOCOL
+let ar_option = {
+  host: 'arweave.net',// Hostname or IP address for a Arweave host
+  port: 443,          // Port
+  protocol: 'https',  // Network protocol http or https
+  timeout: 20000,     // Network request timeouts in milliseconds
+  logging: false,     // Enable network request logging
+}
+if(protocol !== 'HTTPS') {
+  ar_option = {}
+}
+const arweave = Arweave.init(ar_option);
 
 function KeyUpload() {
   const history = useHistory();
