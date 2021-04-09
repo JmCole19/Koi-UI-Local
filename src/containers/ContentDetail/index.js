@@ -178,9 +178,11 @@ function ContentDetail() {
           )}
           {!isLoading && detail ? (
             <MetaWrapper
-              title={`content detail - ${detail.title || detail.name }`}
-              description={`content detail - ${detail.description}`}
-              keywords={`content detail - ${detail.ticker}`}
+              title={`${detail.title || detail.name } ${detail.owner}`}
+              description={`${detail.description}`}
+              keywords={`${detail.ticker}`}
+              url={window.location.href}
+              imageUrl={`${preUrl}${detail.txIdContent}`}
             >
               <div className="content-detail">
                 <div className="detail-header">
