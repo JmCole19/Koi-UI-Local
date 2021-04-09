@@ -19,6 +19,7 @@ import AlertArea from "components/Sections/AlertArea";
 import customAxios from "service/customAxios";
 import { getKoi } from "service/KOI";
 import { alertTimeout } from "config";
+import MetaWrapper from "components/Wrappers/MetaWrapper";
 
 const cards = [
   {
@@ -203,7 +204,11 @@ function RegisterContent() {
   // };
   
   return (
-    <>
+    <MetaWrapper
+      title="test title"
+      description=" test description"
+      keywords="test gmail"
+    >
       <AlertArea
         showMessage={showAlert}
         variant={alertVariant}
@@ -272,7 +277,7 @@ function RegisterContent() {
           </div>
         </Container>
       </RegisterContentContainer>
-    </>
+    </MetaWrapper>
   );
 }
 
