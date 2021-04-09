@@ -6,18 +6,16 @@ import {
   IconEthereum,
   IconFish
 } from "assets/images";
-import React, { useContext, useEffect, useState, useRef } from "react";
+import React, { useContext, useState, useRef } from "react";
 import { Navbar, Nav, Image, Overlay, Tooltip, Modal, Button } from "react-bootstrap";
 import { FaTimes } from "react-icons/fa";
 import { useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { DataContext } from "contexts/DataContextContainer";
 import { TopbarContainer } from "./style";
-import { show_notification, show_ar_balance, show_digit_number, get_arweave_option } from "service/utils";
-import Arweave from "arweave";
+import { show_notification, show_ar_balance, show_digit_number } from "service/utils";
 import { colors } from "theme";
 
-const arweave = Arweave.init(get_arweave_option);
 let versionUpContent = '<p>Koi is currently in BETA. We are building decentralized web services, and sometimes things break unexpectantly. </p>';
 versionUpContent += '<p><b>03/21/2021</b> - When you use a Koi portal, nodes in the Koi network serve your requests, and store data for you in permanent decentralized storage on the Arweave network.</p>'
 versionUpContent += '<p><b>03/28/2021</b> - We’re working to make it possible to tip artists fee-lessly, as well as pay them by viewing their content, but please bear with us as we work out the kinks!</p>'
@@ -37,14 +35,14 @@ function Topbar() {
   } = useContext(DataContext);
   const [show, setShow] = useState(false);
   const target = useRef(null);
-  const [detectorAr, setDetectorAr] = useState(false);
+  // const [detectorAr, setDetectorAr] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
-  const activeArweave = () => {
-    setDetectorAr(true);
-    // setBalanceKoi(50.01);
-    // setBalanceAr(50.01);
-  };
+  // const activeArweave = () => {
+  //   // setDetectorAr(true);
+  //   // setBalanceKoi(50.01);
+  //   // setBalanceAr(50.01);
+  // };
 
   const activeEthereum = async () => {
     if (window.ethereum) {
@@ -71,9 +69,9 @@ function Topbar() {
   const activeKoi = async () => {
     if (!addressEth) {
       await activeEthereum();
-      activeArweave();
+      // activeArweave();
     } else {
-      activeArweave();
+      // activeArweave();
     }
   };
   const onClickDisconnectWallet = () => {
@@ -84,35 +82,35 @@ function Topbar() {
     setShow(false)
   }
 
-  useEffect(() => {
-    if (detectorAr) {
-      window.addEventListener("arweaveWalletLoaded", detectArweaveWallet());
-      return () => {
-        window.removeEventListener("arweaveWalletLoaded", () => {});
-      };
-    }
-  }, [detectorAr]);
+  // useEffect(() => {
+  //   if (detectorAr) {
+  //     window.addEventListener("arweaveWalletLoaded", detectArweaveWallet());
+  //     return () => {
+  //       window.removeEventListener("arweaveWalletLoaded", () => {});
+  //     };
+  //   }
+  // }, [detectorAr]);
 
-  const detectArweaveWallet = async () => {
-    try {
-      let addr = await arweave.wallets.getAddress();
-      console.log("detected arweave wallet address : ", addr);
-      if (addr) {
-        setAddressAr(addr);
-        history.push("/wallet-key");
-      } else {
-        // show alert
-        history.push("/wallet-key");
-        // show_notification(
-        //   "There is a problem to get your arwallet address. Please install arconnect extension and try again."
-        // );
-      }
-    } catch (err) {
-      // console.log(err);
-      history.push("/wallet-key");
-      // show_notification("Error on detecting Arweave wallet address");
-    }
-  };
+  // const detectArweaveWallet = async () => {
+  //   try {
+  //     let addr = await arweave.wallets.getAddress();
+  //     console.log("detected arweave wallet address : ", addr);
+  //     if (addr) {
+  //       setAddressAr(addr);
+  //       history.push("/wallet-key");
+  //     } else {
+  //       // show alert
+  //       history.push("/wallet-key");
+  //       // show_notification(
+  //       //   "There is a problem to get your arwallet address. Please install arconnect extension and try again."
+  //       // );
+  //     }
+  //   } catch (err) {
+  //     // console.log(err);
+  //     history.push("/wallet-key");
+  //     // show_notification("Error on detecting Arweave wallet address");
+  //   }
+  // };
   
   return (
     <TopbarContainer collapseOnSelect expand="md" fixed="top">

@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useContext } from "react";
 import { Container, Image, Button } from "react-bootstrap";
 import { IconUpload } from "assets/images";
 import { KeyUploadContainer } from "./style";
@@ -27,7 +27,7 @@ function KeyUpload() {
   } = useContext(DataContext);
   const [uploading] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [detectorAr] = useState(false);
+  // const [detectorAr] = useState(false);
 
   const getKoi = async () => {
     setLoading(true)
@@ -88,29 +88,29 @@ function KeyUpload() {
     return isJson && isLt1M;
   };
 
-  useEffect(() => {
-    if (detectorAr) {
-      window.addEventListener("arweaveWalletLoaded", detectArweaveWallet());
-      return () => {
-        window.removeEventListener("arweaveWalletLoaded", () => { });
-      };
-    }
-  }, [detectorAr]);
+  // useEffect(() => {
+  //   if (detectorAr) {
+  //     window.addEventListener("arweaveWalletLoaded", detectArweaveWallet());
+  //     return () => {
+  //       window.removeEventListener("arweaveWalletLoaded", () => { });
+  //     };
+  //   }
+  // }, [detectorAr]);
   
-  const detectArweaveWallet = async () => {
-    try {
-      let addr = await arweave.wallets.getAddress();
-      console.log("detected arweave wallet address : ", addr);
-      if (addr) {
-        setAddressAr(addr);
-      } else {
-        show_notification("There was an error detecting your Arweave wallet address.");
-      }
-    } catch (err) {
-      console.log(err);
-      show_notification("There was an error detecting your Arweave wallet address.");
-    }
-  };
+  // const detectArweaveWallet = async () => {
+  //   try {
+  //     let addr = await arweave.wallets.getAddress();
+  //     console.log("detected arweave wallet address : ", addr);
+  //     if (addr) {
+  //       setAddressAr(addr);
+  //     } else {
+  //       show_notification("There was an error detecting your Arweave wallet address.");
+  //     }
+  //   } catch (err) {
+  //     console.log(err);
+  //     show_notification("There was an error detecting your Arweave wallet address.");
+  //   }
+  // };
 
   return (
     <KeyUploadContainer>

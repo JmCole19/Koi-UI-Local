@@ -69,7 +69,7 @@ function UploadManual() {
     owner: "",
     description: "",
   });
-  const [detectorAr] = useState(false); //, setDetectorAr
+  // const [detectorAr] = useState(false); //, setDetectorAr
   const [canVerify, setCanVerify] = useState(false);
   const updatedBalanceKoi = useDebounce(balanceKoi, 500);
 
@@ -272,34 +272,34 @@ function UploadManual() {
     setShowModal(true)
   };
 
-  useEffect(() => {
-    if (detectorAr) {
-      window.addEventListener("arweaveWalletLoaded", detectArweaveWallet());
-      return () => {
-        window.removeEventListener("arweaveWalletLoaded", () => { });
-      };
-    }
-  }, [detectorAr]);
+  // useEffect(() => {
+  //   if (detectorAr) {
+  //     window.addEventListener("arweaveWalletLoaded", detectArweaveWallet());
+  //     return () => {
+  //       window.removeEventListener("arweaveWalletLoaded", () => { });
+  //     };
+  //   }
+  // }, [detectorAr]);
   
-  const detectArweaveWallet = async () => {
-    try {
-      let addr = await arweave.wallets.getAddress();
-      console.log("detected arweave wallet address : ", addr);
-      if (addr) {
-        setAddressAr(addr);
-        if(keyAr) {
-          await checkUpload(keyAr)
-        }else{
-          show_alert('Connect your wallet.')
-        }
-      } else {
-        show_alert("Error detecting Arweave wallet address.");
-      }
-    } catch (err) {
-      console.log(err);
-      show_alert("Error detecting Arweave wallet address.");
-    }
-  };
+  // const detectArweaveWallet = async () => {
+  //   try {
+  //     let addr = await arweave.wallets.getAddress();
+  //     console.log("detected arweave wallet address : ", addr);
+  //     if (addr) {
+  //       setAddressAr(addr);
+  //       if(keyAr) {
+  //         await checkUpload(keyAr)
+  //       }else{
+  //         show_alert('Connect your wallet.')
+  //       }
+  //     } else {
+  //       show_alert("Error detecting Arweave wallet address.");
+  //     }
+  //   } catch (err) {
+  //     console.log(err);
+  //     show_alert("Error detecting Arweave wallet address.");
+  //   }
+  // };
 
   useEffect(() => {
     if (step !== "1" && !imageUrl) {
