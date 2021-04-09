@@ -77,6 +77,8 @@ const GlobalStyle = createGlobalStyle`
       line-height: 32px;
       letter-spacing: 0.03em;
     }
+    .height-auto{height: auto !important;}
+    .height-130{height: 130px !important;}
     .overlay-opensea{
       position: relative;
       margin-right: -5px;
