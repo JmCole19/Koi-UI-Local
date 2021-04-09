@@ -72,7 +72,7 @@ function ConfirmOpenseas() {
   const [showShareModal, setShowShareModal] = useState(false);
   const [modalType, setModalType] = useState("share");
   const [selectedContent, setSelectedContent] = useState([]);
-  const [mode, setMode] = useState("change"); // change | confirm | uploadKey | uploading | complete
+  const [mode, setMode] = useState("complete"); // change | confirm | uploadKey | uploading | complete
   const [activeOpenSea, setActiveOpenSea] = useState({
     id: 0,
     thumb: "",
@@ -708,10 +708,12 @@ function ConfirmOpenseas() {
                               <div className="card-content-wrapper">
                                 <Image src={_selected.thumb} />
                                 <p className="text-blue">{_selected.title}</p>
+                                <p className="text-blue font-light text-italic mt-0">pending</p>
                               </div>
-                              <div className="uploaded-card-btns d-none d-md-flex">
-                                <Button className="btn-blueDark" onClick={() => onClickContent(_selected, "share")} >
-                                  <Image src={IconShare} width={17} />
+                              <div className="uploaded-card-btns-sm d-none d-md-flex">
+                                <Button className="btn-blueDark mr-2" onClick={() => onClickContent(_selected, "share")} >
+                                  <Image src={IconShare} width={17} className="mr-2" />
+                                  Share
                                 </Button>
                                 <Button className="btn-white btn-html" onClick={() => onClickContent(_selected, "embed")}>
                                   <Image src={IconHtml} width={17} />

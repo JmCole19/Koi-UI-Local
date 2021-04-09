@@ -96,6 +96,8 @@ const GlobalStyle = createGlobalStyle`
     .f-32 {
         font-size: 32px !important;
     }
+    .font-light{ font-weight: 300 !important; }
+    .text-italic{ font-style: italic !important; }
     .btn {
         display: flex;
         justify-content: center;
