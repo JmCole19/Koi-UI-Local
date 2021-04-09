@@ -178,7 +178,7 @@ function ConfirmOpenseas() {
       setMode("uploadKey");
     }else {
       if(mode !== modes.confirm) setMode("confirm")
-      if(balanceKoi !== null && balanceKoi !== null) {
+      if(balanceKoi !== null && balanceAr !== null) {
         enoughBalance()
       }else {
         setLoading(true)
@@ -385,7 +385,8 @@ function ConfirmOpenseas() {
       const reader = new FileReader();
       reader.onload = async (e) => {
         var arJson = JSON.parse(e.target.result);
-        // setWalletKey(arJson);
+        let addressResult = await getArWalletAddressFromJson(arweave, arJson);
+        setAddressAr(addressResult);
         setKeyAr(arJson);
         setMode("confirm")
         // setDetectorAr(true);
