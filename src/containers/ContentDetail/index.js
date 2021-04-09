@@ -25,6 +25,7 @@ import AlertArea from "components/Sections/AlertArea";
 import useMediaQuery from "use-mediaquery";
 import { preUrl, alertTimeout } from "config";
 import moment from "moment";
+import MetaWrapper from "components/Wrappers/MetaWrapper";
 
 // const ktools = new koi_tools();
 const video_contents = [
@@ -176,158 +177,164 @@ function ContentDetail() {
             </div>
           )}
           {!isLoading && detail ? (
-            <div className="content-detail">
-              <div className="detail-header">
-                <div
-                  className="icon-back cursor"
-                  onClick={() => history.replace("/contents")}
-                >
-                  <i className="fal fa-arrow-circle-left"></i>
+            <MetaWrapper
+              title={`content detail - ${detail.title || detail.name }`}
+              description={`content detail - ${detail.description}`}
+              keywords={`content detail - ${detail.ticker}`}
+            >
+              <div className="content-detail">
+                <div className="detail-header">
+                  <div
+                    className="icon-back cursor"
+                    onClick={() => history.replace("/contents")}
+                  >
+                    <i className="fal fa-arrow-circle-left"></i>
+                  </div>
+                  <h2 className="text-blue mb-0">{detail.ticker}</h2>
+                  <Button
+                    onClick={() => onClickBuyIt(detail.txIdContent)}
+                    className="btn-orange ml-auto"
+                  >
+                    Buy It
+                  </Button>
+                  <Button
+                    className="btn-green btn-plus"
+                    onClick={() => history.push("/register-content")}
+                  >
+                    <i className="fas fa-plus"></i>
+                  </Button>
                 </div>
-                <h2 className="text-blue mb-0">{detail.ticker}</h2>
-                <Button
-                  onClick={() => onClickBuyIt(detail.txIdContent)}
-                  className="btn-orange ml-auto"
-                >
-                  Buy It
-                </Button>
-                <Button
-                  className="btn-green btn-plus"
-                  onClick={() => history.push("/register-content")}
-                >
-                  <i className="fas fa-plus"></i>
-                </Button>
-              </div>
-              <div className="detail-body">
-                <Alert show={showMessage} variant="success">
-                  <p className="text-blue text-center mb-0">
-                  You just voted with your attention! You won’t see the traffic counter update for 24 hours because of Koi’s Gradual Consensus process. Upload something unique to start earning. <br />
-                    <b
-                      className="cursor"
-                      onClick={() => history.push("/register-content")}
-                    >
-                      Upload something unique to start earning
-                    </b>
-                    .
-                  </p>
-                </Alert>
-                <Container>
-                  <Row>
-                    <Col className="col-md-6 col-xs-12 col-12">
-                      {show_content(detail)}
-                    </Col>
-                    <Col className="col-md-6 col-xs-12 col-12">
-                      <div className="detail-body-description">
-                        <h1 className="mb-0 text-blue text-left">
-                          {detail.ticker}
-                        </h1>
-                        <p className="detail-username">{detail.name}</p>
-                        <p className="text-left">
-                          Registered {moment(detail.created_at).format("MMM, DD, YYYY")}
-                        </p>
-                        <div className="btns-wrapper-sm d-md-none">
-                          <Button
-                            className="btn-share btn-blueDark"
-                            onClick={() => {
-                              setModalType("share");
-                              setShowModal(true);
-                            }}
-                          >
-                            <Image src={IconShare} />
-                            {isMobile ? "Share" : "Share NFT"}
-                          </Button>
-                          <Button
-                            className="btn-html btn-white ml-3"
-                            onClick={() => {
-                              setModalType("embed");
-                              setShowModal(true);
-                            }}
-                          >
-                            <Image src={IconHtml} />
-                            {isMobile ? "Embed" : "Embed to Earn"}
-                          </Button>
-                        </div>
-                        {/* <p className="mb-0">{detail.description}</p> */}
-                        {isExpanded || detail.description?.length < 300 ? (
-                          <p className="mb-0 text-left">{detail.description}</p>
-                        ) : (
-                          <p className="mb-0 text-left">
-                            {detail.description &&
-                              detail.description.substr(0, 300) + "..."}
+                <div className="detail-body">
+                  <Alert show={showMessage} variant="success">
+                    <p className="text-blue text-center mb-0">
+                    You just voted with your attention! You won’t see the traffic counter update for 24 hours because of Koi’s Gradual Consensus process. Upload something unique to start earning. <br />
+                      <b
+                        className="cursor"
+                        onClick={() => history.push("/register-content")}
+                      >
+                        Upload something unique to start earning
+                      </b>
+                      .
+                    </p>
+                  </Alert>
+                  <Container>
+                    <Row>
+                      <Col className="col-md-6 col-xs-12 col-12">
+                        {show_content(detail)}
+                      </Col>
+                      <Col className="col-md-6 col-xs-12 col-12">
+                        <div className="detail-body-description">
+                          <h1 className="mb-0 text-blue text-left">
+                            {detail.ticker}
+                          </h1>
+                          <p className="detail-username">{detail.name}</p>
+                          <p className="text-left">
+                            Registered {moment(detail.created_at).format("MMM, DD, YYYY")}
                           </p>
-                        )}
-                        {detail.description && detail.description.length > 300 && (
-                          <div className="btn-show-more-wrapper text-left">
-                            <p
-                              className="see-more cursor"
-                              onClick={onClickShowMore}
+                          <div className="btns-wrapper-sm d-md-none">
+                            <Button
+                              className="btn-share btn-blueDark"
+                              onClick={() => {
+                                setModalType("share");
+                                setShowModal(true);
+                              }}
                             >
-                              {isExpanded ? "see less" : "see more"}
+                              <Image src={IconShare} />
+                              {isMobile ? "Share" : "Share NFT"}
+                            </Button>
+                            <Button
+                              className="btn-html btn-white ml-3"
+                              onClick={() => {
+                                setModalType("embed");
+                                setShowModal(true);
+                              }}
+                            >
+                              <Image src={IconHtml} />
+                              {isMobile ? "Embed" : "Embed to Earn"}
+                            </Button>
+                          </div>
+                          {/* <p className="mb-0">{detail.description}</p> */}
+                          {isExpanded || detail.description?.length < 300 ? (
+                            <p className="mb-0 text-left">{detail.description}</p>
+                          ) : (
+                            <p className="mb-0 text-left">
+                              {detail.description &&
+                                detail.description.substr(0, 300) + "..."}
                             </p>
+                          )}
+                          {detail.description && detail.description.length > 300 && (
+                            <div className="btn-show-more-wrapper text-left">
+                              <p
+                                className="see-more cursor"
+                                onClick={onClickShowMore}
+                              >
+                                {isExpanded ? "see less" : "see more"}
+                              </p>
+                            </div>
+                          )}
+                          <div className="views-wrapper">
+                            <div className="view-row">
+                              <h5 className="total-value text-left">
+                                {show_digit_number(detail.totalViews)}
+                              </h5>
+                              <h5 className="total-views">total views</h5>
+                            </div>
+                            <div className="view-row">
+                              <h5 className="total-value text-left">
+                                {show_digit_number(detail.totalReward)}{" "}
+                              </h5>
+                              <h5 className="total-views">total KOI rewards</h5>
+                            </div>
                           </div>
-                        )}
-                        <div className="views-wrapper">
-                          <div className="view-row">
-                            <h5 className="total-value text-left">
-                              {show_digit_number(detail.totalViews)}
-                            </h5>
-                            <h5 className="total-views">total views</h5>
+                          <div className="btns-wrapper d-none d-md-flex">
+                            <Button
+                              className="btn-share btn-blueDark"
+                              onClick={() => {
+                                setModalType("share");
+                                setShowModal(true);
+                              }}
+                            >
+                              <Image src={IconShare} />
+                              Share NFT
+                            </Button>
+                            <Button
+                              className="btn-html btn-white ml-3"
+                              onClick={() => {
+                                setModalType("embed");
+                                setShowModal(true);
+                              }}
+                            >
+                              <Image src={IconHtml} />
+                              Embed to Earn
+                            </Button>
                           </div>
-                          <div className="view-row">
-                            <h5 className="total-value text-left">
-                              {show_digit_number(detail.totalReward)}{" "}
-                            </h5>
-                            <h5 className="total-views">total KOI rewards</h5>
+                          <div className="social-wrapper">
+                            <TwitterShareButton url={currentUrl} title={shareTitle}>
+                              <FiTwitter size={24} color={colors.greenDark} />
+                            </TwitterShareButton>
+                            <InstapaperShareButton url={currentUrl} title={shareTitle}>
+                              <FaInstagram size={24} color={colors.greenDark} />
+                            </InstapaperShareButton>
+                            <FacebookShareButton url={currentUrl} quote={shareTitle}>
+                              <FiFacebook size={24} color={colors.greenDark} />
+                            </FacebookShareButton>
+                            <a href={smsUrl}>
+                              <FiMessageCircle
+                                size={24}
+                                color={colors.greenDark}
+                              />
+                            </a>
+                            <EmailShareButton url={currentUrl} subject={shareTitle}>
+                              <HiOutlineMail size={24} color={colors.greenDark} />
+                            </EmailShareButton>
                           </div>
                         </div>
-                        <div className="btns-wrapper d-none d-md-flex">
-                          <Button
-                            className="btn-share btn-blueDark"
-                            onClick={() => {
-                              setModalType("share");
-                              setShowModal(true);
-                            }}
-                          >
-                            <Image src={IconShare} />
-                            Share NFT
-                          </Button>
-                          <Button
-                            className="btn-html btn-white ml-3"
-                            onClick={() => {
-                              setModalType("embed");
-                              setShowModal(true);
-                            }}
-                          >
-                            <Image src={IconHtml} />
-                            Embed to Earn
-                          </Button>
-                        </div>
-                        <div className="social-wrapper">
-                          <TwitterShareButton url={currentUrl} title={shareTitle}>
-                            <FiTwitter size={24} color={colors.greenDark} />
-                          </TwitterShareButton>
-                          <InstapaperShareButton url={currentUrl} title={shareTitle}>
-                            <FaInstagram size={24} color={colors.greenDark} />
-                          </InstapaperShareButton>
-                          <FacebookShareButton url={currentUrl} quote={shareTitle}>
-                            <FiFacebook size={24} color={colors.greenDark} />
-                          </FacebookShareButton>
-                          <a href={smsUrl}>
-                            <FiMessageCircle
-                              size={24}
-                              color={colors.greenDark}
-                            />
-                          </a>
-                          <EmailShareButton url={currentUrl} subject={shareTitle}>
-                            <HiOutlineMail size={24} color={colors.greenDark} />
-                          </EmailShareButton>
-                        </div>
-                      </div>
-                    </Col>
-                  </Row>
-                </Container>
+                      </Col>
+                    </Row>
+                  </Container>
+                </div>
               </div>
-            </div>
+            </MetaWrapper>
           ) : (
             <h4 className="text-center mt-4">There is no content</h4>
           )}
