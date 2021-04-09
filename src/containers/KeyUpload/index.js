@@ -12,6 +12,7 @@ import { koi_tools } from "koi_tools"
 import { useHistory } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
 import { colors } from "theme";
+import MetaWrapper from "components/Wrappers/MetaWrapper";
 
 const { Dragger } = Upload;
 const arweave = Arweave.init(get_arweave_option);
@@ -113,84 +114,86 @@ function KeyUpload() {
   // };
 
   return (
-    <KeyUploadContainer>
-      <Container>
-        <div className="upload-content-wrapper">
-          <div className="upload-content">
-            <div className="title-wrapper">
-              <h1 className="text-blue upload-title">Upload Arweave Wallet Key.</h1>
-              <Button
-                className="back-wrapper btn-orange"
-                onClick={() => history.goBack()}
-              >
-                <FaArrowLeft size={20} color={colors.blueDark} />
-                <h6 className="mb-0 text-blue text-bold ml-2">back</h6>
-              </Button>
-            </div>
-            <div className="upload-body">
-              <div className="ant-form ant-form-horizontal">
-                <Row>
-                  <Col flex="100px">
-                    <div className="type-img-wrapper">
-                      <Image src={IconUpload} />
-                    </div>
-                  </Col>
-                  <Col flex={1}>
-                    <div className="upload-header">
-                      <div className="upload-header-title">
-                        <div className="header-description w-100">
-                          <h6 className="mb-0 text-blue ml-2">Confirm your upload.</h6>
-                          <p className="mb-0 text-blue ml-2">Drag & Drop your Arweave keyfile</p>
+    <MetaWrapper>
+      <KeyUploadContainer>
+        <Container>
+          <div className="upload-content-wrapper">
+            <div className="upload-content">
+              <div className="title-wrapper">
+                <h1 className="text-blue upload-title">Upload Arweave Wallet Key.</h1>
+                <Button
+                  className="back-wrapper btn-orange"
+                  onClick={() => history.goBack()}
+                >
+                  <FaArrowLeft size={20} color={colors.blueDark} />
+                  <h6 className="mb-0 text-blue text-bold ml-2">back</h6>
+                </Button>
+              </div>
+              <div className="upload-body">
+                <div className="ant-form ant-form-horizontal">
+                  <Row>
+                    <Col flex="100px">
+                      <div className="type-img-wrapper">
+                        <Image src={IconUpload} />
+                      </div>
+                    </Col>
+                    <Col flex={1}>
+                      <div className="upload-header">
+                        <div className="upload-header-title">
+                          <div className="header-description w-100">
+                            <h6 className="mb-0 text-blue ml-2">Confirm your upload.</h6>
+                            <p className="mb-0 text-blue ml-2">Drag & Drop your Arweave keyfile</p>
+                          </div>
                         </div>
                       </div>
+                      <div className="upload-content-form d-flex justify-content-center"></div>
+                    </Col>
+                  </Row>
+                  <div className="upload-cards-wrapper">
+                    <div className="single-ant-file-upload">
+                      <Dragger
+                        name="file"
+                        accept="application/*"
+                        multiple={false}
+                        listType="picture"
+                        beforeUpload={beforeJsonUpload}
+                        showUploadList={false}
+                      >
+                        <div className="uploader-container">
+                          {uploading ? (
+                            <Spin size="large" />
+                          ) : (
+                            <>
+                              <div className="uploader-icon d-flex justify-content-center align-items-center">
+                                <Image src={IconUpload} />
+                              </div>
+                              <p className="text-blue mb-0">
+                                Drag & Drop your Arweave keyfile here.
+                                                          </p>
+                            </>
+                          )}
+                        </div>
+                      </Dragger>
                     </div>
-                    <div className="upload-content-form d-flex justify-content-center"></div>
-                  </Col>
-                </Row>
-                <div className="upload-cards-wrapper">
-                  <div className="single-ant-file-upload">
-                    <Dragger
-                      name="file"
-                      accept="application/*"
-                      multiple={false}
-                      listType="picture"
-                      beforeUpload={beforeJsonUpload}
-                      showUploadList={false}
-                    >
-                      <div className="uploader-container">
-                        {uploading ? (
-                          <Spin size="large" />
-                        ) : (
-                          <>
-                            <div className="uploader-icon d-flex justify-content-center align-items-center">
-                              <Image src={IconUpload} />
-                            </div>
-                            <p className="text-blue mb-0">
-                              Drag & Drop your Arweave keyfile here.
-                                                        </p>
-                          </>
-                        )}
-                      </div>
-                    </Dragger>
                   </div>
-                </div>
-                <div>
-                <div className="text-center">
-                  {loading && <Spin size="large" /> }
-                </div>
-                  <Button
-                    className="btn-step-card mt-auto mx-auto"
-                    onClick={onClickGetKoi}
-                  >
-                    Get Balance
-                                    </Button>
+                  <div>
+                  <div className="text-center">
+                    {loading && <Spin size="large" /> }
+                  </div>
+                    <Button
+                      className="btn-step-card mt-auto mx-auto"
+                      onClick={onClickGetKoi}
+                    >
+                      Get Balance
+                                      </Button>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </Container>
-    </KeyUploadContainer>
+        </Container>
+      </KeyUploadContainer>
+    </MetaWrapper>
   );
 }
 

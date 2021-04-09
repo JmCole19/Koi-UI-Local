@@ -27,6 +27,7 @@ import {alertTimeout} from 'config'
 import ModalContent from "components/Elements/ModalContent";
 import { getKoi } from "service/KOI";
 import useDebounce from 'components/Utils/useDebounce'
+import MetaWrapper from "components/Wrappers/MetaWrapper";
 
 const arweave = Arweave.init(get_arweave_option);
 const { TextArea } = Input;
@@ -71,7 +72,7 @@ function ConfirmOpenseas() {
   const [showShareModal, setShowShareModal] = useState(false);
   const [modalType, setModalType] = useState("share");
   const [selectedContent, setSelectedContent] = useState([]);
-  const [mode, setMode] = useState("complete"); // change | confirm | uploadKey | uploading | complete
+  const [mode, setMode] = useState("change"); // change | confirm | uploadKey | uploading | complete
   const [activeOpenSea, setActiveOpenSea] = useState({
     id: 0,
     thumb: "",
@@ -454,7 +455,7 @@ function ConfirmOpenseas() {
   // };
 
   return (
-    <>
+    <MetaWrapper>
       <AlertArea
         showMessage={showAlert}
         variant={alertVariant}
@@ -911,7 +912,7 @@ function ConfirmOpenseas() {
           </Modal>
         </Container>
       </ConfirmOpenseasContainer>
-    </>
+    </MetaWrapper>
   );
 }
 
