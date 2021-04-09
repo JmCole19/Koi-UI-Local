@@ -2,9 +2,11 @@ import React, {useEffect} from 'react'
 import { Helmet } from 'react-helmet'
 
 const MetaWrapper = ({ 
-  title = '', 
+  title = 'Koi Leaderboard | Earn KOI for attention', 
   description = 'Koi Leaderboard | Earn KOI for attention', 
   keywords = '', 
+  url = 'https://koi.rocks/',
+  imageUrl = 'https://koi.rocks/koi-360x250.png', 
   children 
 }) => {
   useEffect(() => {
@@ -18,21 +20,21 @@ const MetaWrapper = ({
         <meta name='robots' content='index,follow' />
         <meta name='keywords' content={keywords} />
         <meta name="theme-color" content="#000000" />
-        <meta name="og:title" content="Koi Leaderboard | Earn KOI for attention" />
-        <meta name="og:description" content="Contribute extra computation, earn your share." />
-        <meta name="og:image" content="https://koi.rocks/koi-360x250.png" />
-        <meta property="og:image" content="https://koi.rocks/koi-360x250.png" />
-        <meta name="twitter:image" content="https://koi.rocks/koi-360x250.png" />
-        <meta name="og:url" content="https://koi.rocks/" />
-        <meta name="og:url" content="https://koi.rocks/" />
+        <meta name="og:title" content={title} />
+        <meta name="og:description" content={description} />
+        <meta name="og:image" content={imageUrl} />
+        <meta property="og:image" content={imageUrl} />
+        <meta name="og:url" content={url} />
+        <meta name="og:url" content={url} />
         <meta name="og:type" content="website" />
-        <meta property="og:title" content="Koi Leaderboard | Earn KOI for attention" />
-        <meta property="og:description" content="We're the record for web3. Become a witness today!" />
-        <meta property="og:url" content="https://koi.rocks/" />
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={description} />
+        <meta property="og:url" content={url} />
         <meta property="og:type" content="website" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="The Permenant Record | KOI" />
-        <meta name="twitter:description" content="Contribute extra computation, earn your share." />
+        <meta name="twitter:image" content={imageUrl} />
+        <meta name="twitter:title" content={title} />
+        <meta name="twitter:description" content={description} />
         <meta name="twitter:creator" content="" />
       </Helmet>
       <>
