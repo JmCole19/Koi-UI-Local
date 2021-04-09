@@ -5,7 +5,7 @@ import {
   IconUpload,
   IconOpenSea,
 } from "assets/images";
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState } from "react";
 import Web3 from "web3";
 // import Arweave from "arweave";
 import { Button, Container, Image } from "react-bootstrap";
@@ -13,15 +13,12 @@ import { useHistory } from "react-router-dom";
 import { RegisterContentContainer } from "./style";
 import { abi } from "assets/abi";
 import { DataContext } from "contexts/DataContextContainer";
-import { convertArBalance, get_arweave_option, show_notification } from "service/utils";
+import { convertArBalance, show_notification } from "service/utils";
 import { Col, Row, Spin } from "antd";
 import AlertArea from "components/Sections/AlertArea";
 import customAxios from "service/customAxios";
-import Arweave from "arweave";
 import { getKoi } from "service/KOI";
 import { alertTimeout } from "config";
-
-const arweave = Arweave.init(get_arweave_option);
 
 const cards = [
   {
@@ -63,7 +60,6 @@ function RegisterContent() {
   const history = useHistory();
   const {
     addressAr,
-    setAddressAr,
     keyAr,
     setAddressEth,
     setBalanceKoi,
@@ -73,7 +69,7 @@ function RegisterContent() {
   const [alertVariant, setAlertVariant] = useState('danger');
   const [errEmessage, setErrMessage] = useState('');
   const [loading, setLoading] = useState(false);
-  const [detectorAr, setDetectorAr] = useState(false);
+  // const [detectorAr, setDetectorAr] = useState(false);
 
   const show_alert = (message = '', type = 'danger') => {
     setShowAlert(true)
@@ -157,53 +153,54 @@ function RegisterContent() {
   };
   const onRedeemVoucher = () => {
     if(!keyAr) {
-      setDetectorAr(true);
+      console.log("here")
+      // setDetectorAr(true);
     }else{
       openMetaMask("redeem");
     }
   };
 
-  useEffect(() => {
-    if (detectorAr) {
-      window.addEventListener("arweaveWalletLoaded", detectArweaveWallet());
-      return () => {
-        window.removeEventListener("arweaveWalletLoaded", () => {});
-      };
-    }
-  }, [detectorAr]);
+  // useEffect(() => {
+  //   if (detectorAr) {
+  //     window.addEventListener("arweaveWalletLoaded", detectArweaveWallet());
+  //     return () => {
+  //       window.removeEventListener("arweaveWalletLoaded", () => {});
+  //     };
+  //   }
+  // }, [detectorAr]);
 
-  const detectArweaveWallet = async () => {
-    try {
-      let addr = await arweave.wallets.getAddress();
-      console.log("detected arweave wallet address : ", addr);
-      if (addr) {
-        setAddressAr(addr);
-        if(keyAr)
-          openMetaMask("redeem");
-        else{
-          show_alert(
-            "There was a problem retrieving your ARwallet balance. Please upload your Arweave key."
-          );
-          show_notification("There was a problem retrieving your arwallet balance. Please upload your Arweave key.")
-          setTimeout( () => {
-            history.push("/wallet-key");
-          }, 4000)  
-        }
-      } else {
-        // show alert
-        show_alert("There was an error detecting your Arweave wallet address.");
-        setTimeout( () => {
-          history.push("/wallet-key");
-        }, 4000)  
-      }
-    } catch (err) {
-      // console.log(err);
-      show_alert("There was an error detecting your Arweave wallet address.");
-      setTimeout( () => {
-        history.push("/wallet-key");
-      }, 4000)  
-    }
-  };
+  // const detectArweaveWallet = async () => {
+  //   try {
+  //     let addr = await arweave.wallets.getAddress();
+  //     console.log("detected arweave wallet address : ", addr);
+  //     if (addr) {
+  //       setAddressAr(addr);
+  //       if(keyAr)
+  //         openMetaMask("redeem");
+  //       else{
+  //         show_alert(
+  //           "There was a problem retrieving your ARwallet balance. Please upload your Arweave key."
+  //         );
+  //         show_notification("There was a problem retrieving your arwallet balance. Please upload your Arweave key.")
+  //         setTimeout( () => {
+  //           history.push("/wallet-key");
+  //         }, 4000)  
+  //       }
+  //     } else {
+  //       // show alert
+  //       show_alert("There was an error detecting your Arweave wallet address.");
+  //       setTimeout( () => {
+  //         history.push("/wallet-key");
+  //       }, 4000)  
+  //     }
+  //   } catch (err) {
+  //     // console.log(err);
+  //     show_alert("There was an error detecting your Arweave wallet address.");
+  //     setTimeout( () => {
+  //       history.push("/wallet-key");
+  //     }, 4000)  
+  //   }
+  // };
   
   return (
     <>
