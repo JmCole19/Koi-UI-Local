@@ -22,6 +22,7 @@ import { getKoi } from "service/KOI";
 import { FaTimes } from "react-icons/fa";
 import { colors } from "theme";
 import useDebounce from "components/Utils/useDebounce";
+import MetaWrapper from "components/Wrappers/MetaWrapper";
 
 const arweave = Arweave.init(get_arweave_option);
 const { TextArea } = Input;
@@ -308,7 +309,7 @@ function UploadManual() {
   }, []);
 
   return (
-    <>
+    <MetaWrapper>
       <AlertArea
         showMessage={showAlert}
         variant={alertVariant}
@@ -667,7 +668,7 @@ function UploadManual() {
           </Modal>
         </Container>
       </UploadUploadContainer>
-    </>
+    </MetaWrapper>
   );
 }
 

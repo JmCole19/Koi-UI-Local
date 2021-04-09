@@ -11,6 +11,7 @@ import { DataContext } from "contexts/DataContextContainer";
 import { colors } from "theme";
 import {alertTimeout} from 'config'
 import AlertArea from "components/Sections/AlertArea";
+import MetaWrapper from "components/Wrappers/MetaWrapper";
 
 // const testOpenseaAddress = '0xd703accc62251189a67106f22d54cd470494de40'
 
@@ -99,105 +100,107 @@ function UploadOpenSea() {
   }
 
   return (
-    <UploadOpenSeaContainer>
-      <AlertArea
-        showMessage={showAlert}
-        message={errEmessage}
-      ></AlertArea>
-      <Container>
-        <div className="opensea-content-wrapper">
-          <div className="opensea-content">
-            <div className="title-wrapper">
-              <h1 className="text-blue opensea-title">Your OpenSea content</h1>
-              <Button className="back-wrapper btn-orange" onClick={() => history.replace('/register-content')}>
-                <FaArrowLeft size={20} color={colors.blueDark} />
-                <h6 className="mb-0 text-blue text-bold ml-2">Leaderboard</h6>
-              </Button>
-            </div>
-            <h4 className="opensea-description">
-              Select your NFTs to upload them to Arweave’s permaweb. You’ll earn
-              rewards every time someone views them!
-            </h4>
-            <div className="counts-wrapper">
-              <div
-                className={`selected-counts ${
-                  selectedIds.length > 0 && "isSet"
-                }`}
-              >
-                {selectedIds.length}
+    <MetaWrapper>
+      <UploadOpenSeaContainer>
+        <AlertArea
+          showMessage={showAlert}
+          message={errEmessage}
+        ></AlertArea>
+        <Container>
+          <div className="opensea-content-wrapper">
+            <div className="opensea-content">
+              <div className="title-wrapper">
+                <h1 className="text-blue opensea-title">Your OpenSea content</h1>
+                <Button className="back-wrapper btn-orange" onClick={() => history.replace('/register-content')}>
+                  <FaArrowLeft size={20} color={colors.blueDark} />
+                  <h6 className="mb-0 text-blue text-bold ml-2">Leaderboard</h6>
+                </Button>
               </div>
-              <Button
-                className={`btn-all ${isAllSelected && "selected-all"}`}
-                onClick={onSelectAll}
-              >
-                Select all NFTs
-              </Button>
-            </div>
-            {isLoading ? (
-              <div className="loading-container">
-                <ScaleLoader size={15} color={"#2a58ad"} />
+              <h4 className="opensea-description">
+                Select your NFTs to upload them to Arweave’s permaweb. You’ll earn
+                rewards every time someone views them!
+              </h4>
+              <div className="counts-wrapper">
+                <div
+                  className={`selected-counts ${
+                    selectedIds.length > 0 && "isSet"
+                  }`}
+                >
+                  {selectedIds.length}
+                </div>
+                <Button
+                  className={`btn-all ${isAllSelected && "selected-all"}`}
+                  onClick={onSelectAll}
+                >
+                  Select all NFTs
+                </Button>
               </div>
-            ) : (
-              <Row
-                // gutter={{ xs: [8, 8], sm: [16, 16], md: [24, 24], lg: [32, 32] }}
-                gutter={[
-                  { xs: 16, sm: 16, lg: 32 },
-                  { xs: 40, sm: 40, lg: 32 },
-                ]}
-                className="opensea-cards"
-              >
-                {openSeas.length > 0 &&
-                  openSeas.map((_card, _i) => {
-                    let selected = selectedIds.includes(_card.id);
-                    return (
-                      <Col
-                        key={_i}
-                        className="gutter-row"
-                        xs={{ span: 12 }}
-                        sm={{ span: 12 }}
-                        md={{ span: 12 }}
-                        lg={{ span: 6 }}
-                      >
-                        <div
-                          className={`opensea-card ${
-                            selected ? "selected" : ""
-                          }`}
-                          onClick={() => onClickCard(_card.id)}
+              {isLoading ? (
+                <div className="loading-container">
+                  <ScaleLoader size={15} color={"#2a58ad"} />
+                </div>
+              ) : (
+                <Row
+                  // gutter={{ xs: [8, 8], sm: [16, 16], md: [24, 24], lg: [32, 32] }}
+                  gutter={[
+                    { xs: 16, sm: 16, lg: 32 },
+                    { xs: 40, sm: 40, lg: 32 },
+                  ]}
+                  className="opensea-cards"
+                >
+                  {openSeas.length > 0 &&
+                    openSeas.map((_card, _i) => {
+                      let selected = selectedIds.includes(_card.id);
+                      return (
+                        <Col
+                          key={_i}
+                          className="gutter-row"
+                          xs={{ span: 12 }}
+                          sm={{ span: 12 }}
+                          md={{ span: 12 }}
+                          lg={{ span: 6 }}
                         >
-                          {selected ? (
-                            <div className="icon-checked">
-                              <FaCheck />
+                          <div
+                            className={`opensea-card ${
+                              selected ? "selected" : ""
+                            }`}
+                            onClick={() => onClickCard(_card.id)}
+                          >
+                            {selected ? (
+                              <div className="icon-checked">
+                                <FaCheck />
+                              </div>
+                            ) : (
+                              <div className="icon-plus">
+                                <FaPlus />
+                              </div>
+                            )}
+                            <div className="card-img">
+                              <Image src={_card.image_thumbnail_url} />
                             </div>
-                          ) : (
-                            <div className="icon-plus">
-                              <FaPlus />
+                            <div className="card-content">
+                              <h6>{_card.name}</h6>
                             </div>
-                          )}
-                          <div className="card-img">
-                            <Image src={_card.image_thumbnail_url} />
                           </div>
-                          <div className="card-content">
-                            <h6>{_card.name}</h6>
-                          </div>
-                        </div>
-                      </Col>
-                    );
-                  })}
-              </Row>
-            )}
-            <div className="btn-verify-wrapper">
-              <Button
-                className="btn-back btn-blueDark"
-                disabled={selectedIds.length === 0}
-                onClick={onClickVerify}
-              >
-                Verify Details
-              </Button>
+                        </Col>
+                      );
+                    })}
+                </Row>
+              )}
+              <div className="btn-verify-wrapper">
+                <Button
+                  className="btn-back btn-blueDark"
+                  disabled={selectedIds.length === 0}
+                  onClick={onClickVerify}
+                >
+                  Verify Details
+                </Button>
+              </div>
             </div>
           </div>
-        </div>
-      </Container>
-    </UploadOpenSeaContainer>
+        </Container>
+      </UploadOpenSeaContainer>
+    </MetaWrapper>
   );
 }
 

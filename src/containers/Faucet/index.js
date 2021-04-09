@@ -15,6 +15,7 @@ import { getArWalletAddressFromJson } from "service/NFT";
 import { koi_tools } from "koi_tools"
 import AlertArea from "components/Sections/AlertArea";
 import { alertTimeout } from "config";
+import MetaWrapper from "components/Wrappers/MetaWrapper";
 
 const arweave = Arweave.init(get_arweave_option);
 const { Dragger } = Upload;
@@ -238,7 +239,7 @@ function Faucet() {
   // };
 
   return (
-    <>
+    <MetaWrapper>
       <AlertArea
         showMessage={showAlert}
         variant={alertVariant}
@@ -440,7 +441,7 @@ function Faucet() {
           </div>
         </Container>
       </FaucetContainer>
-    </>
+    </MetaWrapper>
   );
 }
 

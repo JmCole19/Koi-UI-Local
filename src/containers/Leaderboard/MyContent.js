@@ -144,132 +144,134 @@ function MyContent() {
   }
 
   return (
-    <LeaderboardContainer>
-      <div className="leaderboard">
-        <div className="leaderboard-header">
-          <h2 className="text-blue mb-0">
-            My Content
-          </h2>
-          <ReactSlider
-            className="filter-options-desktop mr-auto d-none d-md-flex"
-            marks
-            markClassName="example-mark"
-            min={0}
-            max={4}
-            value={sliderValue}
-            onChange={(v) => onSliderChange(v)}
-            trackClassName="example-track"
-            renderMark={(props) => (
-              <span key={props.key} className="example-mark">
-                {options[props.key]}
-              </span>
-            )}
-            renderThumb={(props, state) => (
-              <StyledThumb {...props} value={state.valueNow}>
-                {options[state.valueNow]}
-              </StyledThumb>
-            )}
-          />
-          <ReactSlider
-            className="filter-options-mobile d-md-none"
-            marks
-            markClassName="example-mark"
-            min={0}
-            max={4}
-            value={sliderValue}
-            onChange={(v) => onSliderChange(v)}
-            thumbClassName="example-thumb"
-            trackClassName="example-track"
-            renderThumb={(props, state) => (
-              <div {...props}>{options[state.valueNow]}</div>
-            )}
-          />
-          <Button className="btn-my-content" onClick={onClickContents}>
-            Top Content
-          </Button>
-          <Button className="btn-leaderbard-plus" onClick={onClickPlus}>
-            <i className="fas fa-plus"></i>
-          </Button>
-        </div>
-        {!isLoading && !contents.length && <ImportArea>
-          <LinkNftUpload className={`big cursor`} onClick={() => history.push('/register-content')}>
-            <div className="font-n-1">You haven't permanently stored any content yet.</div>
-            <div className="font-n-1"><b>Let's fix that.</b></div>
-            <div className="text-center mt-4 mb-4 cursor">
-              <div className='font-s-1'>
-                <span>
-                  <Image src={IconUpload} width={32} className="overlay-opensea" />
-                  <Image src={IconOpenSea} width={32} />
+    <MetaWrapper>
+      <LeaderboardContainer>
+        <div className="leaderboard">
+          <div className="leaderboard-header">
+            <h2 className="text-blue mb-0">
+              My Content
+            </h2>
+            <ReactSlider
+              className="filter-options-desktop mr-auto d-none d-md-flex"
+              marks
+              markClassName="example-mark"
+              min={0}
+              max={4}
+              value={sliderValue}
+              onChange={(v) => onSliderChange(v)}
+              trackClassName="example-track"
+              renderMark={(props) => (
+                <span key={props.key} className="example-mark">
+                  {options[props.key]}
                 </span>
-                <b>&nbsp;&nbsp;&nbsp; Click to upload an image</b> or connect your OpenSea account</div>
-            </div>
-            <div className='font-s-1'>What are you waiting for? <b>Start earning KOI.</b></div>
-          </LinkNftUpload>
-        </ImportArea>}
-        <AlertArea
-          showMessage={showAlert}
-          message={errEmessage}
-          cancel={() => setShowAlert(false)}
-          showCancel={true}
-        ></AlertArea>
-        <div className="leaderboard-items">
-          {isLoading ? (
-            <div className="loading-container">
-              <ScaleLoader size={15} color={"#2a58ad"} />
-            </div>
-          ) : (
-            contents
-              .filter((_item, _i) => _i < 5)
-              .map((_item, _i) => (
-                <LeaderboardItem
-                  key={_i}
-                  item={_item}
-                  order={_i}
-                  onClickItem={() => onClickItem(_item, "view")}
-                  onClickUsername={() => onClickUsername(_item)}
-                  onClickShare={() => onClickItem(_item, "share")}
-                  onClickEmbed={() => onClickItem(_item, "embed")}
-                />
-              ))
-          )}
-          <Collapse
-            activeKey={isExpanded ? ["1"] : null}
-            bordered={false}
-            expandIcon={() => <div />}
-          >
-            <Panel header={null} key="1">
-              {contents
-                .filter((_item, _i) => _i >= 5)
+              )}
+              renderThumb={(props, state) => (
+                <StyledThumb {...props} value={state.valueNow}>
+                  {options[state.valueNow]}
+                </StyledThumb>
+              )}
+            />
+            <ReactSlider
+              className="filter-options-mobile d-md-none"
+              marks
+              markClassName="example-mark"
+              min={0}
+              max={4}
+              value={sliderValue}
+              onChange={(v) => onSliderChange(v)}
+              thumbClassName="example-thumb"
+              trackClassName="example-track"
+              renderThumb={(props, state) => (
+                <div {...props}>{options[state.valueNow]}</div>
+              )}
+            />
+            <Button className="btn-my-content" onClick={onClickContents}>
+              Top Content
+            </Button>
+            <Button className="btn-leaderbard-plus" onClick={onClickPlus}>
+              <i className="fas fa-plus"></i>
+            </Button>
+          </div>
+          {!isLoading && !contents.length && <ImportArea>
+            <LinkNftUpload className={`big cursor`} onClick={() => history.push('/register-content')}>
+              <div className="font-n-1">You haven't permanently stored any content yet.</div>
+              <div className="font-n-1"><b>Let's fix that.</b></div>
+              <div className="text-center mt-4 mb-4 cursor">
+                <div className='font-s-1'>
+                  <span>
+                    <Image src={IconUpload} width={32} className="overlay-opensea" />
+                    <Image src={IconOpenSea} width={32} />
+                  </span>
+                  <b>&nbsp;&nbsp;&nbsp; Click to upload an image</b> or connect your OpenSea account</div>
+              </div>
+              <div className='font-s-1'>What are you waiting for? <b>Start earning KOI.</b></div>
+            </LinkNftUpload>
+          </ImportArea>}
+          <AlertArea
+            showMessage={showAlert}
+            message={errEmessage}
+            cancel={() => setShowAlert(false)}
+            showCancel={true}
+          ></AlertArea>
+          <div className="leaderboard-items">
+            {isLoading ? (
+              <div className="loading-container">
+                <ScaleLoader size={15} color={"#2a58ad"} />
+              </div>
+            ) : (
+              contents
+                .filter((_item, _i) => _i < 5)
                 .map((_item, _i) => (
                   <LeaderboardItem
                     key={_i}
                     item={_item}
-                    order={_i + 5}
+                    order={_i}
                     onClickItem={() => onClickItem(_item, "view")}
                     onClickUsername={() => onClickUsername(_item)}
                     onClickShare={() => onClickItem(_item, "share")}
                     onClickEmbed={() => onClickItem(_item, "embed")}
                   />
-                ))}
-            </Panel>
-          </Collapse>
-          {contents.length > 5 && (
-            <div className="btn-show-more-wrapper">
-              <Button className="btn-show-more" onClick={onClickShowMore}>
-                {isExpanded ? "Show Less" : "Show More"}
-              </Button>
-            </div>
-          )}
+                ))
+            )}
+            <Collapse
+              activeKey={isExpanded ? ["1"] : null}
+              bordered={false}
+              expandIcon={() => <div />}
+            >
+              <Panel header={null} key="1">
+                {contents
+                  .filter((_item, _i) => _i >= 5)
+                  .map((_item, _i) => (
+                    <LeaderboardItem
+                      key={_i}
+                      item={_item}
+                      order={_i + 5}
+                      onClickItem={() => onClickItem(_item, "view")}
+                      onClickUsername={() => onClickUsername(_item)}
+                      onClickShare={() => onClickItem(_item, "share")}
+                      onClickEmbed={() => onClickItem(_item, "embed")}
+                    />
+                  ))}
+              </Panel>
+            </Collapse>
+            {contents.length > 5 && (
+              <div className="btn-show-more-wrapper">
+                <Button className="btn-show-more" onClick={onClickShowMore}>
+                  {isExpanded ? "Show Less" : "Show More"}
+                </Button>
+              </div>
+            )}
+          </div>
         </div>
-      </div>
-      <ModalContent
-        type={modalType}
-        show={showModal}
-        detail={selectedContent}
-        onHide={() => setShowModal(false)}
-        onSwitchModal={onSwitchModal}
-      />
-    </LeaderboardContainer>
+        <ModalContent
+          type={modalType}
+          show={showModal}
+          detail={selectedContent}
+          onHide={() => setShowModal(false)}
+          onSwitchModal={onSwitchModal}
+        />
+      </LeaderboardContainer>
+    </MetaWrapper>
   );
 }
 
