@@ -85,7 +85,7 @@ function ConfirmOpenseas() {
   const [uploadContents, setUploadContents] = useState([]);
   const [showModal, setShowModal] = useState(false);
   var selectedIds = selected.split("_");
-  const [detectorAr] = useState(false);
+  // const [detectorAr] = useState(false);
   // const [walletKey, setWalletKey] = useState(null);
   const [updatingProcess, setUploadingProcess] = useState(0);
   const [showAlert, setShowAlert] = useState(false);
@@ -421,38 +421,38 @@ function ConfirmOpenseas() {
     }
   }, [history.location.pathname]);
 
-  useEffect(() => {
-    if (detectorAr) {
-      window.addEventListener("arweaveWalletLoaded", detectArweaveWallet());
-      return () => {
-        window.removeEventListener(
-          "arweaveWalletLoaded",
-          detectArweaveWallet()
-        );
-      };
-    }
-  }, [detectorAr]);
+  // useEffect(() => {
+  //   if (detectorAr) {
+  //     window.addEventListener("arweaveWalletLoaded", detectArweaveWallet());
+  //     return () => {
+  //       window.removeEventListener(
+  //         "arweaveWalletLoaded",
+  //         detectArweaveWallet()
+  //       );
+  //     };
+  //   }
+  // }, [detectorAr]);
 
-  const detectArweaveWallet = async () => {
-    try {
-      let addr = await arweave.wallets.getAddress();
-      let addressResult = await getArWalletAddressFromJson(arweave, keyAr);
-      console.log("addressResult : ", addressResult);
-      console.log("detect address: ", addr);
-      if (addr) {
-        setAddressAr(addr);
-      } else {
-        show_notification(
-          "can\t detect ArWallet address. Please check install ArConnect extension or create a wallet."
-        );
-      }
-    } catch (err) {
-      console.log(err);
-      show_notification(
-        "can\t detect ArWallet address. Please install ArConnect extension and create a wallet."
-      );
-    }
-  };
+  // const detectArweaveWallet = async () => {
+  //   try {
+  //     let addr = await arweave.wallets.getAddress();
+  //     let addressResult = await getArWalletAddressFromJson(arweave, keyAr);
+  //     console.log("addressResult : ", addressResult);
+  //     console.log("detect address: ", addr);
+  //     if (addr) {
+  //       setAddressAr(addr);
+  //     } else {
+  //       show_notification(
+  //         "can\t detect ArWallet address. Please check install ArConnect extension or create a wallet."
+  //       );
+  //     }
+  //   } catch (err) {
+  //     console.log(err);
+  //     show_notification(
+  //       "can\t detect ArWallet address. Please install ArConnect extension and create a wallet."
+  //     );
+  //   }
+  // };
 
   return (
     <>

@@ -37,7 +37,7 @@ function Faucet() {
     setBalanceKoi,
     setBalanceAr,
   } = useContext(DataContext);
-  const [detectorAr, setDetectorAr] = useState(false);
+  // const [detectorAr, setDetectorAr] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [alertVariant, setAlertVariant] = useState('danger');
   const [errEmessage, setErrMessage] = useState('');
@@ -85,15 +85,11 @@ function Faucet() {
           history.push(`/faucet?step=1&address=${addressAr}`);
         }
       })
-    }else if( !detectorAr ){
-      console.log("here1")
-      setDetectorAr(true)
+    // }else if( !detectorAr ){
+    //   console.log("here1")
+    //   setDetectorAr(true)
     }else{
-      let arweave = Arweave.init({
-        host: "arweave.net",
-        port: 443,
-        protocol: "https",
-      });
+      let arweave = Arweave.init(get_arweave_option);
       let keyData = await arweave.wallets.generate();
       const data = JSON.stringify(keyData);
       fileDownload(data, "arweaveWallet.json");
@@ -215,31 +211,31 @@ function Faucet() {
     queryAddress && setAddress(queryAddress);
   }, [step, queryAddress]);
 
-  useEffect(() => {
-    if (detectorAr) {
-      window.addEventListener("arweaveWalletLoaded", detectArweaveWallet());
-      return () => {
-        window.removeEventListener("arweaveWalletLoaded", () => {});
-      };
-    }
-  }, [detectorAr]);
+  // useEffect(() => {
+  //   if (detectorAr) {
+  //     window.addEventListener("arweaveWalletLoaded", detectArweaveWallet());
+  //     return () => {
+  //       window.removeEventListener("arweaveWalletLoaded", () => {});
+  //     };
+  //   }
+  // }, [detectorAr]);
 
-  const detectArweaveWallet = async () => {
-    try {
-      let addr = await arweave.wallets.getAddress();
-      console.log("detected arweave wallet address : ", addr);
-      if (addr) {
-        setAddressAr(addr);
-        setCurStep(1);
-        history.push(`/faucet?step=1&address=${addr}`);
-      } else {
-        show_alert("Error on detecting Arweave wallet address");
-      }
-    } catch (err) {
-      console.log(err);
-      show_notification("Error on detecting Arweave wallet address");
-    }
-  };
+  // const detectArweaveWallet = async () => {
+  //   try {
+  //     let addr = await arweave.wallets.getAddress();
+  //     console.log("detected arweave wallet address : ", addr);
+  //     if (addr) {
+  //       setAddressAr(addr);
+  //       setCurStep(1);
+  //       history.push(`/faucet?step=1&address=${addr}`);
+  //     } else {
+  //       show_alert("Error on detecting Arweave wallet address");
+  //     }
+  //   } catch (err) {
+  //     console.log(err);
+  //     show_notification("Error on detecting Arweave wallet address");
+  //   }
+  // };
 
   return (
     <>
