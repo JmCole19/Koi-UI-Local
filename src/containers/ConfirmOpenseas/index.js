@@ -71,7 +71,7 @@ function ConfirmOpenseas() {
   const [showShareModal, setShowShareModal] = useState(false);
   const [modalType, setModalType] = useState("share");
   const [selectedContent, setSelectedContent] = useState([]);
-  const [mode, setMode] = useState("complete"); // change | confirm | uploadKey | uploading | complete
+  const [mode, setMode] = useState("change"); // change | confirm | uploadKey | uploading | complete
   const [activeOpenSea, setActiveOpenSea] = useState({
     id: 0,
     thumb: "",
