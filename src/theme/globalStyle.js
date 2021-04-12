@@ -70,6 +70,14 @@ const GlobalStyle = createGlobalStyle`
       font-size: 18px;
       line-height: 24px;
       letter-spacing: 0.03em;
+      @media (max-width: ${mixins.sm}px) {
+        font-size: 16px;
+        line-height: 22px;
+      }
+      @media (max-width: ${mixins.xs}px) {
+        font-size: 14px;
+        line-height: 20px;
+      }
     }
     .font-n-1{
       color: ${colors.blueDark};
@@ -77,6 +85,8 @@ const GlobalStyle = createGlobalStyle`
       line-height: 32px;
       letter-spacing: 0.03em;
     }
+    .height-auto{height: auto !important;}
+    .height-130{height: 130px !important;}
     .overlay-opensea{
       position: relative;
       margin-right: -5px;

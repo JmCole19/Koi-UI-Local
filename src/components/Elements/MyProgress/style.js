@@ -245,7 +245,7 @@ export const LeaderboardItemContainer = styled.div`
       margin-bottom: 40px;
       .item-col {
         &.item-info-wrapper {
-          flex: none;
+          flex: 2;
           margin-left: auto;
           .item-title {
             font-size: 24px !important;
@@ -255,6 +255,7 @@ export const LeaderboardItemContainer = styled.div`
           }
         }
         &.item-img-wrapper {
+          flex: 1;
           img {
             width: 128px;
           }

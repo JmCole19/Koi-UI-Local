@@ -185,7 +185,7 @@ export const LeaderboardContainer = styled.div`
       min-height: 45px;
       top: 48px;
       h2 {
-        font-size: 15px !important;
+        font-size: 16px !important;
       }
       .btn-my-content {
         margin-right: 5px;
@@ -193,6 +193,14 @@ export const LeaderboardContainer = styled.div`
     }
   }
   @media (max-width: ${mixins.sm}px) {
+    .leaderboard-header {
+      h2, .btn-my-content {
+        font-size: 14px !important;
+      }
+      .btn-my-content {
+        margin-right: 5px;
+      }
+    }
   }
 `;
 export const StyledThumb = styled.div`

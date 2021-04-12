@@ -250,13 +250,11 @@ function ModalContent({
             <div className="modal-right">
               <div className="part">
                 <h6 className="part-title text-blue">Copy the snippet</h6>
-                <div className="input-group">
-                  <input
-                    type="text"
-                    className="form-control"
-                    placeholder={embedUrl}
-                  />
-                  <span className="input-group-btn">
+                <div className="">
+                  <textarea disabled
+                    className="form-control height-130"
+                  >{embedContent}</textarea>
+                  <div className="input-group-btn mt-1">
                     <button
                       className="btn btn-blueDark"
                       type="button"
@@ -264,7 +262,7 @@ function ModalContent({
                     >
                       Copy Code
                     </button>
-                  </span>
+                  </div>
                   {copiedCode && (
                     <div className="copied-message">Code snippet copied!</div>
                   )}
