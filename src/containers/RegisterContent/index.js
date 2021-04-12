@@ -262,7 +262,7 @@ function RegisterContent() {
                 </Button>
               </div>
               {loading && <div className='text-center w-100'><Spin size="large" /></div>}
-              <p className="bottom-description text-blue text-center">
+              <p className="bottom-description text-blue text-center hide">
                 Got a voucher?{" "}
                 <span className="span-link" onClick={onRedeemVoucher}>
                   Redeem an NFT voucher
