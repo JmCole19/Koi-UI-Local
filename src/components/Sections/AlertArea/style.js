@@ -22,5 +22,6 @@ export const CustomAlertContainer = styled.div`
     position: absolute;
     right: 20px;
     top: 10px;
+    @media (max-width: 1024px) { right: 2px; }
   }
 `;

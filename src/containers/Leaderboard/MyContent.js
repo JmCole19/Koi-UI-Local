@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useContext, useEffect, useState } from "react";
 import { Button, Image } from "react-bootstrap";
-import { koi_tools } from "koi_tools";
+// import { koi_tools } from "koi_tools";
 import { ScaleLoader } from "react-spinners";
 import { LeaderboardContainer, StyledThumb, LinkNftUpload } from "./style";
 import { Collapse } from "antd";
@@ -10,6 +10,7 @@ import { useHistory } from "react-router-dom";
 import LeaderboardItem from "./LeaderboardItem";
 import { DataContext } from "contexts/DataContextContainer";
 import ModalContent from "components/Elements/ModalContent";
+import axios from "axios";
 // import { show_notification } from "service/utils";
 import AlertArea from "components/Sections/AlertArea";
 import { alertTimeout } from "config";
@@ -20,11 +21,11 @@ import MetaWrapper from "components/Wrappers/MetaWrapper";
 const { Panel } = Collapse;
 const options = ["24h", "1w", "1m", "1y", "all"];
 
-const ktools = new koi_tools();
+// const ktools = new koi_tools();
 
 function MyContent() {
   const history = useHistory();
-  const { keyAr, addressAr } = useContext(DataContext);
+  const { addressAr } = useContext(DataContext);
   const [contents, setContents] = useState([]);
   const [sliderValue, setSliderValue] = useState(4);
   const [isExpanded, setIsExpanded] = useState(false);
@@ -101,35 +102,58 @@ function MyContent() {
 
   const getContents = async (walletAddress = '') => {
     // console.log("keyAr" , JSON.stringify(keyAr))
-    if (keyAr) {
-      setIsLoading(true);
-      console.log("my content", keyAr)
-      await ktools.loadWallet(keyAr)
-      ktools.myContent(addressAr).then((res) => {
-        if (res.length === 0) {
-          show_alert(`Our school of koi couldn't find anything on that wallet[${addressAr}].`)
-        } else {
-          let res_data = []
-          res.forEach(element => {
+    axios.get('https://bundler.openkoi.com:8888/state/getTopContent/')
+    .then((res) => {
+      const data = res.data
+      // console.log({ data });
+      if(data === 0) {
+        show_alert("There are no contents.")  
+      }else{
+        let res_data = []
+        data.forEach(element => {
+          if(element.owner === addressAr) {
             let str_created_at = element.createdAt || "1609500000"
             let created_at = Number(str_created_at) * 1000
             element.created_at = created_at
             res_data.push(element)
-          });
-          console.log(res_data)
-          setContents(res_data);
-        }
-        console.log({ res });
-      }).catch(err => {
-        console.log(err)
-        show_alert("There is an error to getting NFT contents.")
-      }).finally(() => {
-        console.log("finally")
-        setIsLoading(false);
-      });
-    } else {
-      show_alert(`Please upload your wallet key file by selecting the "Connect Wallet" button.`)
-    }
+          }
+        });
+        console.log(res_data)
+        setContents(res_data);
+      }
+    }).catch( err => {
+      console.log(err)
+      show_alert('There is an error')
+    }).finally( () => setIsLoading(false));
+    // if (keyAr) {
+    //   setIsLoading(true);
+    //   console.log("my content", keyAr)
+    //   await ktools.loadWallet(keyAr)
+    //   ktools.myContent(addressAr).then((res) => {
+    //     if (res.length === 0) {
+    //       show_alert(`Our school of koi couldn't find anything on that wallet[${addressAr}].`)
+    //     } else {
+    //       let res_data = []
+    //       res.forEach(element => {
+    //         let str_created_at = element.createdAt || "1609500000"
+    //         let created_at = Number(str_created_at) * 1000
+    //         element.created_at = created_at
+    //         res_data.push(element)
+    //       });
+    //       console.log(res_data)
+    //       setContents(res_data);
+    //     }
+    //     console.log({ res });
+    //   }).catch(err => {
+    //     console.log(err)
+    //     show_alert("There is an error to getting NFT contents.")
+    //   }).finally(() => {
+    //     console.log("finally")
+    //     setIsLoading(false);
+    //   });
+    // } else {
+    //   show_alert(`Please upload your wallet key file by selecting the "Connect Wallet" button.`)
+    // }
   };
   useEffect(() => {
     setTimeout(() => getContents(), 1000);

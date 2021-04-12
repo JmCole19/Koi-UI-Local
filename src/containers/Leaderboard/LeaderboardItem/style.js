@@ -156,6 +156,7 @@ export const LeaderboardItemContainer = styled.div`
   @media (max-width: 479px) {
     padding: 0px 20px;
     .item-reviews-wrapper {
+      margin-bottom: 25px !important;
       padding: 5px !important;
       h5 { font-size: 16px !important; }
     }
