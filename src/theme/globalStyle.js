@@ -91,6 +91,7 @@ const GlobalStyle = createGlobalStyle`
       position: relative;
       margin-right: -5px;
     }
+    .flex1{ flex: 1; }
     h1,
     h2,
     h3,
