@@ -157,6 +157,10 @@ export const ContentDetailContainer = styled.div`
   @media (max-width: ${mixins.sm}px) {
     .content-detail-wrapper {
       .content-detail {
+        .social-wrapper {
+          padding: 0 20px;
+          max-width: 100% !important;
+        }
       }
     }
   }

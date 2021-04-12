@@ -231,7 +231,17 @@ function ContentDetail() {
                           </h1>
                           <p className="detail-username">{detail.name}</p>
                           <p className="text-left">
-                            Registered {moment(detail.created_at).format("MMM, DD, YYYY")}
+                            Registered {moment(detail.created_at).format("MMM, DD, YYYY")} &nbsp; 
+                            <span>
+                              <a
+                                href={`https://viewblock.io/arweave/tx/${detail.txIdContent}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="explore-block mb-0"
+                              >
+                                explore block
+                              </a>
+                            </span>
                           </p>
                           <div className="btns-wrapper-sm d-md-none">
                             <Button
@@ -276,13 +286,13 @@ function ContentDetail() {
                           )}
                           <div className="views-wrapper">
                             <div className="view-row">
-                              <h5 className="total-value text-left">
+                              <h5 className="total-value text-right mr-2">
                                 {show_digit_number(detail.totalViews)}
                               </h5>
                               <h5 className="total-views">total views</h5>
                             </div>
                             <div className="view-row">
-                              <h5 className="total-value text-left">
+                              <h5 className="total-value text-right mr-2">
                                 {show_digit_number(detail.totalReward)}{" "}
                               </h5>
                               <h5 className="total-views">total KOI rewards</h5>

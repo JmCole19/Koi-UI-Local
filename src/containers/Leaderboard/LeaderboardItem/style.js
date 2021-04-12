@@ -49,20 +49,6 @@ export const LeaderboardItemContainer = styled.div`
         .item-created_at {
           color: ${colors.greenDark};
         }
-        .explore-block {
-          font-weight: 500;
-          line-height: 20px;
-          letter-spacing: 0.03em;
-          color: #237b75;
-          border: 1px solid #237b75;
-          box-sizing: border-box;
-          border-radius: 2px;
-          margin-bottom: 0;
-          width: fit-content;
-          padding: 0 5px;
-          font-size: 12px !important;
-          cursor: pointer;
-        }
       }
     }
   }
