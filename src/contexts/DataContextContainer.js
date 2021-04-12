@@ -28,23 +28,12 @@ function DataContextContainer(props){
     }
   }
 
-  // useEffect( () => {
-  //   let saveData = {}
-  //   if(addressEth) saveData.addressEth = addressEth
-  //   if(addressAr) saveData.addressAr = addressAr
-  //   if(keyAr) saveData.keyAr = keyAr
-  //   if(balanceKoi !== null ) saveData.balanceKoi = balanceKoi
-  //   if(balanceAr !== null ) saveData.balanceAr = balanceAr
-  //   if(saveData && Object.keys(saveData).length !== 0){
-  //     console.log("here : save data ********* ")
-  //     console.log(saveData)
-  //     let d = new Date()
-  //     let expired = d.getTime() + 60 * 1000 * 5 // 5 minute
-  //     localStorage.setItem('info', JSON.stringify(saveData))
-  //     localStorage.setItem('expired', expired.toString())
-  //   }
-    
-  // }, [addressEth, addressAr, keyAr, openSeas, balanceKoi, balanceAr])
+  useEffect( () => {
+    if(keyAr) {
+      // get KOI automatically
+      getKoiBalance()
+    }
+  }, [keyAr])
   // useEffect( () => {
   //   console.log("test111")
   //   let saveData = localStorage.getItem('info')
