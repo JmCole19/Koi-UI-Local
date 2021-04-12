@@ -198,7 +198,7 @@ const GlobalStyle = createGlobalStyle`
           display: flex;
           flex-direction: column;
           align-items: center;
-          padding: 24px 0;
+          padding: 24px 20px;
           .icon-close {
             position: absolute;
             right: 8px;
