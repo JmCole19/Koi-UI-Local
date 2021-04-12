@@ -30,12 +30,12 @@ function KeyUpload() {
   const [loading, setLoading] = useState(false);
   // const [detectorAr] = useState(false);
 
-  const getKoi = async () => {
+  const getKoi = async (arJson) => {
     setLoading(true)
     const ktools = new koi_tools();
     try {
-      console.log(keyAr)
-      await ktools.loadWallet(keyAr)
+      // console.log(arJson)
+      await ktools.loadWallet(arJson)
 
       // let temp_address = await ktools.getWalletAddress()
       let arBalance = await ktools.getWalletBalance() // "5500000000000"
@@ -47,6 +47,7 @@ function KeyUpload() {
       setBalanceAr(convertArBalance(arBalance))
       setLoading(false)
       show_notification('Please check your wallet balance in top right.', 'KOI', 'success')
+      setTimeout(() => history.goBack(), 2500)
     } catch (err) {
       setLoading(false)
       console.log("get koi balance err")
@@ -60,7 +61,7 @@ function KeyUpload() {
       show_notification("Connect your wallet.")
       return false
     }
-    await getKoi()
+    await getKoi(keyAr)
   };
 
   const beforeJsonUpload = (file) => {
@@ -80,7 +81,8 @@ function KeyUpload() {
         let addressResult = await getArWalletAddressFromJson(arweave, arJson);
         setKeyAr(arJson)
         setAddressAr(addressResult)
-        show_notification('Your wallet key file uploaded successfuly. Please check your balance.', 'KOI', 'success')
+        await getKoi(arJson)
+        // show_notification('Your wallet key file uploaded successfuly. Please check your balance.', 'KOI', 'success')
       };
       reader.readAsText(file);
       // Prevent upload

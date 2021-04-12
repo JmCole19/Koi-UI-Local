@@ -28,12 +28,12 @@ function DataContextContainer(props){
     }
   }
 
-  useEffect( () => {
-    if(keyAr) {
-      // get KOI automatically
-      getKoiBalance()
-    }
-  }, [keyAr])
+  // useEffect( () => {
+  //   if(keyAr) {
+  //     // get KOI automatically
+  //     getKoiBalance()
+  //   }
+  // }, [keyAr])
   // useEffect( () => {
   //   console.log("test111")
   //   let saveData = localStorage.getItem('info')
