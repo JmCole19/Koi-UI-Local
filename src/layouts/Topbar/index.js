@@ -27,8 +27,7 @@ function Topbar() {
     balanceKoi,
     balanceAr,
     setAddressAr,
-    addressEth,
-    setAddressEth,
+    keyAr,
     setKeyAr,
     setBalanceKoi,
     setBalanceAr
@@ -44,34 +43,29 @@ function Topbar() {
   //   // setBalanceAr(50.01);
   // };
 
-  const activeEthereum = async () => {
-    if (window.ethereum) {
-      try {
-        const accounts = await window.ethereum.enable();
-        setAddressEth(accounts[0]);
-        // show_notification("Imported your ethereum account.", "KOI", "success");
-      } catch (err) {
-        console.log(err);
-        // show_notification(
-        //   "There is an error to import your ethereum account",
-        //   "KOI"
-        // );
-      }
-    } else {
-      // metamask extension didn't install
-      show_notification("Please install metamask extension first.", "KOI");
-      setTimeout(() => {
-        let url = "https://metamask.io/download.html";
-        window.open(url, "_blank");
-      }, 2000);
-    }
-  };
+  // const activeEthereum = async () => {
+  //   if (window.ethereum) {
+  //     try {
+  //       const accounts = await window.ethereum.enable();
+  //       setAddressEth(accounts[0]);
+  //     } catch (err) {
+  //       console.log(err);
+  //     }
+  //   } else {
+  //     // metamask extension didn't install
+  //     show_notification("Please install metamask extension first.", "KOI");
+  //     setTimeout(() => {
+  //       let url = "https://metamask.io/download.html";
+  //       window.open(url, "_blank");
+  //     }, 2000);
+  //   }
+  // };
   const activeKoi = async () => {
-    if (!addressEth) {
-      await activeEthereum();
-      // activeArweave();
-    } else {
-      // activeArweave();
+    // if (!addressEth) {
+    //   await activeEthereum();
+    // }
+    if (!keyAr) {
+      history.push("/wallet-key");
     }
   };
   const onClickDisconnectWallet = () => {
