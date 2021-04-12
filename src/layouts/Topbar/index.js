@@ -13,7 +13,7 @@ import { useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { DataContext } from "contexts/DataContextContainer";
 import { TopbarContainer } from "./style";
-import { show_notification, show_ar_balance, show_digit_number } from "service/utils";
+import { show_ar_balance, show_digit_number } from "service/utils";
 import { colors } from "theme";
 
 let versionUpContent = '<p>Koi is currently in BETA. We are building decentralized web services, and sometimes things break unexpectantly. </p>';
