@@ -63,71 +63,73 @@ function LeaderboardItem({
 
   return (
     <LeaderboardItemContainer>
-      <div className="part-left">
-        <div className="item-col">
-          <h3 className="item-order">{order + 1}</h3>
-        </div>
-        <div className="item-img-wrapper item-col">
-          {show_content(item)}
-        </div>
-        <div className="item-info-wrapper item-col">
-          <h2 className="item-title mb-1 cursor" onClick={onClickItem}>{item.ticker}</h2>
-          <p className="item-username mb-3 cursor" onClick={onClickUsername}>
-            {item.name}
-          </p>
-          <p className="item-created_at mb-0">
-            Registered: {moment(item.created_at).format("MMM, DD, YYYY")}
-          </p>
-          <a
-            href={`https://viewblock.io/arweave/tx/${item.txIdContent}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="explore-block mb-0"
-          >
-            explore block
-          </a>
-        </div>
+      <div className="w20">
+        <h3 className="item-order">{order + 1}</h3>
       </div>
-      <div className="part-right">
-        <div className="item-reviews-wrapper item-col">
-          <h5 className="item-total_reviews mb-0">
-            {show_digit_number(item.totalViews)}
-            <span className="ml-2">
-              <Image src={IconEyes} />
-            </span>
-          </h5>
-          <h5 className="item-rewards mb-0">
-            {show_digit_number(item.totalReward)}{" "}
-            <span className="ml-1">
-              <Image src={IconFish} width={18} />
-            </span>
-          </h5>
-        </div>
-        <div className="share-wrapper">
-          <div className="btns-wrapper">
-            <Button className="btn-share btn-blue" onClick={onClickShare}>
-              Share
-            </Button>
-            <Button className="btn-html" onClick={onClickEmbed}>
-              <Image src={IconHtml} />
-            </Button>
+      <div className="item-container">
+        <div className="part-left">
+          <div className="item-img-wrapper item-col">
+            {show_content(item)}
           </div>
-          <div className="social-wrapper">
-            <TwitterShareButton url={shareUrl} title={shareTitle}>
-              <FiTwitter size={24} color={colors.greenDark} />
-            </TwitterShareButton>
-            <InstapaperShareButton url={shareUrl} title={shareTitle}>
-              <FaInstagram size={24} color={colors.greenDark} />
-            </InstapaperShareButton>
-            <FacebookShareButton url={shareUrl} quote={shareTitle}>
-              <FiFacebook size={24} color={colors.greenDark} />
-            </FacebookShareButton>
-            <a href={smsUrl}>
-              <FiMessageCircle size={24} color={colors.greenDark} />
+          <div className="item-info-wrapper item-col">
+            <h2 className="item-title mb-1 cursor" onClick={onClickItem}>{item.ticker}</h2>
+            <p className="item-username mb-3 cursor" onClick={onClickUsername}>
+              {item.name}
+            </p>
+            <p className="item-created_at mb-0">
+              Registered: {moment(item.created_at).format("MMM, DD, YYYY")}
+            </p>
+            <a
+              href={`https://viewblock.io/arweave/tx/${item.txIdContent}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="explore-block mb-0"
+            >
+              explore block
             </a>
-            <EmailShareButton url={shareUrl} subject={shareTitle}>
-              <HiOutlineMail size={24} color={colors.greenDark} />
-            </EmailShareButton>
+          </div>
+        </div>
+        <div className="part-right">
+          <div className="item-reviews-wrapper item-col">
+            <h5 className="item-total_reviews mb-0">
+              {show_digit_number(item.totalViews)}
+              <span className="ml-2">
+                <Image src={IconEyes} />
+              </span>
+            </h5>
+            <h5 className="item-rewards mb-0">
+              {show_digit_number(item.totalReward)}{" "}
+              <span className="ml-1">
+                <Image src={IconFish} width={18} />
+              </span>
+            </h5>
+          </div>
+          <div className="share-wrapper">
+            <div className="btns-wrapper">
+              <Button className="btn-share btn-blue" onClick={onClickShare}>
+                Share
+              </Button>
+              <Button className="btn-html" onClick={onClickEmbed}>
+                <Image src={IconHtml} />
+              </Button>
+            </div>
+            <div className="social-wrapper">
+              <TwitterShareButton url={shareUrl} title={shareTitle}>
+                <FiTwitter size={24} color={colors.greenDark} />
+              </TwitterShareButton>
+              <InstapaperShareButton url={shareUrl} title={shareTitle}>
+                <FaInstagram size={24} color={colors.greenDark} />
+              </InstapaperShareButton>
+              <FacebookShareButton className="sx-hidden-share" url={shareUrl} quote={shareTitle}>
+                <FiFacebook size={24} color={colors.greenDark} />
+              </FacebookShareButton>
+              <a href={smsUrl} className="sx-hidden-share">
+                <FiMessageCircle size={24} color={colors.greenDark} />
+              </a>
+              <EmailShareButton url={shareUrl} subject={shareTitle}>
+                <HiOutlineMail size={24} color={colors.greenDark} />
+              </EmailShareButton>
+            </div>
           </div>
         </div>
       </div>
