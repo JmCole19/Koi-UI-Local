@@ -4,6 +4,7 @@ import { Image } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import { EmbedContainer } from "./style";
 import { preUrl } from "config"
+import MetaWrapper from "components/Wrappers/MetaWrapper";
 
 function Embed() {
   const { id } = useParams();
@@ -22,9 +23,11 @@ function Embed() {
   // }, [id])
 
   return (
-    <EmbedContainer>
-      <Image src={`${preUrl}${id}?t=${Math.random()*999999}`} width="auto" height="100%" />
-    </EmbedContainer>
+    <MetaWrapper>
+      <EmbedContainer>
+        <Image src={`${preUrl}${id}?t=${Math.random()*999999}`} width="auto" height="100%" />
+      </EmbedContainer>
+    </MetaWrapper>
   );
 }
 

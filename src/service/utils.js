@@ -1,5 +1,19 @@
 import { notification, message } from "antd";
 
+const get_arweave_option = () => {
+  const protocol = process.env.REACT_APP_PROTOCOL
+  let ar_option = {
+    host: 'arweave.net',// Hostname or IP address for a Arweave host
+    port: 443,          // Port
+    protocol: 'https',  // Network protocol http or https
+    timeout: 20000,     // Network request timeouts in milliseconds
+    logging: false,     // Enable network request logging
+  }
+  if(protocol !== 'HTTPS') {
+    ar_option = {}
+  }
+  return ar_option
+}
 const show_notification = (msg, title = 'KOI', type = 'error', actionClose = () => {}) => {
   // type : success || error || info || warning
   let custom_class = 'custom-notification-' + type
@@ -77,7 +91,16 @@ const validEmail = (str) => {
   }
 }
 
+
+const wait = async (ms) => {
+  return new Promise(resolve => {
+    setTimeout(resolve, ms);
+  });
+}
+
+
 export {
+  get_arweave_option,
   show_notification,
   show_message,
   show_digit_number,
@@ -85,5 +108,6 @@ export {
   show_ar_balance,
   getBase64,
   convertArBalance,
-  validEmail
+  validEmail,
+  wait
 }

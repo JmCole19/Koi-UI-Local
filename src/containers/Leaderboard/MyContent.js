@@ -15,6 +15,7 @@ import AlertArea from "components/Sections/AlertArea";
 import { alertTimeout } from "config";
 import ImportArea from "components/Sections/ImportArea";
 import { IconUpload, IconOpenSea } from "assets/images";
+import MetaWrapper from "components/Wrappers/MetaWrapper";
 
 const { Panel } = Collapse;
 const options = ["24h", "1w", "1m", "1y", "all"];
@@ -67,9 +68,9 @@ function MyContent() {
   const onSliderChange = (newVal) => {
     // const options = ["24h", "1w", "1m", "1y", "all"];
     setSliderValue(newVal)
-    console.log({newVal})
+    console.log({ newVal })
     let offset = 0
-    switch(options[newVal]) {
+    switch (options[newVal]) {
       case "24h":
         offset = 3600 * 24
         break;
@@ -85,28 +86,29 @@ function MyContent() {
       case "all":
         offset = 0
         break;
-      default :
+      default:
         offset = 0
         break;
     }
-    if(offset === 0) {
+    if (offset === 0) {
       setContents(contents)
-    }else{
+    } else {
       const cur = new Date()
-      const timestamp = Number(cur.getTime() - offset*1000)
+      const timestamp = Number(cur.getTime() - offset * 1000)
       setContents(contents.filter((_item) => _item.created_at > timestamp))
     }
   }
 
   const getContents = async (walletAddress = '') => {
-    if(keyAr) {
+    // console.log("keyAr" , JSON.stringify(keyAr))
+    if (keyAr) {
       setIsLoading(true);
       console.log("my content", keyAr)
       await ktools.loadWallet(keyAr)
       ktools.myContent(addressAr).then((res) => {
-        if(res.length === 0) {
-          show_alert(`Our school of koi couldn't find anything on that wallet[${addressAr}].`)  
-        }else{
+        if (res.length === 0) {
+          show_alert(`Our school of koi couldn't find anything on that wallet[${addressAr}].`)
+        } else {
           let res_data = []
           res.forEach(element => {
             let str_created_at = element.createdAt || "1609500000"
@@ -121,155 +123,156 @@ function MyContent() {
       }).catch(err => {
         console.log(err)
         show_alert("There is an error to getting NFT contents.")
-      }).finally( () => {
+      }).finally(() => {
         console.log("finally")
         setIsLoading(false);
       });
-    }else{
-      show_alert('Please upload your wallet key file.')
-      setTimeout(()=> history.push('/wallet-key'), 4000)
+    } else {
+      show_alert(`Please upload your wallet key file by selecting the "Connect Wallet" button.`)
     }
   };
   useEffect(() => {
-    getContents();
+    setTimeout(() => getContents(), 1000);
   }, [history.location.pathname]);
 
   const show_alert = (message = '') => {
     setShowAlert(true)
     setErrMessage(message)
-    setTimeout( () => {
+    setTimeout(() => {
       setShowAlert(false)
       setErrMessage('')
     }, alertTimeout)
   }
 
   return (
-    <LeaderboardContainer>
-      <div className="leaderboard">
-        <div className="leaderboard-header">
-          <h2 className="text-blue mb-0">
-            My Content
-          </h2>
-          <ReactSlider
-            className="filter-options-desktop mr-auto d-none d-md-flex"
-            marks
-            markClassName="example-mark"
-            min={0}
-            max={4}
-            value={sliderValue}
-            onChange={(v) => onSliderChange(v)}
-            trackClassName="example-track"
-            renderMark={(props) => (
-              <span key={props.key} className="example-mark">
-                {options[props.key]}
-              </span>
-            )}
-            renderThumb={(props, state) => (
-              <StyledThumb {...props} value={state.valueNow}>
-                {options[state.valueNow]}
-              </StyledThumb>
-            )}
-          />
-          <ReactSlider
-            className="filter-options-mobile d-md-none"
-            marks
-            markClassName="example-mark"
-            min={0}
-            max={4}
-            value={sliderValue}
-            onChange={(v) => onSliderChange(v)}
-            thumbClassName="example-thumb"
-            trackClassName="example-track"
-            renderThumb={(props, state) => (
-              <div {...props}>{options[state.valueNow]}</div>
-            )}
-          />
-          <Button className="btn-my-content" onClick={onClickContents}>
-            Top Content
-          </Button>
-          <Button className="btn-leaderbard-plus" onClick={onClickPlus}>
-            <i className="fas fa-plus"></i>
-          </Button>
-        </div>
-        <ImportArea>
-          <LinkNftUpload className={`big cursor`} onClick={() => history.push('/register-content')}>
-            <div className="font-n-1">You haven't permanently stored any content yet.</div>
-            <div className="font-n-1"><b>Let's fix that.</b></div>
-            <div className="text-center mt-4 mb-4 cursor">
-              <div className='font-s-1'>
-                <span>
-                  <Image src={IconUpload} width={32} className="overlay-opensea" />
-                  <Image src={IconOpenSea} width={32} />
+    <MetaWrapper>
+      <LeaderboardContainer>
+        <div className="leaderboard">
+          <div className="leaderboard-header">
+            <h2 className="text-blue mb-0">
+              My Content
+            </h2>
+            <ReactSlider
+              className="filter-options-desktop mr-auto d-none d-md-flex"
+              marks
+              markClassName="example-mark"
+              min={0}
+              max={4}
+              value={sliderValue}
+              onChange={(v) => onSliderChange(v)}
+              trackClassName="example-track"
+              renderMark={(props) => (
+                <span key={props.key} className="example-mark">
+                  {options[props.key]}
                 </span>
-                <b>&nbsp;&nbsp;&nbsp; Click to upload an image</b> or connect your OpenSea account</div>
-            </div>
-            <div className='font-s-1'>What are you waiting for? <b>Start earning KOI.</b></div>
-          </LinkNftUpload>
-        </ImportArea>
-        <AlertArea
-          showMessage={showAlert}
-          message={errEmessage}
-          cancel={()=>setShowAlert(false)}
-          showCancel={true}
-        ></AlertArea>
-        <div className="leaderboard-items">
-          {isLoading ? (
-            <div className="loading-container">
-              <ScaleLoader size={15} color={"#2a58ad"} />
-            </div>
-          ) : (
-            contents
-              .filter((_item, _i) => _i < 5)
-              .map((_item, _i) => (
-                <LeaderboardItem
-                  key={_i}
-                  item={_item}
-                  order={_i}
-                  onClickItem={() => onClickItem(_item, "view")}
-                  onClickUsername={() => onClickUsername(_item)}
-                  onClickShare={() => onClickItem(_item, "share")}
-                  onClickEmbed={() => onClickItem(_item, "embed")}
-                />
-              ))
-          )}
-          <Collapse
-            activeKey={isExpanded ? ["1"] : null}
-            bordered={false}
-            expandIcon={() => <div />}
-          >
-            <Panel header={null} key="1">
-              {contents
-                .filter((_item, _i) => _i >= 5)
+              )}
+              renderThumb={(props, state) => (
+                <StyledThumb {...props} value={state.valueNow}>
+                  {options[state.valueNow]}
+                </StyledThumb>
+              )}
+            />
+            <ReactSlider
+              className="filter-options-mobile d-md-none"
+              marks
+              markClassName="example-mark"
+              min={0}
+              max={4}
+              value={sliderValue}
+              onChange={(v) => onSliderChange(v)}
+              thumbClassName="example-thumb"
+              trackClassName="example-track"
+              renderThumb={(props, state) => (
+                <div {...props}>{options[state.valueNow]}</div>
+              )}
+            />
+            <Button className="btn-my-content" onClick={onClickContents}>
+              Top Content
+            </Button>
+            <Button className="btn-leaderbard-plus" onClick={onClickPlus}>
+              <i className="fas fa-plus"></i>
+            </Button>
+          </div>
+          {!isLoading && !contents.length && <ImportArea>
+            <LinkNftUpload className={`big cursor`} onClick={() => history.push('/register-content')}>
+              <div className="font-n-1">You haven't permanently stored any content yet.</div>
+              <div className="font-n-1"><b>Let's fix that.</b></div>
+              <div className="text-center mt-4 mb-4 cursor">
+                <div className='font-s-1'>
+                  <span>
+                    <Image src={IconUpload} width={32} className="overlay-opensea" />
+                    <Image src={IconOpenSea} width={32} />
+                  </span>
+                  <b>&nbsp;&nbsp;&nbsp; Click to upload an image</b> or connect your OpenSea account</div>
+              </div>
+              <div className='font-s-1'>What are you waiting for? <b>Start earning KOI.</b></div>
+            </LinkNftUpload>
+          </ImportArea>}
+          <AlertArea
+            showMessage={showAlert}
+            message={errEmessage}
+            cancel={() => setShowAlert(false)}
+            showCancel={true}
+          ></AlertArea>
+          <div className="leaderboard-items">
+            {isLoading ? (
+              <div className="loading-container">
+                <ScaleLoader size={15} color={"#2a58ad"} />
+              </div>
+            ) : (
+              contents
+                .filter((_item, _i) => _i < 5)
                 .map((_item, _i) => (
                   <LeaderboardItem
                     key={_i}
                     item={_item}
-                    order={_i + 5}
+                    order={_i}
                     onClickItem={() => onClickItem(_item, "view")}
                     onClickUsername={() => onClickUsername(_item)}
                     onClickShare={() => onClickItem(_item, "share")}
                     onClickEmbed={() => onClickItem(_item, "embed")}
                   />
-                ))}
-            </Panel>
-          </Collapse>
-          {contents.length > 5 && (
-            <div className="btn-show-more-wrapper">
-              <Button className="btn-show-more" onClick={onClickShowMore}>
-                {isExpanded ? "Show Less" : "Show More"}
-              </Button>
-            </div>
-          )}
+                ))
+            )}
+            <Collapse
+              activeKey={isExpanded ? ["1"] : null}
+              bordered={false}
+              expandIcon={() => <div />}
+            >
+              <Panel header={null} key="1">
+                {contents
+                  .filter((_item, _i) => _i >= 5)
+                  .map((_item, _i) => (
+                    <LeaderboardItem
+                      key={_i}
+                      item={_item}
+                      order={_i + 5}
+                      onClickItem={() => onClickItem(_item, "view")}
+                      onClickUsername={() => onClickUsername(_item)}
+                      onClickShare={() => onClickItem(_item, "share")}
+                      onClickEmbed={() => onClickItem(_item, "embed")}
+                    />
+                  ))}
+              </Panel>
+            </Collapse>
+            {contents.length > 5 && (
+              <div className="btn-show-more-wrapper">
+                <Button className="btn-show-more" onClick={onClickShowMore}>
+                  {isExpanded ? "Show Less" : "Show More"}
+                </Button>
+              </div>
+            )}
+          </div>
         </div>
-      </div>
-      <ModalContent
-        type={modalType}
-        show={showModal}
-        detail={selectedContent}
-        onHide={() => setShowModal(false)}
-        onSwitchModal={onSwitchModal}
-      />
-    </LeaderboardContainer>
+        <ModalContent
+          type={modalType}
+          show={showModal}
+          detail={selectedContent}
+          onHide={() => setShowModal(false)}
+          onSwitchModal={onSwitchModal}
+        />
+      </LeaderboardContainer>
+    </MetaWrapper>
   );
 }
 

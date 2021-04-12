@@ -1,6 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { Image, Modal } from "react-bootstrap";
+import { ItemTemp } from "assets/images";
+import ResponsiveEmbed from 'react-bootstrap/ResponsiveEmbed'
 import {
   FaInstagram,
   FaTelegramPlane,
@@ -28,22 +30,12 @@ import { colors } from "theme";
 
 import { preUrl } from "config";
 
-// const contents = [
-//   {
-//     balances: { "sQTWslyCdKF6oeQ7xXUYUV1bluP0_5-483FXH_RVZKU": 1 },
-//     description:
-//       "'The Delights of Purim' at the Israeli Opera, photo by Ziv Barak",
-//     name: "Kayla",
-//     owner: "sQTWslyCdKF6oeQ7xXUYUV1bluP0_5-483FXH_RVZKU",
-//     ticker: "KRK",
-//     totalReward: 0,
-//     totalViews: 0,
-//     twentyFourHrViews: 0,
-//     txIdContent: "EKW3AApL4mdLc6sIhVr3Cn8VN7N9VAQUp2BNALHXFtQ",
-//   },
-// ];
-// const description =
-//   "José Delbo sent me his striking pencil sketch and powerful inked work, which I then interpreted in oil on canvas. I wanted to create a very painterly piece with obvious brush marks etc, but I was also aiming for a nostalgic feel, a kind of 1980’s superhero comic book look, the kind I grew up with. My goal with this animation was to try to recreate, in part, the creative process that both artists went through with the visual information I had. I was able to showcase my painting process more accurately as I could take photographs of my progress throughout. Consecutive images could then be layered like brush strokes over José’s drawing to create the impression that this was one continuous artwork from pencil, to ink, to completed painting. The representation of the line sketch at the beginning, then pencil/ink and lastly the paint layers being applied demonstrate both artists’ struggle for the right lines, tone, form, and colour until the work is finally completed. As the oil was still wet with each photograph the glare of my studio lights can be seen in the brush strokes. Eventually, the figure emerges and as it does, our hero comes to life, looking directly at the viewer -- but is he grimacing in approval or disgust? We will never know for sure as just before he can say anything, white paint is brushed across the canvas entirely and the process begins again. Only the bat is quick enough to escape.";
+const video_contents = [
+  'cfhKMEd_pCZHHIKeVGZAilnITonqllwkA_yhiF2PaOw',
+  'HEcP1vyyHXjLVZ8ote2rphHq7wsvcVPr7RnMyAh2ZJE',
+  '_gk1ZNumV6a0vuqhVr5v6w1RYfoi-pArn-JKpU5eWZU',
+  'kpaWOQ6Uv8EdgG3acRwyijjTpRXDGF-w_VORPzG-3bQ'
+]
 
 function ModalContent({
   type = "share",
@@ -144,6 +136,25 @@ function ModalContent({
     onHide();
   };
 
+  const show_content = (item) => {
+    if(video_contents.includes(item.txIdContent)) {
+      // video content
+      return (
+        <ResponsiveEmbed aspectRatio="16by9">
+          <iframe title="embed_video" width="100%" height="400" src={`${preUrl}${item.txIdContent}`} frameBorder="0" allowFullScreen></iframe>
+        </ResponsiveEmbed>)
+    }else{
+      return (
+        <Image
+          src={`${preUrl}${item.txIdContent}?t=${
+            Math.random() * 999999
+          }`}
+          onError={(ev => ev.target.src = ItemTemp)}
+          className="detail-img"
+        />)
+    }
+  }
+
   useEffect(() => {
     if (copiedLink || copiedCode) {
       const timer = setTimeout(() => {
@@ -178,7 +189,7 @@ function ModalContent({
         {type === "share" ? (
           <div className="content-wrapper content-share">
             <div className="modal-left">
-              <Image src={`${preUrl}${detail.txIdContent}?t=${Math.random()*999999}`} />
+              {show_content(detail)}
               <h6 className="text-blue mb-0 text-bold">{detail.name}</h6>
             </div>
             <div className="modal-right">
@@ -233,7 +244,7 @@ function ModalContent({
         ) : (
           <div className="content-wrapper content-embed">
             <div className="modal-left">
-              <Image src={`${preUrl}${detail.txIdContent}?t=${Math.random()*999999}`} />
+              {show_content(detail)}
               <h6 className="text-blue mb-0 text-bold">{detail.name}</h6>
             </div>
             <div className="modal-right">

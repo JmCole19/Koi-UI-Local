@@ -10,12 +10,14 @@ import { FaucetContainer } from "./style";
 import { Button, Spin, Upload } from "antd";
 import { useHistory } from "react-router-dom";
 import { DataContext } from "contexts/DataContextContainer";
-import { show_notification, convertArBalance, show_digit_number } from "service/utils";
+import { show_notification, convertArBalance, show_digit_number, get_arweave_option } from "service/utils";
 import { getArWalletAddressFromJson } from "service/NFT";
 import { koi_tools } from "koi_tools"
 import AlertArea from "components/Sections/AlertArea";
 import { alertTimeout } from "config";
+import MetaWrapper from "components/Wrappers/MetaWrapper";
 
+const arweave = Arweave.init(get_arweave_option);
 const { Dragger } = Upload;
 
 function Faucet() {
@@ -36,7 +38,7 @@ function Faucet() {
     setBalanceKoi,
     setBalanceAr,
   } = useContext(DataContext);
-  const [detectorAr, setDetectorAr] = useState(false);
+  // const [detectorAr, setDetectorAr] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [alertVariant, setAlertVariant] = useState('danger');
   const [errEmessage, setErrMessage] = useState('');
@@ -84,15 +86,11 @@ function Faucet() {
           history.push(`/faucet?step=1&address=${addressAr}`);
         }
       })
-    }else if( !detectorAr ){
-      console.log("here1")
-      setDetectorAr(true)
+    // }else if( !detectorAr ){
+    //   console.log("here1")
+    //   setDetectorAr(true)
     }else{
-      let arweave = Arweave.init({
-        host: "arweave.net",
-        port: 443,
-        protocol: "https",
-      });
+      let arweave = Arweave.init(get_arweave_option);
       let keyData = await arweave.wallets.generate();
       const data = JSON.stringify(keyData);
       fileDownload(data, "arweaveWallet.json");
@@ -196,8 +194,6 @@ function Faucet() {
       const reader = new FileReader();
       reader.onload = async (e) => {
         var arJson = JSON.parse(e.target.result);
-        console.log(arJson)
-        const arweave = Arweave.init();
         let addressResult = await getArWalletAddressFromJson(arweave, arJson);
         setKeyAr(arJson)
         setAddressAr(addressResult)
@@ -216,35 +212,34 @@ function Faucet() {
     queryAddress && setAddress(queryAddress);
   }, [step, queryAddress]);
 
-  useEffect(() => {
-    if (detectorAr) {
-      window.addEventListener("arweaveWalletLoaded", detectArweaveWallet());
-      return () => {
-        window.removeEventListener("arweaveWalletLoaded", () => {});
-      };
-    }
-  }, [detectorAr]);
+  // useEffect(() => {
+  //   if (detectorAr) {
+  //     window.addEventListener("arweaveWalletLoaded", detectArweaveWallet());
+  //     return () => {
+  //       window.removeEventListener("arweaveWalletLoaded", () => {});
+  //     };
+  //   }
+  // }, [detectorAr]);
 
-  const detectArweaveWallet = async () => {
-    try {
-      let arweave = Arweave.init()
-      let addr = await arweave.wallets.getAddress();
-      console.log("detected arweave wallet address : ", addr);
-      if (addr) {
-        setAddressAr(addr);
-        setCurStep(1);
-        history.push(`/faucet?step=1&address=${addr}`);
-      } else {
-        show_alert("Error on detecting Arweave wallet address");
-      }
-    } catch (err) {
-      console.log(err);
-      show_notification("Error on detecting Arweave wallet address");
-    }
-  };
+  // const detectArweaveWallet = async () => {
+  //   try {
+  //     let addr = await arweave.wallets.getAddress();
+  //     console.log("detected arweave wallet address : ", addr);
+  //     if (addr) {
+  //       setAddressAr(addr);
+  //       setCurStep(1);
+  //       history.push(`/faucet?step=1&address=${addr}`);
+  //     } else {
+  //       show_alert("Error on detecting Arweave wallet address");
+  //     }
+  //   } catch (err) {
+  //     console.log(err);
+  //     show_notification("Error on detecting Arweave wallet address");
+  //   }
+  // };
 
   return (
-    <>
+    <MetaWrapper>
       <AlertArea
         showMessage={showAlert}
         variant={alertVariant}
@@ -298,10 +293,10 @@ function Faucet() {
                   <div className="icon-back" onClick={() => onClickBackTo(0)}>
                     <i className="fal fa-arrow-circle-left"></i>
                   </div>
-                  <h1 className="f-32 text-blue">1</h1>
+                  <h1 className="f-32 text-blue">2</h1>
                   <div className="step-content has-wallet">
                     <h6 className="step-title text-blue mb-4">
-                      Connect a wallet
+                      Connect a wallet.
                     </h6>
                     {/* <h6 className="text-blue">
                       Paste your Arweave wallet address here.
@@ -446,7 +441,7 @@ function Faucet() {
           </div>
         </Container>
       </FaucetContainer>
-    </>
+    </MetaWrapper>
   );
 }
 

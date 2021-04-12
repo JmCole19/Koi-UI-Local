@@ -20,15 +20,16 @@ import { colors } from "theme";
 import { DataContext } from "contexts/DataContextContainer";
 import { FaTimes } from "react-icons/fa";
 import Arweave from "arweave";
-import { show_notification, show_fixed_number, convertArBalance } from "service/utils";
-import { getArWalletAddressFromJson, exportNFT } from "service/NFT";
+import { show_notification, show_fixed_number, convertArBalance, get_arweave_option } from "service/utils";
+import { exportNFT } from "service/NFT";
 import AlertArea from "components/Sections/AlertArea";
 import {alertTimeout} from 'config'
 import ModalContent from "components/Elements/ModalContent";
 import { getKoi } from "service/KOI";
 import useDebounce from 'components/Utils/useDebounce'
+import MetaWrapper from "components/Wrappers/MetaWrapper";
 
-const arweave = Arweave.init();
+const arweave = Arweave.init(get_arweave_option);
 const { TextArea } = Input;
 const { Dragger } = Upload;
 const modes = {
@@ -57,7 +58,6 @@ function ConfirmOpenseas() {
     openSeas,
     setOpenSeas,
     addressAr,
-    setAddressAr,
     keyAr,
     setKeyAr,
     balanceKoi,
@@ -85,7 +85,7 @@ function ConfirmOpenseas() {
   const [uploadContents, setUploadContents] = useState([]);
   const [showModal, setShowModal] = useState(false);
   var selectedIds = selected.split("_");
-  const [detectorAr] = useState(false);
+  // const [detectorAr] = useState(false);
   // const [walletKey, setWalletKey] = useState(null);
   const [updatingProcess, setUploadingProcess] = useState(0);
   const [showAlert, setShowAlert] = useState(false);
@@ -161,11 +161,10 @@ function ConfirmOpenseas() {
     console.log("koi balance : ", Number(balanceKoi))
     console.log("ar balance : ", Number(balanceAr))
     if(Number(balanceKoi) < uploadContents.length ) {
-      setErrMessage('Your koi balance is not enough to upload.')
-      // show_alert('You don’t have any KOI in your wallet.')
+      setErrMessage("You don't have enough KOI to upload these NFTs. Visit the KOI Faucet to get some KOI.")
       return false
     }else if(Number(balanceAr) < Number(uploadContents.length * 0.0002) ) {
-      setErrMessage('Your ar balance is not enough to upload.')
+      setErrMessage('You need more AR to upload.')
       return false
     }else{
       await uploadNFTContents()
@@ -175,7 +174,7 @@ function ConfirmOpenseas() {
   const checkUpload = async () => {
     console.log('checkUpload', keyAr)
     if(!keyAr) {
-      show_notification('Please upload key json file.')
+      show_notification('Please upload your json keyfile.')
       setMode("uploadKey");
     }else {
       if(mode !== modes.confirm) setMode("confirm")
@@ -220,7 +219,7 @@ function ConfirmOpenseas() {
         } else {
           setUploadingProcess(tpUpdatingProcess);
           show_notification(
-            "There is an error to upload content title '" +
+            "There is an error uploading '" +
               content.title +
               "' "
           );
@@ -238,12 +237,12 @@ function ConfirmOpenseas() {
         */
       } catch (err) {
         console.log("error - exportNFT", err);
-        show_alert("There is an error to uploading NFT content", "KOI", "error");
+        show_alert("Something went wrong uploading your NFT.", "KOI", "error");
       }
     }
     // close modal
     setShowModal(false);
-    show_alert("Upload finished", "KOI", "success");
+    show_alert("Upload finished.", "success");
     // show complete section
     setTimeout(() => {
       setMode("complete");
@@ -318,7 +317,7 @@ function ConfirmOpenseas() {
       setShowModal(false);
       setMode(modes.change);
     } else {
-      show_notification("You can't close this modal until NFT uploaded.");
+      show_notification("You can't close this modal until your NFT has finished uploading.");
     }
   };
 
@@ -422,41 +421,41 @@ function ConfirmOpenseas() {
     }
   }, [history.location.pathname]);
 
-  useEffect(() => {
-    if (detectorAr) {
-      window.addEventListener("arweaveWalletLoaded", detectArweaveWallet());
-      return () => {
-        window.removeEventListener(
-          "arweaveWalletLoaded",
-          detectArweaveWallet()
-        );
-      };
-    }
-  }, [detectorAr]);
+  // useEffect(() => {
+  //   if (detectorAr) {
+  //     window.addEventListener("arweaveWalletLoaded", detectArweaveWallet());
+  //     return () => {
+  //       window.removeEventListener(
+  //         "arweaveWalletLoaded",
+  //         detectArweaveWallet()
+  //       );
+  //     };
+  //   }
+  // }, [detectorAr]);
 
-  const detectArweaveWallet = async () => {
-    try {
-      let addr = await arweave.wallets.getAddress();
-      let addressResult = await getArWalletAddressFromJson(arweave, keyAr);
-      console.log("addressResult : ", addressResult);
-      console.log("detect address: ", addr);
-      if (addr) {
-        setAddressAr(addr);
-      } else {
-        show_notification(
-          "can\t detect ArWallet address. Please check install ArConnect extension or create a wallet."
-        );
-      }
-    } catch (err) {
-      console.log(err);
-      show_notification(
-        "can\t detect ArWallet address. Please install ArConnect extension and create a wallet."
-      );
-    }
-  };
+  // const detectArweaveWallet = async () => {
+  //   try {
+  //     let addr = await arweave.wallets.getAddress();
+  //     let addressResult = await getArWalletAddressFromJson(arweave, keyAr);
+  //     console.log("addressResult : ", addressResult);
+  //     console.log("detect address: ", addr);
+  //     if (addr) {
+  //       setAddressAr(addr);
+  //     } else {
+  //       show_notification(
+  //         "can\t detect ArWallet address. Please check install ArConnect extension or create a wallet."
+  //       );
+  //     }
+  //   } catch (err) {
+  //     console.log(err);
+  //     show_notification(
+  //       "can\t detect ArWallet address. Please install ArConnect extension and create a wallet."
+  //     );
+  //   }
+  // };
 
   return (
-    <>
+    <MetaWrapper>
       <AlertArea
         showMessage={showAlert}
         variant={alertVariant}
@@ -709,10 +708,12 @@ function ConfirmOpenseas() {
                               <div className="card-content-wrapper">
                                 <Image src={_selected.thumb} />
                                 <p className="text-blue">{_selected.title}</p>
+                                <p className="text-blue font-light text-italic mt-0">pending</p>
                               </div>
-                              <div className="uploaded-card-btns d-none d-md-flex">
-                                <Button className="btn-blueDark" onClick={() => onClickContent(_selected, "share")} >
-                                  <Image src={IconShare} width={17} />
+                              <div className="uploaded-card-btns-sm d-none d-md-flex">
+                                <Button className="btn-blueDark mr-2" onClick={() => onClickContent(_selected, "share")} >
+                                  <Image src={IconShare} width={17} className="mr-2" />
+                                  Share
                                 </Button>
                                 <Button className="btn-white btn-html" onClick={() => onClickContent(_selected, "embed")}>
                                   <Image src={IconHtml} width={17} />
@@ -911,7 +912,7 @@ function ConfirmOpenseas() {
           </Modal>
         </Container>
       </ConfirmOpenseasContainer>
-    </>
+    </MetaWrapper>
   );
 }
 
