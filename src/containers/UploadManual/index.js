@@ -133,7 +133,6 @@ function UploadManual() {
   const uploadNFTContents = async () => {
     try {
       setUploading(true)
-      return false;
       let res = await exportNFT(
         arweave,
         addressAr,
@@ -169,6 +168,7 @@ function UploadManual() {
       return false
     }else{
       setCanVerify(true)
+      return true
     }
   }
 
@@ -184,12 +184,12 @@ function UploadManual() {
       setBalanceKoi(Number(balance.koiBalance))
       setBalanceAr(convertArBalance(balance.arBalance))
       res = await enoughBalance(Number(balance.koiBalance), convertArBalance(balance.arBalance))
+      console.log({res})
     }
     return res;
   }
 
   const beforeArweaveKeyfileUpload = (file) => {
-    // console.log('file type : ', file)
     const isJson = file.type === "application/json";
     if (!isJson) {
       show_notification("You can only upload a JSON file!");
