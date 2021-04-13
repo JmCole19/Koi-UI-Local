@@ -667,7 +667,7 @@ function ConfirmOpenseas() {
                           .map((_selected, _i) => (
                             <div key={_i} className="uploaded-card">
                               <div className="card-content-wrapper">
-                                <Image src={_selected.thumb} />
+                                <Image src={_selected.thumb} height="100" />
                                 <p className="text-blue">{_selected.title}</p>
                                 <p className="text-blue font-light text-italic mt-0">pending</p>
                               </div>
