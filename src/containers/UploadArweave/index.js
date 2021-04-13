@@ -12,8 +12,12 @@ import MyProgress from "components/Elements/MyProgress";
 import { DataContext } from "contexts/DataContextContainer";
 import { FaArrowLeft } from "react-icons/fa";
 import { colors } from "theme";
+import { alertTimeout } from "config";
+import axios from "axios";
+import { ScaleLoader } from "react-spinners";
 import { get_arweave_option } from "service/utils";
 import MetaWrapper from "components/Wrappers/MetaWrapper";
+import AlertArea from "components/Sections/AlertArea";
 
 const { TextArea } = Input;
 const { Dragger } = Upload;
@@ -36,6 +40,10 @@ function UploadArweave() {
   const { setAddressAr } = useContext(DataContext);
   const [uploading] = useState(false);
   const [arToken, setArToken] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
+  const [alertVariant, setAlertVariant] = useState('danger');
+  const [showAlert, setShowAlert] = useState(false);
+  const [errMessage, setErrMessage] = useState("");
 
   const onCompleteStep1 = () => {
     history.push(`/upload/arweave?step=2&address=${arToken}`);
@@ -77,15 +85,25 @@ function UploadArweave() {
     }
   };
 
+  const show_alert = (message = '', type = 'danger') => {
+    setShowAlert(true)
+    setAlertVariant(type)
+    setErrMessage(message)
+    setTimeout( () => {
+      setShowAlert(false)
+      setErrMessage('')
+    }, alertTimeout)
+  }
+
   useEffect(() => {
     if (address) {
       setIsLoading(true);
       const options = {
         method: "GET",
       };
-
       axios
-        .get("https://viewblock.io/arweave/tx/" + address)
+        // .get("https://viewblock.io/arweave/tx/" + address)
+        .get("https://arweave.dev/" + address)
         .then((res) => {
           const data = res.data;
           console.log({ data });
@@ -118,196 +136,207 @@ function UploadArweave() {
 
   return (
     <MetaWrapper>
-      <UploadArweaveContainer>
-        <Container>
-          <div className="upload-content-wrapper">
-            <div className="upload-content">
-              <div className="title-wrapper">
-                <h1 className="text-blue upload-title">Register your content.</h1>
-                {/* <Button
-                  className="back-wrapper btn-orange"
-                  onClick={() => history.replace("/register-content")}
-                >
-                  <FaArrowLeft size={20} color={colors.blueDark} />
-                  <h6 className="mb-0 text-blue text-bold ml-2">Leaderboard</h6>
-                </Button> */}
-              </div>
-              {step === "1" && (
-                <div className="upload-body">
-                  <Form
-                    layout="horizontal"
-                    form={form}
-                    {...formItemLayout}
-                    onFinish={onCompleteStep1}
-                  >
-                    <Row>
-                      <Col flex="100px">
-                        <div className="type-img-wrapper">
-                          <Image src={IconArweave} />
-                        </div>
-                      </Col>
-                      <Col flex={1}>
-                        <div className="upload-header">
-                          <div className="upload-header-title">
-                            <div className="upload-step">
-                              <MyProgress value={1} />
-                            </div>
-                            <h6 className="mb-0 text-blue ml-2">
-                              Enter the Arweave ID for your NFT.
-                            </h6>
-                          </div>
-                        </div>
-                        <div className="upload-content-form">
-                          <div className="upload-content-row">
-                            <Form.Item label="Token ID:">
-                              <Input
-                                placeholder="input placeholder"
-                                className="arweave-value-input"
-                                value={arToken}
-                                onChange={(e) => setArToken(e.target.value)}
-                              />
-                            </Form.Item>
-                          </div>
-                        </div>
-                      </Col>
-                    </Row>
-                    <Form.Item>
-                      <Button type="submit" className="btn-blueDark mx-auto px-5">
-                        Register your NFT
-                      </Button>
-                    </Form.Item>
-                  </Form>
-                </div>
-              )}
-              {step === "2" && (
-                <div className="upload-body">
-                  <Form
-                    layout="horizontal"
-                    form={form}
-                    {...formItemLayout}
-                    onFinish={onCompleteStep2}
-                  >
-                    <Row>
-                      <Col flex="100px">
-                        <div className="type-img-wrapper">
-                          <Image src={IconArweave} />
-                        </div>
-                      </Col>
-                      <Col flex={1}>
-                        <div className="upload-header">
-                          <div className="upload-header-title">
-                            <div className="upload-step">
-                              <MyProgress value={2} />
-                            </div>
-                            <h6 className="mb-0 text-blue ml-2">
-                              Confirm your data.
-                            </h6>
-                          </div>
-                        </div>
-                        <div className="upload-content-form">
-                          <div className="upload-content-row">
-                            <Form.Item label="Title">
-                              <Input
-                                placeholder="input placeholder"
-                                className="arweave-value-input"
-                              />
-                            </Form.Item>
-                            <Form.Item label="Owner">
-                              <Input
-                                placeholder="input placeholder"
-                                className="arweave-value-input"
-                              />
-                            </Form.Item>
-                            <Form.Item label="Description">
-                              <TextArea
-                                placeholder="input placeholder"
-                                className="arweave-value-input"
-                                rows={5}
-                              />
-                            </Form.Item>
-                          </div>
-                        </div>
-                      </Col>
-                    </Row>
-                    <Form.Item>
-                      <Button type="submit" className="btn-blueDark mx-auto px-5">
-                        Confirm NFT Details
-                      </Button>
-                    </Form.Item>
-                  </Form>
-                </div>
-              )}
-              {step === "3" && (
-                <div className="upload-body">
-                  <Form
-                    layout="horizontal"
-                    form={form}
-                    {...formItemLayout}
-                    onFinish={onCompleteStep3}
-                  >
-                    <Row>
-                      <Col flex="100px">
-                        <div className="type-img-wrapper">
-                          <Image src={IconArweave} />
-                        </div>
-                      </Col>
-                      <Col flex={1}>
-                        <div className="upload-header">
-                          <div className="upload-header-title">
-                            <div className="upload-step">
-                              <MyProgress value={3} />
-                            </div>
-                            <div className="header-description w-100">
-                              <h6 className="mb-0 text-blue ml-2">
-                                Upload your Arweave keyfile.
-                              </h6>
-                              <p className="mb-0 text-blue ml-2">
-                                Don’t have one yet? Visit the{" "}
-                                <a href="#/" className="text-green">
-                                  Arweave Faucet
-                                </a>
-                                .
-                              </p>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="upload-content-form d-flex justify-content-center"></div>
-                      </Col>
-                    </Row>
-                    <div className="single-ant-file-upload">
-                      <Dragger
-                        name="file"
-                        multiple={false}
-                        listType={false}
-                        // previewFile={false}
-                        showUploadList={false}
-                        beforeUpload={beforeUpload}
-                      >
-                        <div className="uploader-container">
-                          {uploading ? (
-                            <Spin size="large" />
-                          ) : (
-                            <>
-                              <div className="uploader-icon d-flex justify-content-center align-items-center">
-                                <Image src={IconUpload} />
-                              </div>
-                              <p className="text-blue mb-0">
-                                Drag & Drop your Arweave keyfile here.
-                              </p>
-                            </>
-                          )}
-                        </div>
-                      </Dragger>
-                      {/* {src.length > 0 && <p>{src[0].originalname.split('.')[1]}</p>} */}
-                      {/* <p className="text-secondary">dddddd</p> */}
-                    </div>
-                  </Form>
-                </div>
-              )}
-            </div>
+      <AlertArea
+        showMessage={showAlert}
+        variant={alertVariant}
+        message={errMessage}
+      ></AlertArea>
+      {isLoading ? (
+          <div className="loading-container text-center mt-4">
+            <ScaleLoader size={15} color={"#2a58ad"} />
           </div>
-        </Container>
-      </UploadArweaveContainer>
+        ) : (
+        <UploadArweaveContainer>
+          <Container>
+            <div className="upload-content-wrapper">
+              <div className="upload-content">
+                <div className="title-wrapper">
+                  <h1 className="text-blue upload-title">Register your content.</h1>
+                  {/* <Button
+                    className="back-wrapper btn-orange"
+                    onClick={() => history.replace("/register-content")}
+                  >
+                    <FaArrowLeft size={20} color={colors.blueDark} />
+                    <h6 className="mb-0 text-blue text-bold ml-2">Leaderboard</h6>
+                  </Button> */}
+                </div>
+                {step === "1" && (
+                  <div className="upload-body">
+                    <Form
+                      layout="horizontal"
+                      form={form}
+                      {...formItemLayout}
+                      onFinish={onCompleteStep1}
+                    >
+                      <Row>
+                        <Col flex="100px">
+                          <div className="type-img-wrapper">
+                            <Image src={IconArweave} />
+                          </div>
+                        </Col>
+                        <Col flex={1}>
+                          <div className="upload-header">
+                            <div className="upload-header-title">
+                              <div className="upload-step">
+                                <MyProgress value={1} />
+                              </div>
+                              <h6 className="mb-0 text-blue ml-2">
+                                Enter the Arweave ID for your NFT.
+                              </h6>
+                            </div>
+                          </div>
+                          <div className="upload-content-form">
+                            <div className="upload-content-row">
+                              <Form.Item label="Token ID:">
+                                <Input
+                                  placeholder="input placeholder"
+                                  className="arweave-value-input"
+                                  value={arToken}
+                                  onChange={(e) => setArToken(e.target.value)}
+                                />
+                              </Form.Item>
+                            </div>
+                          </div>
+                        </Col>
+                      </Row>
+                      <Form.Item>
+                        <Button type="submit" className="btn-blueDark mx-auto px-5">
+                          Register your NFT
+                        </Button>
+                      </Form.Item>
+                    </Form>
+                  </div>
+                )}
+                {step === "2" && (
+                  <div className="upload-body">
+                    <Form
+                      layout="horizontal"
+                      form={form}
+                      {...formItemLayout}
+                      onFinish={onCompleteStep2}
+                    >
+                      <Row>
+                        <Col flex="100px">
+                          <div className="type-img-wrapper">
+                            <Image src={IconArweave} />
+                          </div>
+                        </Col>
+                        <Col flex={1}>
+                          <div className="upload-header">
+                            <div className="upload-header-title">
+                              <div className="upload-step">
+                                <MyProgress value={2} />
+                              </div>
+                              <h6 className="mb-0 text-blue ml-2">
+                                Confirm your data.
+                              </h6>
+                            </div>
+                          </div>
+                          <div className="upload-content-form">
+                            <div className="upload-content-row">
+                              <Form.Item label="Title">
+                                <Input
+                                  placeholder="input placeholder"
+                                  className="arweave-value-input"
+                                />
+                              </Form.Item>
+                              <Form.Item label="Owner">
+                                <Input
+                                  placeholder="input placeholder"
+                                  className="arweave-value-input"
+                                />
+                              </Form.Item>
+                              <Form.Item label="Description">
+                                <TextArea
+                                  placeholder="input placeholder"
+                                  className="arweave-value-input"
+                                  rows={5}
+                                />
+                              </Form.Item>
+                            </div>
+                          </div>
+                        </Col>
+                      </Row>
+                      <Form.Item>
+                        <Button type="submit" className="btn-blueDark mx-auto px-5">
+                          Confirm NFT Details
+                        </Button>
+                      </Form.Item>
+                    </Form>
+                  </div>
+                )}
+                {step === "3" && (
+                  <div className="upload-body">
+                    <Form
+                      layout="horizontal"
+                      form={form}
+                      {...formItemLayout}
+                      onFinish={onCompleteStep3}
+                    >
+                      <Row>
+                        <Col flex="100px">
+                          <div className="type-img-wrapper">
+                            <Image src={IconArweave} />
+                          </div>
+                        </Col>
+                        <Col flex={1}>
+                          <div className="upload-header">
+                            <div className="upload-header-title">
+                              <div className="upload-step">
+                                <MyProgress value={3} />
+                              </div>
+                              <div className="header-description w-100">
+                                <h6 className="mb-0 text-blue ml-2">
+                                  Upload your Arweave keyfile.
+                                </h6>
+                                <p className="mb-0 text-blue ml-2">
+                                  Don’t have one yet? Visit the{" "}
+                                  <a href="#/" className="text-green">
+                                    Arweave Faucet
+                                  </a>
+                                  .
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="upload-content-form d-flex justify-content-center"></div>
+                        </Col>
+                      </Row>
+                      <div className="single-ant-file-upload">
+                        <Dragger
+                          name="file"
+                          multiple={false}
+                          listType={false}
+                          // previewFile={false}
+                          showUploadList={false}
+                          beforeUpload={beforeUpload}
+                        >
+                          <div className="uploader-container">
+                            {uploading ? (
+                              <Spin size="large" />
+                            ) : (
+                              <>
+                                <div className="uploader-icon d-flex justify-content-center align-items-center">
+                                  <Image src={IconUpload} />
+                                </div>
+                                <p className="text-blue mb-0">
+                                  Drag & Drop your Arweave keyfile here.
+                                </p>
+                              </>
+                            )}
+                          </div>
+                        </Dragger>
+                        {/* {src.length > 0 && <p>{src[0].originalname.split('.')[1]}</p>} */}
+                        {/* <p className="text-secondary">dddddd</p> */}
+                      </div>
+                    </Form>
+                  </div>
+                )}
+              </div>
+            </div>
+          </Container>
+        </UploadArweaveContainer> 
+      )}
     </MetaWrapper>
   );
 }
