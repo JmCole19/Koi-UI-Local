@@ -21,7 +21,7 @@ import { DataContext } from "contexts/DataContextContainer";
 import { FaTimes } from "react-icons/fa";
 import Arweave from "arweave";
 import { show_notification, show_fixed_number, convertArBalance, get_arweave_option } from "service/utils";
-import { exportNFT } from "service/NFT";
+import { exportNFT, getArWalletAddressFromJson } from "service/NFT";
 import AlertArea from "components/Sections/AlertArea";
 import {alertTimeout} from 'config'
 import ModalContent from "components/Elements/ModalContent";
@@ -63,6 +63,7 @@ function ConfirmOpenseas() {
     setBalanceKoi,
     balanceAr,
     setBalanceAr,
+    setAddressAr
   } = useContext(DataContext);
   const [form] = useForm();
   const location = useLocation();
@@ -175,8 +176,13 @@ function ConfirmOpenseas() {
       setMode("uploadKey");
     }else {
       if(mode !== modes.confirm) setMode("confirm")
+<<<<<<< HEAD
       if(balanceKoi !== null && balanceKoi !== null) {
         enoughBalance(balanceKoi, balanceAr)
+=======
+      if(balanceKoi !== null && balanceAr !== null) {
+        enoughBalance()
+>>>>>>> master
       }else {
         setLoading(true)
         let balance = await getKoi(keyAr)
@@ -379,7 +385,8 @@ function ConfirmOpenseas() {
       const reader = new FileReader();
       reader.onload = async (e) => {
         var arJson = JSON.parse(e.target.result);
-        // setWalletKey(arJson);
+        let addressResult = await getArWalletAddressFromJson(arweave, arJson);
+        setAddressAr(addressResult);
         setKeyAr(arJson);
         setMode("confirm")
         // setDetectorAr(true);
