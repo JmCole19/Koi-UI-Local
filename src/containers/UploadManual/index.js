@@ -73,7 +73,8 @@ function UploadManual() {
   const [canVerify, setCanVerify] = useState(false);
 
   const onCompleteStep1 = () => {
-    history.push(`/upload/manual?step=2`);
+    show_alert('You don\'t have enough koi or ar')
+    // history.push(`/upload/manual?step=2`);
   };
 
   const onCompleteStep2 = async () => {
@@ -87,6 +88,9 @@ function UploadManual() {
         console.log({isUploading})
         if(isUploading){
           onClickVerify()
+        }else{
+          console.log("here log 2")
+          show_alert('You don\'t have enough koi or ar')
         }
       }else{
         history.push(`/upload/manual?step=3`);
@@ -159,6 +163,7 @@ function UploadManual() {
 
   const enoughBalance = async (bcKoi, bcAr) => {
     if(Number(bcKoi) < 1 ) {
+      console.log("here is error message")
       show_confirm_alert('You don’t have any KOI in your wallet. <br> Hop on over to the <a href="/faucet">KOI Faucet</a> to get some KOI.')
       setCanVerify(false)
       return false
@@ -362,6 +367,7 @@ function UploadManual() {
                     form={form}
                     {...formItemLayout}
                     onFinish={onCompleteStep2}
+                    // onFinish={async () => await onCompleteStep2()}
                   >
                     <Row>
                       <Col flex="100px">

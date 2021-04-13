@@ -122,6 +122,7 @@ export const UploadUploadContainer = styled.div`
           }
           .upload-image-form {
             .upload-content-row {
+              flex: 1;
               display: flex;
               align-items: center;
               justify-content: space-around;
@@ -147,6 +148,7 @@ export const UploadUploadContainer = styled.div`
             }
             .upload-content-row {
               margin-left: 34px;
+              flex: 1;
               .ant-form-item-control-input-content {
                 display: flex;
                 .left {
