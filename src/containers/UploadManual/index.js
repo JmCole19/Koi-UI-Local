@@ -73,8 +73,7 @@ function UploadManual() {
   const [canVerify, setCanVerify] = useState(false);
 
   const onCompleteStep1 = () => {
-    show_alert('You don\'t have enough koi or ar')
-    // history.push(`/upload/manual?step=2`);
+    history.push(`/upload/manual?step=2`);
   };
 
   const onCompleteStep2 = async () => {
@@ -85,11 +84,9 @@ function UploadManual() {
     ) {
       if(keyAr){
         let isUploading = await checkUpload(keyAr)
-        console.log({isUploading})
         if(isUploading){
           onClickVerify()
         }else{
-          console.log("here log 2")
           show_alert('You don\'t have enough koi or ar')
         }
       }else{
@@ -181,7 +178,6 @@ function UploadManual() {
     let res;
     if(balanceKoi !== null && balanceAr !== null) {
       res = await enoughBalance(balanceKoi, balanceAr)
-      console.log({res})
     }else {
       setLoading(true)
       let balance = await getKoi(keyfile)
@@ -189,7 +185,6 @@ function UploadManual() {
       setBalanceKoi(Number(balance.koiBalance))
       setBalanceAr(convertArBalance(balance.arBalance))
       res = await enoughBalance(Number(balance.koiBalance), convertArBalance(balance.arBalance))
-      console.log({res})
     }
     return res;
   }
@@ -367,7 +362,6 @@ function UploadManual() {
                     form={form}
                     {...formItemLayout}
                     onFinish={onCompleteStep2}
-                    // onFinish={async () => await onCompleteStep2()}
                   >
                     <Row>
                       <Col flex="100px">
