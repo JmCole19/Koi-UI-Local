@@ -23,7 +23,9 @@ import { FaTimes } from "react-icons/fa";
 import { colors } from "theme";
 import MetaWrapper from "components/Wrappers/MetaWrapper";
 
-const arweave = Arweave.init(get_arweave_option);
+//const arweave = Arweave.init(get_arweave_option);
+const arweave = Arweave.init();
+console.log(arweave);
 const { TextArea } = Input;
 const { Dragger } = Upload;
 
