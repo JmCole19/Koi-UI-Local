@@ -78,6 +78,39 @@ function UploadArweave() {
   };
 
   useEffect(() => {
+    if (address) {
+      setIsLoading(true);
+      const options = {
+        method: "GET",
+      };
+
+      axios
+        .get("https://viewblock.io/arweave/tx/" + address)
+        .then((res) => {
+          const data = res.data;
+          console.log({ data });
+          if (data === 0) {
+            show_alert("There is no contents.");
+          } else {
+            // setContents(data);
+            // const item = data.find((_content) => _content.txIdContent === id);
+            // if (item) {
+            //   console.log(item);
+            //   setDetail(item);
+            // } else {
+            //   show_notification("There is no matching contents.");
+            // }
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+          show_alert("There is an error");
+        })
+        .finally(() => setIsLoading(false));
+    }
+  }, [history.location.pathname]);
+
+  useEffect(() => {
     if (step !== "1" && !address) {
       history.replace(`/upload/arweave?step=1`);
     }
