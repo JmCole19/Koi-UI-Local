@@ -76,13 +76,21 @@ function UploadManual() {
     history.push(`/upload/manual?step=2`);
   };
 
-  const onCompleteStep2 = () => {
+  const onCompleteStep2 = async () => {
     if (
       activeContent.title &&
       activeContent.owner &&
       activeContent.description
     ) {
-      history.push(`/upload/manual?step=3`);
+      if(keyAr){
+        let isUploading = await checkUpload(keyAr)
+        console.log({isUploading})
+        if(isUploading){
+          onClickVerify()
+        }
+      }else{
+        history.push(`/upload/manual?step=3`);
+      }
     } else {
       show_alert("Please fill out all fields.", "danger");
     }
@@ -125,6 +133,7 @@ function UploadManual() {
   const uploadNFTContents = async () => {
     try {
       setUploading(true)
+      return false;
       let res = await exportNFT(
         arweave,
         addressAr,
@@ -164,16 +173,19 @@ function UploadManual() {
   }
 
   const checkUpload = async (keyfile) => {
+    let res;
     if(balanceKoi !== null && balanceAr !== null) {
-      await enoughBalance(balanceKoi, balanceAr)
+      res = await enoughBalance(balanceKoi, balanceAr)
+      console.log({res})
     }else {
       setLoading(true)
       let balance = await getKoi(keyfile)
       setLoading(false)
       setBalanceKoi(Number(balance.koiBalance))
       setBalanceAr(convertArBalance(balance.arBalance))
-      await enoughBalance(Number(balance.koiBalance), convertArBalance(balance.arBalance))
+      res = await enoughBalance(Number(balance.koiBalance), convertArBalance(balance.arBalance))
     }
+    return res;
   }
 
   const beforeArweaveKeyfileUpload = (file) => {
@@ -422,7 +434,7 @@ function UploadManual() {
                                 type="submit"
                                 className="btn-blueDark btn-confirm"
                               >
-                                Upload Your Arweave Keyfile
+                                {keyAr ? 'Submit' : 'Upload Your Arweave Keyfile'}
                               </Button>
                             </Form.Item>
                           </div>
