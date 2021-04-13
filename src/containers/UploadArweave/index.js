@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Container, Image, Button } from "react-bootstrap";
 import queryString from "query-string";
 import Arweave from "arweave";
@@ -32,12 +32,13 @@ function UploadArweave() {
   const history = useHistory();
   const [form] = useForm();
   const location = useLocation();
-  const { step } = queryString.parse(location.search);
+  const { step, address } = queryString.parse(location.search);
   const { setAddressAr } = useContext(DataContext);
   const [uploading] = useState(false);
+  const [arToken, setArToken] = useState('');
 
   const onCompleteStep1 = () => {
-    history.push(`/upload/arweave?step=2`);
+    history.push(`/upload/arweave?step=2&address=${arToken}`);
   };
 
   const onCompleteStep2 = () => {
@@ -76,6 +77,12 @@ function UploadArweave() {
     }
   };
 
+  useEffect(() => {
+    if (step !== "1" && !address) {
+      history.replace(`/upload/arweave?step=1`);
+    }
+  }, []);
+
   return (
     <MetaWrapper>
       <UploadArweaveContainer>
@@ -84,13 +91,13 @@ function UploadArweave() {
             <div className="upload-content">
               <div className="title-wrapper">
                 <h1 className="text-blue upload-title">Register your content.</h1>
-                <Button
+                {/* <Button
                   className="back-wrapper btn-orange"
                   onClick={() => history.replace("/register-content")}
                 >
                   <FaArrowLeft size={20} color={colors.blueDark} />
                   <h6 className="mb-0 text-blue text-bold ml-2">Leaderboard</h6>
-                </Button>
+                </Button> */}
               </div>
               {step === "1" && (
                 <div className="upload-body">
@@ -119,10 +126,12 @@ function UploadArweave() {
                         </div>
                         <div className="upload-content-form">
                           <div className="upload-content-row">
-                            <Form.Item label="Arweave ID:">
+                            <Form.Item label="Token ID:">
                               <Input
                                 placeholder="input placeholder"
                                 className="arweave-value-input"
+                                value={arToken}
+                                onChange={(e) => setArToken(e.target.value)}
                               />
                             </Form.Item>
                           </div>
