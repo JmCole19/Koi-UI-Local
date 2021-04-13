@@ -176,13 +176,8 @@ function ConfirmOpenseas() {
       setMode("uploadKey");
     }else {
       if(mode !== modes.confirm) setMode("confirm")
-<<<<<<< HEAD
-      if(balanceKoi !== null && balanceKoi !== null) {
-        enoughBalance(balanceKoi, balanceAr)
-=======
       if(balanceKoi !== null && balanceAr !== null) {
         enoughBalance()
->>>>>>> master
       }else {
         setLoading(true)
         let balance = await getKoi(keyAr)
