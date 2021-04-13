@@ -155,13 +155,13 @@ function ConfirmOpenseas() {
     return true
   }
 
-  const enoughBalance = async () => {
-    console.log("koi balance : ", Number(balanceKoi))
-    console.log("ar balance : ", Number(balanceAr))
-    if(Number(balanceKoi) < uploadContents.length ) {
+  const enoughBalance = async (bcKoi, bcAr) => {
+    console.log("koi balance : ", Number(bcKoi))
+    console.log("ar balance : ", Number(bcAr))
+    if(Number(bcKoi) < uploadContents.length ) {
       setErrMessage("You don't have enough KOI to upload these NFTs. Visit the KOI Faucet to get some KOI.")
       return false
-    }else if(Number(balanceAr) < Number(uploadContents.length * 0.0002) ) {
+    }else if(Number(bcAr) < Number(uploadContents.length * 0.0002) ) {
       setErrMessage('You need more AR to upload.')
       return false
     }else{
@@ -170,20 +170,20 @@ function ConfirmOpenseas() {
   }
 
   const checkUpload = async () => {
-    console.log('checkUpload', keyAr)
     if(!keyAr) {
       show_notification('Please upload your json keyfile.')
       setMode("uploadKey");
     }else {
       if(mode !== modes.confirm) setMode("confirm")
       if(balanceKoi !== null && balanceKoi !== null) {
-        enoughBalance()
+        enoughBalance(balanceKoi, balanceAr)
       }else {
         setLoading(true)
         let balance = await getKoi(keyAr)
         setLoading(false)
         setBalanceKoi(Number(balance.koiBalance))
         setBalanceAr(convertArBalance(balance.arBalance))
+        enoughBalance(Number(balance.koiBalance), convertArBalance(balance.arBalance))
         // setTimeout( () => enoughBalance(), 100)
       }
     }
@@ -268,8 +268,7 @@ function ConfirmOpenseas() {
         }
         break;
       case "confirm":
-        console.log({uploadContents})
-        // checkUpload()
+        checkUpload()
         // setDetectorAr(true)
         break;
       // case 'uploadKey':
@@ -365,13 +364,6 @@ function ConfirmOpenseas() {
     }
     setUploadContents(contentsOS);
   }, [step, openSeas]);
-
-  // useEffect(() => {
-  //   if(mode === modes.confirm){
-  //     console.log("here is focus")
-  //     enoughBalance()
-  //   }
-  // }, updatedBalanceKoi)
 
   const beforeJsonUpload = (file) => {
     // console.log('file type : ', file)
