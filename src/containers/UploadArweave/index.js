@@ -1,25 +1,27 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useContext, useState, useEffect } from "react";
-import { Container, Image, Button } from "react-bootstrap";
+import { Container, Image, Button, Modal } from "react-bootstrap";
 import queryString from "query-string";
 import Arweave from "arweave";
 import { IconArweave, IconUpload } from "assets/images";
 import { UploadArweaveContainer } from "./style";
-import { Col, Form, Input, Row, Upload, Spin, notification } from "antd";
+import { Col, Form, Input, Row, Upload, Spin, notification, Space } from "antd";
 import { useForm } from "antd/lib/form/Form";
 import { useHistory, useLocation } from "react-router-dom";
 import MyProgress from "components/Elements/MyProgress";
 import { DataContext } from "contexts/DataContextContainer";
+import { FaTimes } from "react-icons/fa";
 // import { FaArrowLeft } from "react-icons/fa";
-// import { colors } from "theme";
+import { colors } from "theme";
 import { convertArBalance, show_notification, show_fixed_number, get_arweave_option } from "service/utils";
 import cloneDeep from "clone-deep";
 import { alertTimeout } from "config";
+import { getArWalletAddressFromJson, exportNFT } from "service/NFT";
 import axios from "axios";
 import { ScaleLoader } from "react-spinners";
 import MetaWrapper from "components/Wrappers/MetaWrapper";
 import AlertArea from "components/Sections/AlertArea";
-import { Content } from "react-bootstrap/lib/tab";
+import { getKoi } from "service/KOI";
 
 const { TextArea } = Input;
 const { Dragger } = Upload;
@@ -49,13 +51,19 @@ function UploadArweave() {
     balanceAr,
     setBalanceAr,
   } = useContext(DataContext);
-  const [uploading] = useState(false);
+  const [uploading, setUploading] = useState(false);
   const [arToken, setArToken] = useState('');
   const [activeContent, setActiveContent] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [alertVariant, setAlertVariant] = useState('danger');
   const [showAlert, setShowAlert] = useState(false);
   const [errMessage, setErrMessage] = useState('');
+  const [showConfirmAlert, setShowConfirmAlert] = useState(false);
+  const [confirmAlertVariant, setConfirmAlertVariant] = useState('danger');
+  const [confirmMessage, setConfirmMessage] = useState('');
+  const [showModal, setShowModal] = useState(false);
+  const [canVerify, setCanVerify] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const onCompleteStep1 = () => {
     history.push(`/upload/arweave?step=2&address=${arToken}`);
@@ -67,6 +75,47 @@ function UploadArweave() {
 
   const onCompleteStep3 = () => {
     console.log("Completed");
+  };
+
+  const show_confirm_alert = (message = '', type = 'danger') => {
+    setShowConfirmAlert(true)
+    setConfirmAlertVariant(type)
+    setConfirmMessage(message)
+    setTimeout( () => {
+      setShowConfirmAlert(false)
+      setConfirmMessage('')
+    }, alertTimeout)
+  }
+
+  const enoughBalance = async (bcKoi, bcAr) => {
+    if(Number(bcKoi) < 1 ) {
+      show_confirm_alert('You don’t have any KOI in your wallet. <br> Hop on over to the <a href="/faucet">KOI Faucet</a> to get some KOI.')
+      setCanVerify(false)
+      return false
+    }else if(Number(bcAr) < Number(1 * 0.0002) ) {
+      show_confirm_alert('You need more AR to upload.')
+      setCanVerify(false)
+      return false
+    }else{
+      setCanVerify(true)
+    }
+  }
+
+  const checkUpload = async (keyfile) => {
+    if(balanceKoi !== null && balanceAr !== null) {
+      await enoughBalance(balanceKoi, balanceAr)
+    }else {
+      setLoading(true)
+      let balance = await getKoi(keyfile)
+      setLoading(false)
+      setBalanceKoi(Number(balance.koiBalance))
+      setBalanceAr(convertArBalance(balance.arBalance))
+      await enoughBalance(Number(balance.koiBalance), convertArBalance(balance.arBalance))
+    }
+  }
+
+  const onClickVerify = () => {
+    setShowModal(true)
   };
 
   const beforeUpload = (file) => {
@@ -117,6 +166,18 @@ function UploadArweave() {
     history.goBack()
   };
 
+  const onClickCloseConfirmModal = () => {
+    setShowModal(false);
+  };
+
+  const confirmModalHide = () => {
+    if (!uploading) {
+      setShowModal(false)
+    } else {
+      show_notification("You can't close this modal until your NFT has finished uploading.");
+    }
+  };
+
   const beforeArweaveKeyfileUpload = (file) => {
     // console.log('file type : ', file)
     const isJson = file.type === "application/json";
@@ -145,6 +206,33 @@ function UploadArweave() {
     return isJson && isLt1M;
   };
 
+  const uploadNFTContents = async () => {
+    try {
+      setUploading(true)
+      let res = await exportNFT(
+        arweave,
+        addressAr,
+        activeContent,
+        activeContent.thumb,
+        null,
+        keyAr
+      );
+
+      if (res) {
+        setUploading(false)
+        show_notification("Uploaded successfully. Your transaction ID is " + res + ".", "Success", 'success')
+        setShowModal(false)
+        history.push("/my-content");
+      } else {
+        show_confirm_alert("Something went wrong uploading your NFT.", "danger");
+      }
+    } catch (err) {
+      console.log("here1");
+      console.log(err);
+      show_confirm_alert("Something went wrong uploading your NFT.");
+    }
+  }
+
   useEffect(() => {
     if (address) {
       setIsLoading(true);
@@ -155,13 +243,14 @@ function UploadArweave() {
         // .get("https://viewblock.io/arweave/tx/" + address)
         .get("https://arweave.dev/" + address)
         .then((res) => {
-          const data = res.data;
+          let data = res.data;
           console.log({ data });
           if (data === 0) {
             show_alert("There is no contents.");
           } else {
+            data.thumb = 'https://arweave.dev/' + address
+            data.owner = data.name || ''
             console.log(data)
-            let thumb = 'https://arweave.dev/' + address
             setActiveContent({...data, address});
           }
         })
@@ -179,7 +268,6 @@ function UploadArweave() {
     }
   }, []);
 
-  console.log(activeContent)
   return (
     <MetaWrapper>
       <AlertArea
@@ -442,6 +530,82 @@ function UploadArweave() {
                 )}
               </div>
             </div>
+            <Modal
+              show={showModal}
+              centered
+              dialogClassName="modal-confirm-transaction"
+              onHide={confirmModalHide}
+            >
+              <Modal.Body>
+                <FaTimes
+                  className="icon-close cursor"
+                  color={colors.blueDark}
+                  size={24}
+                  onClick={onClickCloseConfirmModal}
+                />
+                <h2 className="modal-title text-blue">Confirm transaction</h2>
+                <div className="imgs-wrapper">
+                  <Space size={28}>
+                    <Image
+                        className="br-4"
+                        src={activeContent.thumb}
+                        width={40}
+                      />
+                  </Space>
+                </div>
+                <>
+                  <div className="modal-row mb-2">
+                    <div className="modal-row-left">
+                      <p className="text-blue mb-0">
+                        AR to upload: <b>0.0002 AR</b> / NFT{" "}
+                      </p>
+                    </div>
+                    <div className="modal-row-right">
+                      <p className="text-blue mb-0">
+                        x {1} upload
+                      </p>
+                    </div>
+                  </div>
+                  <div className="modal-row mb-4">
+                    <div className="modal-row-left">
+                      <p className="text-blue mb-0">
+                        KOI to upload: <b>1.0 KOI</b> / NFT{" "}
+                      </p>
+                    </div>
+                    <div className="modal-row-right">
+                      <p className="text-blue mb-0">
+                        x {1} upload
+                      </p>
+                    </div>
+                  </div>
+                  <h6 className="text-blue">
+                    <b>Estimated Total</b>
+                  </h6>
+                  <h6 className="text-blue">
+                    {show_fixed_number(1 * 0.0002, 4)} AR
+                  </h6>
+                  <h6 className="text-blue">
+                    {show_fixed_number(1 * 1, 1)} KOI
+                  </h6>
+                  <AlertArea
+                    showMessage={showConfirmAlert}
+                    variant={confirmAlertVariant}
+                    message={confirmMessage}
+                  ></AlertArea>
+                  {!uploading && (
+                    <Button
+                      className="btn-blueDark btn-connect"
+                      onClick={uploadNFTContents}
+                    >
+                      Confirm & Upload
+                    </Button>
+                  )}
+                  {uploading && (
+                    <Spin size="large" tip="uploading" />
+                  )}
+                </>
+              </Modal.Body>
+            </Modal>
           </Container>
         </UploadArweaveContainer> 
       )}
