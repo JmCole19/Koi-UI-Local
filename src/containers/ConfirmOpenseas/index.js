@@ -177,7 +177,7 @@ function ConfirmOpenseas() {
     }else {
       if(mode !== modes.confirm) setMode("confirm")
       if(balanceKoi !== null && balanceAr !== null) {
-        enoughBalance()
+        enoughBalance(balanceKoi, balanceAr)
       }else {
         setLoading(true)
         let balance = await getKoi(keyAr)
