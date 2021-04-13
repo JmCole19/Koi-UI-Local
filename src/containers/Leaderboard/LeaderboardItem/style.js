@@ -8,8 +8,12 @@ export const LeaderboardItemContainer = styled.div`
   border-bottom: 2px solid ${colors.grayGreen};
   min-height: 192px;
   padding: 0px 56px;
-  display: flex;
-  align-items: center;
+  .item-container{
+    display: flex;
+    flex: 1;
+    align-items: center;
+  }
+  .w20{width: 20px;}
   .part-left {
     display: flex;
     flex: 1;
@@ -44,20 +48,6 @@ export const LeaderboardItemContainer = styled.div`
         }
         .item-created_at {
           color: ${colors.greenDark};
-        }
-        .explore-block {
-          font-weight: 500;
-          line-height: 20px;
-          letter-spacing: 0.03em;
-          color: #237b75;
-          border: 1px solid #237b75;
-          box-sizing: border-box;
-          border-radius: 2px;
-          margin-bottom: 0;
-          width: fit-content;
-          padding: 0 5px;
-          font-size: 12px !important;
-          cursor: pointer;
         }
       }
     }
@@ -118,14 +108,18 @@ export const LeaderboardItemContainer = styled.div`
   @media (max-width: ${mixins.md}px) {
   }
   @media (max-width: ${mixins.sm}px) {
-    flex-direction: column;
-    padding: 43px 11px 10px;
+    padding: 0px 35px;
+    .item-container{
+      flex-direction: column;
+      padding: 20px 11px 10px;
+    }
+    .sx-hidden-share{display: none;}
     .part-left {
       width: 100%;
-      margin-bottom: 40px;
+      margin-bottom: 20px;
       .item-col {
         &.item-info-wrapper {
-          flex: none;
+          flex: 2;
           margin-left: auto;
           .item-title {
             font-size: 24px !important;
@@ -135,6 +129,7 @@ export const LeaderboardItemContainer = styled.div`
           }
         }
         &.item-img-wrapper {
+          flex: 1;
           img {
             width: 128px;
           }
@@ -149,13 +144,21 @@ export const LeaderboardItemContainer = styled.div`
         padding: 0px;
         &.item-reviews-wrapper {
           align-items: center;
-          flex: 1;
+          flex: 2;
         }
       }
       .share-wrapper {
-        flex: 2;
+        flex: 3;
         margin-left: 15px;
       }
+    }
+  }
+  @media (max-width: 479px) {
+    padding: 0px 20px;
+    .item-reviews-wrapper {
+      margin-bottom: 25px !important;
+      padding: 5px !important;
+      h5 { font-size: 16px !important; }
     }
   }
 `;

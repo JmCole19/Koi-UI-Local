@@ -21,7 +21,6 @@ import { alertTimeout } from "config";
 import { getKoi } from "service/KOI";
 import { FaTimes } from "react-icons/fa";
 import { colors } from "theme";
-import useDebounce from "components/Utils/useDebounce";
 import MetaWrapper from "components/Wrappers/MetaWrapper";
 
 const arweave = Arweave.init(get_arweave_option);
@@ -72,19 +71,27 @@ function UploadManual() {
   });
   // const [detectorAr] = useState(false); //, setDetectorAr
   const [canVerify, setCanVerify] = useState(false);
-  const updatedBalanceKoi = useDebounce(balanceKoi, 500);
 
   const onCompleteStep1 = () => {
     history.push(`/upload/manual?step=2`);
   };
 
-  const onCompleteStep2 = () => {
+  const onCompleteStep2 = async () => {
     if (
       activeContent.title &&
       activeContent.owner &&
       activeContent.description
     ) {
-      history.push(`/upload/manual?step=3`);
+      if(keyAr){
+        let isUploading = await checkUpload(keyAr)
+        if(isUploading){
+          onClickVerify()
+        }else{
+          show_alert('You don\'t have enough koi or ar')
+        }
+      }else{
+        history.push(`/upload/manual?step=3`);
+      }
     } else {
       show_alert("Please fill out all fields.", "danger");
     }
@@ -127,7 +134,6 @@ function UploadManual() {
   const uploadNFTContents = async () => {
     try {
       setUploading(true)
-
       let res = await exportNFT(
         arweave,
         addressAr,
@@ -152,34 +158,38 @@ function UploadManual() {
     }
   }
 
-  const enoughBalance = async () => {
-    if(Number(balanceKoi) < 1 ) {
+  const enoughBalance = async (bcKoi, bcAr) => {
+    if(Number(bcKoi) < 1 ) {
+      console.log("here is error message")
       show_confirm_alert('You don’t have any KOI in your wallet. <br> Hop on over to the <a href="/faucet">KOI Faucet</a> to get some KOI.')
       setCanVerify(false)
       return false
-    }else if(Number(balanceAr) < Number(1 * 0.0002) ) {
+    }else if(Number(bcAr) < Number(1 * 0.0002) ) {
       show_confirm_alert('You need more AR to upload.')
       setCanVerify(false)
       return false
     }else{
       setCanVerify(true)
+      return true
     }
   }
 
   const checkUpload = async (keyfile) => {
+    let res;
     if(balanceKoi !== null && balanceAr !== null) {
-      await enoughBalance()
+      res = await enoughBalance(balanceKoi, balanceAr)
     }else {
       setLoading(true)
       let balance = await getKoi(keyfile)
       setLoading(false)
       setBalanceKoi(Number(balance.koiBalance))
       setBalanceAr(convertArBalance(balance.arBalance))
+      res = await enoughBalance(Number(balance.koiBalance), convertArBalance(balance.arBalance))
     }
+    return res;
   }
 
   const beforeArweaveKeyfileUpload = (file) => {
-    // console.log('file type : ', file)
     const isJson = file.type === "application/json";
     if (!isJson) {
       show_notification("You can only upload a JSON file!");
@@ -223,33 +233,13 @@ function UploadManual() {
         if(filename.length > 20) filename = filename.substr(0, 18) + '~.'
         setImagePath(filename + ex)
         setImageUrl(e.target.result);
-        // fetch(e.target.result)
-        //   .then(function (response) {
-        //     return response.blob();
-        //   })
-        //   .then(function (blob) {
-        //     setImageBlob(blob);
-        //   });
       };
-      // setImageBlob(file)
       reader.readAsDataURL(file);
-      // Prevent upload
       return false;
     }
     return isJpgOrPng && isLt2M;
-    // if ( ['png', 'jpeg', 'jpg', 'gif', 'mp4'].includes(fileExt.toLowerCase()) ) {
-    //   let fileList = [file]
-    //   // set fileList
-    //   return false
-    // } else {
-    //   // show_notification('Please input only image and video.')
-    // }
   };
-
-  // const onOpenArConnect = () => {
-  //   setDetectorAr(true)
-  // };
-
+  
   const onClickCloseConfirmModal = () => {
     setShowModal(false);
   };
@@ -262,45 +252,9 @@ function UploadManual() {
     }
   };
 
-  useEffect(() => {
-    if(step === "3" && balanceKoi !== null && balanceAr !== null){
-      console.log("here is focus")
-      enoughBalance()
-    }
-  }, updatedBalanceKoi)
-
   const onClickVerify = () => {
     setShowModal(true)
   };
-
-  // useEffect(() => {
-  //   if (detectorAr) {
-  //     window.addEventListener("arweaveWalletLoaded", detectArweaveWallet());
-  //     return () => {
-  //       window.removeEventListener("arweaveWalletLoaded", () => { });
-  //     };
-  //   }
-  // }, [detectorAr]);
-  
-  // const detectArweaveWallet = async () => {
-  //   try {
-  //     let addr = await arweave.wallets.getAddress();
-  //     console.log("detected arweave wallet address : ", addr);
-  //     if (addr) {
-  //       setAddressAr(addr);
-  //       if(keyAr) {
-  //         await checkUpload(keyAr)
-  //       }else{
-  //         show_alert('Connect your wallet.')
-  //       }
-  //     } else {
-  //       show_alert("Error detecting Arweave wallet address.");
-  //     }
-  //   } catch (err) {
-  //     console.log(err);
-  //     show_alert("Error detecting Arweave wallet address.");
-  //   }
-  // };
 
   useEffect(() => {
     if (step !== "1" && !imageUrl) {
@@ -480,7 +434,7 @@ function UploadManual() {
                                 type="submit"
                                 className="btn-blueDark btn-confirm"
                               >
-                                Upload Your Arweave Keyfile
+                                {keyAr ? 'Submit' : 'Upload Your Arweave Keyfile'}
                               </Button>
                             </Form.Item>
                           </div>

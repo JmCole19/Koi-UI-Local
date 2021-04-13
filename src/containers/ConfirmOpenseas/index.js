@@ -26,7 +26,6 @@ import AlertArea from "components/Sections/AlertArea";
 import {alertTimeout} from 'config'
 import ModalContent from "components/Elements/ModalContent";
 import { getKoi } from "service/KOI";
-import useDebounce from 'components/Utils/useDebounce'
 import MetaWrapper from "components/Wrappers/MetaWrapper";
 
 const arweave = Arweave.init(get_arweave_option);
@@ -92,7 +91,6 @@ function ConfirmOpenseas() {
   const [showAlert, setShowAlert] = useState(false);
   const [alertVariant, setAlertVariant] = useState('danger');
   const [errMessage, setErrMessage] = useState('');
-  const updatedBalanceKoi = useDebounce(balanceKoi, 500);
   const [confirmMessage, setConfirmMessage] = useState(true);
 
   const show_alert = (message = '', type = 'danger') => {
@@ -158,13 +156,13 @@ function ConfirmOpenseas() {
     return true
   }
 
-  const enoughBalance = async () => {
-    console.log("koi balance : ", Number(balanceKoi))
-    console.log("ar balance : ", Number(balanceAr))
-    if(Number(balanceKoi) < uploadContents.length ) {
+  const enoughBalance = async (bcKoi, bcAr) => {
+    console.log("koi balance : ", Number(bcKoi))
+    console.log("ar balance : ", Number(bcAr))
+    if(Number(bcKoi) < uploadContents.length ) {
       setErrMessage("You don't have enough KOI to upload these NFTs. Visit the KOI Faucet to get some KOI.")
       return false
-    }else if(Number(balanceAr) < Number(uploadContents.length * 0.0002) ) {
+    }else if(Number(bcAr) < Number(uploadContents.length * 0.0002) ) {
       setErrMessage('You need more AR to upload.')
       return false
     }else{
@@ -173,7 +171,6 @@ function ConfirmOpenseas() {
   }
 
   const checkUpload = async () => {
-    console.log('checkUpload', keyAr)
     if(!keyAr) {
       show_notification('Please upload your json keyfile.')
       setMode("uploadKey");
@@ -187,6 +184,7 @@ function ConfirmOpenseas() {
         setLoading(false)
         setBalanceKoi(Number(balance.koiBalance))
         setBalanceAr(convertArBalance(balance.arBalance))
+        enoughBalance(Number(balance.koiBalance), convertArBalance(balance.arBalance))
         // setTimeout( () => enoughBalance(), 100)
       }
     }
@@ -256,7 +254,7 @@ function ConfirmOpenseas() {
       mode // change | confirm | uploadKey | uploading | complete
     ) {
       case modes.change:
-        console.log("here1", activeStep, uploadContents.length)
+        // console.log("here1", activeStep, uploadContents.length)
         if(!formValidation()){
           break;
         }
@@ -335,6 +333,9 @@ function ConfirmOpenseas() {
     let tpContent = cloneDeep(activeOpenSea);
     tpContent[key] = value;
     setActiveOpenSea(tpContent);
+    let tpUploadContents = cloneDeep(uploadContents);
+    tpUploadContents[activeStep-1] = tpContent
+    setUploadContents(tpUploadContents)
   };
 
   const checkConfirmMessage = () => {
@@ -364,13 +365,6 @@ function ConfirmOpenseas() {
     }
     setUploadContents(contentsOS);
   }, [step, openSeas]);
-
-  useEffect(() => {
-    if(mode === modes.confirm){
-      console.log("here is focus")
-      enoughBalance()
-    }
-  }, updatedBalanceKoi)
 
   const beforeJsonUpload = (file) => {
     // console.log('file type : ', file)
@@ -422,39 +416,6 @@ function ConfirmOpenseas() {
         });
     }
   }, [history.location.pathname]);
-
-  // useEffect(() => {
-  //   if (detectorAr) {
-  //     window.addEventListener("arweaveWalletLoaded", detectArweaveWallet());
-  //     return () => {
-  //       window.removeEventListener(
-  //         "arweaveWalletLoaded",
-  //         detectArweaveWallet()
-  //       );
-  //     };
-  //   }
-  // }, [detectorAr]);
-
-  // const detectArweaveWallet = async () => {
-  //   try {
-  //     let addr = await arweave.wallets.getAddress();
-  //     let addressResult = await getArWalletAddressFromJson(arweave, keyAr);
-  //     console.log("addressResult : ", addressResult);
-  //     console.log("detect address: ", addr);
-  //     if (addr) {
-  //       setAddressAr(addr);
-  //     } else {
-  //       show_notification(
-  //         "can\t detect ArWallet address. Please check install ArConnect extension or create a wallet."
-  //       );
-  //     }
-  //   } catch (err) {
-  //     console.log(err);
-  //     show_notification(
-  //       "can\t detect ArWallet address. Please install ArConnect extension and create a wallet."
-  //     );
-  //   }
-  // };
 
   return (
     <MetaWrapper>
@@ -708,7 +669,7 @@ function ConfirmOpenseas() {
                           .map((_selected, _i) => (
                             <div key={_i} className="uploaded-card">
                               <div className="card-content-wrapper">
-                                <Image src={_selected.thumb} />
+                                <Image src={_selected.thumb} height="100" />
                                 <p className="text-blue">{_selected.title}</p>
                                 <p className="text-blue font-light text-italic mt-0">pending</p>
                               </div>

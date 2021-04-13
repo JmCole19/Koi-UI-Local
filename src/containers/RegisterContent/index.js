@@ -216,7 +216,7 @@ function RegisterContent() {
             <div className="register-content">
               <h1 className="text-blue register-title">Register your content.</h1>
               <h4 className="register-description">
-                There are 3 ways to register on the Koi Network. Earn rewards
+                There are 4 ways to register on the Koi Network. Earn rewards
                 today.
               </h4>
               <Row
@@ -262,7 +262,7 @@ function RegisterContent() {
                 </Button>
               </div>
               {loading && <div className='text-center w-100'><Spin size="large" /></div>}
-              <p className="bottom-description text-blue text-center">
+              <p className="bottom-description text-blue text-center hide">
                 Got a voucher?{" "}
                 <span className="span-link" onClick={onRedeemVoucher}>
                   Redeem an NFT voucher

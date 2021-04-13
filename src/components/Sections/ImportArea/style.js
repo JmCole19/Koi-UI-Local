@@ -22,5 +22,6 @@ export const ImportAreaContainer = styled.div`
   }
   @media (max-width: ${mixins.md}px) {
     top: 93px;
+    padding: 10px;
   }
 `;

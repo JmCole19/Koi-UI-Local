@@ -70,6 +70,14 @@ const GlobalStyle = createGlobalStyle`
       font-size: 18px;
       line-height: 24px;
       letter-spacing: 0.03em;
+      @media (max-width: ${mixins.sm}px) {
+        font-size: 16px;
+        line-height: 22px;
+      }
+      @media (max-width: ${mixins.xs}px) {
+        font-size: 14px;
+        line-height: 20px;
+      }
     }
     .font-n-1{
       color: ${colors.blueDark};
@@ -83,6 +91,7 @@ const GlobalStyle = createGlobalStyle`
       position: relative;
       margin-right: -5px;
     }
+    .flex1{ flex: 1; }
     h1,
     h2,
     h3,
@@ -98,6 +107,7 @@ const GlobalStyle = createGlobalStyle`
     .f-32 {
         font-size: 32px !important;
     }
+    .hide{display: none;}
     .font-light{ font-weight: 300 !important; }
     .text-italic{ font-style: italic !important; }
     .btn {
@@ -188,7 +198,7 @@ const GlobalStyle = createGlobalStyle`
           display: flex;
           flex-direction: column;
           align-items: center;
-          padding: 24px 0;
+          padding: 24px 20px;
           .icon-close {
             position: absolute;
             right: 8px;
@@ -406,6 +416,20 @@ const GlobalStyle = createGlobalStyle`
                 }
             }
         }
+    }
+    .explore-block {
+      font-weight: 500;
+      line-height: 20px;
+      letter-spacing: 0.03em;
+      color: #237b75;
+      border: 1px solid #237b75;
+      box-sizing: border-box;
+      border-radius: 2px;
+      margin-bottom: 0;
+      width: fit-content;
+      padding: 0 5px;
+      font-size: 12px !important;
+      cursor: pointer;
     }
     .custom-notification-error{
         background-color: ${colors.errorBackground};

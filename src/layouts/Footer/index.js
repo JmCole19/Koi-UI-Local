@@ -49,6 +49,11 @@ const items = [
         className: "",
       },
       {
+        name: "Follow us on Twitter",
+        link: "https://twitter.com/open_koi",
+        className: "",
+      },
+      {
         name: "Developer SDK",
         link: "https://www.npmjs.com/package/koi_tools",
         className: "",
