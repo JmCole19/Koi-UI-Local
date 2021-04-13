@@ -10,14 +10,16 @@ import { useForm } from "antd/lib/form/Form";
 import { useHistory, useLocation } from "react-router-dom";
 import MyProgress from "components/Elements/MyProgress";
 import { DataContext } from "contexts/DataContextContainer";
-import { FaArrowLeft } from "react-icons/fa";
-import { colors } from "theme";
+// import { FaArrowLeft } from "react-icons/fa";
+// import { colors } from "theme";
+import { convertArBalance, show_notification, show_fixed_number, get_arweave_option } from "service/utils";
+import cloneDeep from "clone-deep";
 import { alertTimeout } from "config";
 import axios from "axios";
 import { ScaleLoader } from "react-spinners";
-import { get_arweave_option } from "service/utils";
 import MetaWrapper from "components/Wrappers/MetaWrapper";
 import AlertArea from "components/Sections/AlertArea";
+import { Content } from "react-bootstrap/lib/tab";
 
 const { TextArea } = Input;
 const { Dragger } = Upload;
@@ -37,13 +39,23 @@ function UploadArweave() {
   const [form] = useForm();
   const location = useLocation();
   const { step, address } = queryString.parse(location.search);
-  const { setAddressAr } = useContext(DataContext);
+  const {
+    addressAr,
+    setAddressAr,
+    keyAr,
+    setKeyAr,
+    balanceKoi,
+    setBalanceKoi,
+    balanceAr,
+    setBalanceAr,
+  } = useContext(DataContext);
   const [uploading] = useState(false);
   const [arToken, setArToken] = useState('');
+  const [activeContent, setActiveContent] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [alertVariant, setAlertVariant] = useState('danger');
   const [showAlert, setShowAlert] = useState(false);
-  const [errMessage, setErrMessage] = useState("");
+  const [errMessage, setErrMessage] = useState('');
 
   const onCompleteStep1 = () => {
     history.push(`/upload/arweave?step=2&address=${arToken}`);
@@ -95,6 +107,44 @@ function UploadArweave() {
     }, alertTimeout)
   }
 
+  const updateContent = (key, value) => {
+    let tpContent = cloneDeep(activeContent);
+    tpContent[key] = value;
+    setActiveContent(tpContent);
+  };
+
+  const handleBack = () => {
+    history.goBack()
+  };
+
+  const beforeArweaveKeyfileUpload = (file) => {
+    // console.log('file type : ', file)
+    const isJson = file.type === "application/json";
+    if (!isJson) {
+      show_notification("You can only upload a JSON file!");
+    }
+    const isLt1M = file.size / 1024 < 512;
+    if (!isLt1M) {
+      show_notification("JSON must smaller than 512KB!");
+    }
+    if (isJson && isLt1M) {
+      const reader = new FileReader();
+      reader.onload = async (e) => {
+        var arJson = JSON.parse(e.target.result);
+        let addressResult = await getArWalletAddressFromJson(arweave, arJson);
+        console.log({addressResult})
+        setAddressAr(addressResult)
+        setKeyAr(arJson);
+        await checkUpload(arJson)
+        show_alert("Success! Your keyfile has been uploaded.", 'success');
+      };
+      reader.readAsText(file);
+      // Prevent upload
+      return false;
+    }
+    return isJson && isLt1M;
+  };
+
   useEffect(() => {
     if (address) {
       setIsLoading(true);
@@ -110,14 +160,9 @@ function UploadArweave() {
           if (data === 0) {
             show_alert("There is no contents.");
           } else {
-            // setContents(data);
-            // const item = data.find((_content) => _content.txIdContent === id);
-            // if (item) {
-            //   console.log(item);
-            //   setDetail(item);
-            // } else {
-            //   show_notification("There is no matching contents.");
-            // }
+            console.log(data)
+            let thumb = 'https://arweave.dev/' + address
+            setActiveContent({...data, address});
           }
         })
         .catch((err) => {
@@ -134,6 +179,7 @@ function UploadArweave() {
     }
   }, []);
 
+  console.log(activeContent)
   return (
     <MetaWrapper>
       <AlertArea
@@ -218,7 +264,7 @@ function UploadArweave() {
                       <Row>
                         <Col flex="100px">
                           <div className="type-img-wrapper">
-                            <Image src={IconArweave} />
+                            <Image src={IconUpload} />
                           </div>
                         </Col>
                         <Col flex={1}>
@@ -228,40 +274,71 @@ function UploadArweave() {
                                 <MyProgress value={2} />
                               </div>
                               <h6 className="mb-0 text-blue ml-2">
-                                Confirm your data.
+                                Confirm the information for your upload.
                               </h6>
+                            </div>
+                            <div className="icon-back cursor" onClick={handleBack}>
+                              <i className="fal fa-arrow-circle-left"></i>
                             </div>
                           </div>
                           <div className="upload-content-form">
+                            <div className="content-img-wrapper">
+                              <Image src={activeContent?.thumb} className="w-100" />
+                            </div>
                             <div className="upload-content-row">
-                              <Form.Item label="Title">
+                              <Form.Item>
+                                <div className="left">
+                                  <p className="mb-0">Title</p>
+                                </div>
                                 <Input
-                                  placeholder="input placeholder"
-                                  className="arweave-value-input"
+                                  value={activeContent?.title}
+                                  onChange={(e) =>
+                                    updateContent("title", e.target.value)
+                                  }
+                                  placeholder=""
+                                  className="ethereum-value-input"
                                 />
                               </Form.Item>
-                              <Form.Item label="Owner">
+                              <Form.Item>
+                                <div className="left">
+                                  <p className="mb-0">Owner</p>
+                                </div>
                                 <Input
-                                  placeholder="input placeholder"
-                                  className="arweave-value-input"
+                                  placeholder=""
+                                  className="ethereum-value-input"
+                                  value={activeContent?.owner}
+                                  onChange={(e) =>
+                                    updateContent("owner", e.target.value)
+                                  }
                                 />
                               </Form.Item>
-                              <Form.Item label="Description">
+                              <Form.Item>
+                                <div className="left">
+                                  <p className="mb-0">Description</p>
+                                </div>
                                 <TextArea
-                                  placeholder="input placeholder"
-                                  className="arweave-value-input"
+                                  placeholder=""
+                                  value={activeContent?.description}
+                                  onChange={(e) =>
+                                    updateContent("description", e.target.value)
+                                  }
+                                  className="ethereum-value-input"
                                   rows={5}
                                 />
+                              </Form.Item>
+                              <Form.Item>
+                                <div className="left" />
+                                <Button
+                                  type="submit"
+                                  className="btn-blueDark btn-confirm"
+                                >
+                                  Upload Your Arweave Keyfile
+                                </Button>
                               </Form.Item>
                             </div>
                           </div>
                         </Col>
                       </Row>
-                      <Form.Item>
-                        <Button type="submit" className="btn-blueDark mx-auto px-5">
-                          Confirm NFT Details
-                        </Button>
-                      </Form.Item>
                     </Form>
                   </div>
                 )}
@@ -276,7 +353,7 @@ function UploadArweave() {
                       <Row>
                         <Col flex="100px">
                           <div className="type-img-wrapper">
-                            <Image src={IconArweave} />
+                            <Image src={IconUpload} />
                           </div>
                         </Col>
                         <Col flex={1}>
@@ -287,49 +364,80 @@ function UploadArweave() {
                               </div>
                               <div className="header-description w-100">
                                 <h6 className="mb-0 text-blue ml-2">
-                                  Upload your Arweave keyfile.
+                                  Upload your arweave keyfile.
                                 </h6>
                                 <p className="mb-0 text-blue ml-2">
-                                  Don’t have one yet? Visit the{" "}
-                                  <a href="#/" className="text-green">
-                                    Arweave Faucet
+                                  Drag & Drop your Arweave keyfile or connect using
+                                  an{" "}
+                                  <a
+                                    href="https://chrome.google.com/webstore/detail/arconnect/einnioafmpimabjcddiinlhmijaionap"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-bold"
+                                  >
+                                    Arweave browser extension
                                   </a>
                                   .
                                 </p>
                               </div>
                             </div>
+                            <div className="icon-back cursor" onClick={handleBack}>
+                              <i className="fal fa-arrow-circle-left"></i>
+                            </div>
                           </div>
                           <div className="upload-content-form d-flex justify-content-center"></div>
                         </Col>
                       </Row>
-                      <div className="single-ant-file-upload">
-                        <Dragger
-                          name="file"
-                          multiple={false}
-                          listType={false}
-                          // previewFile={false}
-                          showUploadList={false}
-                          beforeUpload={beforeUpload}
-                        >
-                          <div className="uploader-container">
-                            {uploading ? (
-                              <Spin size="large" />
-                            ) : (
-                              <>
-                                <div className="uploader-icon d-flex justify-content-center align-items-center">
-                                  <Image src={IconUpload} />
-                                </div>
-                                <p className="text-blue mb-0">
-                                  Drag & Drop your Arweave keyfile here.
-                                </p>
-                              </>
-                            )}
-                          </div>
-                        </Dragger>
-                        {/* {src.length > 0 && <p>{src[0].originalname.split('.')[1]}</p>} */}
-                        {/* <p className="text-secondary">dddddd</p> */}
+                      <div className="upload-cards-wrapper">
+                        <div className="single-ant-file-upload">
+                          <Dragger
+                            name="file"
+                            accept="application/*"
+                            multiple={false}
+                            listType="picture"
+                            beforeUpload={beforeArweaveKeyfileUpload}
+                            // fileList={false}
+                            showUploadList={false}
+                          >
+                            <div className="uploader-container">
+                              {uploading ? (
+                                <Spin size="large" />
+                              ) : (
+                                <>
+                                  <div className="uploader-icon d-flex justify-content-center align-items-center">
+                                    <Image src={IconUpload} />
+                                  </div>
+                                  <p className="text-blue mb-0">
+                                    Drag & Drop your Arweave keyfile here.
+                                  </p>
+                                </>
+                              )}
+                            </div>
+                          </Dragger>
+                        </div>
+                      </div>
+                      <div className="text-center">
+                        {loading && (
+                          <Spin size="large" tip="get KOI balance" />
+                        )}
+                      </div>
+                      <div className="upload-cards-wrapper">
+                        <Button
+                            className="btn-back btn-blueDark"
+                            disabled={!canVerify}
+                            onClick={onClickVerify}
+                          >
+                            Finish Upload
+                          </Button>
                       </div>
                     </Form>
+                    <p className="footer-description text-blue">
+                      Don’t have any Arweave (AR) tokens? Visit the{" "}
+                      <a href="/faucet" target="_blank">
+                        Arweave Faucet
+                      </a>{" "}
+                      to get started.
+                    </p>
                   </div>
                 )}
               </div>
