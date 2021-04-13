@@ -12,6 +12,7 @@
     "axios": "^0.21.1",
     "bootstrap": "^4.5.3",
     "clone-deep": "^4.0.1",
+    "dotenv": "^8.2.0",
     "ethers": "^5.0.32",
     "framer-motion": "^2.9.1",
     "i": "^0.3.6",

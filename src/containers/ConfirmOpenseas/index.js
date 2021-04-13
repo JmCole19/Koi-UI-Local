@@ -21,7 +21,7 @@ import { DataContext } from "contexts/DataContextContainer";
 import { FaTimes } from "react-icons/fa";
 import Arweave from "arweave";
 import { show_notification, show_fixed_number, convertArBalance, get_arweave_option } from "service/utils";
-import { exportNFT } from "service/NFT";
+import { exportNFT, getArWalletAddressFromJson } from "service/NFT";
 import AlertArea from "components/Sections/AlertArea";
 import {alertTimeout} from 'config'
 import ModalContent from "components/Elements/ModalContent";
@@ -64,6 +64,7 @@ function ConfirmOpenseas() {
     setBalanceKoi,
     balanceAr,
     setBalanceAr,
+    setAddressAr
   } = useContext(DataContext);
   const [form] = useForm();
   const location = useLocation();
