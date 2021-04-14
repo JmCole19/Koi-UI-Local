@@ -64,7 +64,8 @@ function UploadArweave() {
   const [canVerify, setCanVerify] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const onCompleteStep1 = () => {
+  const onCompleteStep1 = async () => {
+    await getContent(arToken)
     history.push(`/upload/arweave?step=2&address=${arToken}`);
   };
 
@@ -115,22 +116,23 @@ function UploadArweave() {
       return false
     }else{
       setCanVerify(true)
+      return true
     }
   }
 
   const checkUpload = async (keyfile) => {
+    let res;
     if(balanceKoi !== null && balanceAr !== null) {
-      console.log("balance none zero")
-      await enoughBalance(balanceKoi, balanceAr)
+      res = await enoughBalance(balanceKoi, balanceAr)
     }else {
       setLoading(true)
-      console.log("balance retrieving")
       let balance = await getKoi(keyfile)
       setLoading(false)
       setBalanceKoi(Number(balance.koiBalance))
       setBalanceAr(convertArBalance(balance.arBalance))
-      await enoughBalance(Number(balance.koiBalance), convertArBalance(balance.arBalance))
+      res = await enoughBalance(Number(balance.koiBalance), convertArBalance(balance.arBalance))
     }
+    return res;
   }
 
   const onClickVerify = () => {
@@ -231,11 +233,10 @@ function UploadArweave() {
     return http.status !== 404;
   }
 
-  useEffect(() => {
-    // console.log({address})
+  const getContent = (address) => {
     if (address) {
       setIsLoading(true);
-      let url = "https://arweave.dev/" + address
+      let url = "https://arweave.dev/" + address + "?t=" + new Date().getTime()
       if(imageExists(url)){
         let tpContent = {
           owner: '',
@@ -243,44 +244,22 @@ function UploadArweave() {
           description: '',
           thumb: url
         }
-        console.log({tpContent})
+        // console.log({tpContent})
         setActiveContent(tpContent);
       }else{
         show_alert("There is no contents.");
+        setActiveContent(null);
         setTimeout(() => history.replace(`/upload/arweave?step=1`), 2500)
       }
       setIsLoading(false)
-      /*
-      const options = {
-        method: "GET",
-      };
-      axios
-        .get("https://arweave.dev/" + address)
-        .then((res) => {
-          let data = res.data;
-          console.log({ data });
-          if (data === 0) {
-            show_alert("There is no contents.");
-          } else {
-            data.thumb = 'https://arweave.dev/' + address
-            data.owner = data.name || ''
-            console.log(data)
-            setActiveContent({...data, address});
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-          show_alert("There is an error");
-        })
-        .finally(() => setIsLoading(false));
-        */
     }
-    
-  }, [history.location.pathname]);
+  };
 
   useEffect(() => {
     if (step !== "1" && !address) {
       history.replace(`/upload/arweave?step=1`);
+    }else if(!activeContent){
+      getContent(address)
     }
   }, []);
   
