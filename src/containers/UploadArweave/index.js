@@ -5,19 +5,17 @@ import queryString from "query-string";
 import Arweave from "arweave";
 import { IconArweave, IconUpload } from "assets/images";
 import { UploadArweaveContainer } from "./style";
-import { Col, Form, Input, Row, Upload, Spin, notification, Space } from "antd";
+import { Col, Form, Input, Row, Upload, Spin, Space } from "antd";
 import { useForm } from "antd/lib/form/Form";
 import { useHistory, useLocation } from "react-router-dom";
 import MyProgress from "components/Elements/MyProgress";
 import { DataContext } from "contexts/DataContextContainer";
 import { FaTimes } from "react-icons/fa";
-// import { FaArrowLeft } from "react-icons/fa";
 import { colors } from "theme";
 import { convertArBalance, show_notification, show_fixed_number, get_arweave_option } from "service/utils";
 import cloneDeep from "clone-deep";
 import { alertTimeout } from "config";
 import { getArWalletAddressFromJson, exportNFT } from "service/NFT";
-import axios from "axios";
 import { ScaleLoader } from "react-spinners";
 import MetaWrapper from "components/Wrappers/MetaWrapper";
 import AlertArea from "components/Sections/AlertArea";
@@ -41,6 +39,7 @@ function UploadArweave() {
   const [form] = useForm();
   const location = useLocation();
   const { step, address } = queryString.parse(location.search);
+  console.log("here1 ," , address)
   const {
     addressAr,
     setAddressAr,
@@ -54,7 +53,7 @@ function UploadArweave() {
   const [uploading, setUploading] = useState(false);
   const [arToken, setArToken] = useState('');
   const [activeContent, setActiveContent] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [alertVariant, setAlertVariant] = useState('danger');
   const [showAlert, setShowAlert] = useState(false);
   const [errMessage, setErrMessage] = useState('');
@@ -70,7 +69,7 @@ function UploadArweave() {
   };
 
   const onCompleteStep2 = () => {
-    history.push(`/upload/arweave?step=3`);
+    history.push(`/upload/arweave?step=3&address=${address}`);
   };
 
   const onCompleteStep3 = () => {
@@ -89,11 +88,11 @@ function UploadArweave() {
 
   const enoughBalance = async (bcKoi, bcAr) => {
     if(Number(bcKoi) < 1 ) {
-      show_confirm_alert('You don’t have any KOI in your wallet. <br> Hop on over to the <a href="/faucet">KOI Faucet</a> to get some KOI.')
+      show_alert('You don’t have any KOI in your wallet. <br> Hop on over to the <a href="/faucet">KOI Faucet</a> to get some KOI.')
       setCanVerify(false)
       return false
     }else if(Number(bcAr) < Number(1 * 0.0002) ) {
-      show_confirm_alert('You need more AR to upload.')
+      show_alert('You need more AR to upload.')
       setCanVerify(false)
       return false
     }else{
@@ -103,9 +102,11 @@ function UploadArweave() {
 
   const checkUpload = async (keyfile) => {
     if(balanceKoi !== null && balanceAr !== null) {
+      console.log("balance none zero")
       await enoughBalance(balanceKoi, balanceAr)
     }else {
       setLoading(true)
+      console.log("balance retrieving")
       let balance = await getKoi(keyfile)
       setLoading(false)
       setBalanceKoi(Number(balance.koiBalance))
@@ -116,34 +117,6 @@ function UploadArweave() {
 
   const onClickVerify = () => {
     setShowModal(true)
-  };
-
-  const beforeUpload = (file) => {
-    if (file.type !== "application/json") {
-      notification.warn({
-        message: "Warning!",
-        description: `${file.name} is not a json file`,
-        placement: "bottomRight",
-      });
-      return false;
-    } else {
-      const reader = new FileReader();
-      // reader.readAsDataURL(file);
-      reader.readAsText(file);
-      reader.onload = async (e) => {
-        let addressResult = await arweave.wallets.jwkToAddress(
-          JSON.parse(e.target.result)
-        );
-        setAddressAr(addressResult);
-        notification.success({
-          message: "Success!",
-          description: `Set address successfully.`,
-          placement: "bottomRight",
-          onClose: () => history.push(`/contents`),
-        });
-      };
-      return false;
-    }
   };
 
   const show_alert = (message = '', type = 'danger') => {
@@ -233,14 +206,37 @@ function UploadArweave() {
     }
   }
 
+  const imageExists = (image_url) => {
+    var http = new XMLHttpRequest();
+    http.open('HEAD', image_url, false);
+    http.send();
+    return http.status !== 404;
+  }
+
   useEffect(() => {
+    console.log({address})
     if (address) {
       setIsLoading(true);
+      let url = "https://arweave.dev/" + address
+      if(imageExists(url)){
+        let tpContent = {
+          owner: '',
+          title: '',
+          description: '',
+          thumb: url
+        }
+        console.log({tpContent})
+        setActiveContent(tpContent);
+      }else{
+        show_alert("There is no contents.");
+        setTimeout(() => history.replace(`/upload/arweave?step=1`), 2500)
+      }
+      setIsLoading(false)
+      /*
       const options = {
         method: "GET",
       };
       axios
-        // .get("https://viewblock.io/arweave/tx/" + address)
         .get("https://arweave.dev/" + address)
         .then((res) => {
           let data = res.data;
@@ -259,7 +255,9 @@ function UploadArweave() {
           show_alert("There is an error");
         })
         .finally(() => setIsLoading(false));
+        */
     }
+    
   }, [history.location.pathname]);
 
   useEffect(() => {
@@ -267,7 +265,7 @@ function UploadArweave() {
       history.replace(`/upload/arweave?step=1`);
     }
   }, []);
-
+  
   return (
     <MetaWrapper>
       <AlertArea
@@ -321,9 +319,9 @@ function UploadArweave() {
                           </div>
                           <div className="upload-content-form">
                             <div className="upload-content-row">
-                              <Form.Item label="Token ID:">
+                              <Form.Item label="Arweave ID:">
                                 <Input
-                                  placeholder="input placeholder"
+                                  placeholder="Arweave transaction id"
                                   className="arweave-value-input"
                                   value={arToken}
                                   onChange={(e) => setArToken(e.target.value)}
@@ -352,7 +350,7 @@ function UploadArweave() {
                       <Row>
                         <Col flex="100px">
                           <div className="type-img-wrapper">
-                            <Image src={IconUpload} />
+                            <Image src={IconArweave} />
                           </div>
                         </Col>
                         <Col flex={1}>
@@ -441,7 +439,7 @@ function UploadArweave() {
                       <Row>
                         <Col flex="100px">
                           <div className="type-img-wrapper">
-                            <Image src={IconUpload} />
+                            <Image src={IconArweave} />
                           </div>
                         </Col>
                         <Col flex={1}>
@@ -511,12 +509,12 @@ function UploadArweave() {
                       </div>
                       <div className="upload-cards-wrapper">
                         <Button
-                            className="btn-back btn-blueDark"
-                            disabled={!canVerify}
-                            onClick={onClickVerify}
-                          >
-                            Finish Upload
-                          </Button>
+                          className="btn-back btn-blueDark"
+                          disabled={!canVerify}
+                          onClick={onClickVerify}
+                        >
+                          Finish Upload
+                        </Button>
                       </div>
                     </Form>
                     <p className="footer-description text-blue">
@@ -548,7 +546,7 @@ function UploadArweave() {
                   <Space size={28}>
                     <Image
                         className="br-4"
-                        src={activeContent.thumb}
+                        src={activeContent?.thumb}
                         width={40}
                       />
                   </Space>

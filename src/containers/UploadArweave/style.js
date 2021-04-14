@@ -147,6 +147,7 @@ export const UploadArweaveContainer = styled.div`
             }
             .upload-content-row {
               margin-left: 34px;
+              flex: 1;
               .ant-form-item-control-input-content {
                 display: flex;
                 .left {
