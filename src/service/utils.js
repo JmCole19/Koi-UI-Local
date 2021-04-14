@@ -1,11 +1,9 @@
 import { notification, message } from "antd";
 
 const get_arweave_option = () => {
-<<<<<<< HEAD
-  // const protocol = process.env.REACT_APP_PROTOCOL
-=======
- // const protocol = process.env.REACT_APP_PROTOCOL
->>>>>>> master
+// const protocol = process.env.REACT_APP_PROTOCOL
+// const protocol = process.env.REACT_APP_PROTOCOL
+
   let ar_option = {
     host: 'arweave.net',// Hostname or IP address for a Arweave host
     port: 443,          // Port
@@ -13,15 +11,15 @@ const get_arweave_option = () => {
     timeout: 20000,     // Network request timeouts in milliseconds
     logging: false,     // Enable network request logging
   }
-<<<<<<< HEAD
+
   // if(protocol !== 'HTTPS') {
   //   ar_option = {}
   // }
-=======
+
  // if(protocol !== 'HTTPS') {
  //   ar_option = {}
  // }
->>>>>>> master
+
   return ar_option
 }
 const show_notification = (msg, title = 'KOI', type = 'error', actionClose = () => {}) => {
