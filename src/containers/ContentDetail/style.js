@@ -55,8 +55,8 @@ export const ContentDetailContainer = styled.div`
           }
         }
         .detail-img {
-          max-width: 480px;
-          max-height: 500px;
+          max-width: calc(100% - 20px);
+          margin-right: 20px;
         }
         .detail-body-description {
           h1 {
@@ -127,6 +127,7 @@ export const ContentDetailContainer = styled.div`
           .detail-img {
             width: 100%;
             height: auto;
+            margin-right: 0;
             max-height: unset;
             margin-bottom: 30px;
           }
