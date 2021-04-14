@@ -44,7 +44,7 @@ const cards = [
     title: "Arweave Content",
     subtitle1: "Enter an Arweave ID",
     link: "/upload/arweave?step=1",
-    comingSoon: true,
+    comingSoon: false,
   },
   {
     id: "manual",

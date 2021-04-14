@@ -23,7 +23,7 @@ function UploadOpenSea() {
   const [selectedIds, setSelectedIds] = useState([]);
   const [isAllSelected, setIsAllSelected] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
-  const [errEmessage, setErrMessage] = useState(false);
+  const [errMessage, setErrMessage] = useState(false);
 
   const onClickCard = (cardId) => {
     let tempSelectedCards = [...selectedIds];
@@ -104,7 +104,7 @@ function UploadOpenSea() {
       <UploadOpenSeaContainer>
         <AlertArea
           showMessage={showAlert}
-          message={errEmessage}
+          message={errMessage}
         ></AlertArea>
         <Container>
           <div className="opensea-content-wrapper">
