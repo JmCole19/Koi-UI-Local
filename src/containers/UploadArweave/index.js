@@ -68,8 +68,25 @@ function UploadArweave() {
     history.push(`/upload/arweave?step=2&address=${arToken}`);
   };
 
-  const onCompleteStep2 = () => {
-    history.push(`/upload/arweave?step=3&address=${address}`);
+  const onCompleteStep2 = async () => {
+    if (
+      activeContent.title &&
+      activeContent.owner &&
+      activeContent.description
+    ) {
+      if(keyAr){
+        let isUploading = await checkUpload(keyAr)
+        if(isUploading){
+          onClickVerify()
+        }else{
+          show_alert('You don\'t have enough koi or ar')
+        }
+      }else{
+        history.push(`/upload/arweave?step=3&address=${address}`);
+      }
+    } else {
+      show_alert("Please fill out all fields.", "danger");
+    }
   };
 
   const onCompleteStep3 = () => {
@@ -87,6 +104,7 @@ function UploadArweave() {
   }
 
   const enoughBalance = async (bcKoi, bcAr) => {
+    console.log("here k-", Number(bcKoi))
     if(Number(bcKoi) < 1 ) {
       show_alert('You don’t have any KOI in your wallet. <br> Hop on over to the <a href="/faucet">KOI Faucet</a> to get some KOI.')
       setCanVerify(false)
@@ -169,8 +187,8 @@ function UploadArweave() {
         console.log({addressResult})
         setAddressAr(addressResult)
         setKeyAr(arJson);
+        // show_alert("Success! Your keyfile has been uploaded.", 'success');
         await checkUpload(arJson)
-        show_alert("Success! Your keyfile has been uploaded.", 'success');
       };
       reader.readAsText(file);
       // Prevent upload
@@ -214,7 +232,7 @@ function UploadArweave() {
   }
 
   useEffect(() => {
-    console.log({address})
+    // console.log({address})
     if (address) {
       setIsLoading(true);
       let url = "https://arweave.dev/" + address
@@ -418,7 +436,7 @@ function UploadArweave() {
                                   type="submit"
                                   className="btn-blueDark btn-confirm"
                                 >
-                                  Upload Your Arweave Keyfile
+                                  {keyAr ? 'Submit' : 'Upload Your Arweave Keyfile'}
                                 </Button>
                               </Form.Item>
                             </div>
