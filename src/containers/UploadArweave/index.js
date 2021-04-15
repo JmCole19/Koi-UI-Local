@@ -12,7 +12,7 @@ import MyProgress from "components/Elements/MyProgress";
 import { DataContext } from "contexts/DataContextContainer";
 import { FaTimes } from "react-icons/fa";
 import { colors } from "theme";
-import { convertArBalance, show_notification, show_fixed_number, get_arweave_option } from "service/utils";
+import { convertArBalance, show_notification, show_fixed_number } from "service/utils";
 import cloneDeep from "clone-deep";
 import { alertTimeout } from "config";
 import { getArWalletAddressFromJson, exportNFT } from "service/NFT";
@@ -23,7 +23,13 @@ import { getKoi } from "service/KOI";
 
 const { TextArea } = Input;
 const { Dragger } = Upload;
-const arweave = Arweave.init(get_arweave_option);
+const arweave = Arweave.init({
+  host: 'arweave.net',// Hostname or IP address for a Arweave host
+  port: 443,          // Port
+  protocol: 'https',  // Network protocol http or https
+  timeout: 20000,     // Network request timeouts in milliseconds
+  logging: false,     // Enable network request logging
+});
 
 const formItemLayout = {
   labelCol: {

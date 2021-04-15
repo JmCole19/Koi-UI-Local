@@ -23,7 +23,16 @@ import { FaTimes } from "react-icons/fa";
 import { colors } from "theme";
 import MetaWrapper from "components/Wrappers/MetaWrapper";
 
-const arweave = Arweave.init(get_arweave_option);
+//const arweave = Arweave.init(get_arweave_option);
+console.log(get_arweave_option);
+const arweave = Arweave.init({
+  host: 'arweave.net',// Hostname or IP address for a Arweave host
+  port: 443,          // Port
+  protocol: 'https',  // Network protocol http or https
+  timeout: 20000,     // Network request timeouts in milliseconds
+  logging: false,     // Enable network request logging
+});
+console.log(arweave);
 const { TextArea } = Input;
 const { Dragger } = Upload;
 
@@ -76,13 +85,22 @@ function UploadManual() {
     history.push(`/upload/manual?step=2`);
   };
 
-  const onCompleteStep2 = () => {
+  const onCompleteStep2 = async () => {
     if (
       activeContent.title &&
       activeContent.owner &&
       activeContent.description
     ) {
-      history.push(`/upload/manual?step=3`);
+      if(keyAr){
+        let isUploading = await checkUpload(keyAr)
+        if(isUploading){
+          onClickVerify()
+        }else{
+          show_alert('You don\'t have enough koi or ar')
+        }
+      }else{
+        history.push(`/upload/manual?step=3`);
+      }
     } else {
       show_alert("Please fill out all fields.", "danger");
     }
@@ -151,6 +169,7 @@ function UploadManual() {
 
   const enoughBalance = async (bcKoi, bcAr) => {
     if(Number(bcKoi) < 1 ) {
+      console.log("here is error message")
       show_confirm_alert('You don’t have any KOI in your wallet. <br> Hop on over to the <a href="/faucet">KOI Faucet</a> to get some KOI.')
       setCanVerify(false)
       return false
@@ -160,24 +179,26 @@ function UploadManual() {
       return false
     }else{
       setCanVerify(true)
+      return true
     }
   }
 
   const checkUpload = async (keyfile) => {
+    let res;
     if(balanceKoi !== null && balanceAr !== null) {
-      await enoughBalance(balanceKoi, balanceAr)
+      res = await enoughBalance(balanceKoi, balanceAr)
     }else {
       setLoading(true)
       let balance = await getKoi(keyfile)
       setLoading(false)
       setBalanceKoi(Number(balance.koiBalance))
       setBalanceAr(convertArBalance(balance.arBalance))
-      await enoughBalance(Number(balance.koiBalance), convertArBalance(balance.arBalance))
+      res = await enoughBalance(Number(balance.koiBalance), convertArBalance(balance.arBalance))
     }
+    return res;
   }
 
   const beforeArweaveKeyfileUpload = (file) => {
-    // console.log('file type : ', file)
     const isJson = file.type === "application/json";
     if (!isJson) {
       show_notification("You can only upload a JSON file!");
@@ -422,7 +443,7 @@ function UploadManual() {
                                 type="submit"
                                 className="btn-blueDark btn-confirm"
                               >
-                                Upload Your Arweave Keyfile
+                                {keyAr ? 'Submit' : 'Upload Your Arweave Keyfile'}
                               </Button>
                             </Form.Item>
                           </div>

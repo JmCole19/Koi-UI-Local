@@ -27,8 +27,9 @@ const exportNFT = async (arweave, ownerAddress, content, imageUrl = '', imageBlo
   try {
 
     // var wallet = await window.arweaveWallet.connect()
-    const contractSrc = process.env.REACT_APP_CONTRACT_SRC
-    console.log({contractSrc})
+   // const contractSrc = process.env.REACT_APP_CONTRACT_SRC i have hard coded, it is constant 
+   // console.log({contractSrc})
+   console.log('arweave',arweave);
     let nftData
     let imgContentBuffer
     let imgContentType
@@ -98,7 +99,7 @@ const exportNFT = async (arweave, ownerAddress, content, imageUrl = '', imageBlo
     tx.addTag('Action', 'marketplace/Create')
     tx.addTag('App-Name', 'SmartWeaveContract')
     tx.addTag('App-Version', '0.3.0')
-    tx.addTag('Contract-Src', contractSrc)
+    tx.addTag('Contract-Src', 'I8xgq3361qpR8_DvqcGpkCYAUTMktyAgvkm6kGhJzEQ')
     tx.addTag('Init-State', JSON.stringify(initialState))
 
     try {
@@ -112,6 +113,7 @@ const exportNFT = async (arweave, ownerAddress, content, imageUrl = '', imageBlo
     // console.log(" wallet : ", wallet);
 
     let uploader = await arweave.transactions.getUploader(tx)
+    console.log('uploder', uploader);
     
     while (!uploader.isComplete) {
       await uploader.uploadChunk()
