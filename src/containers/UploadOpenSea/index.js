@@ -12,6 +12,7 @@ import { colors } from "theme";
 import {alertTimeout} from 'config'
 import AlertArea from "components/Sections/AlertArea";
 import MetaWrapper from "components/Wrappers/MetaWrapper";
+import Web3 from "web3";
 
 // const testOpenseaAddress = '0xd703accc62251189a67106f22d54cd470494de40'
 
@@ -37,6 +38,26 @@ function UploadOpenSea() {
 
   const onSelectAll = () => {
     setIsAllSelected(!isAllSelected);
+  };
+
+
+  const  sign  = () => {
+   // setIsAllSelected(!isAllSelected);
+   const web3 = new Web3(Web3.givenProvider || "http://localhost:8545");
+  var message = "FeSD9TV8aB0GK0yby8A40KEX1N-3wrJQTDbRW4uUiEA"
+//var hash = web3.utils.sha3(message)
+//var accounts = await web3.eth.getAccounts()
+window.ethereum.enable().then( async (accounts)=> 
+
+web3.eth.personal.sign(message, accounts[0]).then((res)=>{
+  console.log();
+ })
+);
+ 
+
+
+ 
+
   };
 
   const onClickVerify = () => {
@@ -125,7 +146,8 @@ function UploadOpenSea() {
         <Container>
           <div className="opensea-content-wrapper">
             <div className="opensea-content">
-            {iskevinNft ? (<h1> Look what we found 1111# 0540 by kevin Abosch</h1>): (<h1> </h1>)}
+            {iskevinNft ? (<h1> Look what we found 1111# 0540 by kevin Abosch <Button  onClick={sign}>register</Button></h1>):
+             (<h1> </h1>)}
               <div className="title-wrapper">
                
                 <h1 className="text-blue opensea-title">Your OpenSea content</h1>
