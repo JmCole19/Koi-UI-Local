@@ -44,13 +44,20 @@ function UploadOpenSea() {
   const  sign  = () => {
    // setIsAllSelected(!isAllSelected);
    const web3 = new Web3(Web3.givenProvider || "http://localhost:8545");
-  var message = "FeSD9TV8aB0GK0yby8A40KEX1N-3wrJQTDbRW4uUiEA"
+  var arAddress = "FeSD9TV8aB0GK0yby8A40KEX1N-3wrJQTDbRW4uUiEA"
+  var payload = {
+    ownerArAddress: arAddress,
+
+  };
+
 //var hash = web3.utils.sha3(message)
 //var accounts = await web3.eth.getAccounts()
 window.ethereum.enable().then( async (accounts)=> 
 
-web3.eth.personal.sign(message, accounts[0]).then((res)=>{
-  console.log();
+web3.eth.personal.sign(arAddress, accounts[0]).then((res)=>{
+  payload.signature = res;
+  console.log('signature', res);
+  console.log('signature', payload);
  })
 );
  
