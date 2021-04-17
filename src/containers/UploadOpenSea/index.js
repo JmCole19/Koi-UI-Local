@@ -44,6 +44,7 @@ function UploadOpenSea() {
   const  sign  = () => {
    // setIsAllSelected(!isAllSelected);
    const web3 = new Web3(Web3.givenProvider || "http://localhost:8545");
+   // Dong, please change this hard coded by logged user arAddress, if ar wallet is not connet then direct to connect wallet page 
   var arAddress = "FeSD9TV8aB0GK0yby8A40KEX1N-3wrJQTDbRW4uUiEA"
   var payload = {
     ownerArAddress: arAddress,
@@ -58,6 +59,7 @@ web3.eth.personal.sign(arAddress, accounts[0]).then((res)=>{
   payload.signature = res;
   console.log('signature', res);
   console.log('signature', payload);
+  // Dong, here we need to submit the payload to server(koi.server), i will provide the api 
  })
 );
  
