@@ -110,6 +110,7 @@ const GlobalStyle = createGlobalStyle`
     .hide{display: none;}
     .font-light{ font-weight: 300 !important; }
     .text-italic{ font-style: italic !important; }
+    .w40{width: 40px !important;}
     .btn {
         display: flex;
         justify-content: center;

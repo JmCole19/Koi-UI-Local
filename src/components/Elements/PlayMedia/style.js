@@ -24,6 +24,6 @@ export const PlayMediaContainer = styled.div`
         }
     }
     &.embed-image{
-        width: 200px;
+        max-width: 200px;
     }
 `;

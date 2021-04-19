@@ -588,11 +588,7 @@ function UploadManual() {
               <h2 className="modal-title text-blue">Confirm transaction</h2>
               <div className="imgs-wrapper">
                 <Space size={28}>
-                  <Image
-                      className="br-4"
-                      src={imageUrl}
-                      width={40}
-                    />
+                  <PlayMedia imageUrl={imageUrl} contentType={contentType} addSubClass="br-4 w40" />
                 </Space>
               </div>
               <>
