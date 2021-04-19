@@ -13,6 +13,9 @@ import {alertTimeout} from 'config'
 import AlertArea from "components/Sections/AlertArea";
 import MetaWrapper from "components/Wrappers/MetaWrapper";
 import Web3 from "web3";
+import {
+  ImgPST
+} from "assets/images";
 
 // const testOpenseaAddress = '0xd703accc62251189a67106f22d54cd470494de40'
 
@@ -152,7 +155,7 @@ function UploadOpenSea() {
           <div className="opensea-content-wrapper">
             <div className="opensea-content">
             {iskevinNft ? (<h1> Look what we found 1111# 0540 by kevin Abosch <Button  onClick={sign}>register</Button></h1>):
-             (<h1> </h1>)}
+             (<h1> here </h1>)}
               <div className="title-wrapper">
                
                 <h1 className="text-blue opensea-title">Your OpenSea content</h1>
