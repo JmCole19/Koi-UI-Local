@@ -6,13 +6,20 @@ import { PreviewMediaContainer } from "./style";
 
 function PreviewMedia({
     imageUrl = null,
-    contentType = 'image'
+    contentType = null
 }) {
     let addClass = ''
-    if(contentType === 'image') {
-        addClass = imageUrl ? 'embed-image' : ''
-    }else if(contentType === 'video'){
-        addClass = imageUrl ? 'embed-video' : ''
+    let mediaType = 'image'
+    if(imageUrl){
+        if(contentType.includes('image/')) {
+            addClass = 'embed-image'
+        }else if(contentType.includes('video/')){
+            addClass = 'embed-video'
+            mediaType = 'video'
+        }else if(contentType.includes('audio/')){
+            addClass = 'embed-audio'
+            mediaType = 'audio'
+        }
     }
   return (
     <PreviewMediaContainer className={addClass}>

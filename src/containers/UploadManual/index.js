@@ -73,6 +73,7 @@ function UploadManual() {
   const [uploading, setUploading] = useState(false);
   const [loading, setLoading] = useState(false);
   const [imageUrl, setImageUrl] = useState(null);
+  const [contentType, setContentType] = useState(null);
   const [imagePath, setImagePath] = useState('');
   // const [imageBlob, setImageBlob] = useState(null);
   const [showAlert, setShowAlert] = useState(false);
@@ -251,6 +252,7 @@ function UploadManual() {
         let ex = file.name.split('.').pop();
         let filename = file.name.split('.').slice(0, -1).join('.')
         if(filename.length > 20) filename = filename.substr(0, 18) + '~.'
+        setContentType(file.type)
         setImagePath(filename + ex)
         setImageUrl(e.target.result);
       };
@@ -349,7 +351,7 @@ function UploadManual() {
                                   <>
                                     <div className="uploader-container">
                                       <div className="uploader-icon d-flex justify-content-center align-items-center">
-                                        <PreviewMedia imageUrl={imageUrl}></PreviewMedia>
+                                        <PreviewMedia imageUrl={imageUrl} contentType={contentType}></PreviewMedia>
                                       </div>
                                       {imagePath ? 
                                       <p className="text-blue mt-1"><b>{imagePath}</b></p> 
