@@ -10,7 +10,7 @@ import cloneDeep from "clone-deep";
 import { useHistory, useLocation } from "react-router-dom";
 import MyProgress from "components/Elements/MyProgress";
 // import ArconnectCard from "components/Elements/ArconnectCard";
-import { convertArBalance, show_notification, show_fixed_number, get_arweave_option } from "service/utils";
+import { convertArBalance, show_notification, show_fixed_number, get_arweave_option, getMediaType } from "service/utils";
 import Arweave from "arweave";
 import { getArWalletAddressFromJson, exportNFT } from "service/NFT";
 // import { colors } from "theme";
@@ -243,9 +243,9 @@ function UploadManual() {
     // if (!isJpgOrPng) {
     //   show_notification("You can only upload Video or Image file!");
     // }
-    const isLt2M = file.size / 1024 / 1024 < 100;
+    const isLt2M = file.size / 1024 / 1024 < 15;
     if (!isLt2M) {
-      show_notification("File must be smaller than 100MB!");
+      show_notification("File must be smaller than 15MB!");
     }
     if (isLt2M) {
       const reader = new FileReader();
@@ -255,7 +255,11 @@ function UploadManual() {
         if(filename.length > 20) filename = filename.substr(0, 18) + '~.'
         setContentType(file.type)
         setImagePath(filename + ex)
-        setImageUrl(e.target.result);
+        if(getMediaType(file.type) === 'video' || getMediaType(file.type) === 'audio'){
+          setImageUrl(URL.createObjectURL(file));
+        }else{
+          setImageUrl(e.target.result);
+        }
       };
       reader.readAsDataURL(file);
       return false;
@@ -339,7 +343,7 @@ function UploadManual() {
                             <div className="single-ant-file-upload">
                               <Dragger
                                 name="file"
-                                accept="video/*, image/*"
+                                accept="video/*, image/*, audio/*"
                                 multiple={false}
                                 listType="picture"
                                 beforeUpload={beforeNftUpload}
