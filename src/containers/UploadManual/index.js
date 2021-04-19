@@ -319,7 +319,7 @@ function UploadManual() {
                     onFinish={onCompleteStep1}
                   >
                     <Row>
-                      <Col flex="100px">
+                      <Col flex="100px" className="d-none d-md-block">
                         <div className="type-img-wrapper">
                           <Image src={IconUpload} />
                         </div>
@@ -391,7 +391,7 @@ function UploadManual() {
                     onFinish={onCompleteStep2}
                   >
                     <Row>
-                      <Col flex="100px">
+                      <Col flex="100px" className="d-none d-md-block">
                         <div className="type-img-wrapper">
                           <Image src={IconUpload} />
                         </div>
