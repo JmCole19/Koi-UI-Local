@@ -22,6 +22,7 @@ import { getKoi } from "service/KOI";
 import { FaTimes } from "react-icons/fa";
 import { colors } from "theme";
 import MetaWrapper from "components/Wrappers/MetaWrapper";
+import PreviewMedia from "components/Elements/PreviewMedia";
 
 //const arweave = Arweave.init(get_arweave_option);
 console.log(get_arweave_option);
@@ -348,7 +349,7 @@ function UploadManual() {
                                   <>
                                     <div className="uploader-container">
                                       <div className="uploader-icon d-flex justify-content-center align-items-center">
-                                        {imageUrl ? <Image src={imageUrl} /> : <Image src={IconUpload} />}
+                                        <PreviewMedia imageUrl={imageUrl}></PreviewMedia>
                                       </div>
                                       {imagePath ? 
                                       <p className="text-blue mt-1"><b>{imagePath}</b></p> 
