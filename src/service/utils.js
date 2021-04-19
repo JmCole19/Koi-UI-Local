@@ -120,6 +120,17 @@ const getMediaType = (fileType) => {
   return mediaType
 }
 
+const mediaExists = (media_url) => {
+
+  var http = new XMLHttpRequest();
+
+  http.open('HEAD', media_url, false);
+  http.send();
+
+  return http.status !== 404;
+
+}
+
 export {
   get_arweave_option,
   show_notification,
@@ -131,5 +142,6 @@ export {
   convertArBalance,
   validEmail,
   wait,
-  getMediaType
+  getMediaType,
+  mediaExists,
 }

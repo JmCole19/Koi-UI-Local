@@ -29,7 +29,7 @@ import { HiOutlineMail } from "react-icons/hi";
 import { colors } from "theme";
 
 import { preUrl } from "config";
-import { getMediaType } from "service/utils";
+import { getMediaType, mediaExists } from "service/utils";
 
 const video_contents = [
   'cfhKMEd_pCZHHIKeVGZAilnITonqllwkA_yhiF2PaOw',
@@ -140,10 +140,19 @@ function ModalContent({
   const show_content = (item) => {
     if(video_contents.includes(item.txIdContent) || getMediaType(item?.contentType) === 'video' ) {
       // video content
-      return (
-        <ResponsiveEmbed aspectRatio="16by9">
-          <iframe title="embed_video" width="100%" height="400" src={`${preUrl}${item.txIdContent}`} frameBorder="0" allowFullScreen></iframe>
-        </ResponsiveEmbed>)
+      let res = mediaExists(item.txIdContent)
+      if(res){
+        return (
+          <ResponsiveEmbed aspectRatio="16by9" className="cursor">
+            <iframe title="embed_video" width="100%" height="400" src={`${preUrl}${item.txIdContent}`} frameBorder="0" allowFullScreen></iframe>
+          </ResponsiveEmbed>)
+      }else{
+        return (<Image
+          src={ItemTemp}
+          onError={(ev => ev.target.src = ItemTemp)}
+          className="detail-img"
+        />)
+      }
     }else{
       return (
         <Image
