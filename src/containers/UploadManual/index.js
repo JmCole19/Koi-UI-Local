@@ -23,6 +23,7 @@ import { FaTimes } from "react-icons/fa";
 import { colors } from "theme";
 import MetaWrapper from "components/Wrappers/MetaWrapper";
 import PreviewMedia from "components/Elements/PreviewMedia";
+import PlayMedia from "components/Elements/PlayMedia";
 
 //const arweave = Arweave.init(get_arweave_option);
 console.log(get_arweave_option);
@@ -407,7 +408,8 @@ function UploadManual() {
                         </div>
                         <div className="upload-content-form">
                           <div className="content-img-wrapper">
-                            <Image src={imageUrl} className="w-100" />
+                            {/* <Image src={imageUrl} className="w-100" /> */}
+                            <PlayMedia imageUrl={imageUrl} contentType={contentType} addSubClass="w-100" />
                           </div>
                           <div className="upload-content-row">
                             <Form.Item>

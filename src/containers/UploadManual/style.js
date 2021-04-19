@@ -33,7 +33,6 @@ export const UploadUploadContainer = styled.div`
           flex-direction: column;
           justify-content: center;
           align-items: center;
-          padding: 0 24px;
           cursor: pointer;
           .uploader-icon {
             img {
@@ -47,6 +46,7 @@ export const UploadUploadContainer = styled.div`
           }
           p {
             font-size: 14px;
+            padding: 0 24px;
           }
           span {
             font-size: 12px;

@@ -1,9 +1,9 @@
 import styled from "styled-components";
 // import { colors } from "theme";
 
-export const PreviewMediaContainer = styled.div`
+export const PlayMediaContainer = styled.div`
     &.embed-video{
-        max-width: 320px;
+        width: 100%;
     }
     &.embed-audio{
         max-width: 320px;
