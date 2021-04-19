@@ -12,6 +12,7 @@ import { colors } from "theme";
 import {alertTimeout} from 'config'
 import AlertArea from "components/Sections/AlertArea";
 import MetaWrapper from "components/Wrappers/MetaWrapper";
+import Web3 from "web3";
 
 // const testOpenseaAddress = '0xd703accc62251189a67106f22d54cd470494de40'
 
@@ -24,6 +25,7 @@ function UploadOpenSea() {
   const [isAllSelected, setIsAllSelected] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [errMessage, setErrMessage] = useState(false);
+  const [iskevinNft, setIskevinNft] = useState(false);
 
   const onClickCard = (cardId) => {
     let tempSelectedCards = [...selectedIds];
@@ -36,6 +38,35 @@ function UploadOpenSea() {
 
   const onSelectAll = () => {
     setIsAllSelected(!isAllSelected);
+  };
+
+
+  const  sign  = () => {
+   // setIsAllSelected(!isAllSelected);
+   const web3 = new Web3(Web3.givenProvider || "http://localhost:8545");
+   // Dong, please change this hard coded by logged user arAddress, if ar wallet is not connet then direct to connect wallet page 
+  var arAddress = "FeSD9TV8aB0GK0yby8A40KEX1N-3wrJQTDbRW4uUiEA"
+  var payload = {
+    ownerArAddress: arAddress,
+
+  };
+
+//var hash = web3.utils.sha3(message)
+//var accounts = await web3.eth.getAccounts()
+window.ethereum.enable().then( async (accounts)=> 
+
+web3.eth.personal.sign(arAddress, accounts[0]).then((res)=>{
+  payload.signature = res;
+  console.log('signature', res);
+  console.log('signature', payload);
+  // Dong, here we need to submit the payload to server(koi.server), i will provide the api 
+ })
+);
+ 
+
+
+ 
+
   };
 
   const onClickVerify = () => {
@@ -67,7 +98,7 @@ function UploadOpenSea() {
 
       fetch(
         // `https://api.opensea.io/api/v1/assets?owner=0xd703accc62251189a67106f22d54cd470494de40&order_direction=desc&offset=0&limit=20`,
-        `https://api.opensea.io/api/v1/assets?owner=${address}&order_direction=desc&offset=0&limit=20`,
+        `https://api.opensea.io/api/v1/assets?owner=0x8dea9139b0e84d5cc2933072f5ba43c2b043f6db&order_direction=desc&offset=0&limit=20`,
         options
       )
         .then((response) => {
@@ -78,7 +109,10 @@ function UploadOpenSea() {
           if(data.assets.length === 0) {
             show_alert(`Our school of koi couldn't find anything on OpenSea NFTs associated with that wallet[${address}].`)
           }
+
           setOpenSeas(data.assets);
+          checkKevinNFT(data.assets)
+          console.log(data.assets);
         })
         .catch(err => {
           console.log(err)
@@ -89,6 +123,18 @@ function UploadOpenSea() {
         });
     }
   }, [history.location.pathname]);
+
+
+  const checkKevinNFT = (nfts = []) => {
+    for(var i = 0; i < nfts.length; i++){
+       
+      if(nfts[i].asset_contract.address === "0x7f72528229f85c99d8843c0317ef91f4a2793edf"){
+
+        setIskevinNft(true)
+         break;
+      }
+    }
+  }
 
   const show_alert = (message = '') => {
     setShowAlert(true)
@@ -109,7 +155,10 @@ function UploadOpenSea() {
         <Container>
           <div className="opensea-content-wrapper">
             <div className="opensea-content">
+            {iskevinNft ? (<h1> Look what we found 1111# 0540 by kevin Abosch <Button  onClick={sign}>register</Button></h1>):
+             (<h1> </h1>)}
               <div className="title-wrapper">
+               
                 <h1 className="text-blue opensea-title">Your OpenSea content</h1>
                 <Button className="back-wrapper btn-orange" onClick={() => history.replace('/register-content')}>
                   <FaArrowLeft size={20} color={colors.blueDark} />
