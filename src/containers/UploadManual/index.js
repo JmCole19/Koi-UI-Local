@@ -45,6 +45,15 @@ const formItemLayout = {
   // },
 };
 
+// const fileTypes = [
+//   "image/apng",
+//   "image/bmp",
+//   "image/gif",
+//   "image/jpeg",
+//   "image/pjpeg",
+//   "image/png",
+// ];
+
 function UploadManual() {
   const history = useHistory();
   const [form] = useForm();
@@ -224,17 +233,18 @@ function UploadManual() {
     }
     return isJson && isLt1M;
   };
+  
   const beforeNftUpload = (file) => {
     console.log(file)
-    const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";
-    if (!isJpgOrPng) {
-      show_notification("You can only upload JPG/PNG file!");
-    }
-    const isLt2M = file.size / 1024 / 1024 < 10;
+    // const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png" || file.type === "image/gif";
+    // if (!isJpgOrPng) {
+    //   show_notification("You can only upload Video or Image file!");
+    // }
+    const isLt2M = file.size / 1024 / 1024 < 100;
     if (!isLt2M) {
-      show_notification("Image must be smaller than 10MB!");
+      show_notification("File must be smaller than 100MB!");
     }
-    if (isJpgOrPng && isLt2M) {
+    if (isLt2M) {
       const reader = new FileReader();
       reader.onload = (e) => {
         let ex = file.name.split('.').pop();
@@ -246,7 +256,7 @@ function UploadManual() {
       reader.readAsDataURL(file);
       return false;
     }
-    return isJpgOrPng && isLt2M;
+    return isLt2M;
   };
   
   const onClickCloseConfirmModal = () => {

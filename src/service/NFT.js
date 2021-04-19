@@ -62,7 +62,7 @@ const exportNFT = async (arweave, ownerAddress, content, imageUrl = '', imageBlo
     metadata.ticker = 'KOINFT'
 
     const balances = {};
-    balances[metadata.owner] = 0;
+    balances[metadata.owner] = 1;
 
     let d = new Date()
     let createdAt = Math.floor(d.getTime()/1000).toString()
