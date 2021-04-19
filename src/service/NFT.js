@@ -73,6 +73,7 @@ const exportNFT = async (arweave, ownerAddress, content, imageUrl = '', imageBlo
       "description": metadata.description,
       "ticker": metadata.ticker,
       "balances": balances,
+      "contentType": imgContentType,
       "createdAt": createdAt
     }
     if (wallet === {}) {

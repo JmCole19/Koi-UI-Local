@@ -106,6 +106,17 @@ const wait = async (ms) => {
   });
 }
 
+const getMediaType = (fileType) => {
+  let mediaType = ''
+  if(fileType.includes('image/')) {
+    mediaType = 'image'
+  }else if(fileType.includes('video/')){
+    mediaType = 'video'
+  }else if(fileType.includes('audio/')){
+    mediaType = 'audio'
+  }
+  return mediaType
+}
 
 export {
   get_arweave_option,
@@ -117,5 +128,6 @@ export {
   getBase64,
   convertArBalance,
   validEmail,
-  wait
+  wait,
+  getMediaType
 }

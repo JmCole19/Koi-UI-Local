@@ -33,7 +33,6 @@ export const UploadUploadContainer = styled.div`
           flex-direction: column;
           justify-content: center;
           align-items: center;
-          padding: 0 24px;
           cursor: pointer;
           .uploader-icon {
             img {
@@ -47,6 +46,7 @@ export const UploadUploadContainer = styled.div`
           }
           p {
             font-size: 14px;
+            padding: 0 24px;
           }
           span {
             font-size: 12px;
@@ -93,6 +93,11 @@ export const UploadUploadContainer = styled.div`
               justify-content: flex-start;
               align-items: center;
               min-height: 64px;
+              @media screen and (max-width: ${mixins.xs}px) {
+                h6{
+                  margin-right: 35px;
+                }
+              }
               .upload-step {
                 width: 32px;
                 height: 32px;
@@ -114,6 +119,9 @@ export const UploadUploadContainer = styled.div`
               right: 12px;
               cursor: pointer;
               z-index: 1;
+              @media screen and (max-width: ${mixins.sm}px){
+                right: 0px;
+              }
               i {
                 font-size: 24px;
                 color: ${colors.blueDark};
@@ -131,8 +139,9 @@ export const UploadUploadContainer = styled.div`
               .single-ant-file-upload{
                 margin-left: -100px;
                 width: 360px;
-                @media screen and (max-width: 517px) {
-                  margin-left: 0px;
+                @media screen and (max-width: ${mixins.sm}px) {
+                  margin-left: auto;
+                  margin-right: auto;
                   width: 300px;
                 }
               }
@@ -142,7 +151,7 @@ export const UploadUploadContainer = styled.div`
             display: flex;
             align-items: flex-start;
             .content-img-wrapper {
-              width: 130px;
+              max-width: 130px;
               display: flex;
               justify-content: flex-start;
             }
@@ -170,6 +179,20 @@ export const UploadUploadContainer = styled.div`
                 }
               }
             }
+            @media (max-width: ${mixins.sm}px){
+              flex-direction: column;
+              .content-img-wrapper {
+                max-width: 100%;
+                align-items: center;
+                margin: 0 auto;
+                margin-bottom: 20px;
+              }
+              .upload-content-row {
+                margin-left: 0px;
+                width: 100%;
+              }
+            }
+            
           }
           .upload-cards-wrapper {
             display: flex;
