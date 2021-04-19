@@ -108,12 +108,14 @@ const wait = async (ms) => {
 
 const getMediaType = (fileType) => {
   let mediaType = ''
-  if(fileType.includes('image/')) {
-    mediaType = 'image'
-  }else if(fileType.includes('video/')){
-    mediaType = 'video'
-  }else if(fileType.includes('audio/')){
-    mediaType = 'audio'
+  if(fileType){
+    if(fileType.includes('image/')) {
+      mediaType = 'image'
+    }else if(fileType.includes('video/')){
+      mediaType = 'video'
+    }else if(fileType.includes('audio/')){
+      mediaType = 'audio'
+    }
   }
   return mediaType
 }

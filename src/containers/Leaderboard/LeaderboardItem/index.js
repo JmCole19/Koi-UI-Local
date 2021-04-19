@@ -15,7 +15,7 @@ import { HiOutlineMail } from "react-icons/hi";
 import { LeaderboardItemContainer } from "./style";
 import { colors } from "theme";
 import { preUrl } from "config";
-import { show_digit_number } from "service/utils";
+import { getMediaType, show_digit_number } from "service/utils";
 import moment from "moment";
 
 const video_contents = [
@@ -40,7 +40,7 @@ function LeaderboardItem({
   const smsUrl = `sms:+19024021271&body=${shareTitle} ${window.location.protocol}//${window.location.hostname}/content-detail/${item.txIdContent}&type=view`;
 
   const show_content = (item) => {
-    if(video_contents.includes(item.txIdContent)) {
+    if(video_contents.includes(item.txIdContent) || getMediaType(item?.contentType) === 'video' ) {
       // video content
       return (
         <ResponsiveEmbed aspectRatio="16by9" className="cursor" onClick={onClickItem}>

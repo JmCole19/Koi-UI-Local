@@ -29,6 +29,7 @@ import { HiOutlineMail } from "react-icons/hi";
 import { colors } from "theme";
 
 import { preUrl } from "config";
+import { getMediaType } from "service/utils";
 
 const video_contents = [
   'cfhKMEd_pCZHHIKeVGZAilnITonqllwkA_yhiF2PaOw',
@@ -137,7 +138,7 @@ function ModalContent({
   };
 
   const show_content = (item) => {
-    if(video_contents.includes(item.txIdContent)) {
+    if(video_contents.includes(item.txIdContent) || getMediaType(item?.contentType) === 'video' ) {
       // video content
       return (
         <ResponsiveEmbed aspectRatio="16by9">

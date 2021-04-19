@@ -19,7 +19,7 @@ import { ContentDetailContainer } from "./style";
 import { DataContext } from "contexts/DataContextContainer";
 import { ScaleLoader } from "react-spinners";
 import ModalContent from "components/Elements/ModalContent";
-import { show_digit_number, show_notification } from "service/utils";
+import { getMediaType, show_digit_number, show_notification } from "service/utils";
 import axios from "axios";
 import AlertArea from "components/Sections/AlertArea";
 import useMediaQuery from "use-mediaquery";
@@ -64,7 +64,7 @@ function ContentDetail() {
   };
 
   const show_content = (item) => {
-    if(video_contents.includes(item.txIdContent)) {
+    if(video_contents.includes(item.txIdContent) || getMediaType(item?.contentType) === 'video' ) {
       // video content
       return (
         <ResponsiveEmbed aspectRatio="16by9">
