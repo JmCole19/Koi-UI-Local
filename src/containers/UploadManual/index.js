@@ -26,15 +26,7 @@ import PreviewMedia from "components/Elements/PreviewMedia";
 import PlayMedia from "components/Elements/PlayMedia";
 
 //const arweave = Arweave.init(get_arweave_option);
-console.log(get_arweave_option);
-const arweave = Arweave.init({
-  host: 'arweave.net',// Hostname or IP address for a Arweave host
-  port: 443,          // Port
-  protocol: 'https',  // Network protocol http or https
-  timeout: 20000,     // Network request timeouts in milliseconds
-  logging: false,     // Enable network request logging
-});
-console.log(arweave);
+const arweave = Arweave.init(get_arweave_option);
 const { TextArea } = Input;
 const { Dragger } = Upload;
 

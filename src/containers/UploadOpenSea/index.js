@@ -77,6 +77,17 @@ function UploadOpenSea() {
     );
   };
 
+  const showKevinNFTArea = () => {
+    console.log("here111")
+    return (<Row gutter={[
+      { xs: 16, sm: 16, lg: 32 },
+      { xs: 40, sm: 40, lg: 32 },
+    ]}>
+      <Col span={6} ><Image src={ImgPST} /></Col>
+      <Col span={6} ><h1> Look what we found 1111# 0540 by kevin Abosch <Button  onClick={sign}>register</Button></h1></Col>
+    </Row>)
+  }
+
   useEffect(() => {
     if (isAllSelected) {
       setSelectedIds(openSeas.map((_card) => _card.id));
@@ -97,8 +108,8 @@ function UploadOpenSea() {
 
       fetch(
         // `https://api.opensea.io/api/v1/assets?owner=0xd703accc62251189a67106f22d54cd470494de40&order_direction=desc&offset=0&limit=20`,
-        // `https://api.opensea.io/api/v1/assets?owner=0x8dea9139b0e84d5cc2933072f5ba43c2b043f6db&order_direction=desc&offset=0&limit=20`,
-        `https://api.opensea.io/api/v1/assets?owner=${address}&order_direction=desc&offset=0&limit=20`,
+        `https://api.opensea.io/api/v1/assets?owner=0x8dea9139b0e84d5cc2933072f5ba43c2b043f6db&order_direction=desc&offset=0&limit=20`,
+        // `https://api.opensea.io/api/v1/assets?owner=${address}&order_direction=desc&offset=0&limit=20`,
         options
       )
       .then((response) => {
@@ -127,10 +138,10 @@ function UploadOpenSea() {
 
   const checkKevinNFT = (nfts = []) => {
     for(var i = 0; i < nfts.length; i++){
-       
-      if(nfts[i].asset_contract.address === "0x7f72528229f85c99d8843c0317ef91f4a2793edf"){
+      if(nfts[i].asset_contract.address === "0x7f72528229f85c99d8843c0317ef91f4a2793edf") {
+        console.log(nfts[i].asset_contract.address)
         setIskevinNft(true)
-          break;
+        break;
       }
     }
   }
@@ -154,10 +165,8 @@ function UploadOpenSea() {
         <Container>
           <div className="opensea-content-wrapper">
             <div className="opensea-content">
-            {iskevinNft ? (<h1> Look what we found 1111# 0540 by kevin Abosch <Button  onClick={sign}>register</Button></h1>):
-             (<h1> here </h1>)}
+            {iskevinNft && showKevinNFTArea()}
               <div className="title-wrapper">
-               
                 <h1 className="text-blue opensea-title">Your OpenSea content</h1>
                 <Button className="back-wrapper btn-orange" onClick={() => history.replace('/register-content')}>
                   <FaArrowLeft size={20} color={colors.blueDark} />
