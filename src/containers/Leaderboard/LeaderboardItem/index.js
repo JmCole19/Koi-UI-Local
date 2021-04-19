@@ -15,7 +15,7 @@ import { HiOutlineMail } from "react-icons/hi";
 import { LeaderboardItemContainer } from "./style";
 import { colors } from "theme";
 import { preUrl } from "config";
-import { show_digit_number } from "service/utils";
+import { getMediaType, mediaExists, show_digit_number } from "service/utils";
 import moment from "moment";
 
 const video_contents = [
@@ -40,12 +40,22 @@ function LeaderboardItem({
   const smsUrl = `sms:+19024021271&body=${shareTitle} ${window.location.protocol}//${window.location.hostname}/content-detail/${item.txIdContent}&type=view`;
 
   const show_content = (item) => {
-    if(video_contents.includes(item.txIdContent)) {
+    if(video_contents.includes(item.txIdContent) || getMediaType(item?.contentType) === 'video' ) {
       // video content
-      return (
-        <ResponsiveEmbed aspectRatio="16by9" className="cursor" onClick={onClickItem}>
-          <iframe title="embed_video" width="100%" height="400" src={`${preUrl}${item.txIdContent}`} frameBorder="0" allowFullScreen></iframe>
-        </ResponsiveEmbed>)
+      let res = mediaExists(item.txIdContent)
+      if(res){
+        return (
+          <ResponsiveEmbed aspectRatio="16by9" className="cursor" onClick={onClickItem}>
+            <iframe title="embed_video" width="100%" height="400" src={`${preUrl}${item.txIdContent}`} frameBorder="0" allowFullScreen></iframe>
+          </ResponsiveEmbed>)
+      }else{
+        return (<Image
+          src={ItemTemp}
+          onError={(ev => ev.target.src = ItemTemp)}
+          className="cursor"
+          onClick={onClickItem}
+        />)
+      }
     }else{
       return (
         <Image
