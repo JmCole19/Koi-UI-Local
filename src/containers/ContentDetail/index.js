@@ -19,7 +19,7 @@ import { ContentDetailContainer } from "./style";
 import { DataContext } from "contexts/DataContextContainer";
 import { ScaleLoader } from "react-spinners";
 import ModalContent from "components/Elements/ModalContent";
-import { getMediaType, mediaExists, show_digit_number, show_notification } from "service/utils";
+import { getMediaType, show_digit_number, show_notification } from "service/utils";
 import axios from "axios";
 import AlertArea from "components/Sections/AlertArea";
 import useMediaQuery from "use-mediaquery";
@@ -66,11 +66,12 @@ function ContentDetail() {
   const show_content = (item) => {
     if(video_contents.includes(item.txIdContent) || getMediaType(item?.contentType) === 'video' ) {
       // video content
-      let res = mediaExists(item.txIdContent)
+
+      let res = true //mediaExists('https://viewblock.io/arweave/tx/' + item.txIdContent)
       if(res){
         return (
           <ResponsiveEmbed aspectRatio="16by9" className="cursor">
-            <iframe title="embed_video" width="100%" height="400" src={`${preUrl}${item.txIdContent}`} frameBorder="0" allowFullScreen></iframe>
+            <iframe title="embed_video" width="100%" height="400" src={`https://arweave.net/${item.txIdContent}`} frameBorder="0" allowFullScreen></iframe>
           </ResponsiveEmbed>)
       }else{
         return (<Image

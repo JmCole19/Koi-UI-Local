@@ -121,12 +121,10 @@ const getMediaType = (fileType) => {
 }
 
 const mediaExists = (media_url) => {
-
   var http = new XMLHttpRequest();
 
   http.open('HEAD', media_url, false);
   http.send();
-
   return http.status !== 404;
 
 }
