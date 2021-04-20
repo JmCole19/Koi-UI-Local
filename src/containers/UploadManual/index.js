@@ -10,7 +10,7 @@ import cloneDeep from "clone-deep";
 import { useHistory, useLocation } from "react-router-dom";
 import MyProgress from "components/Elements/MyProgress";
 // import ArconnectCard from "components/Elements/ArconnectCard";
-import { convertArBalance, show_notification, show_fixed_number, get_arweave_option } from "service/utils";
+import { convertArBalance, show_notification, show_fixed_number, get_arweave_option, getMediaType } from "service/utils";
 import Arweave from "arweave";
 import { getArWalletAddressFromJson, exportNFT } from "service/NFT";
 // import { colors } from "theme";
@@ -22,6 +22,8 @@ import { getKoi } from "service/KOI";
 import { FaTimes } from "react-icons/fa";
 import { colors } from "theme";
 import MetaWrapper from "components/Wrappers/MetaWrapper";
+import PreviewMedia from "components/Elements/PreviewMedia";
+import PlayMedia from "components/Elements/PlayMedia";
 
 //const arweave = Arweave.init(get_arweave_option);
 console.log(get_arweave_option);
@@ -45,6 +47,15 @@ const formItemLayout = {
   // },
 };
 
+// const fileTypes = [
+//   "image/apng",
+//   "image/bmp",
+//   "image/gif",
+//   "image/jpeg",
+//   "image/pjpeg",
+//   "image/png",
+// ];
+
 function UploadManual() {
   const history = useHistory();
   const [form] = useForm();
@@ -63,6 +74,7 @@ function UploadManual() {
   const [uploading, setUploading] = useState(false);
   const [loading, setLoading] = useState(false);
   const [imageUrl, setImageUrl] = useState(null);
+  const [contentType, setContentType] = useState(null);
   const [imagePath, setImagePath] = useState('');
   // const [imageBlob, setImageBlob] = useState(null);
   const [showAlert, setShowAlert] = useState(false);
@@ -224,29 +236,35 @@ function UploadManual() {
     }
     return isJson && isLt1M;
   };
+  
   const beforeNftUpload = (file) => {
     console.log(file)
-    const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";
-    if (!isJpgOrPng) {
-      show_notification("You can only upload JPG/PNG file!");
-    }
-    const isLt2M = file.size / 1024 / 1024 < 10;
+    // const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png" || file.type === "image/gif";
+    // if (!isJpgOrPng) {
+    //   show_notification("You can only upload Video or Image file!");
+    // }
+    const isLt2M = file.size / 1024 / 1024 < 15;
     if (!isLt2M) {
-      show_notification("Image must be smaller than 10MB!");
+      show_notification("File must be smaller than 15MB!");
     }
-    if (isJpgOrPng && isLt2M) {
+    if (isLt2M) {
       const reader = new FileReader();
       reader.onload = (e) => {
         let ex = file.name.split('.').pop();
         let filename = file.name.split('.').slice(0, -1).join('.')
         if(filename.length > 20) filename = filename.substr(0, 18) + '~.'
+        setContentType(file.type)
         setImagePath(filename + ex)
-        setImageUrl(e.target.result);
+        if(getMediaType(file.type) === 'video' || getMediaType(file.type) === 'audio'){
+          setImageUrl(URL.createObjectURL(file));
+        }else{
+          setImageUrl(e.target.result);
+        }
       };
       reader.readAsDataURL(file);
       return false;
     }
-    return isJpgOrPng && isLt2M;
+    return isLt2M;
   };
   
   const onClickCloseConfirmModal = () => {
@@ -301,7 +319,7 @@ function UploadManual() {
                     onFinish={onCompleteStep1}
                   >
                     <Row>
-                      <Col flex="100px">
+                      <Col flex="100px" className="d-none d-md-block">
                         <div className="type-img-wrapper">
                           <Image src={IconUpload} />
                         </div>
@@ -325,7 +343,7 @@ function UploadManual() {
                             <div className="single-ant-file-upload">
                               <Dragger
                                 name="file"
-                                accept="video/*, image/*"
+                                accept="video/*, image/*, audio/*"
                                 multiple={false}
                                 listType="picture"
                                 beforeUpload={beforeNftUpload}
@@ -338,7 +356,7 @@ function UploadManual() {
                                   <>
                                     <div className="uploader-container">
                                       <div className="uploader-icon d-flex justify-content-center align-items-center">
-                                        {imageUrl ? <Image src={imageUrl} /> : <Image src={IconUpload} />}
+                                        <PreviewMedia imageUrl={imageUrl} contentType={contentType}></PreviewMedia>
                                       </div>
                                       {imagePath ? 
                                       <p className="text-blue mt-1"><b>{imagePath}</b></p> 
@@ -373,7 +391,7 @@ function UploadManual() {
                     onFinish={onCompleteStep2}
                   >
                     <Row>
-                      <Col flex="100px">
+                      <Col flex="100px" className="d-none d-md-block">
                         <div className="type-img-wrapper">
                           <Image src={IconUpload} />
                         </div>
@@ -394,7 +412,8 @@ function UploadManual() {
                         </div>
                         <div className="upload-content-form">
                           <div className="content-img-wrapper">
-                            <Image src={imageUrl} className="w-100" />
+                            {/* <Image src={imageUrl} className="w-100" /> */}
+                            <PlayMedia imageUrl={imageUrl} contentType={contentType} addSubClass="w-100" />
                           </div>
                           <div className="upload-content-row">
                             <Form.Item>
@@ -569,11 +588,7 @@ function UploadManual() {
               <h2 className="modal-title text-blue">Confirm transaction</h2>
               <div className="imgs-wrapper">
                 <Space size={28}>
-                  <Image
-                      className="br-4"
-                      src={imageUrl}
-                      width={40}
-                    />
+                  <PlayMedia imageUrl={imageUrl} contentType={contentType} addSubClass="br-4 w40" />
                 </Space>
               </div>
               <>

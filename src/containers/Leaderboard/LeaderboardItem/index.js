@@ -15,7 +15,7 @@ import { HiOutlineMail } from "react-icons/hi";
 import { LeaderboardItemContainer } from "./style";
 import { colors } from "theme";
 import { preUrl } from "config";
-import { show_digit_number } from "service/utils";
+import { getMediaType, mediaExists, show_digit_number } from "service/utils";
 import moment from "moment";
 
 const video_contents = [
@@ -40,12 +40,22 @@ function LeaderboardItem({
   const smsUrl = `sms:+19024021271&body=${shareTitle} ${window.location.protocol}//${window.location.hostname}/content-detail/${item.txIdContent}&type=view`;
 
   const show_content = (item) => {
-    if(video_contents.includes(item.txIdContent)) {
+    if(video_contents.includes(item.txIdContent) || getMediaType(item?.contentType) === 'video' ) {
       // video content
-      return (
-        <ResponsiveEmbed aspectRatio="16by9" className="cursor" onClick={onClickItem}>
-          <iframe title="embed_video" width="100%" height="400" src={`${preUrl}${item.txIdContent}`} frameBorder="0" allowFullScreen></iframe>
-        </ResponsiveEmbed>)
+      let res = mediaExists(item.txIdContent)
+      if(res){
+        return (
+          <ResponsiveEmbed aspectRatio="16by9" className="cursor" onClick={onClickItem}>
+            <iframe title="embed_video" width="100%" height="400" src={`${preUrl}${item.txIdContent}`} frameBorder="0" allowFullScreen></iframe>
+          </ResponsiveEmbed>)
+      }else{
+        return (<Image
+          src={ItemTemp}
+          onError={(ev => ev.target.src = ItemTemp)}
+          className="cursor"
+          onClick={onClickItem}
+        />)
+      }
     }else{
       return (
         <Image
@@ -72,9 +82,9 @@ function LeaderboardItem({
             {show_content(item)}
           </div>
           <div className="item-info-wrapper item-col">
-            <h2 className="item-title mb-1 cursor" onClick={onClickItem}>{item.ticker}</h2>
+            <h2 className="item-title mb-1 cursor" onClick={onClickItem}>{item.title? item.title : item.name}</h2>
             <p className="item-username mb-3 cursor" onClick={onClickUsername}>
-              {item.name}
+              {item.owner}
             </p>
             <p className="item-created_at mb-0">
               Registered: {moment(item.created_at).format("MMM, DD, YYYY")}

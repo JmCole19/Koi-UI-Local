@@ -106,6 +106,30 @@ const wait = async (ms) => {
   });
 }
 
+const getMediaType = (fileType) => {
+  let mediaType = ''
+  if(fileType){
+    if(fileType.includes('image/')) {
+      mediaType = 'image'
+    }else if(fileType.includes('video/')){
+      mediaType = 'video'
+    }else if(fileType.includes('audio/')){
+      mediaType = 'audio'
+    }
+  }
+  return mediaType
+}
+
+const mediaExists = (media_url) => {
+
+  var http = new XMLHttpRequest();
+
+  http.open('HEAD', media_url, false);
+  http.send();
+
+  return http.status !== 404;
+
+}
 
 export {
   get_arweave_option,
@@ -117,5 +141,7 @@ export {
   getBase64,
   convertArBalance,
   validEmail,
-  wait
+  wait,
+  getMediaType,
+  mediaExists,
 }

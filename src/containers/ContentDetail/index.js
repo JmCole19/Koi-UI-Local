@@ -19,7 +19,7 @@ import { ContentDetailContainer } from "./style";
 import { DataContext } from "contexts/DataContextContainer";
 import { ScaleLoader } from "react-spinners";
 import ModalContent from "components/Elements/ModalContent";
-import { show_digit_number, show_notification } from "service/utils";
+import { getMediaType, mediaExists, show_digit_number, show_notification } from "service/utils";
 import axios from "axios";
 import AlertArea from "components/Sections/AlertArea";
 import useMediaQuery from "use-mediaquery";
@@ -64,12 +64,21 @@ function ContentDetail() {
   };
 
   const show_content = (item) => {
-    if(video_contents.includes(item.txIdContent)) {
+    if(video_contents.includes(item.txIdContent) || getMediaType(item?.contentType) === 'video' ) {
       // video content
-      return (
-        <ResponsiveEmbed aspectRatio="16by9">
-          <iframe title="embed_video" width="100%" height="400" src={`${preUrl}${item.txIdContent}`} frameBorder="0" allowFullScreen></iframe>
-        </ResponsiveEmbed>)
+      let res = mediaExists(item.txIdContent)
+      if(res){
+        return (
+          <ResponsiveEmbed aspectRatio="16by9" className="cursor">
+            <iframe title="embed_video" width="100%" height="400" src={`${preUrl}${item.txIdContent}`} frameBorder="0" allowFullScreen></iframe>
+          </ResponsiveEmbed>)
+      }else{
+        return (<Image
+          src={ItemTemp}
+          onError={(ev => ev.target.src = ItemTemp)}
+          className="detail-img"
+        />)
+      }
     }else{
       return (
         <Image
@@ -192,7 +201,7 @@ function ContentDetail() {
                   >
                     <i className="fal fa-arrow-circle-left"></i>
                   </div>
-                  <h2 className="text-blue mb-0">{detail.ticker}</h2>
+                  <h2 className="text-blue mb-0">{detail.name}</h2>
                   <Button
                     onClick={() => onClickBuyIt(detail.txIdContent)}
                     className="btn-orange ml-auto"
@@ -227,9 +236,9 @@ function ContentDetail() {
                       <Col className="col-md-6 col-xs-12 col-12">
                         <div className="detail-body-description">
                           <h1 className="mb-0 text-blue text-left">
-                            {detail.ticker}
+                            {detail.name}
                           </h1>
-                          <p className="detail-username">{detail.name}</p>
+                          <p className="detail-username">{detail.ticker}</p>
                           <p className="text-left">
                             Registered {moment(detail.created_at).format("MMM, DD, YYYY")} &nbsp; 
                             <span>
