@@ -102,6 +102,9 @@ function MyContent() {
 
   const getContents = async (walletAddress = '') => {
     // console.log("keyAr" , JSON.stringify(keyAr))
+    if(!addressAr) {
+      history.push("/wallet-key");
+    }
     axios.get('https://bundler.openkoi.com:8888/state/getTopContent/')
     .then((res) => {
       const data = res.data

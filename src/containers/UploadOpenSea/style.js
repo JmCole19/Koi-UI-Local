@@ -228,3 +228,51 @@ export const UploadOpenSeaContainer = styled.div`
     }
   }
 `;
+
+export const KevinContainer = styled.div`
+  margin-top: 20px;
+  margin-bottom: 50px;
+  h1{ margin-bottom: 50px; }
+  .orange-area{
+    background: ${colors.orangeLight};
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.25);
+    border-radius: 4px;
+    padding: 30px 35px;
+  }
+  .cap1{
+    font-size: 18px;
+    line-height: 28px;
+    letter-spacing: 0.03em;
+    color: ${colors.blueDark};
+  }
+  .kevin-area{
+    display: flex;
+    .img-area{ flex: 1; text-align: right; }
+    .info-area {
+      flex: 1; 
+      padding-left: 50px;
+    }
+  }
+  @media (max-width: ${mixins.xs}px) {
+    h1{ margin-bottom: 30px; font-size: 26px !important; }
+    .orange-area{
+      padding: 20px 25px;
+    }
+    .cap1{
+      font-size: 16px;
+      line-height: 24px;
+      letter-spacing: 0em;
+    }
+    .kevin-area{
+      flex-direction: column;
+      .img-area{ 
+        text-align: center;
+        margin-bottom: 30px;
+        img{ max-width: 100%;}
+      }
+      .info-area {
+        padding-left: 0px;
+      }
+    }
+  }
+`
