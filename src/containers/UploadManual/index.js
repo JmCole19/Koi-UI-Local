@@ -19,22 +19,14 @@ import { DataContext } from "contexts/DataContextContainer";
 import AlertArea from "components/Sections/AlertArea";
 import { alertTimeout } from "config";
 import { getKoi } from "service/KOI";
-import { FaTimes } from "react-icons/fa";
+import { FaArrowLeft, FaTimes } from "react-icons/fa";
 import { colors } from "theme";
 import MetaWrapper from "components/Wrappers/MetaWrapper";
 import PreviewMedia from "components/Elements/PreviewMedia";
 import PlayMedia from "components/Elements/PlayMedia";
 
 //const arweave = Arweave.init(get_arweave_option);
-console.log(get_arweave_option);
-const arweave = Arweave.init({
-  host: 'arweave.net',// Hostname or IP address for a Arweave host
-  port: 443,          // Port
-  protocol: 'https',  // Network protocol http or https
-  timeout: 20000,     // Network request timeouts in milliseconds
-  logging: false,     // Enable network request logging
-});
-console.log(arweave);
+const arweave = Arweave.init(get_arweave_option);
 const { TextArea } = Input;
 const { Dragger } = Upload;
 
@@ -302,13 +294,13 @@ function UploadManual() {
             <div className="upload-content">
               <div className="title-wrapper">
                 <h1 className="text-blue upload-title">Register your content.</h1>
-                {/* <Button
+                <Button
                   className="back-wrapper btn-orange"
                   onClick={() => history.replace("/register-content")}
                 >
                   <FaArrowLeft size={20} color={colors.blueDark} />
                   <h6 className="mb-0 text-blue text-bold ml-2">Leaderboard</h6>
-                </Button> */}
+                </Button>
               </div>
               {step === "1" && (
                 <div className="upload-body">

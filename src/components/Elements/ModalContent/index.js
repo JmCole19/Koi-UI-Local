@@ -28,8 +28,8 @@ import { IoLogoTiktok } from "react-icons/io5";
 import { HiOutlineMail } from "react-icons/hi";
 import { colors } from "theme";
 
-import { preUrl } from "config";
-import { getMediaType, mediaExists } from "service/utils";
+import { preUrl, arweaveUrl } from "config";
+import { getMediaType } from "service/utils";
 
 const video_contents = [
   'cfhKMEd_pCZHHIKeVGZAilnITonqllwkA_yhiF2PaOw',
@@ -140,11 +140,11 @@ function ModalContent({
   const show_content = (item) => {
     if(video_contents.includes(item.txIdContent) || getMediaType(item?.contentType) === 'video' ) {
       // video content
-      let res = mediaExists(item.txIdContent)
+      let res = true //mediaExists(item.txIdContent)
       if(res){
         return (
           <ResponsiveEmbed aspectRatio="16by9" className="cursor">
-            <iframe title="embed_video" width="100%" height="400" src={`${preUrl}${item.txIdContent}`} frameBorder="0" allowFullScreen></iframe>
+            <iframe title="embed_video" width="100%" height="400" src={`${arweaveUrl}${item.txIdContent}`} frameBorder="0" allowFullScreen></iframe>
           </ResponsiveEmbed>)
       }else{
         return (<Image
