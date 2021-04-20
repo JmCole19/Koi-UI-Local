@@ -13,9 +13,6 @@ import {alertTimeout} from 'config'
 import AlertArea from "components/Sections/AlertArea";
 import MetaWrapper from "components/Wrappers/MetaWrapper";
 import Web3 from "web3";
-import {
-  ImgPST
-} from "assets/images";
 
 // const testOpenseaAddress = '0xd703accc62251189a67106f22d54cd470494de40'
 
@@ -28,7 +25,7 @@ function UploadOpenSea() {
   const [isAllSelected, setIsAllSelected] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [errMessage, setErrMessage] = useState(false);
-  const [iskevinNft, setIskevinNft] = useState(false);
+  const [iskevinNft, setIskevinNft] = useState(null);
 
   const onClickCard = (cardId) => {
     let tempSelectedCards = [...selectedIds];
@@ -78,14 +75,11 @@ function UploadOpenSea() {
   };
 
   const showKevinNFTArea = () => {
-    console.log("here111")
-    return (<Row gutter={[
-      { xs: 16, sm: 16, lg: 32 },
-      { xs: 40, sm: 40, lg: 32 },
-    ]}>
-      <Col span={6} ><Image src={ImgPST} /></Col>
-      <Col span={6} ><h1> Look what we found 1111# 0540 by kevin Abosch <Button  onClick={sign}>register</Button></h1></Col>
-    </Row>)
+    console.log(iskevinNft)
+    return (<div className="kevin-area">
+      <div className="span5"><Image src={iskevinNft.image_thumbnail_url} /></div>
+      <div className="span7"><h1> Look what we found 1111# 0540 by kevin Abosch <Button  onClick={sign}>register</Button></h1></Col>
+    </div>)
   }
 
   useEffect(() => {
@@ -140,7 +134,7 @@ function UploadOpenSea() {
     for(var i = 0; i < nfts.length; i++){
       if(nfts[i].asset_contract.address === "0x7f72528229f85c99d8843c0317ef91f4a2793edf") {
         console.log(nfts[i].asset_contract.address)
-        setIskevinNft(true)
+        setIskevinNft(nfts[i])
         break;
       }
     }

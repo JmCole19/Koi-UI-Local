@@ -15,4 +15,3 @@ export { default as IconFish } from "./IconFish.svg";
 export { default as IconHtml } from "./IconHtml.png";
 export { default as IconShare } from "./IconShare.png";
 export { default as IconArConnect } from "./IconArConnect.png";
-export { default as ImgPST } from "./ImgPST.svg";

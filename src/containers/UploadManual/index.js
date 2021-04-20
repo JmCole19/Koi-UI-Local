@@ -19,7 +19,7 @@ import { DataContext } from "contexts/DataContextContainer";
 import AlertArea from "components/Sections/AlertArea";
 import { alertTimeout } from "config";
 import { getKoi } from "service/KOI";
-import { FaTimes } from "react-icons/fa";
+import { FaArrowLeft, FaTimes } from "react-icons/fa";
 import { colors } from "theme";
 import MetaWrapper from "components/Wrappers/MetaWrapper";
 import PreviewMedia from "components/Elements/PreviewMedia";
@@ -294,13 +294,13 @@ function UploadManual() {
             <div className="upload-content">
               <div className="title-wrapper">
                 <h1 className="text-blue upload-title">Register your content.</h1>
-                {/* <Button
+                <Button
                   className="back-wrapper btn-orange"
                   onClick={() => history.replace("/register-content")}
                 >
                   <FaArrowLeft size={20} color={colors.blueDark} />
                   <h6 className="mb-0 text-blue text-bold ml-2">Leaderboard</h6>
-                </Button> */}
+                </Button>
               </div>
               {step === "1" && (
                 <div className="upload-body">
