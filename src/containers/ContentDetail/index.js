@@ -236,9 +236,9 @@ function ContentDetail() {
                       <Col className="col-md-6 col-xs-12 col-12">
                         <div className="detail-body-description">
                           <h1 className="mb-0 text-blue text-left">
-                            {detail.name}
+                            {detail.title? detail.title : detail.name}
                           </h1>
-                          <p className="detail-username">{detail.ticker}</p>
+                          <p className="detail-username">{detail.name}</p>
                           <p className="text-left">
                             Registered {moment(detail.created_at).format("MMM, DD, YYYY")} &nbsp; 
                             <span>
