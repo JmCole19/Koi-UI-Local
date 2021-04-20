@@ -82,9 +82,9 @@ function LeaderboardItem({
             {show_content(item)}
           </div>
           <div className="item-info-wrapper item-col">
-            <h2 className="item-title mb-1 cursor" onClick={onClickItem}>{item.name}</h2>
+            <h2 className="item-title mb-1 cursor" onClick={onClickItem}>{item.title? item.title : item.name}</h2>
             <p className="item-username mb-3 cursor" onClick={onClickUsername}>
-              {item.ticker}
+              {item.owner}
             </p>
             <p className="item-created_at mb-0">
               Registered: {moment(item.created_at).format("MMM, DD, YYYY")}
