@@ -5,7 +5,7 @@ import queryString from "query-string";
 import { Button, Container, Image } from "react-bootstrap";
 import { ScaleLoader } from "react-spinners";
 import { FaArrowLeft, FaCheck, FaPlus } from "react-icons/fa";
-import { UploadOpenSeaContainer } from "./style";
+import { UploadOpenSeaContainer, KevinContainer } from "./style";
 import { useHistory } from "react-router-dom";
 import { DataContext } from "contexts/DataContextContainer";
 import { colors } from "theme";
@@ -76,10 +76,21 @@ function UploadOpenSea() {
 
   const showKevinNFTArea = () => {
     console.log(iskevinNft)
-    return (<div className="kevin-area">
-      <div className="span5"><Image src={iskevinNft.image_thumbnail_url} /></div>
-      <div className="span7"><h1> Look what we found 1111# 0540 by kevin Abosch <Button  onClick={sign}>register</Button></h1></Col>
-    </div>)
+    return (
+      <KevinContainer>
+        <h1 className="text-blue">Your NFTs are stored <span className="underline">forever</span></h1>
+        <div className="orange-area">
+          <div className="cap1"><b>Congratulations!</b> Your 1111 NFT is now in your Metamask wallet.</div>
+          <div className="cap1">You'll start earning KOI as soon as someone views your NFT.</div>
+          <div className="kevin-area mt-4">
+            <div className="img-area"><Image src={iskevinNft.image_thumbnail_url} /></div>
+            <div className="info-area">
+              <h3 className="text-blue"> Look what we found 1111# 0540 by kevin Abosch</h3>
+              <Button  onClick={sign}>register</Button>
+            </div>
+          </div>
+        </div>
+      </KevinContainer>)
   }
 
   useEffect(() => {
