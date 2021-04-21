@@ -234,7 +234,7 @@ export const KevinContainer = styled.div`
   margin-bottom: 50px;
   h1{ margin-bottom: 50px; }
   .orange-area{
-    background: ${colors.orangeLight};
+    background: ${colors.greenLight};
     box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.25);
     border-radius: 4px;
     padding: 30px 35px;
@@ -245,15 +245,40 @@ export const KevinContainer = styled.div`
     letter-spacing: 0.03em;
     color: ${colors.blueDark};
   }
+  .cap2{
+    font-size: 22px;
+    line-height: 32px;
+    letter-spacing: 0.03em;
+    color: ${colors.blueDark};
+  }
+  .cap3{
+    font-size: 16px;
+    line-height: 22px;
+    letter-spacing: 0.03em;
+    color: ${colors.blueDark};
+  }
   .kevin-area{
     display: flex;
-    .img-area{ flex: 1; text-align: right; }
+    .img-area{ 
+      flex: 1; 
+      text-align: right; 
+      img{ 
+        max-width: 300px;
+        width: 100%;
+        border-radius: 4px;
+      } 
+    }
     .info-area {
       flex: 1; 
       padding-left: 50px;
     }
+    .btn-blueDark{
+      border-radius: 4px;
+      font-size: 16px;
+      width: 160px;
+    }
   }
-  @media (max-width: ${mixins.xs}px) {
+  @media (max-width: ${mixins.sm}px) {
     h1{ margin-bottom: 30px; font-size: 26px !important; }
     .orange-area{
       padding: 20px 25px;
@@ -268,7 +293,6 @@ export const KevinContainer = styled.div`
       .img-area{ 
         text-align: center;
         margin-bottom: 30px;
-        img{ max-width: 100%;}
       }
       .info-area {
         padding-left: 0px;

@@ -78,15 +78,18 @@ function UploadOpenSea() {
     console.log(iskevinNft)
     return (
       <KevinContainer>
-        <h1 className="text-blue">Your NFTs are stored <span className="underline">forever</span></h1>
+        {/* <h1 className="text-blue">Your NFTs are stored <span className="underline">forever</span></h1> */}
         <div className="orange-area">
-          <div className="cap1"><b>Congratulations!</b> Your 1111 NFT is now in your Metamask wallet.</div>
-          <div className="cap1">You'll start earning KOI as soon as someone views your NFT.</div>
+          {/* <div className="cap1"><b>Congratulations!</b> Your 1111 NFT is now in your Metamask wallet.</div>
+          <div className="cap1">You'll start earning KOI as soon as someone views your NFT.</div> */}
           <div className="kevin-area mt-4">
-            <div className="img-area"><Image src={iskevinNft.image_thumbnail_url} /></div>
+            <div className="img-area"><Image src={iskevinNft.image_original_url} /></div>
             <div className="info-area">
-              <h3 className="text-blue"> Look what we found 1111# 0540 by kevin Abosch</h3>
-              <Button  onClick={sign}>register</Button>
+              <div className="cap2"> Look what we found!</div>
+              <div className="cap3 mt-3 mb-3"><b>1111 #0504</b> by Kevin Abosch</div>
+              <div className="cap3">Since you purchased a piece from Abosch’s 1111 collection, you can store it on Arweave and receive KOI rewards whenever someone views it.</div>
+              <div className="cap3">Register your piece now, for free! </div>
+              <Button className="btn-back btn-blueDark mt-3" onClick={sign}>register</Button>
             </div>
           </div>
         </div>
@@ -113,8 +116,8 @@ function UploadOpenSea() {
 
       fetch(
         // `https://api.opensea.io/api/v1/assets?owner=0xd703accc62251189a67106f22d54cd470494de40&order_direction=desc&offset=0&limit=20`,
-        // `https://api.opensea.io/api/v1/assets?owner=0x8dea9139b0e84d5cc2933072f5ba43c2b043f6db&order_direction=desc&offset=0&limit=20`,
-        `https://api.opensea.io/api/v1/assets?owner=${address}&order_direction=desc&offset=0&limit=20`,
+        `https://api.opensea.io/api/v1/assets?owner=0x8dea9139b0e84d5cc2933072f5ba43c2b043f6db&order_direction=desc&offset=0&limit=20`,
+        // `https://api.opensea.io/api/v1/assets?owner=${address}&order_direction=desc&offset=0&limit=20`,
         options
       )
       .then((response) => {
@@ -170,14 +173,14 @@ function UploadOpenSea() {
         <Container>
           <div className="opensea-content-wrapper">
             <div className="opensea-content">
-            {iskevinNft && showKevinNFTArea()}
               <div className="title-wrapper">
                 <h1 className="text-blue opensea-title">Your OpenSea content</h1>
-                <Button className="back-wrapper btn-orange" onClick={() => history.replace('/register-content')}>
+                <Button className="back-wrapper btn-orange" onClick={() => history.replace('/')}>
                   <FaArrowLeft size={20} color={colors.blueDark} />
                   <h6 className="mb-0 text-blue text-bold ml-2">Leaderboard</h6>
                 </Button>
               </div>
+              {iskevinNft && showKevinNFTArea()}
               <h4 className="opensea-description">
                 Select your NFTs to upload them to Arweave’s permaweb. You’ll earn
                 rewards every time someone views them!
