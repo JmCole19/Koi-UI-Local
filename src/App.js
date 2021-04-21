@@ -11,6 +11,7 @@ import "assets/css/fontawesome.min.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "antd/dist/antd.css";
 import GlobalStyle from "theme/globalStyle";
+import GlobalModalStyle from "theme/globalModalStyle";
 import MyRoute from "service/MyRoute";
 import Leaderboard from "containers/Leaderboard";
 import MyContent from "containers/Leaderboard/MyContent";
@@ -33,6 +34,7 @@ function App() {
     <div className="App">
       <Scrollbars autoHide style={{ flex: 1 }}>
         <GlobalStyle />
+        <GlobalModalStyle />
         <Router>
           <Switch>
             <DataContextContainer>
