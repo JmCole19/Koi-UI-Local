@@ -1,5 +1,5 @@
 import { createGlobalStyle } from "styled-components";
-import { colors, fonts, mixins } from "theme";
+import { colors, mixins } from "theme";
 
 const GlobalModalStyle = createGlobalStyle`
   .modal-confirm-transaction {
