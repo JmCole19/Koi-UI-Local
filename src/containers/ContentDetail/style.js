@@ -57,6 +57,7 @@ export const ContentDetailContainer = styled.div`
         .detail-img {
           max-width: calc(100% - 20px);
           margin-right: 20px;
+          border-radius: 4px;
         }
         .detail-body-description {
           h1 {
@@ -98,7 +99,8 @@ export const ContentDetailContainer = styled.div`
             align-items: center;
             margin-top: 12px;
             .btn {
-              min-width: 205px;
+              min-width: auto;
+              flex: 1;
               img {
                 margin-right: 20px;
               }
@@ -116,6 +118,7 @@ export const ContentDetailContainer = styled.div`
     }
   }
   @media (max-width: ${mixins.md}px) {
+    .mobile992{display: none;}
     .content-detail-wrapper {
       padding: 0px 0 30px;
       .content-detail {
@@ -161,6 +164,17 @@ export const ContentDetailContainer = styled.div`
         .social-wrapper {
           padding: 0 20px;
           max-width: 100% !important;
+        }
+      }
+    }
+    .detail-body-description {
+      h1 {
+        text-align: center !important;
+      }
+      p {
+        &.detail-username {
+          margin-left: auto;
+          margin-right: auto;
         }
       }
     }

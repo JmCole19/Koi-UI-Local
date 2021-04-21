@@ -192,7 +192,7 @@ export const LeaderboardContainer = styled.div`
       }
     }
   }
-  @media (max-width: ${mixins.sm}px) {
+  @media (max-width: ${mixins.xs}px) {
     .leaderboard-header {
       .btn-my-content {
         margin-right: 5px;
