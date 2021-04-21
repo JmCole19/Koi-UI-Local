@@ -83,7 +83,7 @@ function UploadOpenSea() {
           <div className="cap1"><b>Congratulations!</b> Your 1111 NFT is now in your Metamask wallet.</div>
           <div className="cap1">You'll start earning KOI as soon as someone views your NFT.</div>
           <div className="kevin-area mt-4">
-            <div className="img-area"><Image src={iskevinNft.image_thumbnail_url} /></div>
+            <div className="img-area"><Image src={iskevinNft.image_original_url} /></div>
             <div className="info-area">
               <h3 className="text-blue"> Look what we found 1111# 0540 by kevin Abosch</h3>
               <Button  onClick={sign}>register</Button>
@@ -113,8 +113,8 @@ function UploadOpenSea() {
 
       fetch(
         // `https://api.opensea.io/api/v1/assets?owner=0xd703accc62251189a67106f22d54cd470494de40&order_direction=desc&offset=0&limit=20`,
-        // `https://api.opensea.io/api/v1/assets?owner=0x8dea9139b0e84d5cc2933072f5ba43c2b043f6db&order_direction=desc&offset=0&limit=20`,
-        `https://api.opensea.io/api/v1/assets?owner=${address}&order_direction=desc&offset=0&limit=20`,
+        `https://api.opensea.io/api/v1/assets?owner=0x8dea9139b0e84d5cc2933072f5ba43c2b043f6db&order_direction=desc&offset=0&limit=20`,
+        // `https://api.opensea.io/api/v1/assets?owner=${address}&order_direction=desc&offset=0&limit=20`,
         options
       )
       .then((response) => {
@@ -173,7 +173,7 @@ function UploadOpenSea() {
             {iskevinNft && showKevinNFTArea()}
               <div className="title-wrapper">
                 <h1 className="text-blue opensea-title">Your OpenSea content</h1>
-                <Button className="back-wrapper btn-orange" onClick={() => history.replace('/register-content')}>
+                <Button className="back-wrapper btn-orange" onClick={() => history.replace('/')}>
                   <FaArrowLeft size={20} color={colors.blueDark} />
                   <h6 className="mb-0 text-blue text-bold ml-2">Leaderboard</h6>
                 </Button>
