@@ -5,7 +5,7 @@ import queryString from "query-string";
 import customAxios from "service/customAxios";
 import fileDownload from "js-file-download";
 import { IconUpload } from "assets/images";
-import { Carousel, Container, Image } from "react-bootstrap";
+import { Carousel, Container, Image, Button as BT } from "react-bootstrap";
 import { FaucetContainer } from "./style";
 import { Button, Spin, Upload } from "antd";
 import { useHistory } from "react-router-dom";
@@ -16,6 +16,8 @@ import { koi_tools } from "koi_tools"
 import AlertArea from "components/Sections/AlertArea";
 import { alertTimeout } from "config";
 import MetaWrapper from "components/Wrappers/MetaWrapper";
+import { FaArrowLeft } from "react-icons/fa";
+import { colors } from "theme";
 
 const arweave = Arweave.init(get_arweave_option);
 const { Dragger } = Upload;
@@ -248,7 +250,13 @@ function Faucet() {
       <FaucetContainer>
         <Container>
           <div className="faucet-wrapper">
-            <h1 className="f-32 text-blue">Want to earn attention rewards?</h1>
+            <div className="title-wraper">
+              <h1 className="f-32 text-blue">Want to earn attention rewards?</h1>
+              <BT className="back-wrapper btn-orange" onClick={() => history.replace('/')}>
+                <FaArrowLeft size={20} color={colors.blueDark} />
+                <h6 className="mb-0 text-blue text-bold ml-2">Leaderboard</h6>
+              </BT>
+            </div>
             <h6 className="faucet-description text-blue">
               Get free KOI here so you can upload to the network. Just follow the
               steps below.

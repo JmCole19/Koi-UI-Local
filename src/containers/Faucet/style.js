@@ -10,6 +10,16 @@ export const FaucetContainer = styled.div`
   justify-content: center;
   .faucet-wrapper {
     padding: 30px 0 196px;
+    .title-wraper{
+      display: flex;
+      justify-content: space-between;
+      .back-wrapper {
+        width: fit-content;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+      }
+    }
     .toast {
       max-width: 100%;
       background-color: ${colors.orangeLight};

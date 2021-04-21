@@ -74,12 +74,12 @@ function LeaderboardItem({
 
   return (
     <LeaderboardItemContainer>
-      <div className="w20">
-        <h3 className="item-order">{order + 1}</h3>
-      </div>
       <div className="item-container">
         <div className="part-left">
           <div className="item-img-wrapper item-col">
+            <div className="w30">
+              <h3 className="item-order mb-0">{order + 1}</h3>
+            </div>
             {show_content(item)}
           </div>
           <div className="item-info-wrapper item-col">

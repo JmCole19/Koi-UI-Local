@@ -142,22 +142,22 @@ function Topbar() {
               <Image src={IconEthereum} className="cursor" width={18} />
             </Space>
           ) : (
-            <Space size={12} className="btns-connect cursor" onClick={() => setShow(!show)}>
-              <span className="text-blue mb-0 text-bold">{show_digit_number(balanceKoi)}</span>
-              <Image
-                ref={target}
-                src={IconFish}
-                className="cursor"
-                width={18}
-              />
-              <span className="text-blue mb-0 text-bold">{show_ar_balance(balanceAr)}</span>
-              <Image
-                ref={target}
-                src={IconArweave}
-                className="cursor"
-                width={18}
-              />
-            </Space>
+            <div ref={target} className="dropdown-area">
+              <Space size={12} className="btns-connect cursor" onClick={() => setShow(!show)}>
+                <span className="text-blue mb-0 text-bold">{show_digit_number(balanceKoi)}</span>
+                <Image
+                  src={IconFish}
+                  className="cursor"
+                  width={18}
+                />
+                <span className="text-blue mb-0 text-bold">{show_ar_balance(balanceAr)}</span>
+                <Image
+                  src={IconArweave}
+                  className="cursor"
+                  width={18}
+                />
+              </Space>
+            </div>
           )}
           {/* <Image
             src={DefaultUser}

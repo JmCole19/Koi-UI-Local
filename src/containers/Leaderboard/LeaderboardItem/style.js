@@ -13,7 +13,7 @@ export const LeaderboardItemContainer = styled.div`
     flex: 1;
     align-items: center;
   }
-  .w20{width: 20px;}
+  .w30{width: 30px;}
   .part-left {
     display: flex;
     flex: 1;
@@ -24,12 +24,17 @@ export const LeaderboardItemContainer = styled.div`
         color: ${colors.blueDark};
       }
       &.item-img-wrapper {
-        min-width: 150px;
+        min-width: 200px;
         display: flex;
         justify-content: center;
+        align-items: center;
+        .w30{ text-align: left;}
         img {
+          width: 100%;
           max-width: 144px;
-          max-height: 144px;
+          border-radius: 4px;
+          margin: 15px 0;
+          border-radius: 4px;
         }
       }
       &.item-info-wrapper {
@@ -113,13 +118,12 @@ export const LeaderboardItemContainer = styled.div`
       flex-direction: column;
       padding: 20px 11px 10px;
     }
-    .sx-hidden-share{display: none;}
     .part-left {
       width: 100%;
       margin-bottom: 20px;
       .item-col {
         &.item-info-wrapper {
-          flex: 2;
+          flex: 1;
           margin-left: auto;
           .item-title {
             font-size: 24px !important;
@@ -137,12 +141,13 @@ export const LeaderboardItemContainer = styled.div`
       }
     }
     .part-right {
-      width: 100%;
+      min-width: 490px;
       display: flex;
       justify-content: center;
       .item-col {
         padding: 0px;
         &.item-reviews-wrapper {
+          margin-left: 30px;
           align-items: center;
           flex: 2;
         }
@@ -153,12 +158,47 @@ export const LeaderboardItemContainer = styled.div`
       }
     }
   }
-  @media (max-width: 479px) {
-    padding: 0px 20px;
+  @media (max-width: ${mixins.xs}px) {
+    .sx-hidden-share{display: none;}
+    .part-right {
+      min-width: 90%;
+      .item-col {
+        &.item-reviews-wrapper {
+          flex: 2;
+        }
+      }
+      .share-wrapper {
+        flex: 3;
+      }
+    }
+  }
+  @media (max-width: 480px) {
     .item-reviews-wrapper {
+      margin-left: 0px !important;
       margin-bottom: 25px !important;
       padding: 5px !important;
       h5 { font-size: 16px !important; }
+    }
+  }
+  @media (max-width: 479px) {
+    padding: 0px;
+    .part-left {
+      .item-col {
+        &.item-info-wrapper {
+          flex: 2;
+          margin-left: auto;
+          .item-title {
+            font-size: 24px !important;
+          }
+          .item-created_at {
+            font-size: 15px !important;
+          }
+        }
+        &.item-img-wrapper {
+          padding: 0;
+          min-width: auto;
+        }
+      }
     }
   }
 `;

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { Navbar } from "react-bootstrap";
-import { colors } from "theme";
+import { colors, mixins } from "theme";
 
 export const TopbarContainer = styled(Navbar)`
   width: 100%;
@@ -53,6 +53,10 @@ export const TopbarContainer = styled(Navbar)`
         background: transparent;
         border-radius: 4px;
         color: ${colors.white};
+      }
+      @media (max-width: ${mixins.sm}px) {
+        .btn-nav{padding: 7px 0; margin-right: 0px;}
+        .dropdown-area{margin: 7px auto;}
       }
     }
     .btns-connect {

@@ -14,7 +14,7 @@ import { FaInstagram } from "react-icons/fa";
 import { FiFacebook, FiMessageCircle, FiTwitter } from "react-icons/fi";
 import { HiOutlineMail } from "react-icons/hi";
 import { useHistory, useParams } from "react-router-dom";
-import { colors, mixins } from "theme";
+import { colors } from "theme";
 import { ContentDetailContainer } from "./style";
 import { DataContext } from "contexts/DataContextContainer";
 import { ScaleLoader } from "react-spinners";
@@ -22,7 +22,6 @@ import ModalContent from "components/Elements/ModalContent";
 import { getMediaType, show_digit_number, show_notification } from "service/utils";
 import axios from "axios";
 import AlertArea from "components/Sections/AlertArea";
-import useMediaQuery from "use-mediaquery";
 import { preUrl, alertTimeout } from "config";
 import moment from "moment";
 import MetaWrapper from "components/Wrappers/MetaWrapper";
@@ -38,7 +37,6 @@ const video_contents = [
 function ContentDetail() {
   const history = useHistory();
   const { id } = useParams();
-  const isMobile = useMediaQuery(`(max-width: ${mixins.md}px)`);
   
   const shareTitle = `Check out my NFT, now stored on Koi— forever!`;
   const currentUrl = `${window.location.protocol}//${
@@ -175,7 +173,6 @@ function ContentDetail() {
     }
   }, [history.location.pathname]);
 
-  console.log({ detail });
   return (
     <>
       <AlertArea showMessage={showAlert} message={errEmessage}></AlertArea>
@@ -262,7 +259,7 @@ function ContentDetail() {
                               }}
                             >
                               <Image src={IconShare} />
-                              {isMobile ? "Share" : "Share NFT"}
+                              Share
                             </Button>
                             <Button
                               className="btn-html btn-white ml-3"
@@ -272,7 +269,7 @@ function ContentDetail() {
                               }}
                             >
                               <Image src={IconHtml} />
-                              {isMobile ? "Embed" : "Embed to Earn"}
+                              Embed
                             </Button>
                           </div>
                           {/* <p className="mb-0">{detail.description}</p> */}
@@ -317,7 +314,7 @@ function ContentDetail() {
                               }}
                             >
                               <Image src={IconShare} />
-                              Share NFT
+                              Share<span className="mobile992"> NFT</span>
                             </Button>
                             <Button
                               className="btn-html btn-white ml-3"
@@ -327,7 +324,7 @@ function ContentDetail() {
                               }}
                             >
                               <Image src={IconHtml} />
-                              Embed to Earn
+                              Embed<span className="mobile992"> to Earn</span>
                             </Button>
                           </div>
                           <div className="social-wrapper">
