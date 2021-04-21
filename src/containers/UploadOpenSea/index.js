@@ -85,10 +85,10 @@ function UploadOpenSea() {
           <div className="kevin-area mt-4">
             <div className="img-area"><Image src={iskevinNft.image_original_url} /></div>
             <div className="info-area">
-              <div className="text-blue cap2"> Look what we found</div>
-              <div className="text-blue cap3"><b>1111 #0504</b> by Kevin Abosch</div>
-              <div className="text-blue cap3">Since you purchased a piece from Abosch’s 1111 collection, you can store it on Arweave and receive KOI rewards whenever someone views it.</div>
-              <div className="text-blue cap3">Register your piece now, for free! </div>
+              <div className="cap2"> Look what we found!</div>
+              <div className="cap3 mt-3 mb-3"><b>1111 #0504</b> by Kevin Abosch</div>
+              <div className="cap3">Since you purchased a piece from Abosch’s 1111 collection, you can store it on Arweave and receive KOI rewards whenever someone views it.</div>
+              <div className="cap3">Register your piece now, for free! </div>
               <Button className="btn-back btn-blueDark mt-3" onClick={sign}>register</Button>
             </div>
           </div>

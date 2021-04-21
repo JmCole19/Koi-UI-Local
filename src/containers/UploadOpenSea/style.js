@@ -278,7 +278,7 @@ export const KevinContainer = styled.div`
       width: 160px;
     }
   }
-  @media (max-width: ${mixins.xs}px) {
+  @media (max-width: ${mixins.sm}px) {
     h1{ margin-bottom: 30px; font-size: 26px !important; }
     .orange-area{
       padding: 20px 25px;
@@ -293,7 +293,6 @@ export const KevinContainer = styled.div`
       .img-area{ 
         text-align: center;
         margin-bottom: 30px;
-        img{ max-width: 100%;}
       }
       .info-area {
         padding-left: 0px;
