@@ -247,7 +247,15 @@ export const KevinContainer = styled.div`
   }
   .kevin-area{
     display: flex;
-    .img-area{ flex: 1; text-align: right; }
+    .img-area{ 
+      flex: 1; 
+      text-align: right; 
+      img{ 
+        max-width: 300px;
+        width: 100%;
+        border-radius: 4px;
+      } 
+    }
     .info-area {
       flex: 1; 
       padding-left: 50px;

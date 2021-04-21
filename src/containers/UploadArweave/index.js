@@ -10,7 +10,7 @@ import { useForm } from "antd/lib/form/Form";
 import { useHistory, useLocation } from "react-router-dom";
 import MyProgress from "components/Elements/MyProgress";
 import { DataContext } from "contexts/DataContextContainer";
-import { FaTimes } from "react-icons/fa";
+import { FaArrowLeft, FaTimes } from "react-icons/fa";
 import { colors } from "theme";
 import { convertArBalance, show_notification, show_fixed_number } from "service/utils";
 import cloneDeep from "clone-deep";
@@ -287,13 +287,13 @@ function UploadArweave() {
               <div className="upload-content">
                 <div className="title-wrapper">
                   <h1 className="text-blue upload-title">Register your content.</h1>
-                  {/* <Button
+                  <Button
                     className="back-wrapper btn-orange"
-                    onClick={() => history.replace("/register-content")}
+                    onClick={() => history.replace("/")}
                   >
                     <FaArrowLeft size={20} color={colors.blueDark} />
                     <h6 className="mb-0 text-blue text-bold ml-2">Leaderboard</h6>
-                  </Button> */}
+                  </Button>
                 </div>
                 {step === "1" && (
                   <div className="upload-body">
