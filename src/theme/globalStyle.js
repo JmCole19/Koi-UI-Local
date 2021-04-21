@@ -372,51 +372,55 @@ const GlobalStyle = createGlobalStyle`
       }
     }
     #overlay-nav {
-        padding: 24px 0 0;
-        opacity: 1;
-        .tooltip-inner {
-            padding: 0;
-            background-color: ${colors.blueDark};
-            min-width: 230px;
-            max-width: 300px;
-            border-radius: 0px 0px 6px 6px;
-            p {
-                margin-bottom: 0;
-            }
-            .overlay-header {
-                border-bottom: 1px solid ${colors.blueLight};
-                padding: 5px 13px;
-            }
-            .overlay-body {
-                padding: 5px 0;
-                .overlay-body-row {
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                    padding: 5px 13px;
-                    p.overlay-value {
-                        font-weight: 600;
-                        margin-left: auto;
-                    }
-                    img {
-                        max-width: 20px;
-                    }
-                    .btn-disconnect{
-                      height: 32px;
-                      background: #fff;
-                      letter-spacing: 0.03em;
-                      color: ${colors.blueDark};
-                      box-sizing: border-box;
-                      border-radius: 4px;
-                      font-style: normal;
+      display: block;
+      padding: 0;
+      opacity: 1;
+      .tooltip-inner {
+          padding: 0;
+          background-color: ${colors.blueDark};
+          min-width: 230px;
+          max-width: 300px;
+          border-radius: 0px 0px 6px 6px;
+          p {
+              margin-bottom: 0;
+          }
+          .overlay-header {
+              border-bottom: 1px solid ${colors.blueLight};
+              padding: 5px 13px;
+          }
+          .overlay-body {
+              padding: 5px 0;
+              .overlay-body-row {
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center;
+                  padding: 5px 13px;
+                  p.overlay-value {
                       font-weight: 600;
-                      font-size: 16px;
-                      line-height: 15px;
-                      text-align: center;
-                    }
-                }
-            }
-        }
+                      margin-left: auto;
+                  }
+                  img {
+                      max-width: 20px;
+                  }
+                  .btn-disconnect{
+                    height: 32px;
+                    background: #fff;
+                    letter-spacing: 0.03em;
+                    color: ${colors.blueDark};
+                    box-sizing: border-box;
+                    border-radius: 4px;
+                    font-style: normal;
+                    font-weight: 600;
+                    font-size: 16px;
+                    line-height: 15px;
+                    text-align: center;
+                  }
+              }
+          }
+      }
+      @media (max-width: ${mixins.sm}px){
+        display: none;
+      }
     }
     .explore-block {
       font-weight: 500;
