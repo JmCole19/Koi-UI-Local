@@ -13,7 +13,7 @@ export const LeaderboardItemContainer = styled.div`
     flex: 1;
     align-items: center;
   }
-  .w20{width: 20px;}
+  .w30{width: 30px;}
   .part-left {
     display: flex;
     flex: 1;
@@ -24,12 +24,17 @@ export const LeaderboardItemContainer = styled.div`
         color: ${colors.blueDark};
       }
       &.item-img-wrapper {
-        min-width: 150px;
+        min-width: 200px;
         display: flex;
         justify-content: center;
+        align-items: center;
+        .w30{ text-align: left;}
         img {
+          width: 100%;
           max-width: 144px;
-          max-height: 144px;
+          border-radius: 4px;
+          margin: 15px 0;
+          border-radius: 4px;
         }
       }
       &.item-info-wrapper {
