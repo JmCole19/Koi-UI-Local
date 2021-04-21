@@ -354,11 +354,15 @@ function ConfirmOpenseas() {
     selectedIds.forEach((tId) => {
       let tempOpenSea = openSeas.find((_openSea) => tId == _openSea.id);
       if (tempOpenSea) {
+        let tpOwner = tempOpenSea?.owner?.user?.username || ""
+        if(tpOwner === 'NullAddress'){
+          tpOwner = ''
+        }
         contentsOS.push({
           id: tempOpenSea?.id || 0,
           thumb: tempOpenSea?.image_thumbnail_url || "",
           title: tempOpenSea?.name || "",
-          owner: tempOpenSea?.owner?.user?.username || "",
+          owner: tpOwner,
           description: tempOpenSea?.description || "",
           txId: ''
         });
@@ -403,9 +407,6 @@ function ConfirmOpenseas() {
     if (address) {
       const options = {
         method: "GET",
-        // params: {
-        //   owner: "0x3a3d6f2b81187Bd4c365b6dAfB260b59f5783854",
-        // },
       };
 
       fetch(
