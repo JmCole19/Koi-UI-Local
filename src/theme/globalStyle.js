@@ -112,19 +112,25 @@ const GlobalStyle = createGlobalStyle`
     .text-italic{ font-style: italic !important; }
     .w40{width: 40px !important;}
     .btn {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: 18px;
-        max-height: 40px !important;
-        border-radius: 2px;
-        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.16);
-        font-weight: 600 !important;
-        border-color: transparent;
-        &:focus, &:hover {
-            border-color: transparent;
-            box-shadow: unset;
-        }
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 18px;
+      max-height: 40px !important;
+      border-radius: 2px;
+      box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.16);
+      font-weight: 600 !important;
+      border-color: transparent;
+      &:focus, &:hover {
+          border-color: transparent;
+          box-shadow: unset;
+      }
+      @media (max-width: ${mixins.sm}px) {
+        font-size: 16px;
+      }
+      @media (max-width: 480px) {
+        font-size: 14px;
+      }
     }
     .form-control:focus {
         color: #495057;

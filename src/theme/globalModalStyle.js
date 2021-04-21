@@ -74,6 +74,7 @@ const GlobalModalStyle = createGlobalStyle`
           @media (max-width: ${mixins.xs}px){
             font-size: 22px !important;
             margin-bottom: 20px;
+            letter-spacing: 0;
           }
           @media (max-width: 480px){
             font-size: 20px !important;
@@ -83,7 +84,11 @@ const GlobalModalStyle = createGlobalStyle`
         }
         .modal-description {
           letter-spacing: 0.03em;
-          margin-bottom: 30px;
+          @media (max-width: ${mixins.xs}px){
+            font-size: 16px !important;
+            margin-bottom: 10px;
+            letter-spacing: 0;
+          }
         }
         .footer-title {
           margin-bottom: 0;
@@ -181,7 +186,8 @@ const GlobalModalStyle = createGlobalStyle`
               img{ max-width: 300px; }
             }
             .modal-right{
-
+              margin-left: 0px;
+              width: 100%;
             }
           }
           @media (max-width: 480px) {

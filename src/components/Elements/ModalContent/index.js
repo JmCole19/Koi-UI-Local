@@ -192,7 +192,7 @@ function ModalContent({
             : "Embed your NFT to earn more."}
         </h2>
         {type === "embed" && (
-          <h6 className="modal-description text-blue">
+          <h6 className="modal-description text-blue mb-3">
             Every time someone visits a site with your embedded NFTs, you’ll earn KOI.
           </h6>
         )}
@@ -204,7 +204,7 @@ function ModalContent({
             </div>
             <div className="modal-right">
               <div className="part">
-                <h6 className="part-title text-blue">Copy the link</h6>
+                <h6 className="modal-description text-blue mb-0">Copy the link</h6>
                 <div className="input-group">
                   <input
                     type="text"
@@ -259,7 +259,7 @@ function ModalContent({
             </div>
             <div className="modal-right">
               <div className="part">
-                <h6 className="part-title text-blue">Copy the snippet</h6>
+                <h6 className="modal-description text-blue mb-0">Copy the snippet</h6>
                 <div className="">
                   <textarea disabled
                     className="form-control height-130"
