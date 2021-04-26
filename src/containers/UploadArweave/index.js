@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect, useMemo } from "react";
 import { Container, Image, Button, Modal } from "react-bootstrap";
 import queryString from "query-string";
 import Arweave from "arweave";
@@ -177,7 +177,7 @@ function UploadArweave() {
     }
   };
 
-  const beforeArweaveKeyfileUpload = (file) => {
+  const beforeArweaveKeyfileUpload = useMemo((file) => {
     // console.log('file type : ', file)
     const isJson = file.type === "application/json";
     if (!isJson) {
@@ -203,7 +203,7 @@ function UploadArweave() {
       return false;
     }
     return isJson && isLt1M;
-  };
+  }, []);
 
   const uploadNFTContents = async () => {
     try {

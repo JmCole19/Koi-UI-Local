@@ -2,8 +2,8 @@
 // const arweave = Arweave.init()
 import { koi_tools } from "koi_tools"
 
-const getArWalletAddressFromJson = async (arweave, keyData) => {
-  let addressResult = await arweave.wallets.jwkToAddress(keyData);
+const getArWalletAddressFromJson = (arweave, keyData) => {
+  let addressResult = arweave.wallets.jwkToAddress(keyData);
   return addressResult
 }
 

@@ -12,7 +12,6 @@ import { koi_tools } from "koi_tools"
 import { useHistory } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
 import { colors } from "theme";
-import MetaWrapper from "components/Wrappers/MetaWrapper";
 
 const { Dragger } = Upload;
 const arweave = Arweave.init(get_arweave_option);
@@ -47,7 +46,7 @@ function KeyUpload() {
       setBalanceAr(convertArBalance(arBalance))
       setLoading(false)
       show_notification('Please check your wallet balance in top right.', 'KOI', 'success')
-      setTimeout(() => history.goBack(), 2500)
+      // setTimeout(() => history.goBack(), 2500)
     } catch (err) {
       setLoading(false)
       console.log("get koi balance err")
@@ -76,12 +75,12 @@ function KeyUpload() {
     }
     if (isJson && isLt1M) {
       const reader = new FileReader();
-      reader.onload = async (e) => {
+      reader.onload = (e) => {
         var arJson = JSON.parse(e.target.result);
-        let addressResult = await getArWalletAddressFromJson(arweave, arJson);
+        let addressResult = getArWalletAddressFromJson(arweave, arJson);
         setKeyAr(arJson)
         setAddressAr(addressResult)
-        await getKoi(arJson)
+        getKoi(arJson)
         // show_notification('Your wallet key file uploaded successfuly. Please check your balance.', 'KOI', 'success')
       };
       reader.readAsText(file);
@@ -116,7 +115,6 @@ function KeyUpload() {
   // };
 
   return (
-    <MetaWrapper>
       <KeyUploadContainer>
         <Container>
           <div className="upload-content-wrapper">
@@ -195,7 +193,6 @@ function KeyUpload() {
           </div>
         </Container>
       </KeyUploadContainer>
-    </MetaWrapper>
   );
 }
 

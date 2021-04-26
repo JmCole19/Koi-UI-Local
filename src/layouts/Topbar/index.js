@@ -60,7 +60,7 @@ function Topbar() {
   //     }, 2000);
   //   }
   // };
-  const activeKoi = async () => {
+  const activeKoi = () => {
     // if (!addressEth) {
     //   await activeEthereum();
     // }

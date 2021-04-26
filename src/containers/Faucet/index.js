@@ -169,9 +169,9 @@ function Faucet() {
     }
   };
   
-  const onClickUpload = () => {
-    history.replace("/contents");
-  };
+  // const onClickUpload = () => {
+  //   history.replace("/contents");
+  // };
 
   const onClickBackTo = (step) => {
     setCurStep(step);
@@ -435,7 +435,7 @@ function Faucet() {
                     </h6>
                     <Button
                       className="btn-step-card mt-auto mx-auto"
-                      onClick={onClickUpload}
+                      // onClick={onClickUpload}
                     >
                       Upload Content
                     </Button>

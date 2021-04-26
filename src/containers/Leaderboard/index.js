@@ -16,7 +16,6 @@ import AlertArea from "components/Sections/AlertArea";
 import { alertTimeout } from "config";
 import ImportArea from "components/Sections/ImportArea";
 import { IconUpload, IconOpenSea } from "assets/images";
-import MetaWrapper from "components/Wrappers/MetaWrapper";
 
 const { Panel } = Collapse;
 const options = ["24h", "1w", "1m", "1y", "all"];
@@ -146,7 +145,6 @@ function Leaderboard() {
   }, [history.location.pathname]);
 
   return (
-    <MetaWrapper>
       <LeaderboardContainer>
         <div className="leaderboard">
           <div className="leaderboard-header">
@@ -271,7 +269,6 @@ function Leaderboard() {
           onSwitchModal={onSwitchModal}
         />
       </LeaderboardContainer>
-    </MetaWrapper>
   );
 }
 

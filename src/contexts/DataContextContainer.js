@@ -15,7 +15,7 @@ function DataContextContainer(props){
   const [keyAr, setKeyAr] = useLocalStorage('koi-keyAr', null);
   const [balanceKoi, setBalanceKoi] = useLocalStorage('koi-balanceKoi', null);
   const [balanceAr, setBalanceAr] = useLocalStorage('koi-balanceAr', null);
-  const [contents, setContents] = useState([]);
+  // const [contents, setContents] = useState([]);
 
   const getKoiBalance = async () => {
     if(keyAr) {
@@ -76,8 +76,8 @@ function DataContextContainer(props){
         setBalanceKoi,
         balanceAr,
         setBalanceAr,
-        contents,
-        setContents,
+        // contents,
+        // setContents,
       }}
     >
       {props.children}

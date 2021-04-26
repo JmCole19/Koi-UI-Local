@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useMemo } from "react";
 import { Button, Image } from "react-bootstrap";
 // import { koi_tools } from "koi_tools";
 import { ScaleLoader } from "react-spinners";
@@ -62,11 +62,11 @@ function MyContent() {
     history.push('/contents')
   };
 
-  const onClickUsername = (item) => {
+  const onClickUsername = useMemo((item) => {
     setContents(contents.filter((_item) => _item.name === item.name));
-  };
+  },[]);
 
-  const onSliderChange = (newVal) => {
+  const onSliderChange = useMemo((newVal) => {
     // const options = ["24h", "1w", "1m", "1y", "all"];
     setSliderValue(newVal)
     console.log({ newVal })
@@ -98,7 +98,7 @@ function MyContent() {
       const timestamp = Number(cur.getTime() - offset * 1000)
       setContents(contents.filter((_item) => _item.created_at > timestamp))
     }
-  }
+  }, []);
 
   const getContents = async (walletAddress = '') => {
     // console.log("keyAr" , JSON.stringify(keyAr))
@@ -159,7 +159,7 @@ function MyContent() {
     // }
   };
   useEffect(() => {
-    setTimeout(() => getContents(), 1000);
+    setTimeout(() => getContents(), 10000);
   }, [history.location.pathname]);
 
   const show_alert = (message = '') => {
